@@ -1,0 +1,242 @@
+@import './variable';
+
+.background-hover {
+  transition: @transition-ease-in;
+}
+
+.text-gradient {
+  background-image: -webkit-gradient(
+    linear,
+    37.219838% 34.532506%,
+    36.425669% 93.178216%,
+    from(#29cdff),
+    to(#0a60ff),
+    color-stop(0.37, #148eff)
+  );
+
+  -webkit-text-fill-color: transparent;
+}
+
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+}
+
+.textOverflowMulti(@line: 3, @bg: #fff) {
+  position: relative;
+  overflow: hidden;
+  margin-right: -1 * @font-size-base;
+  padding-right: @font-size-base;
+  max-height: @line * 1.5 * @font-size-base;
+  text-align: justify;
+  line-height: @font-size-base;
+
+  &::before {
+    position: absolute;
+    right: 14px;
+    margin-top: 0.2 * @font-size-base;
+    width: @font-size-base;
+    height: @font-size-base;
+    background-color: @bg;
+    content: '';
+  }
+
+  &::after {
+    position: absolute;
+    right: @font-size-base;
+    bottom: 0;
+    padding: 0 1px;
+    background-color: @bg;
+    content: '...';
+  }
+}
+
+// mixins for clearfix
+.clearfix() {
+  zoom: 1;
+
+  &::before,
+  &::after {
+    display: table;
+    content: '';
+
+    &::after {
+      visibility: hidden;
+      clear: both;
+      height: 0;
+      font-size: 0;
+    }
+  }
+}
+
+// 公共 flex 布局
+.flex {
+  display: flex;
+}
+
+.row {
+  align-items: center;
+
+  &:extend(.flex);
+}
+
+.row-reverse {
+  flex-direction: row-reverse;
+
+  &:extend(.row);
+}
+
+.row-center {
+  justify-content: center;
+
+  &:extend(.row);
+}
+
+.row-between {
+  justify-content: space-between;
+
+  &:extend(.row);
+}
+
+.row-around {
+  justify-content: space-around;
+
+  &:extend(.row);
+}
+
+.row-end {
+  justify-content: flex-end;
+
+  &:extend(.row);
+}
+
+.column {
+  flex-direction: column;
+  justify-content: center;
+
+  &:extend(.flex);
+}
+
+.column-reverse {
+  flex-direction: column-reverse;
+
+  &:extend(.column);
+}
+
+.column-center {
+  align-items: center;
+
+  &:extend(.column);
+}
+
+.column-end {
+  align-items: flex-end;
+
+  &:extend(.column);
+}
+
+// .BaseTable {
+//   overflow-x: auto !important;
+//   overflow-y: hidden !important;
+//   width: 100% !important;
+// }
+
+// .BaseTable_header {
+//   width: auto !important;
+// }
+
+// .BaseTable_body {
+//   width: 100% !important;
+// }
+
+// .BaseTable_row {
+//   width: 100% !important;
+// }
+
+.BaseTable {
+  overflow-y: scroll;
+  //width: 100% !important;
+  flex: 1;
+  margin-top: 10px;
+}
+
+.BaseTable_header {
+  height: 27px !important;
+}
+
+.BaseTable_header-row {
+  height: 27px !important;
+}
+
+.BaseTable_header-cell {
+  background-color: #f4f5f7 !important;
+}
+
+.BaseTable header-cell-text {
+  color: #999 !important;
+  white-space: nowrap !important;
+  font-weight: 400 !important;
+}
+
+.noShadom {
+  box-shadow: none !important;
+}
+
+.ant-legacy-form label {
+  font-size: 12px !important;
+}
+
+.ant-legacy-form-item-label {
+  line-height: normal;
+}
+
+.detailFundTable {
+  .ant-table {
+    border: none !important;
+
+    thead {
+      tr {
+        border: none !important;
+      }
+
+      .ant-table-placeholder {
+        border: none !important;
+      }
+    }
+  }
+}
+
+.fundProductModal {
+  width: 1050px !important;
+}
+
+.fundProductDetail {
+  width: 700px;
+
+  .ant-table-body {
+    min-height: 200px;
+    height: auto !important;
+  }
+}
+
+.monthSumTable {
+  .ant-table-body {
+    max-height: 100%;
+    height: 560px !important;
+  }
+}
+
+.fundModalTable {
+  width: 700px;
+
+  .ant-table-body {
+    height: auto !important;
+  }
+}
+
+.ant-tooltip-inner {
+  text-align: justify !important;
+  word-break: break-all;
+}

@@ -1,0 +1,144 @@
+@import '~@/assets/styles/mixin.less';
+
+.searchwrap {
+  position: relative;
+  padding-bottom: 5px;
+  width: 100%;
+  height: fit-content;
+  border-bottom: 1px solid @border-color-base;
+
+  .form {
+    align-items: flex-start;
+
+    &:extend(.row-between);
+  }
+
+  :global {
+    .ant-form-item,
+    .ant-legacy-form-item {
+      display: flex;
+      align-items: center;
+      margin-right: 0;
+      margin-bottom: 5px;
+
+      .ant-form-item-label {
+        overflow: hidden;
+        padding-right: 8px;
+        max-width: 120px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-all;
+        line-height: normal;
+      }
+
+      .ant-form-item-control {
+        line-height: normal;
+
+        &-wrapper {
+          flex: 1;
+        }
+      }
+    }
+  }
+
+  .toggleForm {
+    position: absolute;
+    bottom: -21px;
+    left: 50%;
+    overflow: hidden;
+    padding: 0 10px;
+    height: 20px;
+    background-color: rgba(219, 219, 219, 0.5);
+    color: #999;
+    font-size: 14px;
+    line-height: 20px;
+    transform: translate(-50%, 0);
+
+    .togglePseudo {
+      position: absolute;
+      top: 0;
+      width: 0;
+      height: 0;
+      border: 7px solid transparent;
+      border-top-width: 23px;
+      content: '';
+    }
+
+    &:before {
+      left: 0;
+      border-left-color: @color-white;
+
+      &:extend(.searchwrap.toggleForm.togglePseudo);
+    }
+
+    &:after {
+      right: 0;
+      border-right-color: @color-white;
+
+      &:extend(.searchwrap.toggleForm .togglePseudo);
+    }
+
+    &.expand {
+      &:after,
+      &:before {
+        top: -10px;
+        border-top-width: 7px;
+        border-bottom-width: 23px;
+      }
+    }
+  }
+}
+
+@tag-background-color: #fff1f1;
+@tag-color: #ec8080;
+
+.tagRow {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .tagGroup {
+    // flex-wrap: wrap;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+
+    .tags {
+      display: flex;
+      flex: 1;
+    }
+
+    .tagItem {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-right: 5px;
+      margin-bottom: 6px;
+      padding: 3px 10px;
+      border-radius: 2px;
+      background-color: @tag-background-color;
+      font-size: 12px;
+      cursor: pointer;
+
+      // display: inline-block;
+      &:nth-last-of-type(1) {
+        margin-right: 0;
+      }
+
+      &Text {
+        overflow: hidden;
+        min-width: 20px;
+        color: @tag-color;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &Icon {
+        margin-left: 5px;
+        color: @tag-color;
+      }
+    }
+  }
+}
