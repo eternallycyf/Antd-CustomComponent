@@ -1,0 +1,80 @@
+@import '~@/assets/styles/mixin.less';
+
+@form-prefix-cls: custom-form;
+
+.item {
+  margin-bottom: 0;
+  line-height: 32px;
+
+  :global {
+    .ant-form-item-label {
+      line-height: normal;
+    }
+
+    .ant-form-item-control {
+      line-height: normal;
+    }
+  }
+}
+
+// form styles
+// ------------
+
+.@{form-prefix-cls} {
+  &.form-inline {
+    .row-item {
+      .col-item {
+        display: inline-block;
+        margin-bottom: 5px;
+        background: red;
+      }
+    }
+
+    .form-btn {
+      display: inline-block;
+      height: 39px;
+      vertical-align: top;
+      line-height: 39px;
+
+      button:first-child {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  &.form-grid {
+    position: relative;
+
+    .row-item {
+      .col-item {
+        :global {
+          .ant-calendar-picker {
+            width: 100% !important;
+          }
+
+          .ant-input-number {
+            width: 100% !important;
+          }
+
+          .ant-time-picker {
+            width: 100% !important;
+          }
+        }
+      }
+    }
+
+    .form-btn {
+      text-align: right;
+
+      button:first-child {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  :global {
+    .ant-col-0 {
+      display: none;
+    }
+  }
+}
