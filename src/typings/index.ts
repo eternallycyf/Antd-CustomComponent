@@ -207,4 +207,5 @@ export interface IControlProps {
     onChange?: (...args: any[]) => any;
     [propName: string]: any;
   }>;
+  [propsName: string]: any;
 }
