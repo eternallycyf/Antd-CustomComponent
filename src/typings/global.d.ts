@@ -9,3 +9,7 @@ declare module '*.bmp';
 declare module '*.tiff';
 declare module '*.x1sx';
 declare module 'lodash';
+declare module 'braft-utils';
+declare module 'braft-extensions/dist/table';
+declare module 'braft-extensions/dist/max-length';
+declare module 'braft-extensions/dist/color-picker';
