@@ -123,7 +123,7 @@ export interface CustomForm {
   /**
    *使用record数据对表单进行赋值，时间类型初始值需要转换成moment类型
    */
-  record?: object;
+  record?: any;
   [otherProps: string]: any;
 }
 
