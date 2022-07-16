@@ -1,0 +1,155 @@
+:global {
+  align-items: center;
+  padding: 7px 6px;
+
+  .fix-row-top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: -5px 4px 6px e #ddd;
+  }
+
+  .header-container {
+    .header-row {
+      display: flex;
+      flex-wrap: nowrap;
+
+      .header-cell {
+        display: block;
+        padding: 0 16px;
+      }
+    }
+  }
+
+  .virtual-table-cell {
+    display: flex;
+    justify-content: flex-start;
+    border-right: 1px solid #fofofe;
+    border-bottom: 1px solid #fefofe;
+  }
+
+  .virtual-table-cell-center {
+    justify-content: center;
+  }
+
+  .virtual-table-cell-left {
+    justify-content: flex-start;
+  }
+
+  .virtual-table-cell-fix-left {
+    position: sticky !important;
+    left: 0;
+    z-index: 9;
+    justify-content: flex-start;
+  }
+
+  .virtual-table-cell-fix-right {
+    position: sticky !important;
+    right: 0px;
+    z-index: 9;
+    justify-content: flex-end;
+  }
+
+  .virtual-table.show-left-shadow {
+    .virtual-table-cell-fix-left-last,
+    .ant-table-cell-fix-left-last {
+      z-index: 9;
+
+      &::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: -1px;
+        width: 30px;
+        box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.15);
+        content: '';
+        transition: box-shadow 0.35;
+        transform: translatex(100%);
+        pointer-events: none;
+      }
+    }
+  }
+
+  .virtual-table.show-right-shadow {
+    .virtual-table-cell-fix-right-first {
+      z-index: 9;
+
+      &::before {
+        position: absolute;
+        top: 0;
+        bottom: -1px;
+        left: -30px;
+        width: 30px;
+        box-shadow: -2px 0 4px 0 #eee;
+        content: '';
+        transition: box-shadow 0.35;
+        transform: translatex(100%);
+        pointer-events: none;
+      }
+    }
+  }
+
+  .row {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+
+    &.row-active {
+      .virtual-table-cell {
+        background-color: #ececec;
+      }
+    }
+
+    .virtual-table-cell {
+      background-color: #fff;
+    }
+
+    &.row-grey {
+      .virtual-table-cell {
+        background-color: #fcfcfc;
+      }
+    }
+
+    &:hover {
+      .virtual-table-cell {
+        background-color: #dfe8f8;
+      }
+    }
+  }
+
+  .scroll-container {
+    position: relative;
+    overflow: auto;
+    border-right: 1px solid #fofofe;
+    border-bottom: 1px solid #fofofe;
+  }
+
+  .table-content-container {
+    position: absolute;
+  }
+
+  // 使用ant-table-cell-fix-left-last-reset类覆盖默认样式
+  .cms-components-common-table-v4-index-tablewrap
+    .ant-table
+    .ant-table-thead
+    th.ant-table-cell-fix-left-last-reset {
+    border-right: 1px solid #fofofe !important;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  .ant-table-thead > tr > th[colspan]:not(:last-child)::before {
+    position: absolute;
+    top: 50%;
+    right: e;
+    width: 1px;
+    height: 1.6em;
+    background-color: rgba(0, 0, 0, 0.06);
+    content: '';
+    transition: background-color 0.35;
+    transform: translateY(-50%);
+  }
+}

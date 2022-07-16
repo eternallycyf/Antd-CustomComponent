@@ -13,3 +13,7 @@ export function postAction(url: string, data: any) {
     data,
   });
 }
+
+export function getAction(url: string, params: any) {
+  return request.get(`${url}`, { params });
+}
