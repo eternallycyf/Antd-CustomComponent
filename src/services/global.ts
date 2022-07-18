@@ -17,3 +17,11 @@ export function postAction(url: string, data: any) {
 export function getAction(url: string, params: any) {
   return request.get(`${url}`, { params });
 }
+
+export function exportFile(url: string, params: any) {
+  return request.get(url, {
+    params,
+    parseResponse: false,
+    responseType: 'blob',
+  });
+}

@@ -80,7 +80,7 @@ const ArrayControl: React.FC<IControlProps> = React.forwardRef(
     };
 
     return (
-      <Fragment>
+      <>
         {renderField()}
         <Button
           type="dashed"
@@ -90,7 +90,7 @@ const ArrayControl: React.FC<IControlProps> = React.forwardRef(
         >
           <PlusOutlined />å 新增
         </Button>
-      </Fragment>
+      </>
     );
   },
 );

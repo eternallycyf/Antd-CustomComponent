@@ -1,15 +1,21 @@
 import _, { some, isArray, keyBy, keys } from 'lodash';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { exportFile } from '@/services/global';
+import React from 'react';
+import { Modal } from 'antd';
+import { getTextRequire, getRangeLength } from './validate';
+import Ellipsis from '@/core/base/Ellipsis';
 
-export function getDictMap(dict) {
-  const dictMap = {};
-  dict.forEach((item) => (dictMap[item.value] = item.text));
+const reg = /xxx/g;
+
+export function getDictMap(dict: any) {
+  const dictMap: any = {};
+  dict.forEach((item: any) => (dictMap[item.value] = item.text));
   return dictMap;
 }
 
 // 对象转查询字符串
-export const objectToQueryStr = (obj) => {
+export const objectToQueryStr = (obj: any) => {
   const str: string[] = [];
   for (const p in obj) {
     if (obj.hasOwnProperty(p)) {
@@ -39,7 +45,7 @@ export function formatColumn(data: any[]) {
     };
 
     if (!item.render) {
-      item.render = (text) => {
+      item.render = (text: any) => {
         if (item.dict) {
           text = getDictMap(item.dict)[text];
         }
@@ -48,13 +54,13 @@ export function formatColumn(data: any[]) {
     }
 
     if (item.formatTime) {
-      item.render = (text) => {
+      item.render = (text: any) => {
         return text ? <span>{moment(text).format(options.format)}</span> : '--';
       };
     }
 
     if (item.ellipsis) {
-      item.render = (text) => {
+      item.render = (text: any) => {
         text = text === null || typeof text === 'undefined' ? '--' : text;
         return options.ellipsisType === 'line' ? (
           <Ellipsis tooltip={true} lines={options.lines}>
@@ -94,14 +100,6 @@ export const formatParams = (param: object, format: string = 'YYYYMMDD') => {
   return values;
 };
 
-export function exportFile(url, params) {
-  return request.get(url, {
-    params,
-    parseResponse: false,
-    responseType: 'blob',
-  });
-}
-
 /**
  * 下载文件
  * @param searchParams
@@ -109,24 +107,26 @@ export function exportFile(url, params) {
  * @param callback
  */
 export const handleDownload = (
-  searchParams,
+  searchParams: any,
   options = { url: '', fileName: '' },
   callback?: Function,
 ) => {
-  exportFile(options.url, searchParams).then((response) => {
-    if (response.status === 200) {
-      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-        window.navigator.msSaveOrOpenBlob(blob, options.fileName);
-      } else {
-        const blobUrl = window.URL.createObjectURL(blob);
-        const aElement = document.createElement('a');
-        const fileName = options.fileName;
-        aElement.href = blobUrl;
-        aElement.download = fileName;
-        aElement.click();
-        window.URL.revokeObjectURL(blobUrl);
-      }
-    } else if (callback) callback();
+  exportFile(options.url, searchParams).then((response: any) => {
+    response.blob().then((blob: Blob) => {
+      if (response.status === 200) {
+        if (window.navigator && (window as any).navigator.msSaveOrOpenBlob) {
+          (window as any).navigator.msSaveOrOpenBlob(blob, options.fileName);
+        } else {
+          const blobUrl = window.URL.createObjectURL(blob);
+          const aElement = document.createElement('a');
+          const fileName = options.fileName;
+          aElement.href = blobUrl;
+          aElement.download = fileName;
+          aElement.click();
+          window.URL.revokeObjectURL(blobUrl);
+        }
+      } else if (callback) callback();
+    });
   });
 };
 
