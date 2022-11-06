@@ -6,7 +6,7 @@ import Table from './components/EnhancedTable';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-htm15-backend';
 import { ICommonTable } from '@/typings';
-import { formatcolumn } from '@/utils/util';
+import { formatColumn } from '@/utils/util';
 import BaseTable, { IBaseTableState } from './components/BaseTable';
 import TableBtn from '@/components/commonTable/widgets/TableBtn';
 import AccessBtn from '@/components/AccessBtn';
@@ -14,11 +14,11 @@ import styles from './index.less';
 import _ from 'lodash';
 
 class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
-  static defaultprops = {
-    wrapClassStr: '.tabs-tabpane-active',
+  static defaultProps = {
+    wrapClassStr: '.tabs-tabPane-active',
     size: 'small',
-    rowkey: 'id',
-    recordkey: 'list',
+    rowKey: 'id',
+    recordKey: 'list',
     selectType: 'checkbox',
     bordered: true,
     draggable: false,
@@ -65,7 +65,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
     });
   }
 
-  getOperWidth = (itemButton: any) => {
+  getOpenWidth = (itemButton: any) => {
     let width = 0;
     itemButton.forEach((item: any) => {
       width += item.text.length * 20;
@@ -74,15 +74,15 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
   };
 
   // 处理列表columns
-  handlecolumns = (props: any) => {
+  handleColumns = () => {
     const {
       itemButton,
       buttonLen,
       expandedRowRender,
       isFixed,
-      operFixed,
+      openFixed,
     }: any = this.props;
-    let columnList: any = this.handleBasicColumns(props);
+    let columnList: any = this.handleBasicColumns(this.props);
     // 显示行操作项
     if (itemButton && itemButton.length) {
       const width =
@@ -90,15 +90,15 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
           ? buttonLen == 1
             ? buttonLen * 90
             : buttonLen * 70
-          : this.getOperWidth(itemButton);
+          : this.getOpenWidth(itemButton);
 
       const column: any = [
         {
           width,
           key: 'operate',
           title: '操作',
-          fixed: operFixed
-            ? operFixed
+          fixed: openFixed
+            ? openFixed
             : expandedRowRender || isFixed
             ? false
             : 'right',
@@ -233,11 +233,11 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
       ];
 
       columnList =
-        expandedRowRender && !operFixed
+        expandedRowRender && !openFixed
           ? [].concat(column, columnList)
           : [].concat(columnList, column);
     }
-    this.setState({ columns: formatcolumn(columnList) });
+    this.setState({ columns: formatColumn(columnList) });
   };
 }
 

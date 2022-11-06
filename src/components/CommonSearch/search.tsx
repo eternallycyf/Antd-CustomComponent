@@ -224,7 +224,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
 
   return (
     <div
-      className={cx('searchwrap', styles.searchwrap)}
+      className={cx('searchWrap', styles.searchWrap)}
       style={{ border: (isOneLine as any) && undefined }}
     >
       <Form layout="inline" onSubmit={handleSubmit} className={styles.form}>

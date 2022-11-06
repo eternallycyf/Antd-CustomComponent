@@ -1,7 +1,7 @@
 import React from 'react';
 import { Resizable } from 'react-resizable';
 
-export const ResizeableTitle = (props: any) => {
+export const ResizableTitle = (props: any) => {
   const { onResize, width, ...restProps } = props;
   if (!width) {
     return <th {...restProps} />;
@@ -11,7 +11,7 @@ export const ResizeableTitle = (props: any) => {
       width={width}
       height={0}
       onResize={onResize}
-      draggableopts={{ enableUserselectHack: false }}
+      draggableOpts={{ enableUserSelectHack: false }}
     >
       <th {...restProps} />
     </Resizable>

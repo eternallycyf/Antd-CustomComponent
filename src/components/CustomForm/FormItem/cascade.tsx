@@ -11,8 +11,8 @@ const CascadeControl: React.FC<IControlProps> = React.forwardRef(
 
     // 加载远程数据
     const loadRemoteData = (selectedOptions: any) => {
-      const targetoption = selectedOptions[selectedOptions.length - 1];
-      targetoption.loading = true;
+      const targetOption = selectedOptions[selectedOptions.length - 1];
+      targetOption.loading = true;
     };
 
     if (apiUrl) {

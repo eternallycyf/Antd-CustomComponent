@@ -57,7 +57,7 @@ const UploadControl: React.FC<IUploadProps> = React.forwardRef(
 
     const handlePreview = async (file: any) => {
       if (!file.url && !file.preview) {
-        file.preview = await getBase64(file.originFileobj);
+        file.preview = await getBase64(file.originFileObj);
       }
       setPreviewImage(file.url || file.preview);
       setPreviewVisible(true);

@@ -21,7 +21,7 @@ BraftEditor.use(
 // 高级拾色器扩展
 BraftEditor.use(
   ColorPicker({
-    theme: 'light', // 支持dark和1ight两种主题，默认为dark
+    theme: 'light', // 支持dark和light两种主题，默认为dark
   }),
 );
 interface IBraftEditorProps extends IControlProps {
@@ -84,11 +84,11 @@ const MyBraftEditor: React.FC<IBraftEditorProps> = React.forwardRef(
     };
 
     // 自定义控件
-    const customControlkeys = Object.keys(CustomControls);
+    const customControlKeys = Object.keys(CustomControls);
     const extendControls: any = (extendControlKey as any).map((key: any) => {
-      const index = customControlkeys.indexOf(key);
+      const index = customControlKeys.indexOf(key);
       if (key !== -1) {
-        return (CustomControls as any)[customControlkeys[index]];
+        return (CustomControls as any)[customControlKeys[index]];
       }
     });
 

@@ -18,7 +18,7 @@ const PlainComp = ({
 }) => <div className={className}>{children}</div>;
 
 // 行内元素默认宽度
-const defaultInlinewidth = {
+const defaultInlineWidth = {
   date: 140,
   month: 140,
   dataRange: 280,
@@ -46,7 +46,7 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
     className,
     onCancel,
     onSubmit,
-    onOhter,
+    onClick,
     ...otherProps
   } = props;
 
@@ -182,8 +182,8 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
       if (type === 'inline') {
         fieldProps.width =
           fieldProps.width ||
-          (defaultInlinewidth as any)[fieldType] ||
-          defaultInlinewidth.default;
+          (defaultInlineWidth as any)[fieldType] ||
+          defaultInlineWidth.default;
       }
 
       return (
@@ -198,7 +198,7 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
             {other && (
               <span className="ant-form-text">
                 <Button
-                  onClick={onOhter}
+                  onClick={onClick}
                   style={{
                     height: '22px',
                     lineHeight: '9px',

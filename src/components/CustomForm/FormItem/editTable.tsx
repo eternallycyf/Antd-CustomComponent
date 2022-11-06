@@ -4,7 +4,7 @@ import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Button } from 'antd';
 import _ from 'lodash';
-import { CommonTable } from '@/components/CommonTable';
+import CommonTable from '@/components/CommonTableV4/CommonTableV4';
 import { IControlProps } from '@/typings';
 import { getFieldComp } from '@/core/helpers';
 import styles from './index.less';
@@ -14,7 +14,7 @@ let uuid = 0;
 const EditTableControl: React.FC<IControlProps> = React.forwardRef(
   ({ form, name, tableProps }: any, ref) => {
     const { getFieldValue } = form;
-    const { rowkey, columns, operateList, ...otherTableProps } = tableProps;
+    const { rowKey, columns, operateList, ...otherTableProps } = tableProps;
     const dataSource = getFieldValue(name); // [{ id: '1', name: '1', age: '11' }]
 
     /**
@@ -28,7 +28,7 @@ const EditTableControl: React.FC<IControlProps> = React.forwardRef(
         return prev;
       }, {});
 
-      data.push({ [rowkey as string]: `NEW_TEMP_ID_${uuid++}`, ...fieldMap });
+      data.push({ [rowKey as string]: `NEW_TEMP_ID_${uuid++}`, ...fieldMap });
       form.setFieldsValue({ [name]: data });
     };
 
@@ -39,7 +39,7 @@ const EditTableControl: React.FC<IControlProps> = React.forwardRef(
     const handleRemove = (key: any) => {
       const data = form.getFieldValue(name);
       const newData = data.filter(
-        (item: any) => item[rowkey as string] !== key,
+        (item: any) => item[rowKey as string] !== key,
       );
       form.setFieldsValue({ [name]: newData });
     };
@@ -69,7 +69,7 @@ const EditTableControl: React.FC<IControlProps> = React.forwardRef(
       <div className={styles['edit-table']}>
         <CommonTable
           {...otherTableProps}
-          rowKey={rowkey}
+          rowKey={rowKey}
           selectType={false}
           columns={renderColumns()}
           dataSource={dataSource}

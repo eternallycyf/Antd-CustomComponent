@@ -24,8 +24,8 @@
   .virtual-table-cell {
     display: flex;
     justify-content: flex-start;
-    border-right: 1px solid #fofofe;
-    border-bottom: 1px solid #fefofe;
+    border-right: 1px solid #f0f0fe;
+    border-bottom: 1px solid #f0f0fe;
   }
 
   .virtual-table-cell-center {
@@ -64,7 +64,7 @@
         box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.15);
         content: '';
         transition: box-shadow 0.35;
-        transform: translatex(100%);
+        transform: translateX(100%);
         pointer-events: none;
       }
     }
@@ -83,7 +83,7 @@
         box-shadow: -2px 0 4px 0 #eee;
         content: '';
         transition: box-shadow 0.35;
-        transform: translatex(100%);
+        transform: translateX(100%);
         pointer-events: none;
       }
     }
@@ -121,8 +121,8 @@
   .scroll-container {
     position: relative;
     overflow: auto;
-    border-right: 1px solid #fofofe;
-    border-bottom: 1px solid #fofofe;
+    border-right: 1px solid #f0f0fe;
+    border-bottom: 1px solid #f0f0fe;
   }
 
   .table-content-container {
@@ -130,18 +130,18 @@
   }
 
   // 使用ant-table-cell-fix-left-last-reset类覆盖默认样式
-  .cms-components-common-table-v4-index-tablewrap
+  .cms-components-common-table-v4-index-tableWrap
     .ant-table
     .ant-table-thead
     th.ant-table-cell-fix-left-last-reset {
-    border-right: 1px solid #fofofe !important;
+    border-right: 1px solid #f0f0fe !important;
 
     &::before {
       display: none;
     }
   }
 
-  .ant-table-thead > tr > th[colspan]:not(:last-child)::before {
+  .ant-table-thead > tr > th[colSpan]:not(:last-child)::before {
     position: absolute;
     top: 50%;
     right: e;

@@ -8,5 +8,5 @@ export interface IGlobalModelState {
   showNotice: boolean;
   showFul1Screen: boolean;
   userInfo: UserInfo<number | string>;
-  siderMenuState: '1' | '2';
+  sliderMenuState: '1' | '2';
 }

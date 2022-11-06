@@ -3,7 +3,7 @@ import _ from 'lodash';
 import update from 'immutability-helper';
 import { ICommonTable } from '@/typings';
 import { getAction, postAction } from '@/services/global';
-import { ResizeableTitle } from '@/components/CommonTable/widgets/Resizeable';
+import { ResizableTitle } from '@/components/CommonTable/widgets/Resizable';
 import { renderBtn } from '@/components/CommonTable/widgets/TableBtn';
 
 export interface IBaseTableState {
@@ -77,14 +77,14 @@ class BaseTable<
     }
   }
 
-  componentwillReceiveProps(nextProps: any) {
+  UNSAFE_componentWillReceiveProps(nextProps: any) {
     if (!_.isEqual(nextProps.dataSource, this.props.dataSource)) {
       this.setState({ dataSource: nextProps.dataSource });
     }
 
-    if (!_.isEqualwith(nextProps.columns, this.props.columns, isUpdate)) {
+    if (!_.isEqualWith(nextProps.columns, this.props.columns, isUpdate)) {
       // @ts-ignore
-      this.handlecolumns(nextProps);
+      this.handleColumns(nextProps);
     }
 
     if (nextProps.loading !== this.props.loading) {
@@ -102,7 +102,7 @@ class BaseTable<
     }
   }
 
-  componentwil1unmount() {
+  componentWillUnmount() {
     if (this.observer) {
       this.observer.takeRecords();
       this.observer.disconnect();
@@ -120,11 +120,11 @@ class BaseTable<
       this.state;
     const {
       urls,
-      recordkey,
+      recordKey,
       fetchMethod,
       searchParams,
       dataHandler,
-      rowkey,
+      rowKey,
       isSummary,
       dataPath,
       totalPath,
@@ -140,7 +140,7 @@ class BaseTable<
           ? getAction
           : postAction;
       const currentPage = isReset ? 1 : current;
-      const result = await action(urls.listurl, {
+      const result = await action(urls.listUrl, {
         page: currentPage,
         limit: isSummary ? pageSize - 1 : pageSize,
         ...searchParams,
@@ -148,16 +148,16 @@ class BaseTable<
         ...sorter,
       });
       const data = dataPath ? _.get(result, dataPath) : result.data;
-      const rows = Array.isArray(data) ? data : data[recordkey];
+      const rows = Array.isArray(data) ? data : data[recordKey];
       const total = totalPath
         ? _.get(result, totalPath)
-        : data.totalcount || data.total || rows.length;
+        : data.totalCount || data.total || rows.length;
       // dataSource 数据处理
       let dataSource = (rows || []).map((item: any, index: number) => ({
         ...item,
         index: (currentPage - 1) * pageSize + (index + 1),
-        rowkey:
-          (typeof rowkey == 'function' ? rowkey(item, index) : item[rowkey]) ||
+        rowKey:
+          (typeof rowKey == 'function' ? rowKey(item, index) : item[rowKey]) ||
           (currentPage - 1) * pageSize + (index + 1),
       }));
       dataSource = dataHandler ? dataHandler(dataSource, data) : dataSource;
@@ -198,7 +198,7 @@ class BaseTable<
     if (resizable || dev) {
       columnList = columnList.map((col, index) => ({
         ...col,
-        onHeadercell: (column: any) => ({
+        onHeaderCell: (column: any) => ({
           width: column.width,
           onResize: this.handleResize(index),
         }),
@@ -207,7 +207,7 @@ class BaseTable<
       this.components = {
         ...this.components,
         header: {
-          cell: ResizeableTitle,
+          cell: ResizableTitle,
         },
       };
     }
@@ -217,12 +217,12 @@ class BaseTable<
   //处理列表高度
   handleTableHeight = () => {
     const { container, height } = this.heightParams;
-    const searchwrap = container?.queryselector('. searchwrap');
-    if (searchwrap) {
+    const searchWrap = container?.querySelector('. searchWrap');
+    if (searchWrap) {
       this.observer = new MutationObserver((mutations, observer) => {
-        const tableHeight: number = height - searchwrap.clientHeight;
+        const tableHeight: number = height - searchWrap.clientHeight;
         if (this.state.height == tableHeight || tableHeight === height) return;
-        if (this.props.isvirtual) {
+        if (this.props.isVirtual) {
           // 虚拟滚动表格的高度，需要通过props动态设置
           this.setState({
             height: tableHeight,
@@ -230,7 +230,7 @@ class BaseTable<
         }
         this.setTableBody(tableHeight);
       });
-      this.observer.observe(searchwrap, DEFAULT_OBSERVE_PARAMS);
+      this.observer.observe(searchWrap, DEFAULT_OBSERVE_PARAMS);
     } else {
       this.setState({ height });
       this.setTableBody(height);
@@ -290,7 +290,7 @@ class BaseTable<
   };
 
   // 清空选择
-  handleclearselected = () => {
+  handleClearSelected = () => {
     const { onselect } = this.props;
     this.setState({ selectedRowkeys: [], selectedRows: [] });
     if (onselect) onselect([], []);
@@ -306,11 +306,11 @@ class BaseTable<
     const stateRows = this.state.selectedRows;
     let resultRows = [];
     if (selectedRowkeys.length > selectedRows.length) {
-      const partialSelectedRowKeys = selectedRows.map((row) => row.rowkey);
+      const partialSelectedRowKeys = selectedRows.map((row) => row.rowKey);
       const leftRows = stateRows.filter(
         (row) =>
-          selectedRowkeys.indexOf(row.rowkey) >= 0 &&
-          partialSelectedRowKeys.indexOf(row.rowkey) < 0,
+          selectedRowkeys.indexOf(row.rowKey) >= 0 &&
+          partialSelectedRowKeys.indexOf(row.rowKey) < 0,
       );
       resultRows = leftRows.concat(selectedRows);
     } else {

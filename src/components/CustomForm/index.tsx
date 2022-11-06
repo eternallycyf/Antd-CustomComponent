@@ -129,13 +129,13 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
   }
 
   if (!visible && modalType) return null;
-  const modaltitle: string | undefined = isShowTitlePrefix
+  const modalTitle: string | undefined = isShowTitlePrefix
     ? `${isEdit ? '编辑' : '新增'} ${title}`
     : title;
 
   return modalType && modalType !== ModalType.normal ? (
     <Component
-      title={modaltitle}
+      title={modalTitle}
       visible={visible}
       destroyOnClose={true}
       {...modalConf}

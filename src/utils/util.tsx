@@ -3,8 +3,8 @@ import moment, { Moment } from 'moment';
 import { exportFile } from '@/services/global';
 import React from 'react';
 import { Modal } from 'antd';
-import { getTextRequire, getRangeLength } from './validate';
-import Ellipsis from '@/core/base/Ellipsis';
+// import Ellipsis from '@/core/base/Ellipsis';
+const Ellipsis = null;
 
 const reg = /xxx/g;
 
@@ -49,7 +49,7 @@ export function formatColumn(data: any[]) {
         if (item.dict) {
           text = getDictMap(item.dict)[text];
         }
-        return text === null || typeof text === 'undefined' ? '--' : text;
+        return text == null ? '--' : text;
       };
     }
 
@@ -61,7 +61,7 @@ export function formatColumn(data: any[]) {
 
     if (item.ellipsis) {
       item.render = (text: any) => {
-        text = text === null || typeof text === 'undefined' ? '--' : text;
+        text = text == null ? '--' : text;
         return options.ellipsisType === 'line' ? (
           <Ellipsis tooltip={true} lines={options.lines}>
             {text}
@@ -155,11 +155,11 @@ export const arrayToTree = (data: any[], pid: string | number): any[] => {
  */
 export const copyText = (value: string): boolean => {
   let result: boolean = false;
-  const userAgend: string = navigator.userAgent;
+  const userAgent: string = navigator.userAgent;
   const tempTextarea = document.createElement('textarea');
   document.body.appendChild(tempTextarea);
   tempTextarea.value = value;
-  if (userAgend.match(/(iPhone|iPod|iPad):?/i)) {
+  if (userAgent.match(/(iPhone|iPod|iPad):?/i)) {
     window.getSelection()?.removeAllRanges();
     const range = document.createRange();
 
@@ -173,4 +173,21 @@ export const copyText = (value: string): boolean => {
   }
   document.body.removeChild(tempTextarea);
   return result;
+};
+
+/**
+ * 文字必填
+ * @param message 错误信息
+ * @param isRequired 是否必填
+ * @returns
+ */
+export const getTextRequired = (
+  message: string,
+  isRequired: boolean = true,
+): object => {
+  return {
+    required: isRequired,
+    whiteSpace: true,
+    message,
+  };
 };

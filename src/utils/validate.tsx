@@ -62,14 +62,14 @@ export default class FormRules {
     this.name = name;
   }
 
-  public isRequired(onlywhiteSpaceIsError = true): FormRules {
+  public isRequired(onlyWhiteSpaceIsError = true): FormRules {
     let lastRule = this.rules[this.rules.length - 1];
     if (!lastRule) {
       this.string();
       lastRule = this.rules[this.rules.length - 1];
     }
     lastRule.required = true;
-    lastRule.whitespace = onlywhiteSpaceIsError;
+    lastRule.whitespace = onlyWhiteSpaceIsError;
     return this;
   }
 

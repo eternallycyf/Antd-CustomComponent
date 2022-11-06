@@ -9,8 +9,8 @@ export default function renderTag({
   handleDeleteTag,
   checkBoxStatus,
 }: any) {
-  // 当formItem的 isshowcheckalltag＝true 判断是否有全选的checkbox
-  let { isshowcheckalltag = false } = item;
+  // 当formItem的 isShowCheckAllTag 判断是否有全选的checkbox
+  let { isShowCheckAllTag = false } = item;
   const [toggle, setToggle] = useState(false);
   const [count, setCount] = useState(0);
   const [flag, setFlag] = useState(true);
@@ -40,11 +40,11 @@ export default function renderTag({
     values = item.value;
   }
 
-  // 当formItem的 isshowcheckalltag＝true 属性的时候 tag标签只显示全选
+  // 当formItem的 isShowCheckAllTag＝true 属性的时候 tag标签只显示全选
   // 当checkbox的状态非全选 就显示单个的
   let info;
 
-  if (!isshowcheckalltag || !checkBoxStatus) {
+  if (!isShowCheckAllTag || !checkBoxStatus) {
     info = values?.map((info: any) => (
       <Tooltip placement="top" title={item.label} key={`${item.name}_${info}`}>
         <div className={styles.tagItem}>

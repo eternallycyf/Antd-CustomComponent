@@ -30,17 +30,17 @@
     "braft-extensions": "^0.1.1",
     "classnames": "^2.2.6",
     "dva": "^2.6.0-beta.6",
+    "immutability-helper": "^3.1.1",
     "lodash": "^4.17.19",
     "react": "17.x",
-    "react-dom": "17.x",
-    "umi": "^3.5.27",
-    "immutability-helper": "^3.1.1",
-    "react-resizable": "^1.10.1",
     "react-dnd": "^10.0.2",
-    "react-dnd-html5-backend": "^10.0.2"
+    "react-dnd-html5-backend": "^10.0.2",
+    "react-dom": "17.x",
+    "react-resizable": "^1.10.1",
+    "umi": "^3.5.27"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.182",
+    "@types/lodash": "^4.14.188",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^17.0.0",
     "@umijs/preset-react": "1.x",
