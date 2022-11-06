@@ -4,8 +4,8 @@ import { DownOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, Popconfirm } from 'antd';
 import Table from './components/EnhancedTable';
 import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-htm15-backend';
-import { ICommonTable } from '@/typings';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { IButtonProps, ICommonTable } from '@/typings';
 import { formatColumn } from '@/utils/util';
 import BaseTable, { IBaseTableState } from './components/BaseTable';
 import TableBtn from '@/components/commonTable/widgets/TableBtn';
@@ -58,11 +58,14 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
 
   componentWilMount() {
     const { initRequest } = this.props;
-    this.handleColumns();
     if (initRequest) this.loadData();
     window.addEventListener('dev', () => {
       this.setState({ dev: true }, this.handleColumns);
     });
+  }
+
+  componentDidMount(): void {
+    this.handleColumns();
   }
 
   getOpenWidth = (itemButton: any) => {
@@ -237,8 +240,120 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
           ? [].concat(column, columnList)
           : [].concat(columnList, column);
     }
+    console.log(columnList);
     this.setState({ columns: formatColumn(columnList) });
   };
+
+  render() {
+    const {
+      form,
+      rowKey,
+      className,
+      alternateColor,
+      selectType,
+      rowSelection,
+      pagination,
+      defaultPageSize,
+      footer,
+      button,
+      buttonOther,
+      draggable,
+      resizable,
+      calcHeight,
+      bodyStyle,
+      onSelect,
+      dataSource: data = [],
+      onTableChange,
+      ...extraProps
+    } = this.props;
+    let restProps: any = { ...extraProps };
+    const {
+      loading,
+      height,
+      total,
+      current,
+      pageSize,
+      columns,
+      dataSource,
+      selectedRowkeys,
+    } = this.state;
+
+    const paging =
+      typeof pagination !== 'boolean'
+        ? {
+            total,
+            current,
+            pageSize,
+            defaultPageSize,
+            showQuickJumper: true,
+            showSizeChanger: true,
+            pageSizeOptions: ['10', '30', '50'],
+            showTotal: (total: number, range: any[]) => {
+              return `一共${total}条记录， 当前第${range[0]}条到${range[1]}条`;
+            },
+            ...pagination,
+          }
+        : false;
+
+    const selectOptions = onSelect
+      ? {
+          type: selectType == 'radio' ? 'radio' : 'checkbox',
+          selectedRowkeys,
+          columnWidth: 40,
+          onChange: this.onSelectChange,
+          ...rowSelection,
+        }
+      : null;
+
+    // scroll 滚动条处理
+    const originScroll = this.props.scroll || { x: '100%', y: '100%' };
+    const scroll = {
+      x: originScroll.x || '100%',
+      y: originScroll.y || '100%',
+    };
+
+    if (draggable) {
+      restProps.onRow = (_: any, index: number) => ({
+        index,
+        moveRow: this.moveRow,
+      });
+    }
+
+    const table = (
+      <Fragment>
+        <div className={buttonOther ? styles.tableButton : ''}>
+          <TableBtn button={button as IButtonProps[]} />
+          <TableBtn button={buttonOther} />
+        </div>
+        <div className={styles.tableWrap}>
+          <Table
+            {...extraProps}
+            components={this.components}
+            rowHeight={40}
+            footer={footer}
+            className={this.cls}
+            height={height}
+            rowKey={rowKey}
+            scroll={scroll}
+            loading={loading}
+            pagination={paging}
+            columns={columns}
+            dataSource={data?.length > 0 ? data : dataSource}
+            rowSelection={selectOptions}
+            onChange={onTableChange ? onTableChange : this.handleTableChange}
+            size="small"
+          />
+        </div>
+      </Fragment>
+    );
+    console.log(columns);
+
+    return draggable ? (
+      <DndProvider backend={HTML5Backend}>{table}</DndProvider>
+    ) : (
+      table
+    );
+  }
 }
 
 export default CommonTable;

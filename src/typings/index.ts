@@ -145,7 +145,7 @@ export interface FormControl {
   type?: string; // 控件类型
   style?: React.CSSProperties;
   width?: number;
-  initialvalue?: any; // 初始值
+  initialValue?: any; // 初始值
   format?: any; // 格式化
   // 表单布局配置
   col?: any;
@@ -155,7 +155,7 @@ export interface FormControl {
     apiUrl: string;
     method?: any;
     params?: any;
-    searchkey?: string;
+    searchKey?: string;
     dataPath?: string;
     initDictFn?: (record: any) => any[];
   };
@@ -165,7 +165,7 @@ export interface FormControl {
   formFieldProps?: FormItemProps;
   //控件属性配置
   controlProps?: IControlProps;
-  dictConfig?: { textkey: string; valuekey: string }; //表格属性配置
+  dictConfig?: { textKey: string; valueKey: string }; //表格属性配置
   tableProps?: EditTableProps;
   // 动态表单配置
   arrayProps?: ArrayProps;

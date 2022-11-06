@@ -14,4 +14,5 @@ declare module 'braft-extensions/dist/table';
 declare module 'braft-extensions/dist/max-length';
 declare module 'braft-extensions/dist/color-picker';
 declare module 'react-resizable';
-declare module 'react-dnd-htm15-backend';
+declare module 'react-dnd-html5-backend';
+declare module 'react-dnd';

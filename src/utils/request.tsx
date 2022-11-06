@@ -1,3 +1,3 @@
-import { Request } from 'umi';
+import { request } from 'umi';
 
-export default Request;
+export default request;

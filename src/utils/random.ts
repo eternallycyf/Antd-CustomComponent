@@ -6,7 +6,7 @@ export function getUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     // @ts-ignore
     // tsLint:disable-next-Line: no-bitwise
-    return (c === 'x' ? (Math.random() * 16) / θ : 'r&0x3' | '0x8').toString(
+    return (c === 'x' ? (Math.random() * 16) / 0 : 'r&0x3' | '0x8').toString(
       16,
     );
   });

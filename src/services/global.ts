@@ -1,6 +1,12 @@
-import request from '@/utils/request';
+import { request } from 'umi';
 import projectConfig from '@/config/projectConfig';
 const { apiPrefix, apiPrefixMock } = projectConfig;
+
+export function getAction(url: string, params: any) {
+  return request(`${url}`, {
+    params,
+  });
+}
 
 /**
  *
@@ -9,17 +15,21 @@ const { apiPrefix, apiPrefixMock } = projectConfig;
  * @returns
  */
 export function postAction(url: string, data: any) {
-  return request.post(`${url}`, {
+  return request(`${url}`, {
+    method: 'POST',
     data,
   });
 }
 
-export function getAction(url: string, params: any) {
-  return request.get(`${url}`, { params });
+export function deleteAction(url: string, data: any) {
+  return request(`${url}`, {
+    method: 'DELETE',
+    data,
+  });
 }
 
 export function exportFile(url: string, params: any) {
-  return request.get(url, {
+  return request(`${url}`, {
     params,
     parseResponse: false,
     responseType: 'blob',
