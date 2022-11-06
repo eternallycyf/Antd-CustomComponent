@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState, useEffect } from 'react';
 import _ from 'lodash';
 import { CloseOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
@@ -27,7 +27,7 @@ let flag = true;
 const TooltipTag: React.FC<Omit<IToolTipTagProps, 'form'>> = React.forwardRef(
   (props, ref) => {
     const {
-      showToolTipTag,
+      showToolTipTag = true,
       formList,
       children,
       checkBoxStatus,
@@ -38,6 +38,7 @@ const TooltipTag: React.FC<Omit<IToolTipTagProps, 'form'>> = React.forwardRef(
     const [toggle, setToggle] = useState(false);
     const searchRef: React.RefObject<any> = useRef(null);
     const divRef: React.RefObject<any> = useRef(null);
+    const newTagList = useRef<any[]>([]);
 
     useImperativeHandle(ref, () => ({
       handleRealParams,
@@ -125,7 +126,10 @@ const TooltipTag: React.FC<Omit<IToolTipTagProps, 'form'>> = React.forwardRef(
 
         if (changedIndex === -1) {
           if (value) {
-            setTagList([...tagList, { ...changedField, value }]);
+            setTagList((list) => {
+              newTagList.current = [...list, { ...changedField, value }];
+              return [...list, { ...changedField, value }];
+            });
           } else {
             if (!value) {
               tagList.splice(changedIndex, 1);
@@ -135,7 +139,10 @@ const TooltipTag: React.FC<Omit<IToolTipTagProps, 'form'>> = React.forwardRef(
           }
         }
 
-        setTagList([...tagList]);
+        setTagList((list) => {
+          newTagList.current = [...list];
+          return [...tagList];
+        });
       });
     };
 
@@ -168,10 +175,11 @@ const TooltipTag: React.FC<Omit<IToolTipTagProps, 'form'>> = React.forwardRef(
         showToolTipTag={showToolTipTag}
         handleTagList={handleTagList}
       >
-        {showToolTipTag ? (
+        {showToolTipTag && tagList ? (
           <div ref={divRef} className={styles.tagRow}>
-            {tagList.map((item, index) => (
+            {newTagList.current.map((item, index) => (
               <RenderTag
+                key={index}
                 item={item}
                 index={index}
                 handleDeleteTag={handleDeleteTag}

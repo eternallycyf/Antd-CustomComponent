@@ -142,3 +142,78 @@
     }
   }
 }
+
+.tagGroup {
+  // flex-wrap: wrap;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+
+  .tags {
+    display: flex;
+    flex: 1;
+  }
+
+  .tagItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 5px;
+    margin-bottom: 6px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    background-color: @tag-background-color;
+    font-size: 12px;
+    cursor: pointer;
+
+    // display: inline-block;
+    &:nth-last-of-type(1) {
+      margin-right: 0;
+    }
+
+    &Text {
+      overflow: hidden;
+      min-width: 20px;
+      color: @tag-color;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &Icon {
+      margin-left: 5px;
+      color: @tag-color;
+    }
+  }
+}
+
+.tagItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 5px;
+  margin-bottom: 6px;
+  padding: 3px 10px;
+  border-radius: 2px;
+  background-color: @tag-background-color;
+  font-size: 12px;
+  cursor: pointer;
+
+  // display: inline-block;
+  &:nth-last-of-type(1) {
+    margin-right: 0;
+  }
+
+  &Text {
+    overflow: hidden;
+    min-width: 20px;
+    color: @tag-color;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &Icon {
+    margin-left: 5px;
+    color: @tag-color;
+  }
+}

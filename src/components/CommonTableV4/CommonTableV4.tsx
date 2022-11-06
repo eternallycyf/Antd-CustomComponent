@@ -240,7 +240,6 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
           ? [].concat(column, columnList)
           : [].concat(columnList, column);
     }
-    console.log(columnList);
     this.setState({ columns: formatColumn(columnList) });
   };
 
@@ -346,7 +345,6 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
         </div>
       </Fragment>
     );
-    console.log(columns);
 
     return draggable ? (
       <DndProvider backend={HTML5Backend}>{table}</DndProvider>
