@@ -3,8 +3,7 @@ import moment, { Moment } from 'moment';
 import { exportFile } from '@/services/global';
 import React from 'react';
 import { Modal } from 'antd';
-// import Ellipsis from '@/core/base/Ellipsis';
-const Ellipsis = null;
+import Ellipsis from '@/core/base/Ellipsis';
 
 const reg = /xxx/g;
 

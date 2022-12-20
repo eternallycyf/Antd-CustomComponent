@@ -158,7 +158,7 @@ const TooltipTag: React.FC<Omit<IToolTipTagProps, 'form'>> = React.forwardRef(
       const deleteTag: any = tagList.find((item: any) => item.name === name);
       const { controlProps = {}, mode, value } = deleteTag;
       const isMultiple =
-        mode === 'multiple' || controlProps.mode === 'multiple';
+        mode === 'multiple' || controlProps?.mode === 'multiple';
       let newValue = [];
       if (isMultiple) {
         const value = form.getFieldValue(name);

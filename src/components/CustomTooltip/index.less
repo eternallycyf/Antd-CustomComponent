@@ -1,0 +1,29 @@
+.ellipsis {
+  :global {
+    span[aria-hidden='true'] {
+      color: #fff;
+    }
+
+    .ant-typography {
+      width: 100%;
+    }
+  }
+}
+
+@keyframes shake {
+  10% {
+    transition: 0.3s;
+    transform: rotateZ(0deg);
+    transform-origin: center;
+  }
+
+  100% {
+    transition: 0.3s;
+    transform: rotateZ(180deg);
+    transform-origin: center;
+  }
+}
+
+.apply-shake {
+  animation: shake 0.25s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}

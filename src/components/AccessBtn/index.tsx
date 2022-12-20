@@ -12,6 +12,7 @@ interface IProps {
   type?: 'ButtonGroup' | 'Button';
   btnList?: IButtonProps[];
 }
+
 const AccessBtn: React.FC<IProps> = (props) => {
   const { type = 'Button', accessCollection = [], btnList, children } = props;
   const [button, setButton] = useState([]);

@@ -136,7 +136,7 @@ class BaseTable<
     this.setState({ loading: true });
     try {
       const action =
-        (fetchMethod && fetchMethod.toLowercase()) === 'get'
+        (fetchMethod && fetchMethod.toLocaleLowerCase()) === 'get'
           ? getAction
           : postAction;
       const currentPage = isReset ? 1 : current;
@@ -273,7 +273,7 @@ class BaseTable<
             .split('.')
             .pop()
             .replace(/\B([A-Z])/g, '_$1')
-            .toLowercase()
+            .toLowerCase()
         : null;
 
     this.setState(

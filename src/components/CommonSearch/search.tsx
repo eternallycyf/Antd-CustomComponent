@@ -1,14 +1,18 @@
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import _ from 'lodash';
 import cx from 'classnames';
-import { Form, Icon as LegacyIcon } from '@ant-design/compatible';
+import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import {
+  ReloadOutlined,
+  SearchOutlined,
+  DownOutlined,
+  UpOutlined,
+} from '@ant-design/icons';
 import { Button, Col, Row } from 'antd';
 import { getFieldComp } from '@/core/helpers';
 import { IToolTipTagProps } from './index';
 import styles from './index.less';
-const FormItem = Form.Item;
 const dateFormat = 'YYYYMMDD';
 const monthFormat = 'YYYYMM';
 const yearFormat = 'YYYY';
@@ -239,14 +243,14 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
               span={isOneLine ? field.col || span : span}
               style={{ display: index < (showCount as any) ? 'block' : 'none' }}
             >
-              <FormItem
-                {...field.itemProps}
+              <Form.Item
+                {...(field.itemProps as any)}
                 labelAlign="right"
                 labelCol={{ style: { maxWidth: '250px', minWidth: '100px' } }}
                 label={field.label}
               >
                 {renderFormItem(field)}
-              </FormItem>
+              </Form.Item>
             </Col>
           ))}
         </Row>
@@ -278,11 +282,8 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
           onClick={toggleForm}
           className={cx(styles.toggleForm, !expandForm && styles.expand)}
         >
-          <LegacyIcon
-            style={{ marginRight: 8 }}
-            type={expandForm ? 'down' : 'up'}
-          />
           {expandForm ? '展开' : '收起'}
+          {expandForm ? <UpOutlined /> : <DownOutlined />}
         </a>
       ) : null}
     </div>
