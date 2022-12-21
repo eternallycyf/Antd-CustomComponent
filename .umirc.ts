@@ -10,4 +10,10 @@ export default defineConfig({
   ],
   fastRefresh: {},
   mock: {},
+  history: { type: 'hash' },
+  dynamicImport: {},
+  publicPath:
+    process.env.APP_ENV === 'development'
+      ? '/'
+      : 'http://wangxince.site/Antd-CustomComponent/',
 });
