@@ -325,6 +325,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
           <TableBtn button={buttonOther} />
         </div>
         <div className={styles.tableWrap}>
+          {this.props.children}
           <Table
             {...extraProps}
             components={this.components}

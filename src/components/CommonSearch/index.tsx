@@ -105,6 +105,11 @@ const TooltipTag: React.ForwardRefRenderFunction<
             }
           }
           break;
+        case 'monthRange':
+          if (Array.isArray(value)) {
+            value = value.join('~') || undefined;
+          }
+          break;
         case 'select':
         case 'treeSelect':
           if (Array.isArray(value)) {

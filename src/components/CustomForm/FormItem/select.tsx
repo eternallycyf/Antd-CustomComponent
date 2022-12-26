@@ -18,6 +18,8 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
       onChange,
       isSearch, //支持输入
       editValue,
+      options,
+      isNeedAll,
       ...controlProps
     }: any,
     ref,
@@ -30,6 +32,7 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
       searchKey = 'search',
       dataPath = 'data',
       initDictFn,
+      firstFetch = true,
     } = fetchConfig;
 
     const { textKey, valueKey } = dictConfig;
@@ -40,7 +43,11 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
     useEffect(() => {
       const value = record ? record[editValue] || '' : '';
       if (apiUrl && !initDictFn) {
-        if (!params) fetchData(value);
+        if (!params) {
+          if (firstFetch) {
+            fetchData(value);
+          }
+        }
         if (params && !_.isEqual(params, extraParams)) {
           setExtraParams(params);
           fetchData(value);
@@ -110,10 +117,30 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
       props.notFoundContent = fetching ? <Spin size="small" /> : undefined;
     }
 
+    const handleClick = () => {
+      if (!params && !firstFetch) {
+        if (dataSource.length == 0) {
+          const value = record ? record[editValue] || '' : '';
+          fetchData(value);
+        }
+      }
+    };
+
+    function dataAddAllItem(data: any) {
+      return isNeedAll
+        ? [{ [textKey]: '全部', [valueKey]: '' }, ...data]
+        : data;
+    }
+
     return (
-      <Select style={{ width: '100%' }} {...props} onChange={handleChange}>
+      <Select
+        style={{ width: '100%' }}
+        {...props}
+        onChange={handleChange}
+        onClick={handleClick}
+      >
         {group
-          ? dataSource.map((dic: any) => (
+          ? dataAddAllItem(dataSource).map((dic: any) => (
               <OptGroup label={dic[textKey]} key={dic[valueKey]}>
                 {dic.children.map((subItem: any) => (
                   <Option
@@ -125,7 +152,7 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
                 ))}
               </OptGroup>
             ))
-          : dataSource.map((dic: any) => (
+          : dataAddAllItem(dataSource).map((dic: any) => (
               <Option
                 key={String(dic[valueKey])}
                 value={String(dic[valueKey])}
@@ -135,6 +162,13 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
                 {(renderItem && renderItem(dic)) || dic[textKey]}
               </Option>
             ))}
+        {options
+          ? options.map((item: any, index: number) => (
+              <Option key={index} value={item.value}>
+                {item.title}
+              </Option>
+            ))
+          : null}
       </Select>
     );
   },
@@ -145,10 +179,10 @@ SelectControl.defaultProps = {
   dictConfig: { textKey: 'text', valueKey: 'value' },
   optionFilterProp: 'children',
   filterOption: (input: any, option: any) => {
-    return (
-      option.props.children.toLowerCase().index0f(input.toLowerCase()) >= 0
-    );
+    const { children = '' } = option;
+    return children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   },
+  options: false,
 };
 
 export default React.memo(SelectControl);

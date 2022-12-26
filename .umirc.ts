@@ -3,13 +3,7 @@ const proxyConfig = require('./src/config/proxyConfig');
 const path = require('path');
 
 export default defineConfig({
-  define: {
-    'process.env': process.env,
-  },
-  publicPath:
-    process.env.APP_ENV === 'development'
-      ? '/'
-      : 'http://wangxince.site/Antd-CustomComponent/',
+  publicPath: 'http://wangxince.site/Antd-CustomComponent/',
   routes: [
     { path: '/', component: '@/pages/Home/index' },
     { path: '/hook', component: '@/pages/Home/hook' },

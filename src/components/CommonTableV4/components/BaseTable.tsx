@@ -57,6 +57,20 @@ const isUpdate = (array: [], other: any) => {
   if (_.isFunction(array) && _.isFunction(other)) return true;
 };
 
+const handleColumns = (columns: any[]) => {
+  return columns.map((item) => {
+    if (Array.isArray(item.children)) {
+      item.children = handleColumns(item.children);
+    }
+    return {
+      ...item,
+      sortDirection: item.sorter
+        ? item.sortDirections || ['descend', 'ascend']
+        : undefined,
+    };
+  });
+};
+
 class BaseTable<
   P extends ICommonTable<any>,
   S extends IBaseTableState,
@@ -176,7 +190,7 @@ class BaseTable<
   handleBasicColumns = (props: any) => {
     const { showIndex, columns, resizable }: any = props || this.props;
     const { dev } = this.state;
-    let columnList = [...columns];
+    let columnList = handleColumns(columns);
     //展示序号
     if (showIndex) {
       columnList = ([] as any).concat(

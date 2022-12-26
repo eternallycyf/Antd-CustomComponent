@@ -3,7 +3,7 @@ import { FormItemProps } from 'antd/es/form/FormItem';
 import { TableProps } from 'antd/es/table/Table';
 import { ColumnsType, TablePaginationConfig } from 'antd/lib/table';
 import { ButtonProps } from 'antd/lib/button';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 //  菜单项
 export interface MenuItem {
@@ -73,6 +73,7 @@ export interface ICommonTable<T> extends TableProps<T> {
   onSelect?: (selectedRowKeys: string[] | number[], selectedRows: any[]) => any;
   isSummary?: boolean; // 是否显示汇总行
   dataPath?: string;
+  children?: React.ReactNode;
   [propName: string]: any;
 }
 
@@ -166,6 +167,7 @@ export interface FormControl {
     searchKey?: string;
     dataPath?: string;
     initDictFn?: (record: any) => any[];
+    firstFetch?: boolean;
   };
   placeholder?: string;
   // item配置
@@ -201,6 +203,7 @@ export interface IControlProps {
     searchKey?: string;
     dataPath?: string;
     initDictFn?: (record: any) => any[];
+    firstFetch?: boolean;
   };
   itemProps?: FormItemProps;
   tableProps?: EditTableProps;

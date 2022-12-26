@@ -11,7 +11,7 @@ export default React.forwardRef((props: any) => {
 
   const onChange = (values: any, mode: any) => {
     props.onChange(
-      values.map((dateValue: any) => {
+      (values || []).map((dateValue: any) => {
         return moment(dateValue).format(format);
       }),
     );
