@@ -254,7 +254,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
             </Col>
           ))}
         </Row>
-        <Row style={{ marginBottom: 5, marginLeft: 10 }}>
+        <Row style={{ margin: '8px 0 5px 10px' }}>
           <Button
             type="primary"
             htmlType="submit"
@@ -283,7 +283,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
           className={cx(styles.toggleForm, !expandForm && styles.expand)}
         >
           {expandForm ? '展开' : '收起'}
-          {expandForm ? <UpOutlined /> : <DownOutlined />}
+          {expandForm ? <DownOutlined /> : <UpOutlined />}
         </a>
       ) : null}
     </div>

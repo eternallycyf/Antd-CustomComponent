@@ -1,6 +1,4 @@
 import { IColumnsType } from '@/typings';
-import React from 'react';
-import Activity from '../index';
 
 const ACTIVE_TYPE: any = {
   '0': '满折',

@@ -25,5 +25,35 @@ export const getSearches = (
       dict: STATUS_DICT,
       initialValue: STATUS_DICT[0]['value'],
     },
+    {
+      name: 'activityName',
+      label: '活动名称',
+      type: 'input',
+      placeholder: '请输入活动名称',
+    },
+    {
+      name: '活动名称1',
+      label: '活动名称1',
+      type: 'input',
+      placeholder: '请输入活动名称',
+    },
+    {
+      name: '活动名称2',
+      label: '活动名称2',
+      type: 'input',
+      placeholder: '请输入活动名称',
+    },
+    {
+      name: '活动名称3',
+      label: '活动名称3',
+      type: 'input',
+      placeholder: '请输入活动名称',
+    },
+    {
+      name: '活动名称4',
+      label: '活动名称4',
+      type: 'input',
+      placeholder: '请输入活动名称',
+    },
   ];
 };

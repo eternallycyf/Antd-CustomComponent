@@ -3,7 +3,7 @@
   "scripts": {
     "biz-init": "ts-node ./scripts/generateBizConfig.ts",
     "start": "rm -rf ./src/pages/.DS_Store && cross-env APP_ENV=development umi dev",
-    "build": "npm run biz-init && cross-env APP_ENV=development umi build",
+    "build": "cross-env APP_ENV=development umi build",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",

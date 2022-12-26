@@ -1,6 +1,4 @@
 import { ISearchesType } from '@/typings';
-import React from 'react';
-import Activity from '../index';
 
 export const STATUS_DICT = [
   { text: '满折', value: '0' },

@@ -15,7 +15,7 @@
 ### class
 - config/columns.tsx
 ```tsx
-import React from 'react';
+import { IColumnsType } from '@/typings';
 import Activity from '../index';
 
 const ACTIVE_TYPE: any = {
@@ -24,7 +24,9 @@ const ACTIVE_TYPE: any = {
   '2': '立减',
 };
 
-export const getColumns = (self: InstanceType<typeof Activity>) => {
+export const getColumns = (
+  self: InstanceType<typeof Activity>,
+): IColumnsType => {
   return [
     {
       dataIndex: 'activityName',
@@ -36,17 +38,17 @@ export const getColumns = (self: InstanceType<typeof Activity>) => {
       dataIndex: 'activityType',
       title: '活动类型',
       width: 112,
-      align: 'center',
+      align: 'center' as 'center',
       render: (text: string) => ACTIVE_TYPE[text] || '--',
       sorter: true,
     },
   ];
 };
-
 ```
 
 - config/search.tsx
 ```tsx
+import { ISearchesType } from '@/typings';
 import React from 'react';
 import Activity from '../index';
 
@@ -56,7 +58,9 @@ export const STATUS_DICT = [
   { text: '立减', value: '2' },
 ];
 
-export const getSearches = (self: InstanceType<typeof Activity>) => {
+export const getSearches = (
+  self: InstanceType<typeof Activity>,
+): ISearchesType => {
   return [
     {
       name: 'activityName',
@@ -71,9 +75,38 @@ export const getSearches = (self: InstanceType<typeof Activity>) => {
       dict: STATUS_DICT,
       initialValue: STATUS_DICT[0]['value'],
     },
+    {
+      name: 'activityName',
+      label: '活动名称',
+      type: 'input',
+      placeholder: '请输入活动名称',
+    },
+    {
+      name: '活动名称1',
+      label: '活动名称1',
+      type: 'input',
+      placeholder: '请输入活动名称',
+    },
+    {
+      name: '活动名称2',
+      label: '活动名称2',
+      type: 'input',
+      placeholder: '请输入活动名称',
+    },
+    {
+      name: '活动名称3',
+      label: '活动名称3',
+      type: 'input',
+      placeholder: '请输入活动名称',
+    },
+    {
+      name: '活动名称4',
+      label: '活动名称4',
+      type: 'input',
+      placeholder: '请输入活动名称',
+    },
   ];
 };
-
 ```
 
 - index.tsx
@@ -111,7 +144,7 @@ class Activity extends BaseComponent<any, any> {
   render() {
     const { searchParams } = this.state;
     const tableParams = {
-      columns: getColumns(this) as any[],
+      columns: getColumns(this),
       searchParams: formatParams(searchParams),
       rowKey: 'activityCode',
       fetchMethod: 'get',
@@ -155,8 +188,7 @@ export default Activity;
 ### hook 
 - config/columns.tsx
 ```tsx
-import React from 'react';
-import Activity from '../index';
+import { IColumnsType } from '@/typings';
 
 const ACTIVE_TYPE: any = {
   '0': '满折',
@@ -164,7 +196,7 @@ const ACTIVE_TYPE: any = {
   '2': '立减',
 };
 
-export const columns = [
+export const columns: IColumnsType = [
   {
     dataIndex: 'activityName',
     title: '活动名称',
@@ -179,13 +211,11 @@ export const columns = [
     sorter: true,
   },
 ];
-
 ```
 
 - config/search.tsx
 ```tsx
-import React from 'react';
-import Activity from '../index';
+import { ISearchesType } from '@/typings';
 
 export const STATUS_DICT = [
   { text: '满折', value: '0' },
@@ -193,7 +223,7 @@ export const STATUS_DICT = [
   { text: '立减', value: '2' },
 ];
 
-export const searches = [
+export const searches: ISearchesType = [
   {
     name: 'activityName',
     label: '活动名称',
@@ -204,7 +234,9 @@ export const searches = [
     name: 'activityType',
     label: '活动类型',
     type: 'radio',
-    dict: STATUS_DICT,
+    controlProps: {
+      dict: STATUS_DICT,
+    },
     initialValue: STATUS_DICT[0]['value'],
   },
 ];
@@ -222,13 +254,11 @@ import projectConfig from '@/config/projectConfig';
 import _ from 'lodash';
 import { history } from 'umi';
 import { getPreferentialList } from './service';
-import { getColumns } from './config/columns';
-import { getSearches } from './config/search';
 const { apiPrefixMock } = projectConfig;
 
 const Activity = () => {
-  const searchRef = useRef(null);
-  const tableRef = useRef(null);
+  const searchRef = useRef<React.ElementRef<typeof CommonSearch>>(null!);
+  const tableRef = useRef<InstanceType<typeof CommonTable>>(null!);
   const [params, setParams] = useState({
     activityType: 0,
     aaaaaa: 1,
@@ -286,5 +316,4 @@ const Activity = () => {
 };
 
 export default Activity;
-
 ```

@@ -1,5 +1,4 @@
-import { FormControl, IColumnsType } from '@/typings';
-import React from 'react';
+import { IColumnsType } from '@/typings';
 import Activity from '../index';
 
 const ACTIVE_TYPE: any = {
