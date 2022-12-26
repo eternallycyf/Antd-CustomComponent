@@ -174,6 +174,7 @@ export interface FormControl {
   formFieldProps?: FormItemProps;
   //控件属性配置
   controlProps?: IControlProps;
+  dict?: IControlProps['dict'];
   dictConfig?: { textKey: string; valueKey: string }; //表格属性配置
   tableProps?: EditTableProps;
   // 动态表单配置

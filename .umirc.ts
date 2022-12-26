@@ -16,7 +16,7 @@ export default defineConfig({
   ],
   fastRefresh: {},
   layout: {
-    title: 'Antd-CustomComponent',
+    title: '公众crud组件',
     contentWidth: 'Fluid',
     navTheme: 'light',
   },

@@ -6,6 +6,7 @@ import { Tooltip } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import _ from 'lodash';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import useSyncState from '@/hook/useSyncState';
 import styles from './index.less';
 import RenderTag from './renderTag';
 
@@ -37,18 +38,16 @@ const TooltipTag: React.ForwardRefRenderFunction<
   Omit<IToolTipTagProps, 'form'>
 > = (props, ref) => {
   const {
-    showToolTipTag = false,
+    showToolTipTag = true,
     formList,
     children,
     checkBoxStatus,
     handleDeleteTagCallback,
     ...restProps
   } = props;
-  const [tagList, setTagList] = useState<any[]>([]);
-  const [toggle, setToggle] = useState(false);
+  const [tagList, setTagList] = useSyncState<any[]>([]);
   const searchRef: React.RefObject<ISearchRef> = useRef(null!);
   const divRef: React.RefObject<any> = useRef(null);
-  const newTagList = useRef<any[]>([]);
 
   useImperativeHandle(ref, () => ({
     handleRealParams,
@@ -77,8 +76,9 @@ const TooltipTag: React.ForwardRefRenderFunction<
 
     changedFields.forEach((changedField: any) => {
       const { name, type, format } = changedField;
-      const changedIndex = tagList.findIndex((tag: any) => tag.name === name);
+      const changedIndex = tagList().findIndex((tag: any) => tag.name === name);
       let value = changedValues[name];
+      console.log(value, changedIndex);
 
       // 日期类型值处理
       switch (type) {
@@ -136,23 +136,17 @@ const TooltipTag: React.ForwardRefRenderFunction<
 
       if (changedIndex === -1) {
         if (value) {
-          setTagList((list) => {
-            newTagList.current = [...list, { ...changedField, value }];
-            return [...list, { ...changedField, value }];
-          });
+          setTagList([...tagList(), { ...changedField, value }]);
+        }
+      } else {
+        if (!value) {
+          tagList().splice(changedIndex, 1);
         } else {
-          if (!value) {
-            tagList.splice(changedIndex, 1);
-          } else {
-            tagList[changedIndex].value = value;
-          }
+          tagList()[changedIndex].value! = value;
         }
       }
 
-      setTagList((list) => {
-        newTagList.current = [...list];
-        return [...tagList];
-      });
+      setTagList([...tagList()]);
     });
   };
 
@@ -165,7 +159,7 @@ const TooltipTag: React.ForwardRefRenderFunction<
       return handleDeleteTagCallback();
     }
     const { form } = searchRef.current!;
-    const deleteTag: any = tagList.find((item: any) => item.name === name);
+    const deleteTag: any = tagList().find((item: any) => item.name === name);
     const { controlProps = {}, mode, value } = deleteTag;
     const isMultiple = mode === 'multiple' || controlProps?.mode === 'multiple';
     let newValue = [];
@@ -186,7 +180,7 @@ const TooltipTag: React.ForwardRefRenderFunction<
     >
       {showToolTipTag && tagList ? (
         <div ref={divRef} className={styles.tagRow}>
-          {newTagList.current.map((item, index) => (
+          {tagList().map((item, index) => (
             <RenderTag
               key={index}
               item={item}
