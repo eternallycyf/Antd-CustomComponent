@@ -8,13 +8,11 @@ import projectConfig from '@/config/projectConfig';
 import _ from 'lodash';
 import { history } from 'umi';
 import { getPreferentialList } from './service';
-import { getColumns } from './config/columns';
-import { getSearches } from './config/search';
 const { apiPrefixMock } = projectConfig;
 
 const Activity = () => {
-  const searchRef = useRef(null);
-  const tableRef = useRef(null);
+  const searchRef = useRef<React.ElementRef<typeof CommonSearch>>(null!);
+  const tableRef = useRef<InstanceType<typeof CommonTable>>(null!);
   const [params, setParams] = useState({
     activityType: 0,
     aaaaaa: 1,

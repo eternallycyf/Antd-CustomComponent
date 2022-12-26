@@ -1,7 +1,7 @@
 import { WrappedFormUtils } from '@ant-design/compatible/es/form/Form';
 import { FormItemProps } from 'antd/es/form/FormItem';
 import { TableProps } from 'antd/es/table/Table';
-import { TablePaginationConfig } from 'antd/lib/table';
+import { ColumnsType, TablePaginationConfig } from 'antd/lib/table';
 import { ButtonProps } from 'antd/lib/button';
 import { ReactNode } from 'react';
 
@@ -86,14 +86,22 @@ export enum ModalType {
 //表单控件
 type boolFunc = (config: any) => boolean;
 
+export type IColumnsType<T = any> = ColumnsType<
+  FormControl & { key: React.Key } & T
+>;
+interface ISearchMoreProps<T> extends FormControl {
+  [props: number]: T;
+}
+export type ISearchesType<T = any> = ISearchMoreProps<T>[];
+
 interface ArrayProps {
   rowKey: string;
-  columns: FormControl[];
+  columns: IColumnsType;
 }
 
 export interface EditTableProps extends ICommonTable<any> {
   form: WrappedFormUtils;
-  columns: FormControl[];
+  columns: IColumnsType;
   handleSave?: any; // 保存
 }
 
@@ -129,12 +137,12 @@ export interface CustomForm {
 
 interface ArrayProps {
   rowKey: string;
-  columns: FormControl[];
+  columns: IColumnsType;
 }
 
 export interface EditTableProps extends ICommonTable<any> {
   form: WrappedFormUtils;
-  columns: FormControl[];
+  columns: IColumnsType;
   handleSave?: any; //保存
 }
 
@@ -159,6 +167,7 @@ export interface FormControl {
     dataPath?: string;
     initDictFn?: (record: any) => any[];
   };
+  placeholder?: string;
   // item配置
   itemProps?: FormItemProps;
   // 表单配置
@@ -207,5 +216,5 @@ export interface IControlProps {
     onChange?: (...args: any[]) => any;
     [propName: string]: any;
   }>;
-  [propsName: string]: any;
+  [props: string]: any;
 }

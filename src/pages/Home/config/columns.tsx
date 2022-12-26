@@ -1,3 +1,4 @@
+import { FormControl, IColumnsType } from '@/typings';
 import React from 'react';
 import Activity from '../index';
 
@@ -7,7 +8,9 @@ const ACTIVE_TYPE: any = {
   '2': '立减',
 };
 
-export const getColumns = (self: InstanceType<typeof Activity>) => {
+export const getColumns = (
+  self: InstanceType<typeof Activity>,
+): IColumnsType => {
   return [
     {
       dataIndex: 'activityName',
@@ -19,7 +22,7 @@ export const getColumns = (self: InstanceType<typeof Activity>) => {
       dataIndex: 'activityType',
       title: '活动类型',
       width: 112,
-      align: 'center',
+      align: 'center' as 'center',
       render: (text: string) => ACTIVE_TYPE[text] || '--',
       sorter: true,
     },

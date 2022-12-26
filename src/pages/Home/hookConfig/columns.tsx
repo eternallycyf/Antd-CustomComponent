@@ -1,3 +1,4 @@
+import { IColumnsType } from '@/typings';
 import React from 'react';
 import Activity from '../index';
 
@@ -7,7 +8,7 @@ const ACTIVE_TYPE: any = {
   '2': '立减',
 };
 
-export const columns = [
+export const columns: IColumnsType = [
   {
     dataIndex: 'activityName',
     title: '活动名称',

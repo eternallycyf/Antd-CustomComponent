@@ -3,6 +3,7 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "importHelpers": true,
     "jsx": "react-jsx",
     "esModuleInterop": true,
@@ -13,26 +14,8 @@
       "@/*": ["src/*"],
       "@@/*": ["src/.umi/*"]
     },
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true
+    "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "./typings/*.d.ts",
-    "mock/**/*",
-    "src/**/*",
-    // "config/**/*",
-    ".umirc.ts",
-    "typings.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "lib",
-    "es",
-    "dist",
-    "typings",
-    "**/__test__",
-    "test",
-    "tests",
-    "docs"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules", "jest"]
 }

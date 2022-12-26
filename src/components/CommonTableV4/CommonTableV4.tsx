@@ -8,7 +8,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { IButtonProps, ICommonTable } from '@/typings';
 import { formatColumn } from '@/utils/util';
 import BaseTable, { IBaseTableState } from './components/BaseTable';
-import TableBtn from '@/components/commonTable/widgets/TableBtn';
+import TableBtn from '@/components/CommonTable/widgets/TableBtn';
 import AccessBtn from '@/components/AccessBtn';
 import styles from './index.less';
 import _ from 'lodash';

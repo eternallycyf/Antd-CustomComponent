@@ -31,7 +31,7 @@ class Activity extends BaseComponent<any, any> {
   render() {
     const { searchParams } = this.state;
     const tableParams = {
-      columns: getColumns(this) as any[],
+      columns: getColumns(this),
       searchParams: formatParams(searchParams),
       rowKey: 'activityCode',
       fetchMethod: 'get',

@@ -1,8 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "start": "umi dev",
-    "build": "umi build",
+    "biz-init": "ts-node ./scripts/generateBizConfig.ts",
+    "start": "rm -rf ./src/pages/.DS_Store && cross-env APP_ENV=development umi dev",
+    "build": "npm run biz-init && cross-env APP_ENV=development umi build",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
@@ -32,6 +33,7 @@
     "classnames": "^2.2.6",
     "dva": "^2.6.0-beta.6",
     "immutability-helper": "^3.1.1",
+    "js-cookie": "^3.0.1",
     "lodash": "^4.17.19",
     "react": "17.x",
     "react-color": "^2.19.3",
@@ -39,16 +41,22 @@
     "react-dnd-html5-backend": "^10.0.2",
     "react-dom": "17.x",
     "react-resizable": "^1.10.1",
+    "redux-persist": "^6.0.0",
     "umi": "^3.5.27"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.188",
+    "@types/ejs": "^3.1.1",
+    "@types/js-cookie": "^3.0.2",
+    "@types/lodash": "^4.14.191",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^17.0.0",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.5.27",
+    "chalk": "^5.2.0",
+    "cross-env": "^7.0.3",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
+    "react-dev-inspector": "^1.8.4",
     "typescript": "^4.1.2",
     "yorkie": "^2.0.0"
   }

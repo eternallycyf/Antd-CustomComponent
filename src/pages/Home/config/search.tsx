@@ -1,3 +1,4 @@
+import { ISearchesType } from '@/typings';
 import React from 'react';
 import Activity from '../index';
 
@@ -7,7 +8,9 @@ export const STATUS_DICT = [
   { text: '立减', value: '2' },
 ];
 
-export const getSearches = (self: InstanceType<typeof Activity>) => {
+export const getSearches = (
+  self: InstanceType<typeof Activity>,
+): ISearchesType => {
   return [
     {
       name: 'activityName',
@@ -19,7 +22,9 @@ export const getSearches = (self: InstanceType<typeof Activity>) => {
       name: 'activityType',
       label: '活动类型',
       type: 'radio',
-      dict: STATUS_DICT,
+      controlProps: {
+        dict: STATUS_DICT,
+      },
       initialValue: STATUS_DICT[0]['value'],
     },
   ];

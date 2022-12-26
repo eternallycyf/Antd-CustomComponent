@@ -1,6 +1,8 @@
 import React from 'react';
 import { message, Modal } from 'antd';
 import { deleteAction, postAction } from '@/services/global';
+import CommonSearch from '../CommonSearch';
+import CommonTable from '../CommonTableV4/CommonTableV4';
 
 export interface IBaseState {
   loading?: any;
@@ -11,8 +13,9 @@ export interface IBaseState {
 }
 
 class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
-  protected tableRef: React.RefObject<any> = React.createRef();
-  protected searchRef: React.RefObject<any> = React.createRef();
+  protected tableRef = React.createRef<any>();
+  protected searchRef =
+    React.createRef<React.ElementRef<typeof CommonSearch>>();
   protected formRef: React.RefObject<any> = React.createRef();
 
   // 获取列表dataSource
