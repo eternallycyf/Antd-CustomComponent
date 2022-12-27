@@ -130,7 +130,7 @@ export interface CustomForm {
   handleSubmit?: (values: any) => void; //提交方法
   handleCancel?: () => void; //关闭弹窗或重置方法
   /**
-   *使用record数据对表单进行赋值，时间类型初始值需要转换成moment类型
+   *使用record数据对表单进行赋值，时间类型初始值需要转换成dayjs类型
    */
   record?: any;
   [otherProps: string]: any;

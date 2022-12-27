@@ -141,7 +141,7 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
   return modalType && modalType !== ModalType.normal ? (
     <Component
       title={modalTitle}
-      visible={visible}
+      open={visible}
       destroyOnClose={true}
       {...modalConf}
     >

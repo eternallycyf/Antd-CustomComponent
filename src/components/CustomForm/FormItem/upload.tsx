@@ -121,7 +121,7 @@ const UploadControl: React.FC<IUploadProps> = React.forwardRef(
         >
           {fileList.length >= maxFile ? null : uploadButton}
         </Upload>
-        <Modal visible={previewVisible} footer={null} onCancel={handleCancel}>
+        <Modal open={previewVisible} footer={null} onCancel={handleCancel}>
           {' '}
           <img
             alt="preview"

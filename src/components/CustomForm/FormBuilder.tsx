@@ -243,13 +243,13 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
 
       {children
         ? React.Children.map(
-            children as any,
-            (child: React.ReactElement<any>, index) => {
-              return React.cloneElement(child, {
-                size: child.props.size || 'small',
-              });
-            },
-          )
+          children as any,
+          (child: React.ReactElement<any>, index) => {
+            return React.cloneElement(child, {
+              size: child.props.size || 'small',
+            });
+          },
+        )
         : null}
 
       {modalType === ModalType.normal && (

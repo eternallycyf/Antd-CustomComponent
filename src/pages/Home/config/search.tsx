@@ -19,6 +19,12 @@ export const getSearches = (
       placeholder: '请输入活动名称',
     },
     {
+      name: 'startDate,endDate',
+      label: '日期',
+      type: 'monthRange',
+      placeholder: '',
+    },
+    {
       name: 'activityType',
       label: '活动类型',
       type: 'radio',

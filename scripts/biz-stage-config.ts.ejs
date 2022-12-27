@@ -1,0 +1,8 @@
+//本文件是自动生成，请勿修改
+<% plugins.forEach(function(plugin) { %>import <%= plugin.name %> from '../pages/<%= plugin.name %>/routes'; 
+<% }); %>
+export default [
+<% plugins.forEach(function(plugin){ %>  <%= plugin.name %>,
+<% }); 
+%>]
+

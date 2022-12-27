@@ -1,18 +1,18 @@
 import React from 'react';
 import { DatePicker } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 const format = 'YYYYMM';
 const { RangePicker } = DatePicker;
 
 export default React.forwardRef((props: any) => {
   const value = (props.value || []).map((v: any) => {
-    return moment.isMoment(v) ? v : moment(v);
+    return dayjs.isDayjs(v) ? v : dayjs(v);
   });
 
   const onChange = (values: any, mode: any) => {
     props.onChange(
       (values || []).map((dateValue: any) => {
-        return moment(dateValue).format(format);
+        return dayjs(dateValue).format(format);
       }),
     );
   };

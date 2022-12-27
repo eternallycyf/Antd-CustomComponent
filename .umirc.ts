@@ -1,28 +1,37 @@
-import { defineConfig } from 'umi';
-const proxyConfig = require('./src/config/proxyConfig');
-const path = require('path');
+import { defineConfig } from '@umijs/max';
+import routerConfig from "./src/routes";
+const proxyConfig = require("./src/config/proxyConfig");
+const path = require("path");
 
 export default defineConfig({
+  define: {
+    "process.env": process.env,
+  },
+  base: '/',
+  history: { type: "hash" },
   publicPath:
-    process.env.NODE_ENV === 'production'
+    process.env.APP_ENV === 'production'
       ? 'http://wangxince.site/Antd-CustomComponent/'
       : '/',
-  routes: [
-    { path: '/', name: 'class方式', component: '@/pages/Home/index' },
-    { path: '/hook', name: 'hook方式', component: '@/pages/Home/hook' },
-  ],
-  fastRefresh: {},
+  routes: routerConfig,
   layout: {
-    title: '公众crud组件',
-    contentWidth: 'Fluid',
-    navTheme: 'light',
+    title: '公众crud组件"',
+    contentWidth: "Fluid",
+    locale: false,
   },
-  theme: { 'primary-color': '#3363D7' },
-  mock: {},
+  theme: { '@primary-color': '#00CA88' },
+  devtool: process.env.NODE_ENV === 'development' ? 'eval' : false,
+  antd: {},
+  fastRefresh: true,
+  proxy: proxyConfig,
+  clickToComponent: {},
+  dva: {},
+  access: {},
+  model: {},
+  initialState: {},
+  request: {},
   hash: true,
-  history: { type: 'hash' },
-  dynamicImport: {},
-  nodeModulesTransform: {
-    type: 'none',
-  },
+  mfsu: true,
+  npmClient: 'yarn',
 });
+

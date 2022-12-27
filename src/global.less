@@ -1,0 +1,60 @@
+h1,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+body {
+  background: #f1f2f6;
+}
+
+.ant-pro-global-header-layout-mix {
+  background: #fff !important;
+}
+
+.ant-pro-global-header-layout-mix .ant-pro-global-header-logo h1 {
+  color: #333 !important;
+}
+
+.ant-layout {
+  height: 0;
+}
+
+.ant-btn {
+  border-radius: 4px;
+}
+
+.ant-pro-page-container-children-content {
+  margin: 0;
+}
+
+// h5大小下 关闭table columns的 fixed效果
+.ant-table-cell {
+  @media screen and (max-width: 575px) {
+    right: auto !important;
+  }
+}
+
+// 修复h5大小下 展开菜单按钮默认为白色的情况
+.anticon-menu-unfold {
+  @media screen and (max-width: 575px) {
+    color: rgba(0, 0, 0, 0.85) !important;
+  }
+}
+
+.ant-pro-sider-light .ant-pro-sider-logo h1 {
+  color: hotpink;
+}
+
+// 隐藏多页签最右边的 < > svg
+.panel-tabs-bar .ant-space-align-center {
+  display: none;
+}
+
+.ant-menu-title-content {
+  padding: 20px;
+}

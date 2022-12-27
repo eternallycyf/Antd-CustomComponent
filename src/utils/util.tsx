@@ -1,5 +1,5 @@
 import _, { some, isArray, keyBy, keys } from 'lodash';
-import moment, { Moment } from 'moment';
+import dayjs from 'dayjs';
 import { exportFile } from '@/services/global';
 import React from 'react';
 import { Modal } from 'antd';
@@ -54,7 +54,7 @@ export function formatColumn(data: any[]) {
 
     if (item.formatTime) {
       item.render = (text: any) => {
-        return text ? <span>{moment(text).format(options.format)}</span> : '--';
+        return text ? <span>{dayjs(text).format(options.format)}</span> : '--';
       };
     }
 
@@ -87,7 +87,7 @@ export const formatParams = (param: object, format: string = 'YYYYMMDD') => {
   const values = _.cloneDeep(param);
   for (const index in values) {
     if (values.hasOwnProperty(index)) {
-      if (values[index] instanceof moment) {
+      if (values[index] instanceof dayjs) {
         values[index] = values[index].format(format);
       }
 

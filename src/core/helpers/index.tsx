@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import BraftEditor from 'braft-editor';
 import { Form } from 'antd';
 import { FieldCompType } from '@/typings';
@@ -25,9 +25,10 @@ export function getFieldComp({
   format,
   ...otherProps
 }: FieldCompType) {
+
   if (record && record[name] != null) {
     if (isEdit) {
-      initialValue = moment(record[name], format);
+      initialValue = dayjs(record[name], format);
     } else {
       initialValue = record[name];
     }
@@ -62,19 +63,19 @@ export function getFieldComp({
       break;
     case 'date':
       formFieldProps.initialValue = initialValue
-        ? moment(initialValue, 'YYYY-MM-DD')
+        ? dayjs(initialValue, 'YYYY-MM-DD')
         : null;
       FieldComp = require(`@/components/CustomForm/FormItem/simple`).default;
       break;
     case 'year':
       formFieldProps.initialValue = initialValue
-        ? moment(initialValue, 'YYYY')
+        ? dayjs(initialValue, 'YYYY')
         : null;
       FieldComp = require(`@/components/CustomForm/FormItem/simple`).default;
       break;
     case 'quarter':
       formFieldProps.initialValue = initialValue
-        ? moment(initialValue, 'YYYY-Q')
+        ? dayjs(initialValue, 'YYYY-Q')
         : null;
       FieldComp = require(`@/components/CustomForm/FormItem/simple`).default;
       break;
