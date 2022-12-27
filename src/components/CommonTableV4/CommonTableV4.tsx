@@ -135,38 +135,41 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
 
             const menu = (otherBtn || []).map((item: any, index: any) => {
               const { text, onClick, code, buttonType, ...otherProps } = item;
-              return (
-                <Menu.Item key={index}>
-                  <AccessBtn>
-                    {buttonType === 'delete' ? (
-                      <Popconfirm
-                        placement="rightTop"
-                        title="确认删除该记录?"
-                        data-code={code}
-                        onConfirm={(e: any) => {
-                          e.stopPropagation();
-                          onClick && onClick(record);
-                        }}
-                      >
+              return [
+                {
+                  key: index,
+                  children: (
+                    <AccessBtn>
+                      {buttonType === 'delete' ? (
+                        <Popconfirm
+                          placement="rightTop"
+                          title="确认删除该记录?"
+                          data-code={code}
+                          onConfirm={(e: any) => {
+                            e.stopPropagation();
+                            onClick && onClick(record);
+                          }}
+                        >
+                          <span
+                            onClick={(e: any) => e.stopPropagation()}
+                            {...otherProps}
+                          >
+                            {text}
+                          </span>
+                        </Popconfirm>
+                      ) : (
                         <span
-                          onClick={(e: any) => e.stopPropagation()}
                           {...otherProps}
+                          data-code={code}
+                          onClick={(e: any) => onClick && onClick(record, e)}
                         >
                           {text}
                         </span>
-                      </Popconfirm>
-                    ) : (
-                      <span
-                        {...otherProps}
-                        data-code={code}
-                        onClick={(e: any) => onClick && onClick(record, e)}
-                      >
-                        {text}
-                      </span>
-                    )}
-                  </AccessBtn>
-                </Menu.Item>
-              );
+                      )}
+                    </AccessBtn>
+                  ),
+                },
+              ];
             });
 
             return (
@@ -216,10 +219,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
                   );
                 })}
                 {otherBtn.length ? (
-                  <Dropdown
-                    overlay={<Menu>{menu}</Menu>}
-                    overlayClassName={styles.dropdown}
-                  >
+                  <Dropdown menu={menu} overlayClassName={styles.dropdown}>
                     <Button
                       size="small"
                       className={styles.more}

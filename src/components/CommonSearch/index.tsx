@@ -1,16 +1,13 @@
 import CommonSearch from '@/components/CommonSearch/search';
 import { FormControl } from '@/typings';
-import { FormComponentProps } from '@ant-design/compatible/es/form/Form';
-import { CloseOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
-import { Tooltip } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import _ from 'lodash';
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import useSyncState from '@/hook/useSyncState';
 import styles from './index.less';
 import RenderTag from './renderTag';
 
-export interface IToolTipTagProps extends FormComponentProps {
+export interface IToolTipTagProps {
   formList: FormControl[]; // form列表
   record?: any; // 值会映射到表单
   expandForm?: boolean; // 是否可展开
@@ -78,8 +75,6 @@ const TooltipTag: React.ForwardRefRenderFunction<
       const { name, type, format } = changedField;
       const changedIndex = tagList().findIndex((tag: any) => tag.name === name);
       let value = changedValues[name];
-      console.log(value, changedIndex);
-
       // 日期类型值处理
       switch (type) {
         case 'month':
@@ -165,6 +160,7 @@ const TooltipTag: React.ForwardRefRenderFunction<
     }
     const { form } = searchRef.current!;
     const deleteTag: any = tagList().find((item: any) => item.name === name);
+    setTagList(tagList().filter((item: any) => item.name !== name));
     const { controlProps = {}, mode, value } = deleteTag;
     const isMultiple = mode === 'multiple' || controlProps?.mode === 'multiple';
     let newValue = [];
@@ -178,10 +174,11 @@ const TooltipTag: React.ForwardRefRenderFunction<
   return (
     <CommonSearch
       {...restProps}
-      wrappedComponentRef={searchRef}
+      ref={searchRef}
       formList={formList}
       showToolTipTag={showToolTipTag}
       handleTagList={handleTagList}
+      handleRemoveTag={() => setTagList([])}
     >
       {showToolTipTag && tagList ? (
         <div ref={divRef} className={styles.tagRow}>

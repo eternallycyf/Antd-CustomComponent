@@ -1,15 +1,13 @@
 import React, { useImperativeHandle, useState } from 'react';
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from 'antd';
+import '@/assets/styles/compatible.css';
 import { Drawer, message, Modal, Table } from 'antd';
-import { WrappedFormUtils } from '@ant-design/compatible/es/form/Form';
 import { postAction } from '@/services/global';
 import FormBuilder from '@/components/CustomForm/FormBuilder';
 import { ModalType } from '@/typings';
 import _ from 'lodash';
 
 interface IProps {
-  form: WrappedFormUtils;
   title?: string; // 弹窗标题
   modalConf?: any;
   modalType?: ModalType; // modal类型
@@ -21,7 +19,6 @@ interface IProps {
 const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
   let { modalConf } = props;
   const {
-    form,
     title,
     modalType,
     onSubmit,
@@ -36,6 +33,7 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [record, setRecord] = useState(null);
+  const [form] = Form.useForm();
 
   useImperativeHandle(ref, () => ({
     form,
@@ -65,39 +63,46 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    form.validateFields(async (err, values) => {
-      if (!err) {
-        setLoading(true);
-        const data = formatValues ? formatValues(values, record) : values;
-        const { action, callback, failCallback, completeCallback } = onSubmit;
-        try {
-          const res = _.isString(action)
-            ? await postAction(action, data)
-            : await action(data, isEdit);
-          if (res.code === 0) {
-            const chinesePattern: RegExp = /^[\u4e00-\u9fa5]+$/;
-            const messageStr: string = chinesePattern.test(res.msg)
-              ? res.msg
-              : '操作成功';
-            message.success(messageStr);
-            if (_.isFunction(callback)) callback();
-            handleCancel();
-          } else {
-            message.error(res.msg);
-            if (_.isFunction(failCallback)) failCallback();
-          }
-          setLoading(false);
-          if (_.isFunction(completeCallback)) completeCallback();
-        } catch (e) {
-          setLoading(false);
+    const values = form.getFieldsValue();
+    form.validateFields().catch(async () => {
+      setLoading(true);
+      const data = formatValues ? formatValues(values, record) : values;
+      const { action, callback, failCallback, completeCallback } = onSubmit;
+      try {
+        const res = _.isString(action)
+          ? await postAction(action, data)
+          : await action(data, isEdit);
+        if (res.code === 0) {
+          const chinesePattern: RegExp = /^[\u4e00-\u9fa5]+$/;
+          const messageStr: string = chinesePattern.test(res.msg)
+            ? res.msg
+            : '操作成功';
+          message.success(messageStr);
+          if (_.isFunction(callback)) callback();
+          handleCancel();
+        } else {
+          message.error(res.msg);
+          if (_.isFunction(failCallback)) failCallback();
         }
+        setLoading(false);
+        if (_.isFunction(completeCallback)) completeCallback();
+      } catch (e) {
+        setLoading(false);
       }
     });
+  };
+
+  const onFieldsChange = (changedFields: any, allFields: any) => {
+    const { handleFieldsChange } = props;
+    if (handleFieldsChange) {
+      handleFieldsChange(changedFields, allFields, form);
+    }
   };
 
   const formBuilder = (
     <FormBuilder
       form={form}
+      onFieldsChange={onFieldsChange}
       record={record}
       loading={loading}
       modalType={modalType}
@@ -148,13 +153,4 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
   );
 });
 
-export default React.memo(
-  Form.create<IProps>({
-    onFieldsChange: (props, fields, allFields) => {
-      const { form, handleFieldsChange } = props;
-      if (handleFieldsChange) {
-        handleFieldsChange(fields, allFields, form);
-      }
-    },
-  })(CustomForm),
-);
+export default React.memo(CustomForm);

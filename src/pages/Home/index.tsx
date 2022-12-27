@@ -1,6 +1,6 @@
 import React from 'react';
 import BaseComponent from '@/components/BaseComponent';
-import { CommonSearch, CommonTable } from '@/components';
+import { CommonSearch, CommonTable, CustomForm } from '@/components';
 import { formatParams } from '@/utils/util';
 import { getColumns } from './config/columns';
 import { getSearches } from './config/search';

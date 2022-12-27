@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import BraftEditor from 'braft-editor';
+import { Form } from 'antd';
 import { FieldCompType } from '@/typings';
 
 /**
@@ -101,11 +102,11 @@ export function getFieldComp({
   }
 
   if (form) {
-    const { getFieldDecorator } = form;
-    return getFieldDecorator(
-      name,
-      formFieldProps,
-    )(<FieldComp {...formProps} />);
+    return (
+      <Form.Item name={name} {...formFieldProps}>
+        <FieldComp {...formProps} />
+      </Form.Item>
+    );
   } else {
     return <FieldComp {...formProps} {...formFieldProps} />;
   }

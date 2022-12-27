@@ -1,7 +1,7 @@
 import React from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from 'antd';
+import '@/assets/styles/compatible.css';
 import { Button } from 'antd';
 import _ from 'lodash';
 import CommonTable from '@/components/CommonTableV4/CommonTableV4';

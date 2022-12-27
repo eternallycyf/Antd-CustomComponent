@@ -1,15 +1,14 @@
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import _ from 'lodash';
 import cx from 'classnames';
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import '@/assets/styles/compatible.css';
 import {
   ReloadOutlined,
   SearchOutlined,
   DownOutlined,
   UpOutlined,
 } from '@ant-design/icons';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Row, Form } from 'antd';
 import { getFieldComp } from '@/core/helpers';
 import { IToolTipTagProps } from './index';
 import styles from './index.less';
@@ -21,10 +20,13 @@ const quarterFormat = 'YYYY-Q';
 export interface ISearchProps extends IToolTipTagProps {
   children?: any;
   handleTagList?: any;
+  handleRemoveTag: () => void;
 }
 
 const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
-  const { formList, showResetBtn, columnNumber, children, form } = props;
+  const { formList, showResetBtn, columnNumber, children, handleRemoveTag } =
+    props;
+  const [form] = Form.useForm();
   const [state, setState] = useState({
     expandForm: props.expandForm,
     searchParams: {},
@@ -153,23 +155,16 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
    */
   const handleReset = () => {
     form.resetFields();
+    handleRemoveTag();
     const formData = form.getFieldsValue();
-
     triggerSearch(formatSubmitValues(formData));
   };
 
   /**
    * 提交搜索
    */
-  const handleSubmit = (e: any) => {
-    const event = e || window.event;
-    event.preventDefault();
-    event.stopPropagation();
-    const {
-      form: { validateFields },
-    } = props;
-    validateFields((err, values) => {
-      if (err) return;
+  const handleSubmit = () => {
+    form.validateFields().then((values) => {
       triggerSearch(formatSubmitValues(values));
     });
   };
@@ -219,6 +214,20 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
     return getFieldComp(fieldProps);
   };
 
+  const onFieldsChange = (changedFields: any, allFields: any) => {
+    const { handleTagList, showToolTipTag } = props as any;
+    if (showToolTipTag) {
+      const changedValues = Object.values(changedFields).reduce(
+        (prev: any, curr: any) => {
+          prev[curr.name] = curr.value;
+          return prev;
+        },
+        {},
+      );
+      handleTagList(changedValues, allFields);
+    }
+  };
+
   const { expandForm } = state;
   const formListLength = formList.length;
   const showCount = expandForm ? columnNumber : formListLength;
@@ -231,7 +240,13 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
       className={cx('searchWrap', styles.searchWrap)}
       style={{ border: (isOneLine as any) && undefined }}
     >
-      <Form layout="inline" onSubmit={handleSubmit} className={styles.form}>
+      <Form
+        onFieldsChange={onFieldsChange}
+        layout="inline"
+        form={form}
+        onFinish={handleSubmit}
+        className={styles.form}
+      >
         <Row
           align="middle"
           gutter={{ md: 4, lg: 12, xl: 24 }}
@@ -296,20 +311,4 @@ CommonSearch.defaultProps = {
   showResetBtn: true,
 };
 
-export default React.memo(
-  Form.create<ISearchProps>({
-    onFieldsChange: (props, fields, allFields) => {
-      const { handleTagList, showToolTipTag } = props as any;
-      if (showToolTipTag) {
-        const changedValues = Object.values(fields).reduce(
-          (prev: any, curr: any) => {
-            prev[curr.name] = curr.value;
-            return prev;
-          },
-          {},
-        );
-        handleTagList(changedValues, allFields);
-      }
-    },
-  })(CommonSearch),
-);
+export default React.memo(CommonSearch);

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { Form } from 'antd';
+import '@/assets/styles/compatible.css';
 import { Row, Col, Button } from 'antd';
 import _ from 'lodash';
 import cx from 'classnames';
@@ -45,8 +45,9 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
     modalType,
     className,
     onCancel,
-    onSubmit,
+    onFinish,
     onClick,
+    onFieldsChange,
     ...otherProps
   } = props;
 
@@ -217,7 +218,8 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
   return (
     <Form
       className={cls}
-      onSubmit={onSubmit}
+      onFinish={onFinish}
+      onFieldsChange={onFieldsChange}
       {...formProps}
       {...(type === 'inline' && { layout: 'inline' })}
     >

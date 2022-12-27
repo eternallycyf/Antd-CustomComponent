@@ -1,9 +1,9 @@
-import { WrappedFormUtils } from '@ant-design/compatible/es/form/Form';
 import { FormItemProps } from 'antd/es/form/FormItem';
 import { TableProps } from 'antd/es/table/Table';
 import { ColumnsType, TablePaginationConfig } from 'antd/lib/table';
 import { ButtonProps } from 'antd/lib/button';
 import React, { ReactNode } from 'react';
+import { FormInstance } from 'antd/es/form';
 
 //  菜单项
 export interface MenuItem {
@@ -101,7 +101,7 @@ interface ArrayProps {
 }
 
 export interface EditTableProps extends ICommonTable<any> {
-  form: WrappedFormUtils;
+  form: FormInstance;
   columns: IColumnsType;
   handleSave?: any; // 保存
 }
@@ -142,7 +142,7 @@ interface ArrayProps {
 }
 
 export interface EditTableProps extends ICommonTable<any> {
-  form: WrappedFormUtils;
+  form: FormInstance;
   columns: IColumnsType;
   handleSave?: any; //保存
 }

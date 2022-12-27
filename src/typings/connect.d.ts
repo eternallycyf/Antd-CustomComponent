@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { RouteComponentProps } from 'react-router';
-import { WrappedFormUtils } from '@ant-design/compatible/es/form/Form';
+import { FormInstance } from 'antd/es/form';
 import { ILoginModelState } from '@/models/login';
 import { IGlobalModelState } from '@/models/global';
 
@@ -25,7 +25,7 @@ export interface ConnectState {
 export interface ConnectProps<P extends { [K in keyof P]?: string } = {}>
   extends Partial<RouteComponentProps<any>> {
   dispatch?: Dispatch;
-  form?: WrappedFormUtils;
+  form?: FormInstance;
 }
 
 export type Effect = (

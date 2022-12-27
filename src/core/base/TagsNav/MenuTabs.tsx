@@ -83,25 +83,40 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
       }
     };
 
-  const setMenu = (key: string, index: number) => (
-    <Menu onClick={handleTabsMenuClick(key)}>
-      <Menu.Item disabled={key !== activeKey} key={closeType.refresh}>
-        刷新
-      </Menu.Item>
-      <Menu.Item disabled={index === 0} key={closeType.closeOne}>
-        关闭当前
-      </Menu.Item>
-      <Menu.Item key={closeType.closeALl}>关闭所有</Menu.Item>
-      <Menu.Item disabled={tabs.length === 1} key={closeType.closeOthers}>
-        关闭其他
-      </Menu.Item>
-    </Menu>
-  );
+  const getMenu = (key: string, index: number) => {
+    return [
+      {
+        label: '刷新',
+        disabled: key !== activeKey,
+        key: closeType.refresh,
+      },
+      {
+        label: '关闭当前',
+        disabled: index === 0,
+        key: closeType.closeOne,
+      },
+      {
+        label: '关闭所有',
+        key: closeType.closeALl,
+      },
+      {
+        label: '关闭其他',
+        disabled: tabs.length === 1,
+        key: closeType.closeOthers,
+      },
+    ];
+  };
 
   const setTab = (tab: string, key: string, index: number) => {
     return (
       <span onContextMenu={(event) => event.preventDefault()}>
-        <Dropdown overlay={setMenu(key, index)} trigger={['contextMenu']}>
+        <Dropdown
+          menu={{
+            items: getMenu(key, index),
+            onClick: () => handleTabsMenuClick(key),
+          }}
+          trigger={['contextMenu']}
+        >
           <span className={cx(styles.tabTitle)}>
             {key === homePagePath ? (
               <HomeOutlined className={styles['icon-home']} />
