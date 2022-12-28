@@ -1,17 +1,16 @@
 {
   "private": true,
   "author": "eternallycyf <a969475322@gmail.com>",
-  "type": "module",
   "scripts": {
-    "biz-init": "ts-node-esm scripts/generateBizConfig.ts",
-    "start": "rm -rf ./src/pages/.DS_Store && yarn biz-init && cross-env NODE_ENV=development max dev",
+    "biz-init": "ts-node scripts/generateBizConfig.ts",
     "build": "max build",
     "build:pro": "yarn biz-init && cross-env NODE_ENV=production max build",
+    "deploy": "bash ./deploy.sh",
     "format": "prettier --cache --write .",
-    "prepare": "husky install",
     "postinstall": "max setup",
+    "prepare": "husky install",
     "setup": "max setup",
-    "deploy": "bash ./deploy.sh"
+    "start": "rm -rf ./src/pages/.DS_Store && cross-env NODE_ENV=development max dev"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -39,7 +38,6 @@
     "@types/react-dom": "^18.0.0",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.5.27",
-    "chalk": "^5.2.0",
     "cross-env": "^7.0.3",
     "ejs": "^3.1.8",
     "husky": "^8.0.1",
@@ -48,7 +46,7 @@
     "prettier-plugin-organize-imports": "^2",
     "prettier-plugin-packagejson": "^2",
     "react-dev-inspector": "^1.8.4",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.0",
     "typescript": "^4.1.2",
     "yorkie": "^2.0.0"
   }

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
@@ -11,15 +11,9 @@
     "baseUrl": "./",
     "strict": true,
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@@/*": [
-        "src/.umi/*"
-      ],
-      "@/pages/*": [
-        "src/pages/*"
-      ]
+      "@/*": ["src/*"],
+      "@@/*": ["src/.umi/*"],
+      "@/pages/*": ["src/pages/*"]
     },
     "allowSyntheticDefaultImports": true
   },
@@ -31,8 +25,5 @@
     ".umirc.ts",
     "typings.d.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "jest"
-  ]
+  "exclude": ["node_modules", "jest"]
 }
