@@ -12,12 +12,16 @@ import {
   Switch,
   TimePicker,
 } from 'antd';
-import locale from 'antd/lib/date-picker/locale/zh_CN';
+import 'dayjs/locale/zh-cn';
+import locale from 'antd/es/date-picker/locale/zh_CN';
 import { IControlProps } from '@/typings';
+import dayjs from 'dayjs';
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const { TextArea, Password, Search } = Input;
 const { MonthPicker, RangePicker, QuarterPicker } = DatePicker;
+
+dayjs.locale('zh-cn');
 
 interface ISimpleControlProps extends IControlProps {
   defaultVal?: any;
