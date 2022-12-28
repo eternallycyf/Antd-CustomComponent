@@ -10,7 +10,7 @@ export default defineConfig({
   base: '/',
   history: { type: "hash" },
   publicPath:
-    process.env.APP_ENV === 'production'
+    process.env.NODE_ENV === 'production'
       ? 'http://wangxince.site/Antd-CustomComponent/'
       : '/',
   routes: routerConfig,

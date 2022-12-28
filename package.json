@@ -4,8 +4,9 @@
   "type": "module",
   "scripts": {
     "biz-init": "ts-node-esm scripts/generateBizConfig.ts",
-    "start": "rm -rf ./src/pages/.DS_Store && yarn biz-init && cross-env APP_ENV=development max dev",
+    "start": "rm -rf ./src/pages/.DS_Store && yarn biz-init && cross-env NODE_ENV=development max dev",
     "build": "max build",
+    "build:pro": "yarn biz-init && cross-env NODE_ENV=production max build",
     "format": "prettier --cache --write .",
     "prepare": "husky install",
     "postinstall": "max setup",

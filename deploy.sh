@@ -9,7 +9,7 @@ rm -rf dist
 rm -rf ./src/pages/.DS_Store
 
 # 生成新的压缩文件
-yarn build
+yarn build:pro
 
 # 进入生成的文件夹
 cd dist
