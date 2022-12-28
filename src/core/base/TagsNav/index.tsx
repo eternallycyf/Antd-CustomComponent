@@ -5,7 +5,7 @@ import _ from 'lodash';
 import pathToRegexp from 'path-to-regexp';
 import React, { useEffect, useState } from 'react';
 import { history } from 'umi';
-import { RouteProps } from 'react-router';
+import { RouterProps } from 'react-router';
 import MenuTabs, { MenuTab } from './MenuTabs';
 const { homePage: homePagePath } = projectConfig;
 
@@ -23,7 +23,7 @@ function getMetaDataOfTab(
  * @param metaData
  * @param location
  */
-function setPathName(metaData: MenuItem, location: RouteProps['location']) {
+function setPathName(metaData: MenuItem, location: RouterProps['location']) {
   if (!metaData) return 'Error';
   if (metaData.multiple) {
     const title =
@@ -40,16 +40,17 @@ function routeTo(targetTab: MenuTab) {
 function addTab(newTab: MenuTab, activeTabs: MenuTab[]): any[] {
   // filter 过滤路由 为 '/' 的children, map 添加第一个 tab不可删除
   return [...activeTabs, newTab].map((item, index) => {
-    activeTabs.length === 0 && index === 0
-      ? { ...item, closeable: false }
-      : { ...item, closeable: true };
+    if (activeTabs.length === 0 && index === 0) {
+      return { ...item, closeable: false };
+    }
+    return { ...item, closeable: true };
   });
 }
 
 export interface PageTabsProps {
   children?: any;
   menuList: MenuItem[];
-  location: RouteProps['location'];
+  location: RouterProps['location'];
   breadcrumbNameMap: MenuItem;
 }
 

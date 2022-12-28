@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useImperativeHandle } from 'react';
 import { Cascader } from 'antd';
-import _ from 'lodash';
 import { IControlProps } from '@/typings';
 
 const CascadeControl: React.FC<IControlProps> = React.forwardRef(
@@ -8,6 +7,8 @@ const CascadeControl: React.FC<IControlProps> = React.forwardRef(
     const { dict } = controlProps;
     const { apiUrl, params, method } = fetchConfig;
     const [options, setoptions] = useState(dict);
+
+    useImperativeHandle(ref, () => ({}));
 
     // 加载远程数据
     const loadRemoteData = (selectedOptions: any) => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
 import { ConnectState } from '@/typings/connect';
 import { IButtonProps } from '@/typings';

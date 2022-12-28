@@ -17,7 +17,7 @@ import { MenuItem } from '@/typings';
  * @param routes
  * @returns
  */
-export const getBreadcrumbNameMap = (menuList: Object, routes: any[]) => {
+export const getBreadcrumbNameMap = (menuList: any, routes: any[]) => {
   const routerMap: any = {};
   const flattenMenuData = (data: any) => {
     data.forEach((menuItem: any) => {
@@ -109,6 +109,7 @@ export function getSubMenus(
       arr.push(...getSubMenus(pathname, item.children, temPath));
       return getSubMenus(pathname, item.children, temPath);
     }
+    return undefined;
   });
   return arr;
 }
@@ -135,7 +136,8 @@ export const getDefaultCollapsedSubMenus = (
  * @param routes
  * @returns
  */
-export const mergeMenuList = (menuList: MenuItem[], routes: any[]) => {
+export const mergeMenuList = (newMenuList: MenuItem[], routes: any[]) => {
+  let menuList = [...newMenuList];
   const merge = (data: MenuItem[], config: any) => {
     try {
       data.map((item: MenuItem) => {
@@ -164,6 +166,7 @@ export const mergeMenuList = (menuList: MenuItem[], routes: any[]) => {
             menuList = [...menuList, ...hideMenu];
           }
         }
+        return undefined;
       });
     } catch (error) {
       console.log(error);

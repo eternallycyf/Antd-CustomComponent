@@ -4,7 +4,7 @@ interface IFormatValues {
 declare const formatMessage: (
   { id }: { id: string },
   values?: IFormatValues,
-) => string;
+) => any;
 declare const getLocale: () => string;
 declare const setLocale: (lang: string) => string;
 declare class FormattedMessage extends React.Component<
@@ -18,8 +18,8 @@ declare class FormattedMessage extends React.Component<
 }
 
 declare module 'umi/locale' {
-  export const formatMessage: () => {};
-  export const setLocale: () => {};
-  export const getLocale: () => {};
-  export const FormattedMessage: () => {};
+  export const formatMessage: () => null;
+  export const setLocale: () => null;
+  export const getLocale: () => null;
+  export const FormattedMessage: () => null;
 }

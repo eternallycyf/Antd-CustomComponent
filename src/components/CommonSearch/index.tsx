@@ -68,6 +68,7 @@ const TooltipTag: React.ForwardRefRenderFunction<
         if (index !== -1) {
           return formList[index];
         }
+        return undefined;
       })
       .filter((item) => item);
 
@@ -119,7 +120,7 @@ const TooltipTag: React.ForwardRefRenderFunction<
             { text: '是', value: true },
             { text: '否', value: false },
           ]);
-          const selectRow = dict.find(
+          let selectRow = dict.find(
             (item: { [x: string]: any }) =>
               String(item['value']) === String(value),
           );
@@ -142,7 +143,7 @@ const TooltipTag: React.ForwardRefRenderFunction<
         if (!value) {
           tagList().splice(changedIndex, 1);
         } else {
-          tagList()[changedIndex].value! = value;
+          tagList()[changedIndex].value = value;
         }
       }
 

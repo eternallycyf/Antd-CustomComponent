@@ -13,7 +13,7 @@ export function getFieldComp({
   form,
   name,
   type = 'input',
-  initialValue,
+  initialValue: initValue,
   record = {},
   tableProps,
   arrayProps,
@@ -25,7 +25,7 @@ export function getFieldComp({
   format,
   ...otherProps
 }: FieldCompType) {
-
+  let initialValue = initValue;
   if (record && record[name] != null) {
     if (isEdit) {
       initialValue = dayjs(record[name], format);
@@ -123,7 +123,7 @@ export function getFieldComp({
 export const addEvent = (
   target: any,
   eventType: string,
-  callback: Function,
+  callback: () => void,
 ) => {
   if (target.addEventListener) {
     target.addEventListener(eventType, callback, false);

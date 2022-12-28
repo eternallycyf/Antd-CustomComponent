@@ -3,9 +3,7 @@ import React, {
   useEffect,
   useRef,
   useMemo,
-  Fragment,
   useCallback,
-  memo,
 } from 'react';
 import classNames from 'classnames';
 import Table from './MemoTable';

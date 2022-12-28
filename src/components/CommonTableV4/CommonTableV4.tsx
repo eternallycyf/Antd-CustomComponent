@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
 import { DownOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Menu, Popconfirm } from 'antd';
+import { Button, Dropdown, Popconfirm } from 'antd';
 import Table from './components/EnhancedTable';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -11,7 +11,6 @@ import BaseTable, { IBaseTableState } from './components/BaseTable';
 import TableBtn from '@/components/CommonTable/widgets/TableBtn';
 import AccessBtn from '@/components/AccessBtn';
 import styles from './index.less';
-import _ from 'lodash';
 
 class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
   static defaultProps = {
@@ -147,7 +146,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
                           data-code={code}
                           onConfirm={(e: any) => {
                             e.stopPropagation();
-                            onClick && onClick(record);
+                            if (onClick) onClick(record);
                           }}
                         >
                           <span
@@ -194,20 +193,20 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
                     </Button>
                   );
 
-                  return buttonType == 'delete' ? (
+                  return buttonType === 'delete' ? (
                     <AccessBtn key={index}>
                       <Popconfirm
                         title="确认删除该记录？"
                         data-code={code}
                         onConfirm={(e: any) => {
                           e.stopPropagation();
-                          onclick && onClick(record, e);
+                          if (onClick) onClick(record, e);
                         }}
                       >
                         {button}
                       </Popconfirm>
                     </AccessBtn>
-                  ) : text != '-' ? (
+                  ) : text !== '-' ? (
                     <AccessBtn key={index}>
                       {React.cloneElement(button, {
                         'data-code': code,
@@ -296,7 +295,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
 
     const selectOptions = onSelect
       ? {
-          type: selectType == 'radio' ? 'radio' : 'checkbox',
+          type: selectType === 'radio' ? 'radio' : 'checkbox',
           selectedRowkeys,
           columnWidth: 40,
           onChange: this.onSelectChange,

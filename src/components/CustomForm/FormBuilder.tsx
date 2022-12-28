@@ -1,7 +1,6 @@
 import React from 'react';
 import { Form } from 'antd';
 import { Row, Col, Button } from 'antd';
-import _ from 'lodash';
 import cx from 'classnames';
 import { CustomForm, FormControl, ModalType } from '@/typings';
 import { getFieldComp } from '@/core/helpers';
@@ -93,7 +92,7 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
       condition.forEach(({ regex = {}, action }: any) => {
         let isPassed = true; // 是否满足条件
         for (const key in regex) {
-          if ((regex[key]! = form.getFieldValue(key))) {
+          if (regex[key] !== form.getFieldValue(key)) {
             isPassed = false;
           }
         }
@@ -113,7 +112,7 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
     return { hide, disabled };
   };
 
-  const ComponentRow = type == 'inline' ? PlainComp : Row;
+  const ComponentRow = type === 'inline' ? PlainComp : Row;
   const ComponentCol = type === 'inline' ? PlainComp : Col;
   const cls = cx(styles['custom-form'], className, {
     [styles['form-inline']]: type === 'inline',
@@ -238,17 +237,18 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
             </item.WrappedComponent>
           );
         }
+        return null;
       })}
 
       {children
         ? React.Children.map(
-          children as any,
-          (child: React.ReactElement<any>, index) => {
-            return React.cloneElement(child, {
-              size: child.props.size || 'small',
-            });
-          },
-        )
+            children as any,
+            (child: React.ReactElement<any>, index) => {
+              return React.cloneElement(child, {
+                size: child.props.size || 'small',
+              });
+            },
+          )
         : null}
 
       {modalType === ModalType.normal && (

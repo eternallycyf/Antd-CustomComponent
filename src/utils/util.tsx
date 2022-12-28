@@ -44,7 +44,8 @@ export function formatColumn(data: any[]) {
     };
 
     if (!item.render) {
-      item.render = (text: any) => {
+      item.render = (newText: any) => {
+        let text = newText;
         if (item.dict) {
           text = getDictMap(item.dict)[text];
         }
@@ -59,7 +60,8 @@ export function formatColumn(data: any[]) {
     }
 
     if (item.ellipsis) {
-      item.render = (text: any) => {
+      item.render = (newText: any) => {
+        let text = newText;
         text = text == null ? '--' : text;
         return options.ellipsisType === 'line' ? (
           <Ellipsis tooltip={true} lines={options.lines}>
@@ -108,7 +110,7 @@ export const formatParams = (param: object, format: string = 'YYYYMMDD') => {
 export const handleDownload = (
   searchParams: any,
   options = { url: '', fileName: '' },
-  callback?: Function,
+  callback?: () => void,
 ) => {
   exportFile(options.url, searchParams).then((response: any) => {
     response.blob().then((blob: Blob) => {

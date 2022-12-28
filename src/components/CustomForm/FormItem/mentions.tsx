@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { Mentions } from 'antd';
-import _ from 'lodash';
 import debounce from 'lodash/debounce';
 import request from '@/utils/request';
 import { IControlProps } from '@/typings';
@@ -16,6 +15,8 @@ const MentionsControl: React.FC<IControlProps> = React.forwardRef(
     const [data, setData] = useState(dict);
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(false);
+
+    useImperativeHandle(ref, () => ({}));
 
     // 请求数据
     useEffect(() => {

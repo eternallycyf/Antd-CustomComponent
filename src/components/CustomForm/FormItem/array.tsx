@@ -1,7 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useImperativeHandle } from 'react';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Row, Col, Button } from 'antd';
-import _ from 'lodash';
 import { IControlProps } from '@/typings';
 import { getFieldComp } from '@/core/helpers';
 
@@ -12,6 +11,8 @@ const ArrayControl: React.FC<IControlProps> = React.forwardRef(
     const { getFieldValue } = form;
     const { columns, rowKey = 'id' } = arrayProps;
     const dataSource = getFieldValue(name); // [{ name: '1', age: '11' }]
+
+    useImperativeHandle(ref, () => ({}));
 
     // 新增
     const handleAdd = () => {

@@ -19,7 +19,7 @@ export interface IBaseTableState {
   dataSource: any[];
   selectedRowkeys: any[];
   selectedRows: any[];
-  dev: Boolean;
+  dev: boolean;
 }
 const DEFAULT_OBSERVE_PARAMS = {
   childList: true, // 子节点的变动（新增、删除或者更改）
@@ -171,7 +171,7 @@ class BaseTable<
         ...item,
         index: (currentPage - 1) * pageSize + (index + 1),
         rowKey:
-          (typeof rowKey == 'function' ? rowKey(item, index) : item[rowKey]) ||
+          (typeof rowKey === 'function' ? rowKey(item, index) : item[rowKey]) ||
           (currentPage - 1) * pageSize + (index + 1),
       }));
       dataSource = dataHandler ? dataHandler(dataSource, data) : dataSource;

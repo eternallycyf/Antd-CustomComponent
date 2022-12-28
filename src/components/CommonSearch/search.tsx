@@ -79,7 +79,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
           (format && value.format(format)) || value.format(yearFormat);
       }
 
-      if (sourceItem.type == 'quarter') {
+      if (sourceItem.type === 'quarter') {
         data[key] =
           (format && value.format(format)) || value.format(quarterFormat);
       }

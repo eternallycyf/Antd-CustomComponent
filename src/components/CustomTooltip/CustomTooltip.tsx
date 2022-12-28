@@ -83,8 +83,6 @@ type ICustomTooltipProps = IBaseProps & ISingleRowProps & IRowProps;
 type Iprops = {
   [key in keyof ICustomTooltipProps]: ICustomTooltipProps[keyof ICustomTooltipProps];
 };
-export const IProps = <T,>(props: Iprops) => <></>;
-export const IRowProps = <T,>(props: RowProps) => <></>;
 
 const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
   const [isExpand, setIsExpand] = useState<boolean>(false);
@@ -207,13 +205,13 @@ const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
   };
   // 如果是元素 Paragraph 组件设置row为1时候 只显示... 需要手动设置为 rows >= 2
   const customRows = isTextToObject
-    ? typeof row.rows == 'number'
+    ? typeof row.rows === 'number'
       ? row.rows + 1
       : 2
     : row.rows;
   // 处理 初始化的闪烁问题 设置最大高度 为一行的高度, 溢出隐藏 当点击时恢复
   const customRowsColStyles = {
-    maxHeight: overflowStatus == 'hidden' ? row.lineMaxHeight : '100%',
+    maxHeight: overflowStatus === 'hidden' ? row.lineMaxHeight : '100%',
     overflow: overflowStatus,
     paddingRight: row.isRight ? 46 : 0,
   };
@@ -302,13 +300,13 @@ const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
     </Col>
   );
 
-  if (row.rows == 'autoSize' && isTextToObject) {
+  if (row.rows === 'autoSize' && isTextToObject) {
     console.log(
       '当传入的text不是string类型时, 建议使用row={{ rows:1, expend: true }}',
     );
   }
-  if (row.rows == 'autoSize') return AutoSizeParagraph;
-  if (row.rows > 1 && row.expend == true) return CustomRowExpendParagraph;
+  if (row.rows === 'autoSize') return AutoSizeParagraph;
+  if (row.rows > 1 && row.expend === true) return CustomRowExpendParagraph;
   if (row.rows > 1 && !row.expend) return CustomRowNotExpendParagraph;
   if (isTextToObject) {
     console.log('只有当 row.rows >= 2 的时候才可以配置 row.expend');

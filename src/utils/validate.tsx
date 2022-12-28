@@ -82,7 +82,12 @@ export default class FormRules {
     return this;
   }
 
-  public string(min?: number, max?: number, message: string = ''): FormRules {
+  public string(
+    min?: number,
+    max?: number,
+    newMessage: string = '',
+  ): FormRules {
+    let message = newMessage;
     message =
       message || FormRules.formatMessageByLimit(min, max, '字符串', '长度');
     this.rules.push({
@@ -119,7 +124,12 @@ export default class FormRules {
     return this;
   }
 
-  public number(min?: number, max?: number, message: string = ''): FormRules {
+  public number(
+    min?: number,
+    max?: number,
+    newMessage: string = '',
+  ): FormRules {
+    let message = newMessage;
     message = message || FormRules.formatMessageByLimit(min, max, '数字', '值');
     this.rules.push({
       type: FormRuleType.number,
@@ -131,7 +141,8 @@ export default class FormRules {
     return this;
   }
 
-  public integer(min?: number, max?: number, message = ''): FormRules {
+  public integer(min?: number, max?: number, newMessage = ''): FormRules {
+    let message = newMessage;
     message = message || FormRules.formatMessageByLimit(min, max, '整数', '值');
     this.rules.push({
       type: FormRuleType.integer,

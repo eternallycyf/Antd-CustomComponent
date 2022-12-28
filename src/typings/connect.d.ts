@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { RouteComponentProps } from 'react-router';
+import { RouterProps } from 'react-router';
 import { FormInstance } from 'antd/es/form';
-import { ILoginModelState } from '@/models/login';
-import { IGlobalModelState } from '@/models/global';
+import { ILoginModelState } from '../models/login';
+import { IGlobalModelState } from '../models/global';
 
 export interface Loading {
   global: boolean;
@@ -22,8 +22,8 @@ export interface ConnectState {
 /**
  * @type T: Params matched in dynamic routing
  */
-export interface ConnectProps<P extends { [K in keyof P]?: string } = {}>
-  extends Partial<RouteComponentProps<any>> {
+export interface ConnectProps<P extends { [K in keyof P]?: string } = any>
+  extends Partial<RouterProps> {
   dispatch?: Dispatch;
   form?: FormInstance;
 }
@@ -53,6 +53,6 @@ declare global {
   interface Window {
     closeTab: (pathname: string, event?: any) => void;
     refreshTab: (pathname: any) => void;
-    tabChildren: {};
+    tabChildren: any;
   }
 }

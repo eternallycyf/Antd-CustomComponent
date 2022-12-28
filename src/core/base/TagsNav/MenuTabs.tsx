@@ -9,7 +9,7 @@ import { Dropdown, Menu, MenuProps, Tabs, TabsProps } from 'antd';
 import cx from 'classnames';
 import { connect } from 'dva';
 import React from 'react';
-import { RouteProps } from 'react-router';
+import { RouterProps } from 'react-router';
 import styles from './index.less';
 const { homePage: homePagePath } = projectConfig;
 const { TabPane } = Tabs;
@@ -26,7 +26,7 @@ export interface MenuTab {
   key: string;
   refresh?: boolean;
   closeable?: boolean;
-  location?: RouteProps['location'];
+  location?: RouterProps['location'];
   extraProperties?: any;
 }
 

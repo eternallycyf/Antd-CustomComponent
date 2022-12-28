@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { TreeSelect } from 'antd';
 import _ from 'lodash';
 import { IControlProps } from '@/typings';
@@ -34,6 +34,8 @@ const treeSelectControl: React.FC<ISelectTree> = React.forwardRef(
     } = fetchConfig;
 
     const [treeData, setTreeData] = useState(treeList);
+
+    useImperativeHandle(ref, () => ({}));
 
     const fetchData = _.debounce(async (value = '') => {
       const field = method.toLowerCase() === 'get' ? 'params' : 'data';

@@ -1,5 +1,4 @@
-import React, { useState, Fragment } from 'react';
-import _ from 'lodash';
+import React, { useState, Fragment, useImperativeHandle } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Upload, message, Modal } from 'antd';
 import { IControlProps } from '@/typings';
@@ -54,6 +53,8 @@ const UploadControl: React.FC<IUploadProps> = React.forwardRef(
     const [previewImage, setPreviewImage] = useState('');
     const [fileList, setFileList] = useState([...files]);
     const handleCancel = () => setPreviewVisible(false);
+
+    useImperativeHandle(ref, () => ({}));
 
     const handlePreview = async (file: any) => {
       if (!file.url && !file.preview) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { Select, Spin } from 'antd';
 import _ from 'lodash';
 import request from '@/utils/request';
@@ -67,6 +67,8 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
         setDataSource(dict);
     }, [dict]);
 
+    useImperativeHandle(ref, () => ({}));
+
     const fetchData = _.debounce(async (value = '') => {
       setFetching(true);
 
@@ -100,9 +102,9 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
 
     const handleChange = (value: any, event: any) => {
       const valItem = dataSource.find(
-        (item: any) => String(item[valueKey]) == String(value),
+        (item: any) => String(item[valueKey]) === String(value),
       );
-      onChange && onChange(value, event, valItem);
+      if (onChange) onChange(value, event, valItem);
     };
 
     const props: any = {
@@ -119,7 +121,7 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
 
     const handleClick = () => {
       if (!params && !firstFetch) {
-        if (dataSource.length == 0) {
+        if (dataSource.length === 0) {
           const value = record ? record[editValue] || '' : '';
           fetchData(value);
         }

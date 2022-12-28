@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useImperativeHandle } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
 import {
   AutoComplete,
@@ -36,11 +36,14 @@ const SimpleControl: React.FC<ISimpleControlProps> = React.forwardRef(
       dict,
       defaultVal,
       Component: CustomComponent,
-      ...controlProps
+      ...newControlProps
     }: any,
     ref,
   ) => {
     let Component: any;
+    let controlProps = { ...newControlProps } || {};
+
+    useImperativeHandle(ref, () => ({}));
 
     switch (type) {
       case 'date':
@@ -104,7 +107,7 @@ const SimpleControl: React.FC<ISimpleControlProps> = React.forwardRef(
           ))}
         </AutoComplete>
       );
-    } else if (type == 'checkbox') {
+    } else if (type === 'checkbox') {
       return (
         <CheckboxGroup {...controlProps}>
           {dict.map((dic: any) => (
@@ -114,7 +117,7 @@ const SimpleControl: React.FC<ISimpleControlProps> = React.forwardRef(
           ))}
         </CheckboxGroup>
       );
-    } else if (type == 'radio') {
+    } else if (type === 'radio') {
       let RadioComp: any = Radio;
       if (controlProps.buttonStyle === 'solid') {
         RadioComp = Radio.Button;

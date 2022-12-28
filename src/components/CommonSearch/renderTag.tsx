@@ -3,7 +3,7 @@ import { Tooltip } from 'antd';
 import { CloseOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
-export default function renderTag({
+export default function RenderTag({
   item,
   index,
   handleDeleteTag,
@@ -34,7 +34,7 @@ export default function renderTag({
 
   const isMultiple = mode === 'multiple' || controlProps.mode === 'multiple';
   let values = [];
-  if (typeof item.value == 'string') {
+  if (typeof item.value === 'string') {
     values = item.value.split(',');
   } else if (Array.isArray(item.value)) {
     values = item.value;

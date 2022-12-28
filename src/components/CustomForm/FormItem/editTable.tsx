@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useImperativeHandle } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Form } from 'antd';
 import { Button } from 'antd';
-import _ from 'lodash';
 import CommonTable from '@/components/CommonTableV4/CommonTableV4';
 import { IControlProps } from '@/typings';
 import { getFieldComp } from '@/core/helpers';
@@ -15,6 +14,8 @@ const EditTableControl: React.FC<IControlProps> = React.forwardRef(
     const { getFieldValue } = form;
     const { rowKey, columns, operateList, ...otherTableProps } = tableProps;
     const dataSource = getFieldValue(name); // [{ id: '1', name: '1', age: '11' }]
+
+    useImperativeHandle(ref, () => ({}));
 
     /**
      * 新增行记录

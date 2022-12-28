@@ -1,8 +1,7 @@
 import React from 'react';
-import { message, Modal } from 'antd';
-import { deleteAction, postAction } from '@/services/global';
+import { message } from 'antd';
+import { postAction } from '@/services/global';
 import CommonSearch from '../CommonSearch';
-import CommonTable from '../CommonTableV4/CommonTableV4';
 
 export interface IBaseState {
   loading?: any;
@@ -78,7 +77,7 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
     const res = await postAction(deleteUrl, params);
     this.setState({ loading: false });
 
-    if (res.code == 200) {
+    if (res.code === 200) {
       message.success(res.msg);
       if (handleRefreshPage) handleRefreshPage();
     } else {

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import BraftEditor from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
 import MaxLength from 'braft-extensions/dist/max-length';
@@ -35,8 +35,10 @@ interface IBraftEditorProps extends IControlProps {
  * 编辑器首页：https://braft.margox.cn
  */
 const MyBraftEditor: React.FC<IBraftEditorProps> = React.forwardRef(
-  ({ form, valueType, extendControlKey, onChange, ...restProps }) => {
+  ({ form, valueType, extendControlKey, onChange, ...restProps }, ref) => {
     const editorRef = useRef();
+
+    useImperativeHandle(ref, () => ({}));
 
     // 处理文本黏贴
     const handlePastedText = (
@@ -47,18 +49,19 @@ const MyBraftEditor: React.FC<IBraftEditorProps> = React.forwardRef(
     ) => {
       // 在此处来自行处理HTML内容之类的
       const stripedHTMLStringFunc = (HTML: any) => {
+        let newHTML = HTML;
         if (HTML) {
-          HTML = HTML.replace(
+          newHTML = newHTML.replace(
             /font-size:(.+?)(pt)/g,
             ($0: any, $1: any, $2: any) => {
-              $1 = parseInt($1, 10);
-              $2 = $2.replace('pt', 'px');
-              return `font-size: ${$1}${$2}`;
+              let new_$1 = parseInt($1, 10);
+              let new_$2 = $2.replace('pt', 'px');
+              return `font-size: ${new_$1}${new_$2}`;
             },
           );
 
-          HTML = HTML.replace(/ptpx/g, 'px');
-          return HTML;
+          newHTML = newHTML.replace(/ptpx/g, 'px');
+          return newHTML;
         }
         return undefined;
       };
@@ -90,6 +93,7 @@ const MyBraftEditor: React.FC<IBraftEditorProps> = React.forwardRef(
       if (key !== -1) {
         return (CustomControls as any)[customControlKeys[index]];
       }
+      return undefined;
     });
 
     return (

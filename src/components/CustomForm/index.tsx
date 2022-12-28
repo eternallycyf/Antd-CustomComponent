@@ -1,6 +1,6 @@
 import React, { useImperativeHandle, useState } from 'react';
 import { Form } from 'antd';
-import { Drawer, message, Modal, Table } from 'antd';
+import { Drawer, message, Modal } from 'antd';
 import { postAction } from '@/services/global';
 import FormBuilder from '@/components/CustomForm/FormBuilder';
 import { ModalType } from '@/typings';
