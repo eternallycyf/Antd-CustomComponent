@@ -1,7 +1,6 @@
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import _ from 'lodash';
 import cx from 'classnames';
-import '@/assets/styles/compatible.css';
 import {
   ReloadOutlined,
   SearchOutlined,

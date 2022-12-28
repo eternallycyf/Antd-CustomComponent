@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form } from 'antd';
-import '@/assets/styles/compatible.css';
 import { Row, Col, Button } from 'antd';
 import _ from 'lodash';
 import cx from 'classnames';
