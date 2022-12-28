@@ -1,9 +1,21 @@
-//本文件是自动生成，请勿修改
-import Access from '../pages/Access/routes';
-import Home from '../pages/Home/routes';
+import Routes from "./routes";
+const flatMap: any = (arr: any) =>
+  Array.isArray(arr) ? arr.reduce((a, b) => [...a, ...flatMap(b)], []) : [arr];
 
-export default [
-  Access,
-  Home
-]
+const Router = [
+  {
+    path: "/",
+    hideInPanelTab: true,
+  },
+  ...flatMap(Routes),
+  {
+    path: "*",
+    hideInPanelTab: true,
+  },
+];
 
+export default Router;
+
+// 递归获取树形路由
+// function getRoutes(routes: any) {
+//   return routes.reduce((arr: any, route: any) => {

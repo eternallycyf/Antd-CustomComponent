@@ -1,17 +1,9 @@
-import Routes from './routes';
-const flatMap: any = (arr: any) =>
-  Array.isArray(arr) ? arr.reduce((a, b) => [...a, ...flatMap(b)], []) : [arr];
+//本文件是自动生成，请勿修改
+import Access from '../pages/Access/routes'; 
+import Home from '../pages/Home/routes'; 
 
-const Router: any[] = [
-  {
-    path: '/',
-    hideInPanelTab: true,
-  },
-  ...flatMap(Routes),
-  {
-    path: '*',
-    hideInPanelTab: true,
-  },
-];
+export default [
+  Access,
+  Home,
+]
 
-export default Router;

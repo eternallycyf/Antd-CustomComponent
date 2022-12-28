@@ -1,9 +1,10 @@
 {
   "private": true,
   "author": "eternallycyf <a969475322@gmail.com>",
+  "type": "module",
   "scripts": {
-    "biz-init": "ts-node ./scripts/generateBizConfig.ts",
-    "start": "rm -rf ./src/pages/.DS_Store && cross-env APP_ENV=development max dev",
+    "biz-init": "ts-node-esm scripts/generateBizConfig.ts",
+    "start": "rm -rf ./src/pages/.DS_Store && yarn biz-init && cross-env APP_ENV=development max dev",
     "build": "max build",
     "format": "prettier --cache --write .",
     "prepare": "husky install",

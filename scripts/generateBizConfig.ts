@@ -1,7 +1,12 @@
-const fs = require("fs");
-const path = require("path");
-const chalk = require("chalk");
-const ejs = require("ejs");
+import fs from "fs";
+import path from "path";
+import chalk from "chalk";
+import ejs from "ejs";
+import url from 'url';
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 type IBusinessList = { name: string; path: string }[];
 function getAllBiz(source: string): IBusinessList {
   if (!fs.existsSync(source)) {
@@ -28,11 +33,11 @@ const templatePath: string = path.resolve(
 
 console.log(chalk.green(`配置插件...`));
 
-const template: Buffer = fs.readFileSync(templatePath, "utf8");
-const bizList: IBusinessList = getAllBiz(bizPath);
+const template = fs.readFileSync(templatePath, "utf8");
+const bizList = getAllBiz(bizPath);
 const result = ejs.render(template, { plugins: bizList });
 
-fs.writeFile(targetFile, result, (err: NodeJS.ErrnoException) => {
+fs.writeFile(targetFile, result, (err) => {
   if (err) {
     console.error("write file error", err);
   } else {
