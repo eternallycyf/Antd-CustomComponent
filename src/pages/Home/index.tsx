@@ -82,6 +82,7 @@ class Activity extends BaseComponent<any, any> {
           ref={this.formRef}
           modalConf={{ width: 800 }}
           formList={getFormList(this)}
+          defaultLayout={{ labelCol: { span: 5 }, wrapperCol: { span: 19 } }}
           title="营销活动"
           modalType={ModalType.modal}
           formatValues={this.handleFormatValues}

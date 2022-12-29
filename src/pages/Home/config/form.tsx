@@ -23,7 +23,7 @@ export const getFormList = (
       name: 'code',
       label: '活动编码',
       type: 'select',
-      col: { span: 8 },
+      col: { span: 12 },
       layout,
       onSelect: (val) => console.log(val),
       formFieldProps: {
@@ -42,7 +42,7 @@ export const getFormList = (
       name: 'name',
       label: '活动名称',
       type: 'input',
-      col: { span: 8 },
+      col: { span: 12 },
       layout,
       formFieldProps: {
         rules: FormRules.withName('活动名称').isRequired().create(),
