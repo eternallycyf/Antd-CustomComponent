@@ -29,7 +29,7 @@ export const getSearches = (
       label: '活动类型',
       type: 'radio',
       dict: STATUS_DICT,
-      initialValue: STATUS_DICT[0]['value'],
+      // initialValue: STATUS_DICT[0]['value'],
     },
     {
       name: 'activityName2',

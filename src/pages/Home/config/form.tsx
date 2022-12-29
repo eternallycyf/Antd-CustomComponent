@@ -20,26 +20,22 @@ export const getFormList = (
 ): ISearchesType => {
   return [
     {
-      name: 'code',
+      name: 'activityCode',
       label: '活动编码',
-      type: 'select',
+      type: 'input',
       col: { span: 12 },
       layout,
-      onSelect: (val) => console.log(val),
+      allowClear: true,
       formFieldProps: {
         rules: FormRules.withName('活动编码').isRequired().create(),
       },
-      dict: [
-        { text: '活动1', value: '1' },
-        { text: '活动2', value: '2' },
-      ],
       // dictConfig: { textKey: 'name', valueKey: 'code' },
       itemProps: {
         ...ITEM_PROPS,
       },
     },
     {
-      name: 'name',
+      name: 'activityName',
       label: '活动名称',
       type: 'input',
       col: { span: 12 },

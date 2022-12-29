@@ -221,6 +221,7 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
       form={form}
       onFinish={onFinish}
       onFieldsChange={onFieldsChange}
+      preserve={false}
       {...formProps}
       {...(type === 'inline' && { layout: 'inline' })}
     >

@@ -6,11 +6,25 @@ import FormBuilder from '@/components/CustomForm/FormBuilder';
 import { ModalType } from '@/typings';
 import _ from 'lodash';
 
+export type formatValuesType = (
+  /**@param {any} [values={}]  form.getFieldsValue()获取的表单值*/
+  values: any,
+  /**@param {any} [record={}]  table当前行的record*/
+  record: any,
+  /**
+   * @param {'add_submit' | 'edit_submit' | 'edit_echo'}  [type=any]
+   * @description add_submit 添加模态框确定前触发
+   * @description edit_submit 编辑模态框确定前触发
+   * @description edit_echo 编辑模态框回显前触发
+   */
+  type: 'add_submit' | 'edit_submit' | 'edit_echo',
+) => any;
+
 interface IProps {
   title?: string; // 弹窗标题
   modalConf?: any;
   modalType?: ModalType; // modal类型
-  formatValues?: (values: any, isEdit: any) => any;
+  formatValues?: formatValuesType;
   isShowTitlePrefix?: string;
   [propName: string]: any;
 }
@@ -50,8 +64,14 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
   };
 
   const handleEdit = (record: any) => {
+    const values = form.getFieldsValue();
     setLoading(false);
-    setRecord(record);
+    if (formatValues) {
+      const formatRecord = formatValues(values, record, 'edit_echo');
+      setRecord(formatRecord);
+    } else {
+      setRecord(record);
+    }
     setIsEdit(true);
     setVisible(true);
   };
@@ -75,7 +95,9 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
     const values = form.getFieldsValue();
     form.validateFields().then(async () => {
       setLoading(true);
-      const data = formatValues ? formatValues(values, record) : values;
+      const data = formatValues
+        ? formatValues(values, record, isEdit ? 'edit_submit' : 'add_submit')
+        : values;
       const { action, callback, failCallback, completeCallback } = onSubmit;
       try {
         const res = _.isString(action)

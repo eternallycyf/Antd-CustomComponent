@@ -1,4 +1,5 @@
-import { get, set, remove } from 'js-cookie';
+import * as JsCookie from 'js-cookie';
+const { get, set, remove } = JsCookie.default;
 
 const cookieKey = 'admin-token';
 

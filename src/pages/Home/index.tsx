@@ -10,6 +10,7 @@ import { history } from 'umi';
 import { saveActivity } from './service';
 import { ModalType } from '@/typings';
 import { getFormList } from './config/form';
+import { formatValuesType } from '@/components/CustomForm';
 const { apiPrefixMock } = projectConfig;
 
 class Activity extends BaseComponent<any, any> {
@@ -17,7 +18,6 @@ class Activity extends BaseComponent<any, any> {
     super(props);
     this.state = {
       searchParams: {
-        activityType: 0,
         aaaaaa: 1,
       },
     };
@@ -30,11 +30,12 @@ class Activity extends BaseComponent<any, any> {
   // 打开活动报名列表页面
   handleOpenRegList = (record: any) => {};
 
-  handleFormatValues = (val, record) => {
-    console.log(val, record);
-    return {
-      val,
-    };
+  handleFormatValues: formatValuesType = (values, record, type) => {
+    console.log(values, record, type);
+    if (type === 'edit_echo') {
+      return record;
+    }
+    return { values };
   };
 
   render() {

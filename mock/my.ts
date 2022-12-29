@@ -1,3 +1,15 @@
+//@ts-nocheck
+import mockjs from 'mockjs';
+
+const MockSearchKey = (req, key, wantKey, type = 'query') => {
+  const newkey = req[type]?.[key];
+  if (newkey) {
+    return newkey;
+  } else {
+    return wantKey;
+  }
+};
+
 export default {
   'GET /api/getMockMessage': {
     code: 200,
@@ -19,69 +31,32 @@ export default {
     ],
   },
   'GET /getActivityList': (req, res) => {
-    if (req.query.page === '1') {
-      res.send({
-        code: 200,
-        data: {
-          list: [
-            {
-              // 活动状态(0 待发布 1进行中 2手动结束 3自动结束)
-              activeStatus: 0,
-              // 活动编码
-              activityCode: 'HD-CS248',
-              activityEndTime: '2022-01-30T04:32:46.516Z',
-              // 活动名称
-              activityName: 'N站上新-站点用户满减活动',
-              activityStartTime: '2022-01-14T04:32:46.516Z',
-              // 优惠类型 0 满折 1满减 2立减
-              activityType: 0,
-            },
-          ],
-          page: 1,
-          pageSize: 1,
-          total: 31,
-        },
-        message: 'string',
-        success: true,
-        unSuccess: true,
-      });
-    }
-
-    if (req.query.page === '2') {
-      res.send({
-        code: 200,
-        data: {
-          list: [
-            {
-              // 活动状态(0 待发布 1进行中 2手动结束 3自动结束)
-              activeStatus: 1,
-              // 活动编码
-              activityCode: '阿斯达速度',
-              activityEndTime: '2022-01-30T04:32:46.516Z',
-              // 活动名称
-              activityName: 'N站上新22222222',
-              activityStartTime: '2022-01-10T04:32:46.516Z',
-              // 优惠类型 0 满折 1满减 2立减
-              activityType: 1,
-            },
-          ],
-          page: 2,
-          pageSize: 1,
-          total: 31,
-        },
-        message: 'string',
-        success: true,
-        unSuccess: true,
-      });
-    }
-
     res.send({
       code: 200,
       data: {
-        list: [],
-        page: 1,
-        pageSize: 1,
-        total: 31,
+        ...mockjs.mock({
+          'list|30': [
+            {
+              name: '@city',
+              'value|1-100': 50,
+              'type|0-2': 1,
+              'activeStatus|0-2': 1,
+              activityCode: '@guid',
+              activityName: MockSearchKey(req, 'activityName', '@ctitle'),
+              type: req.query?.activityType,
+              [`activityType|${MockSearchKey(req, 'activityType', '0-2')}`]: 1,
+              activityStartTime: '@datetime',
+              activityEndTime: '@datetime',
+              'activityStatus|0-2': 1,
+              activityDesc: '@cparagraph',
+              activityRule: '@cparagraph',
+              activityRuleDesc: '@cparagraph',
+            },
+          ],
+        }),
+        page: req.query.page,
+        pageSize: 30,
+        total: 3000,
       },
       message: 'string',
       success: true,
@@ -92,30 +67,10 @@ export default {
     res.send({
       code: 200,
       data: 'success',
-      msg: '编辑成功',
+      msg: `${req.body.isEdit ? '编辑' : '新增'}成功`,
       success: true,
       unSuccess: true,
     });
-
-    if (req.body.isEdit) {
-      res.send({
-        code: 200,
-        data: 'success',
-        msg: '编辑成功',
-        success: true,
-        unSuccess: true,
-      });
-    }
-
-    if (!req.body.isEdit) {
-      res.send({
-        code: 200,
-        data: 'success',
-        msg: '新增成功',
-        success: true,
-        unSuccess: true,
-      });
-    }
   },
 
   'POST /deleteActivityList': (req, res) => {
