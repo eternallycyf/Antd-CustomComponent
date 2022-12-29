@@ -26,6 +26,7 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
     isShowTitlePrefix = true,
     isTable,
     otherRender,
+    handleSubmitPreCallBack,
     ...otherProps
   } = props;
   const [visible, setVisible] = useState(false);
@@ -42,28 +43,37 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
   }));
 
   const handleAdd = (defaultProps: any) => {
+    setLoading(false);
     setRecord(defaultProps);
     setIsEdit(false);
     setVisible(true);
   };
 
   const handleEdit = (record: any) => {
+    setLoading(false);
     setRecord(record);
     setIsEdit(true);
     setVisible(true);
   };
 
   const handleCancel = () => {
+    setLoading(false);
     setVisible(false);
     setRecord(null);
     form.resetFields();
     if (onCancel) onCancel();
   };
 
-  const handleSubmit = (e: any) => {
+  const handleFinish = async (e: any) => {
+    if (handleSubmitPreCallBack) {
+      const result = await handleSubmitPreCallBack();
+      console.log(result);
+      if (Object.keys(result).length > 0) return false;
+    }
+
     e.preventDefault();
     const values = form.getFieldsValue();
-    form.validateFields().catch(async () => {
+    form.validateFields().then(async () => {
       setLoading(true);
       const data = formatValues ? formatValues(values, record) : values;
       const { action, callback, failCallback, completeCallback } = onSubmit;
@@ -71,7 +81,7 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
         const res = _.isString(action)
           ? await postAction(action, data)
           : await action(data, isEdit);
-        if (res.code === 0) {
+        if (res.code === 200) {
           const chinesePattern: RegExp = /^[\u4e00-\u9fa5]+$/;
           const messageStr: string = chinesePattern.test(res.msg)
             ? res.msg
@@ -106,7 +116,7 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
       loading={loading}
       modalType={modalType}
       onCancel={handleCancel}
-      onSubmit={handleSubmit}
+      onFinish={handleFinish}
       {...otherProps}
     />
   );
@@ -125,7 +135,7 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
       Component = Modal;
       modalConf = {
         width: 800,
-        onOk: handleSubmit,
+        onOk: handleFinish,
         onCancel: handleCancel,
         confirmLoading: loading,
         ...modalConf,

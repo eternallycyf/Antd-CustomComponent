@@ -7,7 +7,7 @@ import { searches } from './hookConfig/search';
 import projectConfig from '@/config/projectConfig';
 import _ from 'lodash';
 import { history } from 'umi';
-import { getPreferentialList } from './service';
+import {} from './service';
 const { apiPrefixMock } = projectConfig;
 
 const Activity = () => {
@@ -51,7 +51,7 @@ const Activity = () => {
       },
     ],
     urls: {
-      listUrl: `/admin-site/marketing/activity/activityList`,
+      listUrl: `/getActivityList`,
     },
     dataPath: 'data.list',
     totalPath: 'data.total',

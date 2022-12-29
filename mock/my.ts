@@ -1,24 +1,24 @@
 export default {
-  "GET /api/getMockMessage": {
+  'GET /api/getMockMessage': {
     code: 200,
-    msg: "请求成功",
+    msg: '请求成功',
     success: true,
     data: [
       {
-        label: "测试1",
+        label: '测试1',
         value: 1,
       },
       {
-        label: "测试2",
+        label: '测试2',
         value: 2,
       },
       {
-        label: "测试3",
+        label: '测试3',
         value: 3,
       },
     ],
   },
-  'GET /admin-site/marketing/activity/activityList': (req, res) => {
+  'GET /getActivityList': (req, res) => {
     if (req.query.page === '1') {
       res.send({
         code: 200,
@@ -70,6 +70,60 @@ export default {
           total: 31,
         },
         message: 'string',
+        success: true,
+        unSuccess: true,
+      });
+    }
+
+    res.send({
+      code: 200,
+      data: {
+        list: [],
+        page: 1,
+        pageSize: 1,
+        total: 31,
+      },
+      message: 'string',
+      success: true,
+      unSuccess: true,
+    });
+  },
+  'POST /updateActivityList': (req, res) => {
+    res.send({
+      code: 200,
+      data: 'success',
+      msg: '编辑成功',
+      success: true,
+      unSuccess: true,
+    });
+
+    if (req.body.isEdit) {
+      res.send({
+        code: 200,
+        data: 'success',
+        msg: '编辑成功',
+        success: true,
+        unSuccess: true,
+      });
+    }
+
+    if (!req.body.isEdit) {
+      res.send({
+        code: 200,
+        data: 'success',
+        msg: '新增成功',
+        success: true,
+        unSuccess: true,
+      });
+    }
+  },
+
+  'POST /deleteActivityList': (req, res) => {
+    if (req.body.idDel) {
+      res.send({
+        code: 200,
+        data: 'success',
+        msg: '删除成功',
         success: true,
         unSuccess: true,
       });

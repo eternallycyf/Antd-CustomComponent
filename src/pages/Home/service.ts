@@ -1,7 +1,11 @@
 import { request } from '@umijs/max';
 
-export function getPreferentialList(params: any) {
-  return request('/api/admin-site/marketing/activity/activityList', {
-    params,
+export function saveActivity(data: any, isEdit: boolean) {
+  return request('/updateActivityList', {
+    method: 'POST',
+    data: {
+      ...data,
+      isEdit,
+    },
   });
 }

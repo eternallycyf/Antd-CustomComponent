@@ -1,6 +1,6 @@
 import React from 'react';
-import { message } from 'antd';
-import { postAction } from '@/services/global';
+import { message, Modal } from 'antd';
+import { deleteAction, postAction } from '@/services/global';
 import CommonSearch from '../CommonSearch';
 
 export interface IBaseState {
@@ -59,12 +59,12 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
   };
 
   handleAdd = (defaultProps: any) => {
-    const { handleAdd } = this.tableRef.current || {};
+    const { handleAdd } = this.formRef.current || {};
     if (handleAdd) handleAdd(defaultProps);
   };
 
   handleEdit = (record: any) => {
-    const { handleEdit } = this.tableRef.current || {};
+    const { handleEdit } = this.formRef.current || {};
     if (handleEdit) handleEdit(record);
   };
 
@@ -82,6 +82,40 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
       if (handleRefreshPage) handleRefreshPage();
     } else {
       message.error(res.msg);
+    }
+  };
+
+  handleBatchDelete = (deleteBatchUrl: string) => {
+    const { selectedRowKeys } = this.state;
+    const { handleRefreshPage, handleClearSelected } =
+      this.tableRef.current || {};
+
+    if (!deleteBatchUrl) {
+      return message.error('请设置 deleteBatchUrl 属性');
+    }
+    if (selectedRowKeys && selectedRowKeys.length <= 0) {
+      return message.error('请选择一条记录');
+    }
+
+    if (selectedRowKeys) {
+      const ids = selectedRowKeys.join(',');
+      Modal.confirm({
+        title: '确认删除',
+        content: '确认删除选中的记录吗？',
+        onOk: async () => {
+          this.setState({ loading: true });
+          const res = await deleteAction(deleteBatchUrl, { ids });
+          this.setState({ loading: false });
+
+          if (res.code === 200) {
+            message.success(res.msg);
+            if (handleRefreshPage) handleRefreshPage();
+            if (handleClearSelected) handleClearSelected();
+          } else {
+            message.error(res.msg);
+          }
+        },
+      });
     }
   };
 }

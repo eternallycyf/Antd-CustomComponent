@@ -185,6 +185,8 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
           defaultInlineWidth.default;
       }
 
+      if (hide) return null;
+
       return (
         <ComponentCol key={`col-${i}`} className={styles['col-item']} {...col}>
           <FormItem
@@ -216,6 +218,7 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
   return (
     <Form
       className={cls}
+      form={form}
       onFinish={onFinish}
       onFieldsChange={onFieldsChange}
       {...formProps}

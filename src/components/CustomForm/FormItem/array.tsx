@@ -89,7 +89,8 @@ const ArrayControl: React.FC<IControlProps> = React.forwardRef(
           size="small"
           style={{ width: '60%' }}
         >
-          <PlusOutlined />å 新增
+          <PlusOutlined />
+          新增
         </Button>
       </>
     );
