@@ -11,7 +11,7 @@ const MockSearchKey = (req, key, wantKey, type = 'query') => {
 };
 
 export default {
-  'GET /api/getMockMessage': {
+  'POST /getSelectDict': {
     code: 200,
     msg: '请求成功',
     success: true,

@@ -9,5 +9,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'warn',
     eqeqeq: 'warn',
     'no-case-declarations': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/ban-types': 'off',
   },
 };

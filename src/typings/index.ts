@@ -4,6 +4,43 @@ import { ColumnsType, TablePaginationConfig } from 'antd/lib/table';
 import { ButtonProps } from 'antd/lib/button';
 import React, { ReactNode } from 'react';
 import { FormInstance } from 'antd/es/form';
+import {
+  IBaseFormControlType,
+  IDynamicBaseFormControlType,
+  IBaseFormControlProps,
+  IBaseControlProps,
+  IBaseCol,
+  IBaseFormat,
+  IBaseInitialValue,
+  IBaseLayout,
+  IFetchConfig,
+} from './base';
+
+//表单控件
+type boolFunc = (config: {
+  form: FormInstance;
+  formData: any;
+  record: any;
+}) => boolean;
+
+export type IColumnsType<T = any> = ColumnsType<
+  FormControl & { key: React.Key } & T
+>;
+interface ISearchMoreProps extends FormControl {}
+
+export type ISearchesType = ISearchMoreProps[];
+
+//弹窗类型
+export enum ModalType {
+  normal = 'normal',
+  modal = 'modal',
+  drawer = 'drawer',
+}
+
+interface ArrayProps {
+  rowKey: string;
+  columns: IColumnsType;
+}
 
 //  菜单项
 export interface MenuItem {
@@ -77,38 +114,21 @@ export interface ICommonTable<T> extends TableProps<T> {
   [propName: string]: any;
 }
 
-//弹窗类型
-export enum ModalType {
-  normal = 'normal',
-  modal = 'modal',
-  drawer = 'drawer',
-}
-
-//表单控件
-type boolFunc = (config: any) => boolean;
-
-export type IColumnsType<T = any> = ColumnsType<
-  FormControl & { key: React.Key } & T
->;
-interface ISearchMoreProps<T> extends FormControl {
-  [props: number]: T;
-}
-export type ISearchesType<T = any> = ISearchMoreProps<T>[];
-
-interface ArrayProps {
-  rowKey: string;
-  columns: IColumnsType;
-}
-
 export interface EditTableProps extends ICommonTable<any> {
   form: FormInstance;
   columns: IColumnsType;
   handleSave?: any; // 保存
 }
 
+export interface EditTableProps extends ICommonTable<any> {
+  form: FormInstance;
+  columns: IColumnsType;
+  handleSave?: any; //保存
+}
+
 export interface FieldCompType {
   name: string;
-  type: string;
+  type: IBaseFormControlType;
   record?: any;
   controlProps?: IControlProps;
   tableProps?: EditTableProps;
@@ -119,7 +139,7 @@ export interface FieldCompType {
 
 //表単
 export interface CustomForm {
-  formList?: any[]; //控件列表
+  formList?: FormControl[]; //控件列表
   type?: 'grid' | 'inline'; //布局类型
   rows?: object; //Row配置
   cols?: object; //Col配置
@@ -136,52 +156,41 @@ export interface CustomForm {
   [otherProps: string]: any;
 }
 
-interface ArrayProps {
-  rowKey: string;
-  columns: IColumnsType;
-}
-
-export interface EditTableProps extends ICommonTable<any> {
-  form: FormInstance;
-  columns: IColumnsType;
-  handleSave?: any; //保存
-}
-
-export interface FormControl {
-  //通用配置
-  name: string; // 控件name
-  label: string; // 控件名称
-  type?: string; // 控件类型
-  style?: React.CSSProperties;
+/**@description 通用配置 */
+export interface FormControl extends IBaseFormControlProps {
+  /**@description 控件name */
+  name: string;
+  /**@description 控件名称 */
+  label?: React.ReactNode | (() => React.ReactNode);
+  // /**@description 控件类型 */
+  type?: IBaseFormControlType;
   width?: number;
-  initialValue?: any; // 初始值
-  format?: any; // 格式化
-  // 表单布局配置
-  col?: any;
-  layout?: any;
-  //远程请求配置
-  fetchConfig?: {
-    apiUrl: string;
-    method?: any;
-    params?: any;
-    searchKey?: string;
-    dataPath?: string;
-    initDictFn?: (record: any) => any[];
-    firstFetch?: boolean;
-  };
-  placeholder?: string;
-  // item配置
+  /**@description 控件初始值 */
+  initialValue?: IBaseInitialValue;
+  /**@description 格式化 */
+  format?: IBaseFormat;
+  /**@description  表单布局配置*/
+  col?: IBaseCol;
+  layout?: IBaseLayout;
+  children?: FormControl[];
+
+  /**@description 远程请求配置 */
+  fetchConfig?: IFetchConfig;
+  /**@description form.item配置 */
   itemProps?: FormItemProps;
-  // 表单配置
+  /**@description 表单配置 */
   formFieldProps?: FormItemProps;
-  //控件属性配置
+  /**@description 控件属性配置 */
   controlProps?: IControlProps;
+
   dict?: IControlProps['dict'];
-  dictConfig?: { textKey: string; valueKey: string }; //表格属性配置
+  /**@description 表格属性配置 */
+  dictConfig?: { textKey: string; valueKey: string };
   tableProps?: EditTableProps;
-  // 动态表单配置
+
+  /**@description 动态表单配置 */
   arrayProps?: ArrayProps;
-  //控件状态配置
+  /**@description 控件状态配置 */
   hide?: boolean | boolFunc;
   disabled?: boolean | boolFunc;
   condition?: [
@@ -192,19 +201,12 @@ export interface FormControl {
       action: 'disabled' | 'show' | 'hide';
     },
   ];
+  [props: number]: FormItemProps;
 }
 
 //表単控件属性
-export interface IControlProps {
-  fetchConfig?: {
-    apiUrl: string;
-    method?: any;
-    params?: any;
-    searchKey?: string;
-    dataPath?: string;
-    initDictFn?: (record: any) => any[];
-    firstFetch?: boolean;
-  };
+export interface IControlProps extends IBaseControlProps {
+  fetchConfig?: IFetchConfig;
   itemProps?: FormItemProps;
   tableProps?: EditTableProps;
   arrayProps?: ArrayProps;

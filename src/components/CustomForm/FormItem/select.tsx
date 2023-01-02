@@ -108,7 +108,6 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
     };
 
     const props: any = {
-      allowClear: true,
       filterOption: false, // 是否根据输入项进行筛选
       ...controlProps,
     };
@@ -185,6 +184,7 @@ SelectControl.defaultProps = {
     return children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   },
   options: false,
+  allowClear: true,
 };
 
 export default React.memo(SelectControl);

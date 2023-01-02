@@ -117,6 +117,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
         data[key] = value.unix();
       }
 
+      console.log(sourceItem);
       if (sourceItem.transform) {
         data[key] = sourceItem.transform(value);
       }
@@ -192,7 +193,6 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
     } = field;
 
     const myControlProps = {
-      allowClear: true,
       ...controlProps,
       size: (controlProps && controlProps.size) || 'small',
     };

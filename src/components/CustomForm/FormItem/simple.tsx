@@ -137,10 +137,17 @@ const SimpleControl: React.FC<ISimpleControlProps> = React.forwardRef(
         </RadioGroup>
       );
     } else {
+      const { transform, inputNumber, ...restControlProps } = controlProps;
+      const restSwitchProps =
+        type === 'switch' ? { transform: transform + '' } : {};
+      const inputnumberProps = { inputnumber: inputNumber };
+
       return (
         <Component
-          prefix={type === 'search' && <SearchOutlined />}
-          {...controlProps}
+          prefix={type === 'search' ? <SearchOutlined /> : 'false'}
+          {...restSwitchProps}
+          {...inputnumberProps}
+          {...restControlProps}
           {...formProps}
         />
       );
@@ -153,37 +160,46 @@ SimpleControl.defaultProps = {
     year: {
       locale,
       picker: 'year',
+      allowClear: true,
     },
     quarter: {
       locale,
       picker: 'quarter',
+      allowClear: true,
     },
     datetime: {
       locale,
       showTime: true,
       format: 'YYYY-MM-DD HH:mm:ss',
+      allowClear: true,
     },
     month: {
       locale,
       format: 'YYYY-MM',
+      allowClear: true,
     },
     time: {
       locale,
       format: 'HH:mm:ss',
+      allowClear: true,
     },
     dateRange: {
       locale,
       format: 'YYYY-MM-DD',
+      allowClear: true,
     },
     input: {
       placeholder: '请输入',
+      allowClear: true,
     },
     password: {
       placeholder: '请输入',
+      allowClear: true,
     },
     textarea: {
       placeholder: '请输入',
       autoSize: { minRows: 2, maxRows: 5 },
+      allowClear: true,
     },
     search: {
       placeholder: '请输入',
@@ -192,6 +208,7 @@ SimpleControl.defaultProps = {
         max: 100,
         placeholder: '请输入',
       },
+      allowClear: true,
     },
   },
 };

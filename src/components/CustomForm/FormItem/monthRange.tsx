@@ -20,7 +20,7 @@ export default React.forwardRef((props: any, ref) => {
   };
   return (
     <RangePicker
-      // mode={['month', 'month']}
+      mode={['month', 'month']}
       picker="month"
       placeholder={['开始月份', ' 结束月份']}
       format={format}

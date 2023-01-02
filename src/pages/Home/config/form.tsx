@@ -2,6 +2,7 @@ import FormRules from '@/utils/validate';
 import Activity from '../index';
 import projectConfig from '@/config/projectConfig';
 import { ISearchesType } from '@/typings';
+import dayjs from 'dayjs';
 const { apiPrefix } = projectConfig;
 
 const layout = {
@@ -23,7 +24,7 @@ export const getFormList = (
       name: 'activityCode',
       label: '活动编码',
       type: 'input',
-      col: { span: 12 },
+      col: 12,
       layout,
       allowClear: true,
       formFieldProps: {
@@ -38,7 +39,7 @@ export const getFormList = (
       name: 'activityName',
       label: '活动名称',
       type: 'input',
-      col: { span: 12 },
+      col: 12,
       layout,
       formFieldProps: {
         rules: FormRules.withName('活动名称').isRequired().create(),
@@ -47,6 +48,73 @@ export const getFormList = (
       itemProps: {
         ...ITEM_PROPS,
       },
+    },
+    {
+      name: 'textarea',
+      label: 'textarea',
+      type: 'textarea',
+      disabled: false,
+      // formFieldProps: {
+      //   rules: FormRules.withName('活动名称').isRequired().create(),
+      // },
+      initialValue: '231231',
+      formFieldProps: {
+        rules: [
+          { required: true, message: '请输入' },
+          { max: 100, message: '最多100个字符' },
+        ],
+      },
+      controlProps: {
+        maxLength: 100,
+        showCount: true,
+        autoSize: {
+          minRows: 5,
+        },
+        onChange: (e: any) => console.log(e),
+      },
+      itemProps: {
+        style: {
+          marginBottom: 0,
+        },
+      },
+    },
+    {
+      name: 'type',
+      label: 'type',
+      type: 'select',
+      dict: [
+        { text: '满折', value: '0' },
+        { text: '满减', value: '1' },
+        { text: '立减', value: '2' },
+      ],
+      renderItem: (item: any) => `${item.value} - ${item.text}`,
+      hide: (config) => {
+        console.log(config);
+        return false;
+      },
+    },
+    {
+      name: 'custom',
+      label: 'custom',
+      type: 'custom',
+      Component: (props) => {
+        return '--';
+      },
+    },
+    {
+      name: 'week',
+      label: 'week',
+      type: 'date',
+      format: 'YYYY-w',
+      picker: 'week',
+      controlProps: {},
+    },
+    {
+      name: 'startMonth,endMonth',
+      label: 'monthRange',
+      type: 'monthRange',
+      format: 'YYYYMM',
+      initialValue: [dayjs('2020-01'), dayjs('2020-02')],
     },
   ];
 };

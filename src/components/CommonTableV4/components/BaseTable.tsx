@@ -156,7 +156,8 @@ class BaseTable<
       const currentPage = isReset ? 1 : current;
       const result = await action(urls.listUrl, {
         page: currentPage,
-        limit: isSummary ? pageSize - 1 : pageSize,
+        // limit: isSummary ? pageSize - 1 : pageSize,
+        limit: pageSize,
         ...searchParams,
         ...extraParams,
         ...sorter,
