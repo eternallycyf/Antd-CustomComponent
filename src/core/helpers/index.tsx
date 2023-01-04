@@ -23,6 +23,7 @@ export function getFieldComp({
   formFieldProps = {},
   isEdit,
   format,
+  hide,
   ...otherProps
 }: FieldCompType) {
   let initialValue = initValue;

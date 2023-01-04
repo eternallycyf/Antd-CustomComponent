@@ -92,13 +92,19 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
       condition.forEach(({ regex = {}, action }: any) => {
         let isPassed = true; // 是否满足条件
         for (const key in regex) {
-          if (regex[key] !== form.getFieldValue(key)) {
-            isPassed = false;
+          if (regex.hasOwnProperty(key)) {
+            const regexItem = formList?.find((item) => item?.name == key);
+            if (regex[key] !== form.getFieldValue(key)) {
+              isPassed = false;
+            }
+            if (regexItem && regexItem.initialValue == regex[key]) {
+              isPassed = false;
+            }
           }
         }
         switch (action) {
           case 'disabled':
-            disabled = isPassed;
+            disabled = !isPassed;
             break;
           case 'hide':
             hide = !isPassed;

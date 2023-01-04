@@ -48,6 +48,12 @@ export const getFormList = (
       itemProps: {
         ...ITEM_PROPS,
       },
+      condition: [
+        {
+          action: 'disabled',
+          regex: { textarea: '禁用' },
+        },
+      ],
     },
     {
       name: 'textarea',
@@ -57,7 +63,7 @@ export const getFormList = (
       // formFieldProps: {
       //   rules: FormRules.withName('活动名称').isRequired().create(),
       // },
-      initialValue: '231231',
+      initialValue: '禁用',
       formFieldProps: {
         rules: [
           { required: true, message: '请输入' },
