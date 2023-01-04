@@ -26,6 +26,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
     alternateColor: true,
     defaultPagesize: 30,
     buttonLen: 5,
+    itemButtonWidth: 200,
     showIndex: true,
     calcHeight: true,
     initRequest: true,
@@ -83,6 +84,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
       expandedRowRender,
       isFixed,
       openFixed,
+      itemButtonWidth,
     }: any = this.props;
     let columnList: any = this.handleBasicColumns(this.props);
     // 显示行操作项
@@ -92,7 +94,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
           ? buttonLen == 1
             ? buttonLen * 90
             : buttonLen * 70
-          : this.getOpenWidth(itemButton);
+          : this.getOpenWidth(itemButton) || itemButtonWidth;
 
       const column: any = [
         {

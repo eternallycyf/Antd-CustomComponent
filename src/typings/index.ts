@@ -99,6 +99,8 @@ export interface ICommonTable<T> extends TableProps<T> {
   button?: IButtonProps[]; // 列表buttonItem
   itemButton?: IButtonProps[]; // 列表项item
   buttonLen?: number;
+  // 手动指定操作栏宽度
+  itemButtonWidth?: number;
   footer?: any; // 列表页脚
   showIndex?: boolean; // columns展示索引
   calcHeight?: boolean; // 是否计算列表高度
