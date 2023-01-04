@@ -122,5 +122,12 @@ export const getFormList = (
       format: 'YYYYMM',
       initialValue: [dayjs('2020-01'), dayjs('2020-02')],
     },
+    {
+      name: 'otherButtonClick',
+      label: 'otherButtonClick',
+      type: 'select',
+      otherType: 'button',
+      otherText: "自动生成"
+    }
   ];
 };

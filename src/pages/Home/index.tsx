@@ -11,9 +11,13 @@ import { saveActivity } from './service';
 import { ModalType } from '@/typings';
 import { getFormList } from './config/form';
 import { formatValuesType } from '@/components/CustomForm';
+import styles from './index.less'
+import { Form, Input } from "antd";
+import { FormInstance } from "antd/lib/form/Form";
 const { apiPrefixMock } = projectConfig;
 
 class Activity extends BaseComponent<any, any> {
+  private OtherFormRef = React.createRef<FormInstance>();
   constructor(props: any) {
     super(props);
     this.state = {
@@ -28,7 +32,7 @@ class Activity extends BaseComponent<any, any> {
   }
 
   // 打开活动报名列表页面
-  handleOpenRegList = (record: any) => {};
+  handleOpenRegList = (record: any) => { };
 
   handleFormatValues: formatValuesType = (values, record, type) => {
     console.log(values, record, type);
@@ -37,6 +41,20 @@ class Activity extends BaseComponent<any, any> {
     }
     return { values };
   };
+
+  otherRender = () => {
+    return (
+      <Form ref={this.OtherFormRef}>
+        <Form.Item
+          label='otherFormItem'
+          name='otherFormItem'
+          rules={[{ required: true, message: '请输入otherFormItem' }]}
+        >
+          <Input />
+        </Form.Item>
+      </Form>
+    )
+  }
 
   render() {
     const { searchParams } = this.state;
@@ -59,7 +77,7 @@ class Activity extends BaseComponent<any, any> {
         {
           text: '删除',
           buttonType: 'delete',
-          onClick: (item) =>
+          onClick: (item: any) =>
             this.handleDelete({ id: 1, idDel: 1 }, '/deleteActivityList'),
         },
       ],
@@ -80,17 +98,35 @@ class Activity extends BaseComponent<any, any> {
         />
         <CommonTable {...tableParams} ref={this.tableRef} />
         <CustomForm
-          ref={this.formRef}
-          modalConf={{ width: 800 }}
-          formList={getFormList(this)}
-          defaultLayout={{ labelCol: { span: 5 }, wrapperCol: { span: 19 } }}
           title="营销活动"
+          // isShowTitlePrefix={false}
+          // isTable={true}
+          className={styles.customForm}
           modalType={ModalType.modal}
+          modalConf={{ width: 800 }}
+          defaultLayout={{ labelCol: { span: 5 }, wrapperCol: { span: 19 } }}
+
+          ref={this.formRef}
+          formList={getFormList(this)}
           formatValues={this.handleFormatValues}
           onSubmit={{
             action: saveActivity,
             callback: this.handleRefreshPage,
+            failCallback: () => console.log('faill'),
+            completeCallback: () => console.log('complete'),
           }}
+          onCancel={() => console.log('cancel')}
+          otherClick={() => { console.log('click') }}
+          handleSubmitPreCallBack={async () => {
+            // return Promise.reject 就阻止提交 用于额外的表单
+            // return Promise.resolve({})
+            await this.OtherFormRef.current?.validateFields()
+            return Promise.resolve({})
+          }}
+          handleFieldsChange={(changedFields, allFields, form) => {
+            // console.log(changedFields, allFields, form);
+          }}
+          otherRender={this.otherRender}
         />
       </>
     );

@@ -1,9 +1,9 @@
 import React, { useImperativeHandle, useState } from 'react';
-import { Form } from 'antd';
+import { Form, FormItemProps, ModalProps, FormInstance } from 'antd';
 import { Drawer, message, Modal } from 'antd';
 import { postAction } from '@/services/global';
 import FormBuilder from '@/components/CustomForm/FormBuilder';
-import { ModalType } from '@/typings';
+import { FormControl, ModalType } from '@/typings';
 import _ from 'lodash';
 
 export type formatValuesType = (
@@ -22,11 +22,30 @@ export type formatValuesType = (
 
 interface IProps {
   title?: string; // 弹窗标题
-  modalConf?: any;
+  isShowTitlePrefix?: boolean;
+  className?: string;
+  modalConf?: ModalProps;
   modalType?: ModalType; // modal类型
+  defaultLayout?: { labelCol: FormItemProps['labelCol'], wrapperCol: FormItemProps['wrapperCol'] };
+  ref?: any;
+  formList: FormControl[];
   formatValues?: formatValuesType;
-  isShowTitlePrefix?: string;
-  [propName: string]: any;
+  handleFieldsChange?: (changedFields: any, allFields: any, form: FormInstance) => void;
+  otherRender?: () => React.ReactNode;
+  onCancel?: () => void;
+  otherClick?: () => void;
+  /**
+   * Promise.resolve({}) 放行
+   * Promise.reject('error') 阻止
+   * @returns {Promise<any>}
+   */
+  handleSubmitPreCallBack?: () => Promise<any>;
+  onSubmit: {
+    action: (data: any, isEdit: boolean) => Promise<any> | string;
+    callback: () => void;
+    failCallback?: () => void;
+    completeCallback?: () => void;
+  };
 }
 
 const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
@@ -38,7 +57,6 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
     onCancel,
     formatValues,
     isShowTitlePrefix = true,
-    isTable,
     otherRender,
     handleSubmitPreCallBack,
     ...otherProps
@@ -91,7 +109,9 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
       if (Object.keys(result).length > 0) return false;
     }
 
-    e.preventDefault();
+    if (e?.preventDefault) {
+      e.preventDefault();
+    }
     const values = form.getFieldsValue();
     form.validateFields().then(async () => {
       setLoading(true);
@@ -101,7 +121,7 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
       const { action, callback, failCallback, completeCallback } = onSubmit;
       try {
         const res = _.isString(action)
-          ? await postAction(action, data)
+          ? await postAction(action as unknown as string, data)
           : await action(data, isEdit);
         if (res.code === 200) {
           const chinesePattern: RegExp = /^[\u4e00-\u9fa5]+$/;
@@ -113,10 +133,10 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
           handleCancel();
         } else {
           message.error(res.msg);
-          if (_.isFunction(failCallback)) failCallback();
+          if (failCallback && _.isFunction(failCallback)) failCallback();
         }
         setLoading(false);
-        if (_.isFunction(completeCallback)) completeCallback();
+        if (completeCallback && _.isFunction(completeCallback)) completeCallback();
       } catch (e) {
         setLoading(false);
       }
@@ -149,7 +169,7 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
       Component = Drawer;
       modalConf = {
         width: 600,
-        onClose: handleCancel,
+        onCancel: handleCancel,
         ...modalConf,
       };
       break;
@@ -177,7 +197,7 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
       {...modalConf}
     >
       {formBuilder}
-      {isTable && otherRender && otherRender()}
+      {otherRender && otherRender()}
     </Component>
   ) : (
     formBuilder

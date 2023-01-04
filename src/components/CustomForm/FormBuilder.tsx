@@ -44,7 +44,8 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
     className,
     onCancel,
     onFinish,
-    onClick,
+    otherClick,
+
     onFieldsChange,
     ...otherProps
   } = props;
@@ -166,7 +167,7 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
         field.condition,
       );
       // 构造formProps
-      const { itemProps, controlProps, name, other, otherText, ...restProps } =
+      const { itemProps, controlProps, name, otherType, otherText, ...restProps } =
         field;
       const fieldType = field.type || 'input';
       const myControlProps = {
@@ -202,10 +203,10 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
             label={field.label}
           >
             {getFieldComp(fieldProps)}
-            {other && (
+            {otherType && (
               <span className="ant-form-text">
                 <Button
-                  onClick={onClick}
+                  onClick={otherClick}
                   style={{
                     height: '22px',
                     lineHeight: '9px',
@@ -252,13 +253,13 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
 
       {children
         ? React.Children.map(
-            children as any,
-            (child: React.ReactElement<any>, index) => {
-              return React.cloneElement(child, {
-                size: child.props.size || 'small',
-              });
-            },
-          )
+          children as any,
+          (child: React.ReactElement<any>, index) => {
+            return React.cloneElement(child, {
+              size: child.props.size || 'small',
+            });
+          },
+        )
         : null}
 
       {modalType === ModalType.normal && (
@@ -302,7 +303,7 @@ FormBuilder.defaultProps = {
     labelCol: { span: 6 },
     wrapperCol: { span: 16 },
   },
-  other: '',
+  otherType: '',
   otherText: '',
   rows: {
     // 当type为grid时，指定每两个元素的间隔

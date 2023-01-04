@@ -26,7 +26,7 @@ type boolFunc = (config: {
 export type IColumnsType<T = any> = ColumnsType<
   FormControl & { key: React.Key } & T
 >;
-interface ISearchMoreProps extends FormControl {}
+interface ISearchMoreProps extends FormControl { }
 
 export type ISearchesType = ISearchMoreProps[];
 
@@ -203,6 +203,10 @@ export interface FormControl extends IBaseFormControlProps {
       action: 'disabled' | 'show' | 'hide';
     },
   ];
+
+  /**description 多余的按钮 */
+  otherType?: 'button';
+  otherText?: React.ReactNode;
   [props: number]: FormItemProps;
 }
 
