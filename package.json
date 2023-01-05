@@ -16,6 +16,7 @@
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^2.0.1",
     "@antv/data-set": "^0.11.4",
+    "@types/react-resizable": "^3.0.3",
     "@umijs/max": "^4.0.40",
     "antd": "^5.1.1",
     "braft-editor": "^2.3.9",
@@ -25,9 +26,9 @@
     "js-cookie": "^3.0.1",
     "lodash": "^4.17.19",
     "react-color": "^2.19.3",
-    "react-dnd": "^10.0.2",
-    "react-dnd-html5-backend": "^10.0.2",
-    "react-resizable": "^1.10.1",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-resizable": "^3.0.4",
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
@@ -37,7 +38,6 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@umijs/preset-react": "1.x",
-    "@umijs/test": "^3.5.27",
     "cross-env": "^7.0.3",
     "ejs": "^3.1.8",
     "husky": "^8.0.1",
