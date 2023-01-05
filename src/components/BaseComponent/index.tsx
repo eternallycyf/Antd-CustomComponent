@@ -17,6 +17,10 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
     React.createRef<React.ElementRef<typeof CommonSearch>>();
   protected formRef: React.RefObject<any> = React.createRef();
 
+  componentDidMount() {
+    this.handleRefreshPage()
+  }
+
   // 获取列表dataSource
   protected getDataSource = () => {
     const { getTableData } = this.tableRef.current || {};

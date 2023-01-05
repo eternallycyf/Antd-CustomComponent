@@ -5,6 +5,7 @@ import { ICommonTable } from '@/typings';
 import { getAction, postAction } from '@/services/global';
 import { ResizableTitle } from '@/components/CommonTable/widgets/Resizable';
 import { renderBtn } from '@/components/CommonTable/widgets/TableBtn';
+import { DraggableBodyRow } from '@/components/CommonTable/widgets/DragTableRow'
 
 export interface IBaseTableState {
   loading: boolean;
@@ -14,6 +15,7 @@ export interface IBaseTableState {
   sorter: any;
   current: number;
   pageSize: number;
+
   extraParams: any;
   columns: any[];
   dataSource: any[];
@@ -21,6 +23,7 @@ export interface IBaseTableState {
   selectedRows: any[];
   dev: boolean;
 }
+
 const DEFAULT_OBSERVE_PARAMS = {
   childList: true, // 子节点的变动（新增、删除或者更改）
   attributes: true, // 属性的变动
@@ -33,6 +36,7 @@ const initHeightParams = (
   buttonRow: any,
   pagination: any,
 ) => {
+
   const container: any = document.querySelector(wrapClassStr);
   const theadHeight = container?.querySelector('.ant-table-thead').clientHeight;
   const containerHeight = container?.clientHeight - 32;
@@ -124,7 +128,7 @@ class BaseTable<
   }
 
   // 返回dataSource for outer
-  gettableData = () => {
+  getTableData = () => {
     return this.state.dataSource;
   };
 
@@ -189,7 +193,7 @@ class BaseTable<
   };
 
   handleBasicColumns = (props: any) => {
-    const { showIndex, columns, resizable }: any = props || this.props;
+    const { showIndex, columns, resizable,draggable }: any = props || this.props;
     const { dev } = this.state;
     let columnList = handleColumns(columns);
     //展示序号
@@ -209,6 +213,7 @@ class BaseTable<
         ? 'left'
         : null;
     }
+    
     //表格列是否可伸缩
     if (resizable || dev) {
       columnList = columnList.map((col, index) => ({
@@ -226,6 +231,13 @@ class BaseTable<
         },
       };
     }
+
+    if(draggable || dev) {
+      const newComponents = {...this.components}
+      newComponents.body = { ...newComponents.body,row: DraggableBodyRow }
+      this.components = {...newComponents}
+    }
+    
     return columnList;
   };
 
@@ -257,7 +269,7 @@ class BaseTable<
     if (tableBodyNodeList.length) {
       [...tableBodyNodeList].forEach((tableBodyDOM) => {
         (tableBodyDOM as any).style.height = height + 'px';
-        //tableBodyDoM.style.overflow ＝ ＇auto＇ 设置该属性会导致协议管理-机构客户页面不断拉长
+        //tableBodyDoM.style.overflow ＝ ＇auto＇ 设置该属性会导致页面不断拉长
       });
     }
   }

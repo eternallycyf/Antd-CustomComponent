@@ -2,7 +2,7 @@ import React, { useImperativeHandle } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Form } from 'antd';
 import { Button } from 'antd';
-import CommonTable from '@/components/CommonTableV4/CommonTableV4';
+import CommonTable from '@/components/CommonTableV5/CommonTableV5';
 import { IControlProps } from '@/typings';
 import { getFieldComp } from '@/core/helpers';
 import styles from './index.less';

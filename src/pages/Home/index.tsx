@@ -27,10 +27,6 @@ class Activity extends BaseComponent<any, any> {
     };
   }
 
-  componentDidMount() {
-    this.handleRefreshPage();
-  }
-
   // 打开活动报名列表页面
   handleOpenRegList = (record: any) => { };
 
@@ -68,6 +64,10 @@ class Activity extends BaseComponent<any, any> {
           text: '新增',
           onClick: this.handleAdd,
         },
+        {
+          text: '获取拖拽排序后的数据',
+          onClick: () => console.log(this.getDataSource())
+        }
       ],
       itemButton: [
         {
@@ -86,6 +86,9 @@ class Activity extends BaseComponent<any, any> {
       },
       dataPath: 'data.list',
       totalPath: 'data.total',
+      draggable: true,
+      resizable: true,
+      // editable: true
     };
 
     return (
