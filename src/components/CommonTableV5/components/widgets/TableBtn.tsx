@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import cx from 'classnames';
 import { IButtonProps } from '@/typings';
 import AccessBtn from '@/components/AccessBtn';
-import styles from '../index.less';
+import styles from './index.less';
 // 渲染button
 export const renderBtn = (button: any) => {
   if (!button || !button.length) return null;

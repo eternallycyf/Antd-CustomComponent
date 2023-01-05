@@ -3,9 +3,9 @@ import _ from 'lodash';
 import update from 'immutability-helper';
 import { ICommonTable } from '@/typings';
 import { getAction, postAction } from '@/services/global';
-import { ResizableTitle } from '@/components/CommonTable/widgets/Resizable';
-import { renderBtn } from '@/components/CommonTable/widgets/TableBtn';
-import { DraggableBodyRow } from '@/components/CommonTable/widgets/DragTableRow'
+import { ResizableTitle } from '@/components/CommonTableV5/components/widgets/Resizable';
+import { renderBtn } from '@/components/CommonTableV5/components/widgets/TableBtn';
+import { DraggableBodyRow } from '@/components/CommonTableV5/components/widgets/DragTableRow'
 
 export interface IBaseTableState {
   loading: boolean;
@@ -193,7 +193,7 @@ class BaseTable<
   };
 
   handleBasicColumns = (props: any) => {
-    const { showIndex, columns, resizable,draggable }: any = props || this.props;
+    const { showIndex, columns, resizable, draggable }: any = props || this.props;
     const { dev } = this.state;
     let columnList = handleColumns(columns);
     //展示序号
@@ -213,7 +213,7 @@ class BaseTable<
         ? 'left'
         : null;
     }
-    
+
     //表格列是否可伸缩
     if (resizable || dev) {
       columnList = columnList.map((col, index) => ({
@@ -232,12 +232,12 @@ class BaseTable<
       };
     }
 
-    if(draggable || dev) {
-      const newComponents = {...this.components}
-      newComponents.body = { ...newComponents.body,row: DraggableBodyRow }
-      this.components = {...newComponents}
+    if (draggable || dev) {
+      const newComponents = { ...this.components }
+      newComponents.body = { ...newComponents.body, row: DraggableBodyRow }
+      this.components = { ...newComponents }
     }
-    
+
     return columnList;
   };
 
@@ -297,10 +297,10 @@ class BaseTable<
     const sort =
       field && sorter.order
         ? field
-            .split('.')
-            .pop()
-            .replace(/\B([A-Z])/g, '_$1')
-            .toLowerCase()
+          .split('.')
+          .pop()
+          .replace(/\B([A-Z])/g, '_$1')
+          .toLowerCase()
         : null;
 
     this.setState(
@@ -361,16 +361,16 @@ class BaseTable<
    */
   handleResize =
     (index: number) =>
-    (e: any, { size }: any) => {
-      this.setState(({ columns }) => {
-        const nextColumns = [...columns];
-        nextColumns[index] = {
-          ...nextColumns[index],
-          width: size.width,
-        };
-        return { columns: nextColumns };
-      });
-    };
+      (e: any, { size }: any) => {
+        this.setState(({ columns }) => {
+          const nextColumns = [...columns];
+          nextColumns[index] = {
+            ...nextColumns[index],
+            width: size.width,
+          };
+          return { columns: nextColumns };
+        });
+      };
 
   /**
    *  拖拽行
