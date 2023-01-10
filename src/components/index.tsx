@@ -1,5 +1,6 @@
 import AccessBtn from './AccessBtn';
 import BaseComponent from "./BaseComponent";
+import * as LocalComponents from './LocalComponents'
 import CommonSearch from './CommonSearch';
 import CommonTable from './CommonTableV5/CommonTableV5';
 import CustomForm from './CustomForm';
@@ -11,9 +12,11 @@ import FileViewer from './FileViewer';
 import Page from './Page';
 import Image from './Image';
 import WaterMark from "./WaterMark";
+import * as VirtualList from './VirtualList'
 
 export {
   AccessBtn,
+  LocalComponents,
   CommonSearch,
   CommonTable,
   CustomForm,
@@ -25,5 +28,6 @@ export {
   FileViewer,
   Page,
   Image,
-  WaterMark
+  WaterMark,
+  VirtualList
 };

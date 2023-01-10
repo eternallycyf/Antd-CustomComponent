@@ -1,0 +1,48 @@
+.contentBox {
+  height: 40vh;
+}
+
+.options {
+  display: inline-block !important;
+  margin: 2px;
+  min-height: 14px !important;
+  background: #f5f5f5 !important;
+  line-height: 1 !important;
+
+  :global {
+    .ant-select-item-option-state {
+      display: none;
+    }
+
+    .ant-select-item-option-content {
+      display: inline-block !important;
+    }
+  }
+}
+
+.selects {
+  :global {
+    .ant-select-item-option-selected {
+      background: #dde6f7 !important;
+      color: #516289 !important;
+    }
+
+    .rc-virtual-list-holder-inner {
+      display: block !important;
+    }
+  }
+}
+
+.rc-virtual-list-holder-inner {
+  display: block !important;
+}
+
+.selectbox {
+  :global {
+    .ant-select-selection-item {
+      background: #dde6f7 !important;
+      color: #516289 !important;
+      font-weight: 600 !important;
+    }
+  }
+}
