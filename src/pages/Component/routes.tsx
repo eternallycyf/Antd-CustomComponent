@@ -1,5 +1,5 @@
 export default {
-  name: 'Home',
+  name: '增删改组件',
   path: '/home',
   routes: [
     {
@@ -11,12 +11,12 @@ export default {
     {
       name: 'class',
       path: '/home/class',
-      component: '@/pages/Home',
+      component: '@/pages/Component',
     },
     {
       name: 'hook',
       path: '/home/hook',
-      component: '@/pages/Home/hook',
+      component: '@/pages/Component/hook',
     },
   ],
 };

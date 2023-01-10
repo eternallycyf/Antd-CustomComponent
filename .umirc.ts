@@ -1,15 +1,15 @@
 import { defineConfig } from '@umijs/max';
-import routerConfig from "./src/routes";
+import routerConfig from './src/routes';
 import zhCN from 'antd/locale/zh_CN';
-const proxyConfig = require("./src/config/proxyConfig");
-const path = require("path");
+const proxyConfig = require('./src/config/proxyConfig');
+const path = require('path');
 
 export default defineConfig({
   define: {
-    "process.env": process.env,
+    'process.env': process.env,
   },
   base: '/',
-  history: { type: "hash" },
+  history: { type: 'hash' },
   publicPath:
     process.env.NODE_ENV === 'production'
       ? 'http://wangxince.site/Antd-CustomComponent/'
@@ -17,7 +17,7 @@ export default defineConfig({
   routes: routerConfig,
   layout: {
     title: '公众crud组件"',
-    contentWidth: "Fluid",
+    contentWidth: 'Fluid',
     locale: false,
   },
   locale: {
@@ -27,12 +27,12 @@ export default defineConfig({
     baseSeparator: '-',
   },
   codeSplitting: {
-    jsStrategy: 'granularChunks'
+    jsStrategy: 'granularChunks',
   },
-  devtool: process.env.NODE_ENV === "production" ? 'eval' : 'source-map',
+  devtool: process.env.NODE_ENV === 'production' ? 'eval' : 'source-map',
   antd: {
     configProvider: {
-      locale: zhCN
+      locale: zhCN,
     },
     theme: { '@primary-color': '#00CA88' },
   },
@@ -48,4 +48,3 @@ export default defineConfig({
   mfsu: true,
   npmClient: 'yarn',
 });
-

@@ -1,3 +1,12 @@
 declare module 'lodash';
 declare module 'ejs';
-declare module 'js-cookie'
+declare module 'js-cookie';
+declare module 'exceljs/dist/exceljs';
+declare module 'react-excel-renderer';
+declare module 'docxtemplater';
+declare module 'pizzip';
+declare module 'jszip-utils';
+declare module 'file-saver';
+declare module 'open-docxtemplater-image-module';
+declare module 'react-syntax-highlighter';
+declare module 'react-syntax-highlighter/dist/esm/styles/prism';

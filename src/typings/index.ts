@@ -1,9 +1,9 @@
 import { FormItemProps } from 'antd/es/form/FormItem';
-import { TableProps } from 'antd/es/table/Table';
 import { ColumnsType, TablePaginationConfig } from 'antd/lib/table';
 import { ButtonProps } from 'antd/lib/button';
 import React, { ReactNode } from 'react';
 import { FormInstance } from 'antd/es/form';
+import { TableProps } from 'antd';
 import {
   IBaseFormControlType,
   IDynamicBaseFormControlType,
@@ -26,7 +26,7 @@ type boolFunc = (config: {
 export type IColumnsType<T = any> = ColumnsType<
   FormControl & { key: React.Key } & T
 >;
-interface ISearchMoreProps extends FormControl { }
+interface ISearchMoreProps extends FormControl {}
 
 export type ISearchesType = ISearchMoreProps[];
 

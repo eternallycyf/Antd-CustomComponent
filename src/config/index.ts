@@ -1,5 +1,5 @@
 export const apiPrefixMock: string =
-  process.env.APP_ENV === "development" ? "/api" : "/api";
-export const tokenKey: string = "acpauth";
+  process.env.NODE_ENV === 'development' ? '/api' : '/api';
+export const tokenKey: string = 'acpauth';
 export const agentId: string =
-  process.env.APP_ENV === "development" ? "1480492321" : "1583908988";
+  process.env.NODE_ENV === 'development' ? '1480492321' : '1583908988';
