@@ -1,8 +1,11 @@
 import React from 'react';
-import { message, Modal } from 'antd';
+import { message, Modal, TableProps } from 'antd';
 import { deleteAction, postAction } from '@/services/global';
 import CommonSearch from '../CommonSearch';
 import { TableRowSelection } from 'antd/lib/table/interface';
+import { downloadExcel } from '../FileExportExcel';
+import BaseTable from '../CommonTableV5/components/BaseTable';
+import CustomForm from '../CustomForm';
 
 export interface IBaseState {
   loading?: boolean;
@@ -10,13 +13,21 @@ export interface IBaseState {
   selectedRowKeys?: React.Key[];
   selectedRows?: any[];
   expandedRowKeys?: any[];
+  expandedKey?: string;
 }
 
+type IBaseTableInstance = InstanceType<typeof BaseTable> & {
+  cls: any;
+  componentWilMount: any;
+  getOpenWidth: any;
+  handleColumns: any;
+};
+
 class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
-  protected tableRef = React.createRef<any>();
+  protected tableRef = React.createRef<IBaseTableInstance>();
   protected searchRef =
     React.createRef<React.ElementRef<typeof CommonSearch>>();
-  protected formRef: React.RefObject<any> = React.createRef();
+  protected formRef = React.createRef<React.ElementRef<typeof CustomForm>>();
 
   componentDidMount() {
     this.handleRefreshPage();
@@ -43,7 +54,7 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
   handleSearch = (values: any) => {
     const { handleFirstPage } = this.tableRef.current || {};
     this.setState({ searchParams: values }, async () => {
-      await handleFirstPage();
+      await handleFirstPage!();
       this.setState({
         expandedRowKeys: [],
       });
@@ -53,7 +64,25 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
 
   handleDynamicParam = (values: any) => {
     const { handleDynamicParam } = this.tableRef.current || {};
-    handleDynamicParam(values);
+    handleDynamicParam!(values);
+  };
+
+  handleExport = (title: string) => {
+    if (this.tableRef.current) {
+      downloadExcel({
+        filename: title,
+        sheets: [
+          {
+            sheetName: title,
+            columns: this.tableRef.current.state.columns.filter(
+              (item: any) => item.dataIndex !== 'operate',
+            ),
+            dataSource: this.tableRef.current?.getTableData(),
+            header: title,
+          },
+        ],
+      });
+    }
   };
 
   handleSelect = (
@@ -61,6 +90,12 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
     selectedRows: IBaseState['selectedRows'],
   ) => {
     this.setState({ selectedRowKeys, selectedRows });
+  };
+
+  handleExpand = (expanded: boolean, record: any) => {
+    const { expandedKey } = this.state;
+    if (!expanded) return this.setState({ expandedRowKeys: [] });
+    this.setState({ expandedRowKeys: [record?.[expandedKey]] });
   };
 
   handleAdd = (defaultProps: any) => {

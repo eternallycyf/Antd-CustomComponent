@@ -26,11 +26,18 @@ interface IProps {
   className?: string;
   modalConf?: ModalProps;
   modalType?: ModalType; // modal类型
-  defaultLayout?: { labelCol: FormItemProps['labelCol'], wrapperCol: FormItemProps['wrapperCol'] };
+  defaultLayout?: {
+    labelCol: FormItemProps['labelCol'];
+    wrapperCol: FormItemProps['wrapperCol'];
+  };
   ref?: any;
   formList: FormControl[];
   formatValues?: formatValuesType;
-  handleFieldsChange?: (changedFields: any, allFields: any, form: FormInstance) => void;
+  handleFieldsChange?: (
+    changedFields: any,
+    allFields: any,
+    form: FormInstance,
+  ) => void;
   otherRender?: () => React.ReactNode;
   onCancel?: () => void;
   otherClick?: () => void;
@@ -48,7 +55,17 @@ interface IProps {
   };
 }
 
-const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
+type IHandle = {
+  form: FormInstance;
+  handleAdd: (record: any) => void;
+  handleEdit: (record: any) => void;
+  handleCancel: () => void;
+};
+
+const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (
+  props,
+  ref,
+) => {
   let { modalConf } = props;
   const {
     title,
@@ -136,7 +153,8 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
           if (failCallback && _.isFunction(failCallback)) failCallback();
         }
         setLoading(false);
-        if (completeCallback && _.isFunction(completeCallback)) completeCallback();
+        if (completeCallback && _.isFunction(completeCallback))
+          completeCallback();
       } catch (e) {
         setLoading(false);
       }
@@ -202,6 +220,6 @@ const CustomForm: React.FC<IProps> = React.forwardRef((props, ref) => {
   ) : (
     formBuilder
   );
-});
+};
 
-export default React.memo(CustomForm);
+export default React.memo(React.forwardRef(CustomForm));

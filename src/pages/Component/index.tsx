@@ -23,8 +23,10 @@ interface IState {
     aaaaaa: number;
     [props: string]: any;
   };
-  selectedRowKeys: React.Key[];
   selectedRows: any[];
+  selectedRowKeys: React.Key[];
+  expandedKey: string;
+  expandedRowKeys: React.Key[];
 }
 
 class Activity extends BaseComponent<IProps, IState> {
@@ -35,8 +37,10 @@ class Activity extends BaseComponent<IProps, IState> {
       searchParams: {
         aaaaaa: 1,
       },
-      selectedRowKeys: [],
       selectedRows: [],
+      selectedRowKeys: [],
+      expandedKey: 'activityCode',
+      expandedRowKeys: [],
     };
   }
 
@@ -66,7 +70,8 @@ class Activity extends BaseComponent<IProps, IState> {
   };
 
   render() {
-    const { searchParams, selectedRowKeys, selectedRows } = this.state;
+    const { searchParams, selectedRowKeys, selectedRows, expandedRowKeys } =
+      this.state;
     const tableParams: ICommonTable<any> = {
       columns: getColumns(this),
       searchParams: formatParams(searchParams),
@@ -94,7 +99,12 @@ class Activity extends BaseComponent<IProps, IState> {
           onClick: () => {
             console.log(this.getDataSource());
             console.log(selectedRowKeys, selectedRows);
+            console.log(expandedRowKeys);
           },
+        },
+        {
+          text: '导出',
+          onClick: () => this.handleExport('增删改查组件'),
         },
       ],
       itemButton: [
@@ -120,6 +130,14 @@ class Activity extends BaseComponent<IProps, IState> {
       selectType: 'checkbox',
       selectedRowKeys,
       selectedRows,
+      expandable: {
+        expandedRowKeys,
+        expandedRowRender: (record) => (
+          <p style={{ margin: 0 }}>{record.activityCode}</p>
+        ),
+        rowExpandable: (record) => record.name !== 'Not Expandable',
+        onExpand: this.handleExpand,
+      },
       onSelect: this.handleSelect,
       dataPath: 'data.list',
       totalPath: 'data.total',

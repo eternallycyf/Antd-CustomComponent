@@ -88,6 +88,10 @@ export interface ICommonTable<T> extends TableProps<T> {
   /**@description 最外层容器 className */
   wrapClassStr?: string;
   /**@description table查询的请求地址 */
+  fetchMethod?: 'get' | 'post';
+  /**@description 第一次初始化是否请求*/
+  initRequest?: boolean;
+  loading?: boolean;
   urls?: {
     listUrl?: string;
     // TODO: 未实现
@@ -140,6 +144,7 @@ export interface ICommonTable<T> extends TableProps<T> {
   selectType?: 'checkbox' | 'radio';
   /**@description 选择时候触发 */
   onSelect?: (selectRowKeys: React.Key[], selectedRows: any[]) => void;
+  expandable?: TableProps<T>['expandable'];
   /**@description  是否显示汇总行 发送给后端的 limit为29*/
   isSummary?: boolean;
   /**@description 网络请求后data的路径 */

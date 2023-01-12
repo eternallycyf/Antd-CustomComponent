@@ -32,7 +32,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
     initRequest: true,
     isSummary: false,
   };
-  private cls: string = '';
+  cls: string = '';
   constructor(props: any) {
     super(props);
     this.state = {
@@ -244,7 +244,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
     this.setState({ columns: formatColumn(columnList) });
   };
 
-  render() {
+  render(): any {
     const {
       form,
       rowKey,
