@@ -1,3 +1,6 @@
+@import '~@/assets/styles/mixin.less';
+@import '~@/assets/styles/compatible.css';
+
 h1,
 ul {
   margin: 0;
@@ -42,7 +45,7 @@ body {
 // 修复h5大小下 展开菜单按钮默认为白色的情况
 .anticon-menu-unfold {
   @media screen and (max-width: 575px) {
-    color: rgba(0, 0, 0, 0.85) !important;
+    color: rgb(0 0 0 / 85%) !important;
   }
 }
 
@@ -57,4 +60,44 @@ body {
 
 .ant-menu-title-content {
   padding: 20px;
+}
+
+.common-table {
+  .ant-spin-nested-loading,
+  .ant-spin-container,
+  .ant-table,
+  .ant-table-content,
+  .ant-table-scroll,
+  .ant-table-body {
+    height: 100%;
+  }
+
+  &.table-row-alternate-color {
+    width: 100%;
+    background: #fff;
+
+    tr:nth-child(odd) {
+      background: #fff;
+    }
+
+    tr:nth-child(even) {
+      background: #fcfcfc;
+    }
+  }
+
+  .ant-table-small > .ant-table-content > .ant-table-body {
+    margin: 0;
+  }
+
+  .ant-table-thead > tr > th,
+  .ant-table-tbody > tr > td {
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+  }
+
+  .ant-table-thead > tr > th {
+    background-color: @color-main !important;
+    color: #333;
+    font-size: normal;
+  }
 }

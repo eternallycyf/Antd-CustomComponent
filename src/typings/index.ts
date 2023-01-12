@@ -15,6 +15,8 @@ import {
   IBaseLayout,
   IFetchConfig,
 } from './base';
+import { PaginationProps } from 'antd/lib/pagination';
+import { TableRowSelection } from 'antd/lib/table/interface';
 
 //表单控件
 type boolFunc = (config: {
@@ -75,42 +77,72 @@ export interface UserInfo<T> {
 export interface IButtonProps extends ButtonProps {
   text: string | ReactNode;
   code?: string;
-  visible?: any;
-  element?: any;
-  buttonType?: string;
+  visible?: boolean;
+  /**@description 暂时只有Button支持 */
+  element?: ReactNode;
+  buttonType?: 'delete';
 }
 
 //表格
 export interface ICommonTable<T> extends TableProps<T> {
+  /**@description 最外层容器 className */
   wrapClassStr?: string;
+  /**@description table查询的请求地址 */
   urls?: {
     listUrl?: string;
-    addUrl?: string;
-    editUrl?: string;
+    // TODO: 未实现
+    // addUrl?: string;
+    // editUrl?: string;
   };
+  /**@description 后端接口返回的table数据关键key */
   recordKey?: string;
-  extraParams?: object; // 查询固定参数
-  alternateColor?: boolean; // 是否奇偶行不同颜色
+  /**@description 额外的table请求固定参数 */
+  extraParams?: object;
+  /**@description 是否奇偶行不同颜色 */
+  alternateColor?: boolean;
+  /**@description 默认一页多少个*/
   defaultPageSize?: number;
-  dataHandler?: (data: any) => any;
+  /**@description 处理data 第一个参数多了index和rowKey */
+  dataHandler?: (
+    data: { index: number; rowKey: string; [props: string]: any },
+    dataSource: any[],
+  ) => any;
+  /**@description 是否可拖动 */
   draggable?: boolean;
+  /**@description 是否自适应*/
   resizable?: boolean;
+  /**@description 是否可编辑 未实现 */
   editable?: boolean;
-  button?: IButtonProps[]; // 列表buttonItem
-  itemButton?: IButtonProps[]; // 列表项item
+  /**@description table上的按钮 */
+  button?: IButtonProps[];
+  /**@description 操作栏item */
+  itemButton?: IButtonProps[];
+  /**@description 用于计算操作栏的宽度 默认不需要修改*/
   buttonLen?: number;
-  // 手动指定操作栏宽度
+  /**@description 手动指定操作栏宽度 */
   itemButtonWidth?: number;
-  footer?: any; // 列表页脚
-  showIndex?: boolean; // columns展示索引
-  calcHeight?: boolean; // 是否计算列表高度
+  /**@description 页脚 */
+  footer?: (currentPageData: any) => React.ReactNode;
+  /**@description 是否显示序号 */
+  showIndex?: boolean;
+  /**@description 是否计算列表高度 */
+  calcHeight?: boolean;
+  /**@description 手动指定数据源 当长度大于1时生效 */
   dataSource?: any[];
+  /**@description 分页相关配置 */
   pagination?: TablePaginationConfig | false;
-  rowSelection?: any;
-  selectedRowKeys?: any[]; // 指定选中项的key数组
-  selectType?: 'checkbox' | 'radio' | boolean; // 多选／单选
-  onSelect?: (selectedRowKeys: string[] | number[], selectedRows: any[]) => any;
-  isSummary?: boolean; // 是否显示汇总行
+  /**@description 额外操作配置*/
+  rowSelection?: TableRowSelection<T>;
+  selectedRows?: React.Key[];
+  /**@description 指定选中项的key数组*/
+  selectedRowKeys?: React.Key[];
+  /**@description 多选／单选 */
+  selectType?: 'checkbox' | 'radio';
+  /**@description 选择时候触发 */
+  onSelect?: (selectRowKeys: React.Key[], selectedRows: any[]) => void;
+  /**@description  是否显示汇总行 发送给后端的 limit为29*/
+  isSummary?: boolean;
+  /**@description 网络请求后data的路径 */
   dataPath?: string;
   children?: React.ReactNode;
   [propName: string]: any;

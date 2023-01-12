@@ -2,11 +2,12 @@ import React from 'react';
 import { message, Modal } from 'antd';
 import { deleteAction, postAction } from '@/services/global';
 import CommonSearch from '../CommonSearch';
+import { TableRowSelection } from 'antd/lib/table/interface';
 
 export interface IBaseState {
-  loading?: any;
+  loading?: boolean;
   searchParams?: any;
-  selectedRowKeys?: any[];
+  selectedRowKeys?: React.Key[];
   selectedRows?: any[];
   expandedRowKeys?: any[];
 }
@@ -18,7 +19,7 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
   protected formRef: React.RefObject<any> = React.createRef();
 
   componentDidMount() {
-    this.handleRefreshPage()
+    this.handleRefreshPage();
   }
 
   // 获取列表dataSource

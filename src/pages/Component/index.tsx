@@ -8,15 +8,26 @@ import projectConfig from '@/config/projectConfig';
 import _ from 'lodash';
 import { history } from 'umi';
 import { saveActivity } from './service';
-import { ModalType } from '@/typings';
+import { ICommonTable, ModalType } from '@/typings';
 import { getFormList } from './config/form';
 import { formatValuesType } from '@/components/CustomForm';
-import styles from './index.less'
-import { Form, Input } from "antd";
-import { FormInstance } from "antd/lib/form/Form";
+import styles from './index.less';
+import { Button, Form, Input } from 'antd';
+import { FormInstance } from 'antd/lib/form/Form';
 const { apiPrefixMock } = projectConfig;
 
-class Activity extends BaseComponent<any, any> {
+interface IProps {}
+
+interface IState {
+  searchParams: {
+    aaaaaa: number;
+    [props: string]: any;
+  };
+  selectedRowKeys: React.Key[];
+  selectedRows: any[];
+}
+
+class Activity extends BaseComponent<IProps, IState> {
   private OtherFormRef = React.createRef<FormInstance>();
   constructor(props: any) {
     super(props);
@@ -24,11 +35,13 @@ class Activity extends BaseComponent<any, any> {
       searchParams: {
         aaaaaa: 1,
       },
+      selectedRowKeys: [],
+      selectedRows: [],
     };
   }
 
   // 打开活动报名列表页面
-  handleOpenRegList = (record: any) => { };
+  handleOpenRegList = (record: any) => {};
 
   handleFormatValues: formatValuesType = (values, record, type) => {
     console.log(values, record, type);
@@ -42,32 +55,47 @@ class Activity extends BaseComponent<any, any> {
     return (
       <Form ref={this.OtherFormRef}>
         <Form.Item
-          label='otherFormItem'
-          name='otherFormItem'
+          label="otherFormItem"
+          name="otherFormItem"
           rules={[{ required: true, message: '请输入otherFormItem' }]}
         >
           <Input />
         </Form.Item>
       </Form>
-    )
-  }
+    );
+  };
 
   render() {
-    const { searchParams } = this.state;
-    const tableParams = {
+    const { searchParams, selectedRowKeys, selectedRows } = this.state;
+    const tableParams: ICommonTable<any> = {
       columns: getColumns(this),
       searchParams: formatParams(searchParams),
       rowKey: 'activityCode',
       fetchMethod: 'get',
+      extraParams: {
+        my: '121213',
+      },
+      alternateColor: true,
+      // defaultPageSize: 10,
+      pagination: {
+        pageSizeOptions: ['10', '20', '30', '40', '50'],
+      },
+      dataHandler: (dataSource, data) => {
+        return dataSource;
+      },
       button: [
         {
           text: '新增',
           onClick: this.handleAdd,
         },
         {
-          text: '获取拖拽排序后的数据',
-          onClick: () => console.log(this.getDataSource())
-        }
+          text: '获取拖拽后及选择的数据',
+          // element: <Button type="link" danger >ss</Button>,
+          onClick: () => {
+            console.log(this.getDataSource());
+            console.log(selectedRowKeys, selectedRows);
+          },
+        },
       ],
       itemButton: [
         {
@@ -81,13 +109,23 @@ class Activity extends BaseComponent<any, any> {
             this.handleDelete({ id: 1, idDel: 1 }, '/deleteActivityList'),
         },
       ],
+      footer: (a) => {
+        // console.log(a)
+        return <div>3</div>;
+      },
+      itemButtonWidth: 200,
       urls: {
         listUrl: `/getActivityList`,
       },
+      selectType: 'checkbox',
+      selectedRowKeys,
+      selectedRows,
+      onSelect: this.handleSelect,
       dataPath: 'data.list',
       totalPath: 'data.total',
       draggable: true,
       resizable: true,
+      isSummary: true,
       // editable: true
     };
 
@@ -108,7 +146,6 @@ class Activity extends BaseComponent<any, any> {
           modalType={ModalType.modal}
           modalConf={{ width: 800 }}
           defaultLayout={{ labelCol: { span: 5 }, wrapperCol: { span: 19 } }}
-
           ref={this.formRef}
           formList={getFormList(this)}
           formatValues={this.handleFormatValues}
@@ -119,12 +156,14 @@ class Activity extends BaseComponent<any, any> {
             completeCallback: () => console.log('complete'),
           }}
           onCancel={() => console.log('cancel')}
-          otherClick={() => { console.log('click') }}
+          otherClick={() => {
+            console.log('click');
+          }}
           handleSubmitPreCallBack={async () => {
             // return Promise.reject 就阻止提交 用于额外的表单
             // return Promise.resolve({})
-            await this.OtherFormRef.current?.validateFields()
-            return Promise.resolve({})
+            await this.OtherFormRef.current?.validateFields();
+            return Promise.resolve({});
           }}
           handleFieldsChange={(changedFields, allFields, form) => {
             // console.log(changedFields, allFields, form);

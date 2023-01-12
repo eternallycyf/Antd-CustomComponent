@@ -5,7 +5,7 @@ import { ICommonTable } from '@/typings';
 import { getAction, postAction } from '@/services/global';
 import { ResizableTitle } from '@/components/CommonTableV5/components/widgets/Resizable';
 import { renderBtn } from '@/components/CommonTableV5/components/widgets/TableBtn';
-import { DraggableBodyRow } from '@/components/CommonTableV5/components/widgets/DragTableRow'
+import { DraggableBodyRow } from '@/components/CommonTableV5/components/widgets/DragTableRow';
 
 export interface IBaseTableState {
   loading: boolean;
@@ -36,7 +36,6 @@ const initHeightParams = (
   buttonRow: any,
   pagination: any,
 ) => {
-
   const container: any = document.querySelector(wrapClassStr);
   const theadHeight = container?.querySelector('.ant-table-thead').clientHeight;
   const containerHeight = container?.clientHeight - 32;
@@ -134,8 +133,8 @@ class BaseTable<
 
   // 请求数据
   loadData = async (isReset: boolean = false) => {
-    const { loading, sorter, filters, current, pageSize, extraParams } =
-      this.state;
+    const { loading, sorter, filters, current, pageSize } = this.state;
+    const { extraParams } = this.props;
     const {
       urls,
       recordKey,
@@ -160,8 +159,8 @@ class BaseTable<
       const currentPage = isReset ? 1 : current;
       const result = await action(urls.listUrl, {
         page: currentPage,
-        // limit: isSummary ? pageSize - 1 : pageSize,
-        limit: pageSize,
+        limit: isSummary ? pageSize - 1 : pageSize,
+        // limit: pageSize,
         ...searchParams,
         ...extraParams,
         ...sorter,
@@ -193,7 +192,8 @@ class BaseTable<
   };
 
   handleBasicColumns = (props: any) => {
-    const { showIndex, columns, resizable, draggable }: any = props || this.props;
+    const { showIndex, columns, resizable, draggable }: any =
+      props || this.props;
     const { dev } = this.state;
     let columnList = handleColumns(columns);
     //展示序号
@@ -233,9 +233,9 @@ class BaseTable<
     }
 
     if (draggable || dev) {
-      const newComponents = { ...this.components }
-      newComponents.body = { ...newComponents.body, row: DraggableBodyRow }
-      this.components = { ...newComponents }
+      const newComponents = { ...this.components };
+      newComponents.body = { ...newComponents.body, row: DraggableBodyRow };
+      this.components = { ...newComponents };
     }
 
     return columnList;
@@ -297,10 +297,10 @@ class BaseTable<
     const sort =
       field && sorter.order
         ? field
-          .split('.')
-          .pop()
-          .replace(/\B([A-Z])/g, '_$1')
-          .toLowerCase()
+            .split('.')
+            .pop()
+            .replace(/\B([A-Z])/g, '_$1')
+            .toLowerCase()
         : null;
 
     this.setState(
@@ -361,16 +361,16 @@ class BaseTable<
    */
   handleResize =
     (index: number) =>
-      (e: any, { size }: any) => {
-        this.setState(({ columns }) => {
-          const nextColumns = [...columns];
-          nextColumns[index] = {
-            ...nextColumns[index],
-            width: size.width,
-          };
-          return { columns: nextColumns };
-        });
-      };
+    (e: any, { size }: any) => {
+      this.setState(({ columns }) => {
+        const nextColumns = [...columns];
+        nextColumns[index] = {
+          ...nextColumns[index],
+          width: size.width,
+        };
+        return { columns: nextColumns };
+      });
+    };
 
   /**
    *  拖拽行
