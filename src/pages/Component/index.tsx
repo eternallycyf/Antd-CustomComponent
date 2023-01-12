@@ -1,19 +1,17 @@
-import React from 'react';
-import BaseComponent from '@/components/BaseComponent';
 import { CommonSearch, CommonTable, CustomForm } from '@/components';
-import { formatParams } from '@/utils/util';
-import { getColumns } from './config/columns';
-import { getSearches } from './config/search';
-import projectConfig from '@/config/projectConfig';
-import _ from 'lodash';
-import { history } from 'umi';
-import { saveActivity } from './service';
-import { ICommonTable, ModalType } from '@/typings';
-import { getFormList } from './config/form';
+import BaseComponent from '@/components/BaseComponent';
 import { formatValuesType } from '@/components/CustomForm';
-import styles from './index.less';
-import { Button, Form, Input } from 'antd';
+import projectConfig from '@/config/projectConfig';
+import { ICommonTable, ModalType } from '@/typings';
+import { formatParams } from '@/utils/util';
+import { Form, Input } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
+import React from 'react';
+import { getColumns } from './config/columns';
+import { getFormList } from './config/form';
+import { getSearches } from './config/search';
+import styles from './index.less';
+import { saveActivity } from './service';
 const { apiPrefixMock } = projectConfig;
 
 interface IProps {}
