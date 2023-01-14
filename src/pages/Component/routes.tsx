@@ -11,7 +11,7 @@ export default {
     {
       name: 'class',
       path: '/home/class',
-      component: '@/pages/Component',
+      component: '@/pages/Component/class',
     },
     {
       name: 'hook',

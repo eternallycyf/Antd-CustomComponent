@@ -4,6 +4,7 @@
   "scripts": {
     "biz-init": "ts-node scripts/generateBizConfig.ts",
     "build": "max build",
+    "build:dev": "yarn biz-init && cross-env NODE_ENV=development max build",
     "build:pro": "yarn biz-init && cross-env NODE_ENV=production max build",
     "deploy": "bash ./deploy.sh",
     "format": "prettier --cache --write .",

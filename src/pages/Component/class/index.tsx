@@ -11,10 +11,10 @@ import { getColumns } from './config/columns';
 import { getFormList } from './config/form';
 import { getSearches } from './config/search';
 import styles from './index.less';
-import { saveActivity } from './service';
+import { saveActivity } from '../service';
 const { apiPrefixMock } = projectConfig;
 
-interface IProps {}
+interface IProps { }
 
 interface IState {
   searchParams: {
@@ -43,7 +43,7 @@ class Activity extends BaseComponent<IProps, IState> {
   }
 
   // 打开活动报名列表页面
-  handleOpenRegList = (record: any) => {};
+  handleOpenRegList = (record: any) => { };
 
   handleFormatValues: formatValuesType = (values, record, type) => {
     console.log(values, record, type);

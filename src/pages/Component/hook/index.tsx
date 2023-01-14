@@ -7,14 +7,14 @@ import styles from './index.less';
 import { getFormList } from './config/form';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { formatValuesType } from '@/components/CustomForm';
-import { columns } from './hookConfig/columns';
-import { searches } from './hookConfig/search';
+import { columns } from './config/columns';
+import { searches } from './config/search';
 import { Form, Input } from 'antd';
 import { FormInstance } from 'rc-field-form';
 const { apiPrefixMock } = projectConfig;
-import { saveActivity } from './service';
+import { saveActivity } from '../service';
 
-interface IProps {}
+interface IProps { }
 type IHandle = {};
 
 const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
@@ -39,7 +39,7 @@ const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
   //   })
   // }, [xxx])
 
-  const handleOpenRegList = (record: any) => {};
+  const handleOpenRegList = (record: any) => { };
 
   const handleFormatValues: formatValuesType = (values, record, type) => {
     console.log(values, record, type);
@@ -156,7 +156,7 @@ const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
         modalConf={{ width: 800 }}
         defaultLayout={{ labelCol: { span: 5 }, wrapperCol: { span: 19 } }}
         ref={self.formRef}
-        formList={getFormList(null)}
+        formList={getFormList(self)}
         formatValues={handleFormatValues}
         onSubmit={{
           action: saveActivity,
