@@ -1,0 +1,17 @@
+stages:
+  - build
+  - public
+
+online_deploy:
+  when: manual
+  only:
+    - main
+    - develop
+    - /^hotfix_.+/
+  stage: public
+  tags:
+    - demo-tag
+  script:
+    - export VERSION=$(date '+%Y-%m-%d-%H-%M-%S')_${CI_COMMIT_SHORT_SHA}
+    - docker build -t antd_mypro:${VERSION} -f Dockerfile . || echo 'docker build error'
+    - docker run -d -p 8080:80 antd_mypro:${VERSION}

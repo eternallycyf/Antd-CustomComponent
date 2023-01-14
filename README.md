@@ -7,7 +7,6 @@
 - tag 切换
 - 权限 demo
 - ts 加强
-- docker/componse 镜像
 
 ## 1.安装依赖
 
