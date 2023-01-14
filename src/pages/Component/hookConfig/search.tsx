@@ -17,9 +17,7 @@ export const searches: ISearchesType = [
     name: 'activityType',
     label: '活动类型',
     type: 'radio',
-    controlProps: {
-      dict: STATUS_DICT,
-    },
+    dict: STATUS_DICT,
     initialValue: STATUS_DICT[0]['value'],
   },
 ];

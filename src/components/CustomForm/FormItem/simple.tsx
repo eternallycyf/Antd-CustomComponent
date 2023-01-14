@@ -144,7 +144,7 @@ const SimpleControl: React.FC<ISimpleControlProps> = React.forwardRef(
 
       return (
         <Component
-          prefix={type === 'search' ? <SearchOutlined /> : 'false'}
+          prefix={type === 'search' ? <SearchOutlined /> : ''}
           {...restSwitchProps}
           {...inputnumberProps}
           {...restControlProps}
