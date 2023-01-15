@@ -8,12 +8,13 @@ export default defineConfig({
   define: {
     'process.env': process.env,
   },
-  base: '/',
   history: { type: 'hash' },
-  publicPath:
-    process.env.NODE_ENV === 'production'
-      ? 'http://wangxince.site/Antd-CustomComponent/'
-      : '/',
+  base: '/',
+  publicPath: '/',
+  // publicPath:
+  //   process.env.NODE_ENV === 'production'
+  //     ? 'http://wangxince.site/Antd-CustomComponent/'
+  //     : '/',
   routes: routerConfig,
   layout: {
     title: '公众crud组件"',
