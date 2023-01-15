@@ -10,11 +10,11 @@ export default defineConfig({
   },
   history: { type: 'hash' },
   base: '/',
-  publicPath: '/',
-  // publicPath:
-  //   process.env.NODE_ENV === 'production'
-  //     ? 'http://wangxince.site/Antd-CustomComponent/'
-  //     : '/',
+  // publicPath: '/',
+  publicPath:
+    process.env.NODE_ENV === 'production'
+      ? 'http://wangxince.site/Antd-CustomComponent/'
+      : '/',
   routes: routerConfig,
   layout: {
     title: '公众crud组件"',
