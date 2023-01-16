@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef, useEffect } from "react";
-
+import { Page } from "@/components";
 import { Charts } from "@/components";
 const { ECharts } = Charts
 
@@ -169,13 +169,13 @@ const EchartsReact = () => {
   };
 
   return (
-    <>
+    <Page>
       <ECharts
         ref={echartsRef}
         option={option}
         onEvents={onEvents}
       />
-    </>
+    </Page>
   );
 };
 

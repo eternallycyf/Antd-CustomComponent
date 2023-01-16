@@ -13,7 +13,6 @@ import React from 'react';
 import { RouterProps } from 'react-router';
 import styles from './index.less';
 const { homePage: homePagePath } = projectConfig;
-const { TabPane } = Tabs;
 
 export enum closeType {
   refresh = 'refresh',

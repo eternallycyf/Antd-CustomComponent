@@ -1,4 +1,4 @@
-import { CommonSearch, CommonTable, CustomForm } from '@/components';
+import { CommonSearch, CommonTable, CustomForm, Page } from '@/components';
 import projectConfig from '@/config/projectConfig';
 import useBaseComponent from '@/hook/useBaseComponent';
 import { formatParams } from '@/utils/util';
@@ -139,7 +139,7 @@ const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
   };
 
   return (
-    <>
+    <Page>
       <CommonSearch
         formList={searches}
         handleSearch={self.setSearchParams}
@@ -179,7 +179,7 @@ const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
         }}
         otherRender={otherRender}
       />
-    </>
+    </Page>
   );
 };
 

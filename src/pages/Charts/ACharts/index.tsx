@@ -1,6 +1,7 @@
 import { Button, Card } from "antd";
 import { PageContainer } from "@ant-design/pro-layout";
 import { Line } from '@ant-design/charts';
+import { Page } from "@/components";
 
 const data = [
   { year: '1991', value: 3 },
@@ -28,11 +29,9 @@ const Add: React.FC = () => {
   };
 
   return (
-    <PageContainer>
-      <Card style={{ margin: 24 }}>
-        <Line {...config} />
-      </Card>
-    </PageContainer>
+    <Page >
+      <Line {...config} />
+    </Page>
   );
 };
 

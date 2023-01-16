@@ -2,7 +2,7 @@ import { Button, Space, Card, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import type { ColumnsType } from "antd/lib/table/interface";
 import ExcelJs from 'exceljs/dist/exceljs';
-import { ExportExcel } from "@/components/";
+import { ExportExcel, Page } from "@/components/";
 const {
   generateHeaders,
   saveWorkbook,
@@ -338,7 +338,7 @@ export default () => {
   }
 
   return (
-    <>
+    <Page>
       <Card style={{ margin: 24 }}>
         <Space align="center" direction="horizontal">
           <Button type={"primary"} onClick={onExportBasicExcel}>
@@ -362,6 +362,6 @@ export default () => {
         </Space>
         <Table columns={columns} dataSource={list} />
       </Card>
-    </>
+    </Page>
   );
 };

@@ -1,10 +1,10 @@
-import { WaterMark } from '@/components';
+import { Page, WaterMark } from '@/components';
 import { Card } from 'antd';
 const IndexPage = () => {
   return (
-    <Card bodyStyle={{ height: '100vh' }}>
+    <Page>
       <WaterMark ></WaterMark>
-    </Card>
+    </Page>
   );
 };
 

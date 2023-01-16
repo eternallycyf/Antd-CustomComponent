@@ -4,6 +4,7 @@ import styles from "./index.less";
 import { exportWord } from "./utils";
 import Chart from "./components/chart";
 import Table from "./components/table";
+import Page from "../Page";
 
 
 const data = {
@@ -113,37 +114,35 @@ const FileExport = () => {
   };
 
   return (
-    <>
-      <Card style={{ margin: 24 }}>
-        <div className={styles.container}>
-          <Button
-            className={styles.btn}
-            type="primary"
-            onClick={() => wordBtn()}
-          >
-            导出word
-          </Button>
-          <div className={styles.word}>
-            <h1 className={styles.title}>word文档</h1>
-            <p className="content">
-              8月3日，中国人民解放军东部战区在台岛周边海空域组织实战化联合演训。
-            </p>
-            <p className="content">
-              今天上午，东部战区空军出动预警机、歼击机、轰炸机等多型先进战机，从多机场战斗起飞、到多空域执行任务，开展预警指挥、干扰压制、兵力进压等。东部战区海军在台岛周边海域开展联合封控和联合对陆对海打击等多课目针对性演练
-            </p>
-            <p className="content">
-              据中国台湾网8月4日讯
-              解放军今（4日）起在台湾周边空海域进行重要军事演训行动，并组织实弹射击。据台湾《联合报》报道，台军因应情势，清晨下令台军“三军”地区轮值的战备部队，将原兵力为连级的“战斗队”，立即提升为营级的“特遣队”，实施备战警戒。
-            </p>
-            <p className="content">
-              报道称，解放军在台海周边部署六个操演区，岛内研判可能有东风15等导弹自大陆内陆升空飞越台湾本岛上空，新竹乐山基地的长程预警雷达严密监控当面高中低空状况，并与两座岛内预警中心连线。
-            </p>
-            <Chart ref={charts} />
-            <Table ref={table} />
-          </div>
+    <Page>
+      <div className={styles.container}>
+        <Button
+          className={styles.btn}
+          type="primary"
+          onClick={() => wordBtn()}
+        >
+          导出word
+        </Button>
+        <div className={styles.word}>
+          <h1 className={styles.title}>word文档</h1>
+          <p className="content">
+            8月3日，中国人民解放军东部战区在台岛周边海空域组织实战化联合演训。
+          </p>
+          <p className="content">
+            今天上午，东部战区空军出动预警机、歼击机、轰炸机等多型先进战机，从多机场战斗起飞、到多空域执行任务，开展预警指挥、干扰压制、兵力进压等。东部战区海军在台岛周边海域开展联合封控和联合对陆对海打击等多课目针对性演练
+          </p>
+          <p className="content">
+            据中国台湾网8月4日讯
+            解放军今（4日）起在台湾周边空海域进行重要军事演训行动，并组织实弹射击。据台湾《联合报》报道，台军因应情势，清晨下令台军“三军”地区轮值的战备部队，将原兵力为连级的“战斗队”，立即提升为营级的“特遣队”，实施备战警戒。
+          </p>
+          <p className="content">
+            报道称，解放军在台海周边部署六个操演区，岛内研判可能有东风15等导弹自大陆内陆升空飞越台湾本岛上空，新竹乐山基地的长程预警雷达严密监控当面高中低空状况，并与两座岛内预警中心连线。
+          </p>
+          <Chart ref={charts} />
+          <Table ref={table} />
         </div>
-      </Card>
-    </>
+      </div>
+    </Page>
   );
 };
 

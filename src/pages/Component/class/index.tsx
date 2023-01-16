@@ -1,4 +1,4 @@
-import { CommonSearch, CommonTable, CustomForm } from '@/components';
+import { CommonSearch, CommonTable, CustomForm, Page } from '@/components';
 import BaseComponent from '@/components/BaseComponent';
 import { formatValuesType } from '@/components/CustomForm';
 import projectConfig from '@/config/projectConfig';
@@ -146,7 +146,7 @@ class Activity extends BaseComponent<IProps, IState> {
     };
 
     return (
-      <>
+      <Page>
         <CommonSearch
           formList={getSearches(this)}
           handleSearch={this.handleSearch}
@@ -186,7 +186,7 @@ class Activity extends BaseComponent<IProps, IState> {
           }}
           otherRender={this.otherRender}
         />
-      </>
+      </Page>
     );
   }
 }

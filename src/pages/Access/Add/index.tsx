@@ -1,12 +1,11 @@
-import { Button, Card } from "antd";
-import { PageContainer } from "@ant-design/pro-layout";
+import { Page } from "@/components";
+import { Button } from "antd";
+
 const Add: React.FC = () => {
   return (
-    <PageContainer>
-      <Card style={{ margin: 24 }}>
-        <Button>添加权限</Button>
-      </Card>
-    </PageContainer>
+    <Page>
+      <Button>添加权限</Button>
+    </Page>
   );
 };
 
