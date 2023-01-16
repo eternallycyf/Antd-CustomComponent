@@ -8,7 +8,7 @@ export default defineConfig({
   define: {
     'process.env': process.env,
   },
-  history: { type: 'hash' },
+  // history: { type: 'hash' },
   base: '/',
   // use vercel.app as publicPath
   publicPath: '/',

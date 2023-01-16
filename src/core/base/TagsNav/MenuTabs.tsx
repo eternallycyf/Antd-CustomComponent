@@ -5,6 +5,7 @@ import {
   MenuFoldOutlined,
   HomeOutlined,
 } from '@ant-design/icons';
+import { useModel } from '@umijs/max';
 import { Dropdown, Menu, MenuProps, Tabs, TabsProps } from 'antd';
 import cx from 'classnames';
 import { connect } from 'dva';
@@ -45,6 +46,8 @@ export interface MenuTabsProps {
 }
 
 const MenuTabs: React.FC<MenuTabsProps> = (props) => {
+  const { initialState, loading, error, refresh, setInitialState } =
+    useModel('@@initialState');
   const {
     tabs,
     activeKey,
@@ -68,20 +71,18 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
     }
   };
 
-  const handleTabsMenuClick =
-    (tabKey: string): MenuProps['onClick'] =>
-    (event) => {
-      const { key } = event;
-      if (key === closeType.refresh) {
-        onRefresh(tabKey);
-      } else if (key === closeType.closeOne) {
-        onRemove(tabKey);
-      } else if (key === closeType.closeALl) {
-        onRemoveAll(tabKey);
-      } else if (key === closeType.closeOthers) {
-        onRemoveOthers(tabKey);
-      }
-    };
+  const handleTabsMenuClick = (tabKey: string, event: any): void => {
+    const { key } = event;
+    if (key === closeType.refresh) {
+      onRefresh(tabKey);
+    } else if (key === closeType.closeOne) {
+      onRemove(tabKey);
+    } else if (key === closeType.closeALl) {
+      onRemoveAll(tabKey);
+    } else if (key === closeType.closeOthers) {
+      onRemoveOthers(tabKey);
+    }
+  };
 
   const getMenu = (key: string, index: number) => {
     return [
@@ -113,7 +114,7 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
         <Dropdown
           menu={{
             items: getMenu(key, index),
-            onClick: () => handleTabsMenuClick(key),
+            onClick: (e) => handleTabsMenuClick(key, e),
           }}
           trigger={['contextMenu']}
         >
@@ -130,9 +131,12 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
   };
 
   const handleMenuCollapse = () => {
-    dispatch({
-      type: 'global/changeLayoutCollapsed',
-      payload: !collapsed,
+    setInitialState({
+      ...initialState,
+      layout: {
+        ...initialState.layout,
+        collapsed: !initialState.layout.collapsed,
+      },
     });
   };
 
@@ -149,24 +153,27 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
       onEdit={handleTabEdit}
       tabBarExtraContent={{
         left: collapsed ? (
-          <MenuUnfoldOutlined onClick={handleMenuCollapse} />
+          <MenuUnfoldOutlined
+            onClick={handleMenuCollapse}
+            style={{ padding: '0 10px' }}
+          />
         ) : (
-          <MenuFoldOutlined onClick={handleMenuCollapse} />
+          <MenuFoldOutlined
+            onClick={handleMenuCollapse}
+            style={{ padding: '0 10px' }}
+          />
         ),
       }}
+      items={tabs.map((item, index) => ({
+        ...item,
+        tab: setTab(item.tab, item.key, index),
+        label: setTab(item.tab, item.key, index),
+        closable: index !== 0,
+        className: (item.key === activeKey && 'tab-tabpane-active') || '',
+        children: tabChildren[item.key],
+      }))}
       {...tabsProps}
-    >
-      {tabs.map((item: MenuTab, index) => (
-        <TabPane
-          tab={setTab(item.tab, item.key, index)}
-          key={item.key}
-          closable={index !== 0}
-          className={(item.key === activeKey && 'tab-tabpane-active') || ''}
-        >
-          {tabChildren[item.key]}
-        </TabPane>
-      ))}
-    </Tabs>
+    ></Tabs>
   );
 };
 

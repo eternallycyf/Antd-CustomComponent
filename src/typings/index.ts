@@ -51,11 +51,11 @@ export interface MenuItem {
   path: string; //菜単路径
   name: string; // 菜单名称
   target?: string; // 菜单跳转路径
-  icon?: string; // 菜单图标
-  component?: string; // 菜单组件
+  icon?: string | null; // 菜单图标
+  component?: string | null; // 菜单组件
   authority?: string[]; // 权限配置
   routes?: MenuItem[]; // 子菜单列表(配置)
-  children?: MenuItem[]; // 子菜单列表
+  children?: MenuItem[] | null; // 子菜单列表
   hideInMenu?: boolean; // 是否在菜单中隐藏
   hideInTab?: boolean; // 是否在tab中隐藏
   multiple?: boolean; // 是否多开标签页

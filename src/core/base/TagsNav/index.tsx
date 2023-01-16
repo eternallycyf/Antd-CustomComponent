@@ -4,9 +4,10 @@ import { localStore } from '@/utils/storage';
 import _ from 'lodash';
 import pathToRegexp from 'path-to-regexp';
 import React, { useEffect, useState } from 'react';
-import { history } from 'umi';
+import { connect, history, withRouter } from '@umijs/max';
 import { RouterProps } from 'react-router';
 import MenuTabs, { MenuTab } from './MenuTabs';
+import { ConnectState } from '@/typings/connect';
 const { homePage: homePagePath } = projectConfig;
 
 function getMetaDataOfTab(
@@ -34,7 +35,7 @@ function setPathName(metaData: MenuItem, location: RouterProps['location']) {
 }
 
 function routeTo(targetTab: MenuTab) {
-  if (targetTab) history.push(targetTab.location!);
+  if (targetTab) history.push(targetTab?.location || '/');
 }
 
 function addTab(newTab: MenuTab, activeTabs: MenuTab[]): any[] {
@@ -202,10 +203,3 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
 };
 
 export default PageTabs;
-
-// const tagsNavProps = {
-//   menuList,
-//   location,
-//   breadcrumbNameMap,
-// }
-// <TagsNav {...tagsNavProps} >{children}</TagsNav>

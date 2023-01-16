@@ -1,7 +1,7 @@
 import Config from '@/config/projectConfig';
 import { notification } from 'antd';
 import _ from 'lodash';
-import { history } from 'umi';
+import { history } from '@umijs/max';
 import Request, { extend, RequestOptionsInit } from 'umi-request';
 import { localStore, sessionStore } from './storage';
 

@@ -1,8 +1,57 @@
-export async function getInitialState(): Promise<{ name: string }> {
-  return { name: '管理员' };
+import { ProLayout, ProLayoutProps } from '@ant-design/pro-components';
+import { getDvaApp, Link } from '@umijs/max';
+import BasicLayout from './core/layouts/BasicLayout';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage/session';
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  blacklist: [
+    // 'global',
+    // 'login'
+  ],
+};
+
+/**
+ * 引入redux-persist持久化
+ */
+const persistEnhancer =
+  () =>
+  (createStore: any) =>
+  (reducer: any, initialState: any, enhancer: any) => {
+    const store = createStore(
+      persistReducer(persistConfig, reducer),
+      initialState,
+      enhancer,
+    );
+    const persist = persistStore(store, null);
+    return {
+      ...store,
+      persist,
+    };
+  };
+
+export const dva = {
+  config: {
+    extraEnhancers: [persistEnhancer()],
+    onError(err: any) {
+      err.preventDefault();
+    },
+  },
+};
+
+export async function getInitialState(): Promise<any> {
+  const data = {
+    layout: {
+      collapsed: true,
+    },
+  };
+  return data;
 }
 
-export const layout = () => {
+export const layout = (event: any) => {
+  const { initialState, loading, error, refresh, setInitialState } = event;
   return {
     layout: 'mix',
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
@@ -13,5 +62,24 @@ export const layout = () => {
       size: 'small',
       title: '七妮妮',
     },
+    menuItemRender: (menuItemProps: any, defaultDom: any) => {
+      return (
+        <div>
+          <Link to={menuItemProps.path}>{defaultDom}</Link>
+        </div>
+      );
+    },
+    collapsed: initialState?.layout?.collapsed,
+    onCollapse: (collapsed: boolean) => {
+      setInitialState({
+        ...initialState,
+        layout: { ...initialState.layout, collapsed },
+      });
+    },
+    collapsedButtonRender: false,
+    childrenRender: (props: any) => (
+      <BasicLayout props={props}>{props}</BasicLayout>
+    ),
+    breadcrumbRender: false,
   };
 };
