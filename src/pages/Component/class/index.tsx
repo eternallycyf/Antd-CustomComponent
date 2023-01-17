@@ -12,9 +12,11 @@ import { getFormList } from './config/form';
 import { getSearches } from './config/search';
 import styles from './index.less';
 import { saveActivity } from '../service';
+import { history } from '@umijs/max';
+import { History } from 'history';
 const { apiPrefixMock } = projectConfig;
 
-interface IProps { }
+interface IProps {}
 
 interface IState {
   searchParams: {
@@ -42,8 +44,14 @@ class Activity extends BaseComponent<IProps, IState> {
     };
   }
 
+  componentDidMount() {
+    history.listen(({ location }) => {
+      console.log(location);
+    });
+  }
+
   // 打开活动报名列表页面
-  handleOpenRegList = (record: any) => { };
+  handleOpenRegList = (record: any) => {};
 
   handleFormatValues: formatValuesType = (values, record, type) => {
     console.log(values, record, type);
