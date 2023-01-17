@@ -70,28 +70,27 @@
 
 ## FAQ
 
-- 多页签注意的问题
+### 页签切换后不触发生命周期
 
 ```js
-# .umirc.ts 部署在根路径下 请设置为 '/' 其他路径下为 '/xxx/'
-  base: process.env.NODE_ENV === 'production' ? '/Antd-CustomComponent/' : '/',
-# config/projectConfig.ts
-// 部署在根路径下 请设置为 '/' 其他路径下为 '/xxx'
-export const homePage = process.env.NODE_ENV ? '/Antd-CustomComponent' : '/';
-// 部署在根路径下 数据返回 设置为 '' 其他路径下为 '/xxx'
-export const mockBaseUrl = process.env.NODE_ENV ? '/Antd-CustomComponent' : '';
+// hooks
+useEffect(() => {
 
-# 初始化获取的路由需要加上前缀 例如
- {
-    children: null,
-    code: 'react_index_page',
-    component: null,
-    icon: null,
-    id: 'index',
-    name: '首页',
-    // '/' to '/Antd-CustomComponent'
-    path: mockBaseUrl,
-    upperId: '0',
-    url: null,
-  },
+}, [window.location.pathname])
+
+// class
+// 1.通过 componentDidUpdate 对比
+// 2. 动态设置 key
+<Route path="/page/:pageid" render={(props) => (
+  <Page key={props.match.params.pageid} {...props} />)
+} />
+// 3.动态路由参数
+// https://umijs.org/docs/guides/routes#%E8%B7%AF%E7%94%B1%E5%8A%A8%E6%80%81%E5%8F%82%E6%95%B0
+// 4.通过 history 监听
+  componentDidMount() {
+    history.listen(({ location }) => {
+      console.log(location);
+    })
+  }
+// 5.写一个子hoooks组件 专门监听
 ```
