@@ -16,8 +16,7 @@ const BasicLayout = (props: any) => {
 
   return (
     <>
-      <TagsNav {...TagsNavProps} />
-      {children}
+      <TagsNav {...TagsNavProps}>{children}</TagsNav>
     </>
   );
 };
