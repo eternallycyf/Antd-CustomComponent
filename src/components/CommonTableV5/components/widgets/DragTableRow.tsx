@@ -39,8 +39,8 @@ export const DraggableBodyRow = (props: DraggableBodyRowProps) => {
   return (
     <tr
       ref={ref}
-      className={`${className}${isOver ? dropClassName : ''}`}
-      style={{ cursor: 'move', background: isOver ? 'cornflowerblue' : '', ...style }}
+      className={`${className} ${isOver ? dropClassName : ''}`}
+      style={{ cursor: 'move', ...style }}
       {...restProps}
     />
   );

@@ -151,9 +151,10 @@ const EchartsReact = () => {
   const echartsRef = useRef<React.ElementRef<typeof ECharts>>(null!);
 
   useEffect(() => {
-    const base64 = echartsRef.current.ref.getDataURL();
-    console.log(base64);
-  }, []);
+    // const base64 = echartsRef.current?.ref?.getDataURL();
+    // console.log(base64);
+    console.log('--')
+  }, [window.location.pathname]);
 
   const onChartClick = (params: any) => {
     console.log(params);
