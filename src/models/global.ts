@@ -5,7 +5,7 @@ import * as service from '@/services';
 import {
   menuList as MENU_LIST,
   breadcrumbNameMap as BREAD_CRUMB_NAEMMAP,
-} from '../../mock/user';
+} from './constant';
 
 export interface IGlobalModelState {
   theme: 'dark' | 'light';
