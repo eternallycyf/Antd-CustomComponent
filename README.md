@@ -74,12 +74,12 @@
 
 ```js
 # .umirc.ts 部署在根路径下 请设置为 '/' 其他路径下为 '/xxx/'
-  base: process.env.NODE_ENV === 'production' ? '/umi4-tab/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/Antd-CustomComponent/' : '/',
 # config/projectConfig.ts
 // 部署在根路径下 请设置为 '/' 其他路径下为 '/xxx'
-export const homePage = process.env.NODE_ENV ? '/umi4-tab' : '/';
+export const homePage = process.env.NODE_ENV ? '/Antd-CustomComponent' : '/';
 // 部署在根路径下 数据返回 设置为 '' 其他路径下为 '/xxx'
-export const mockBaseUrl = process.env.NODE_ENV ? '/umi4-tab' : '';
+export const mockBaseUrl = process.env.NODE_ENV ? '/Antd-CustomComponent' : '';
 
 # 初始化获取的路由需要加上前缀 例如
  {
@@ -89,7 +89,7 @@ export const mockBaseUrl = process.env.NODE_ENV ? '/umi4-tab' : '';
     icon: null,
     id: 'index',
     name: '首页',
-    // '/' to '/umi4-tab'
+    // '/' to '/Antd-CustomComponent'
     path: mockBaseUrl,
     upperId: '0',
     url: null,

@@ -8,7 +8,7 @@ export default defineConfig({
   define: {
     'process.env': process.env,
   },
-  base: process.env.NODE_ENV === 'production' ? '/umi4-tab/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/Antd-CustomComponent/' : '/',
   publicPath:
     process.env.NODE_ENV === 'production'
       ? 'http://wangxince.site/Antd-CustomComponent/'

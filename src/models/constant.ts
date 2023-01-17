@@ -1,5 +1,4 @@
-import { mockBaseUrl } from '@/config/projectConfig';
-import Router from '@/routes';
+import { mockBaseUrl, homePage } from '@/config/projectConfig';
 import { getBreadcrumbNameMap } from '@/utils/menu';
 
 export const menuList = [
@@ -10,7 +9,7 @@ export const menuList = [
     icon: null,
     id: 'index',
     name: '首页',
-    path: mockBaseUrl,
+    path: homePage,
     upperId: '0',
     url: null,
   },
@@ -191,6 +190,124 @@ export const menuList = [
     path: mockBaseUrl + '/404',
     upperId: '1',
     url: null,
+  },
+];
+
+const Router = [
+  {
+    path: homePage,
+    hideInPanelTab: true,
+  },
+  {
+    name: '权限管理',
+    path: mockBaseUrl + '/access',
+    icon: 'smile',
+    routes: [
+      {
+        name: '权限管理',
+        path: mockBaseUrl + '/access',
+        redirect: mockBaseUrl + '/access/home',
+        hideInMenu: true,
+        icon: 'smile',
+      },
+      {
+        name: '配置',
+        path: mockBaseUrl + '/access/home',
+        component: '@/pages/Access/Home',
+        icon: 'smile',
+      },
+      {
+        name: '添加权限',
+        path: mockBaseUrl + '/access/add',
+        component: '@/pages/Access/Add',
+        icon: 'smile',
+      },
+    ],
+  },
+  {
+    name: 'charts',
+    path: mockBaseUrl + '/charts',
+    routes: [
+      {
+        name: 'echarts',
+        path: mockBaseUrl + '/charts',
+        redirect: '/charts/echarts',
+        hideInMenu: true,
+        icon: 'smile',
+      },
+      {
+        name: 'antd-charts',
+        path: mockBaseUrl + '/charts/ACharts',
+        component: '@/pages/Charts/ACharts',
+        icon: 'smile',
+      },
+      {
+        name: 'ECharts',
+        path: mockBaseUrl + '/charts/Echarts',
+        component: '@/pages/Charts/ECharts',
+        icon: 'smile',
+      },
+    ],
+  },
+  {
+    name: '增删改组件',
+    path: mockBaseUrl + '/home',
+    icon: 'smile',
+    routes: [
+      {
+        name: 'class',
+        path: mockBaseUrl + '/home',
+        redirect: '/home/class',
+        hideInMenu: true,
+        icon: 'smile',
+      },
+      {
+        name: 'class',
+        path: mockBaseUrl + '/home/class',
+        component: '@/pages/Component/class',
+        icon: 'smile',
+      },
+      {
+        name: 'hook',
+        path: mockBaseUrl + '/home/hook',
+        component: '@/pages/Component/hook',
+        icon: 'smile',
+      },
+    ],
+  },
+  {
+    name: '导出excel',
+    path: mockBaseUrl + '/ExportExcel',
+    component: '@/pages/ExportExcel',
+    icon: 'smile',
+  },
+  {
+    name: '导出word',
+    path: mockBaseUrl + '/ExportWord',
+    component: '@/pages/ExportWord',
+    icon: 'smile',
+  },
+  {
+    name: '文件预览',
+    path: mockBaseUrl + '/FileViewer',
+    component: '@/pages/FileViewer',
+    icon: 'smile',
+  },
+  {
+    name: '虚拟列表',
+    path: mockBaseUrl + '/VirtualList',
+    component: '@/pages/VirtualList',
+    icon: 'smile',
+  },
+  {
+    name: '水印',
+    path: mockBaseUrl + '/WaterMark',
+    component: '@/pages/WaterMark',
+    icon: 'smile',
+  },
+  {
+    path: '*',
+    hideInPanelTab: true,
   },
 ];
 
