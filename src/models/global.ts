@@ -2,6 +2,10 @@ import { Reducer } from 'redux';
 import { UserInfo } from '@/typings';
 import { Effect } from 'dva';
 import * as service from '@/services';
+import {
+  menuList as MENU_LIST,
+  breadcrumbNameMap as BREAD_CRUMB_NAEMMAP,
+} from '../../mock/user';
 
 export interface IGlobalModelState {
   theme: 'dark' | 'light';
@@ -56,24 +60,43 @@ const GlobalModel: IGlobalModel = {
       return data;
     },
     *fetchUserInfo({ payload }, { call, put }) {
-      const { data: userInfo } = yield call(service.fetchUserInfo);
-      yield put({
-        type: 'updateState',
-        payload: {
-          userInfo,
-        },
-      });
+      try {
+        const { data: userInfo } = yield call(service.fetchUserInfo);
+        yield put({
+          type: 'updateState',
+          payload: {
+            userInfo,
+          },
+        });
+      } catch (error) {
+        yield put({
+          type: 'updateState',
+          payload: {
+            userInfo: {},
+          },
+        });
+      }
     },
     *fetchMenu({ payload }, { call, put }) {
-      const { data } = yield call(service.fetchMenu);
-      const { breadcrumbNameMap = {}, menuList = [] } = data;
-      yield put({
-        type: 'updateState',
-        payload: {
-          breadcrumbNameMap,
-          menuList,
-        },
-      });
+      try {
+        const { data } = yield call(service.fetchMenu);
+        const { breadcrumbNameMap = {}, menuList = [] } = data;
+        yield put({
+          type: 'updateState',
+          payload: {
+            breadcrumbNameMap,
+            menuList,
+          },
+        });
+      } catch (error) {
+        yield put({
+          type: 'updateState',
+          payload: {
+            breadcrumbNameMap: BREAD_CRUMB_NAEMMAP,
+            menuList: MENU_LIST,
+          },
+        });
+      }
     },
   },
   subscriptions: {
