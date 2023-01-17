@@ -67,3 +67,31 @@
     "yorkie": "^2.0.0"
   }
 ```
+
+## FAQ
+
+- 多页签注意的问题
+
+```js
+# .umirc.ts 部署在根路径下 请设置为 '/' 其他路径下为 '/xxx/'
+  base: process.env.NODE_ENV === 'production' ? '/umi4-tab/' : '/',
+# config/projectConfig.ts
+// 部署在根路径下 请设置为 '/' 其他路径下为 '/xxx'
+export const homePage = process.env.NODE_ENV ? '/umi4-tab' : '/';
+// 部署在根路径下 数据返回 设置为 '' 其他路径下为 '/xxx'
+export const mockBaseUrl = process.env.NODE_ENV ? '/umi4-tab' : '';
+
+# 初始化获取的路由需要加上前缀 例如
+ {
+    children: null,
+    code: 'react_index_page',
+    component: null,
+    icon: null,
+    id: 'index',
+    name: '首页',
+    // '/' to '/umi4-tab'
+    path: mockBaseUrl,
+    upperId: '0',
+    url: null,
+  },
+```
