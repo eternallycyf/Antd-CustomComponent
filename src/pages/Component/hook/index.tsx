@@ -14,7 +14,7 @@ import { FormInstance } from 'rc-field-form';
 const { apiPrefixMock } = projectConfig;
 import { saveActivity } from '../service';
 
-interface IProps { }
+interface IProps {}
 type IHandle = {};
 
 const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
@@ -39,7 +39,7 @@ const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
   //   })
   // }, [xxx])
 
-  const handleOpenRegList = (record: any) => { };
+  const handleOpenRegList = (record: any) => {};
 
   const handleFormatValues: formatValuesType = (values, record, type) => {
     console.log(values, record, type);
@@ -102,10 +102,14 @@ const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
       {
         text: '编辑',
         onClick: self.handleEdit,
+        // code 如果后端接口没有返回 则不显示
+        // code: 'class-editButton'
+        code: '错误的code',
       },
       {
         text: '删除',
         buttonType: 'delete',
+        code: 'class-deleteButton',
         onClick: (item: any) =>
           self.handleDelete({ id: 1, idDel: 1 }, '/deleteActivityList'),
       },

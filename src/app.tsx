@@ -3,6 +3,7 @@ import { getDvaApp, Link } from '@umijs/max';
 import BasicLayout from './core/layouts/BasicLayout';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage/session';
+import Router from './routes';
 
 const persistConfig = {
   key: 'root',
@@ -18,19 +19,19 @@ const persistConfig = {
  */
 const persistEnhancer =
   () =>
-    (createStore: any) =>
-      (reducer: any, initialState: any, enhancer: any) => {
-        const store = createStore(
-          persistReducer(persistConfig, reducer),
-          initialState,
-          enhancer,
-        );
-        const persist = persistStore(store, null);
-        return {
-          ...store,
-          persist,
-        };
-      };
+  (createStore: any) =>
+  (reducer: any, initialState: any, enhancer: any) => {
+    const store = createStore(
+      persistReducer(persistConfig, reducer),
+      initialState,
+      enhancer,
+    );
+    const persist = persistStore(store, null);
+    return {
+      ...store,
+      persist,
+    };
+  };
 
 export const dva = {
   config: {
@@ -52,11 +53,12 @@ export async function getInitialState(): Promise<any> {
 
 export const layout = (event: any) => {
   const { initialState, loading, error, refresh, setInitialState } = event;
+  console.log(Router);
   return {
     layout: 'mix',
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
     menu: { locale: false },
-    logout: () => { }, // do something
+    logout: () => {}, // do something
     avatarProps: {
       src: 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
       size: 'small',

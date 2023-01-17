@@ -72,7 +72,7 @@ const AccessBtn: React.FC<IProps> = (props) => {
 };
 
 export default React.memo(
-  connect(({ login }: ConnectState) => ({
-    accessCollection: login.accessCollection || [],
+  connect(({ global }: ConnectState) => ({
+    accessCollection: global.accessCollection || [],
   }))(AccessBtn),
 );

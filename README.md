@@ -3,9 +3,6 @@
 - 公众组件增加编辑表格功能
 - 集成 threejs d3
 - 天网图
-- my-pro-layout
-- tag 切换
-- 权限 demo
 - ts 加强
 
 ## 1.安装依赖

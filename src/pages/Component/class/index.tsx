@@ -117,10 +117,14 @@ class Activity extends BaseComponent<IProps, IState> {
         {
           text: '编辑',
           onClick: this.handleEdit,
+          code: 'class-editButton',
         },
         {
           text: '删除',
           buttonType: 'delete',
+          // code 如果后端接口没有返回 则不显示
+          // code: 'class-deleteButton',
+          code: '错误的code',
           onClick: (item: any) =>
             this.handleDelete({ id: 1, idDel: 1 }, '/deleteActivityList'),
         },

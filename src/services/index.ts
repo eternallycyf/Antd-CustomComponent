@@ -7,3 +7,7 @@ export function fetchUserInfo() {
 export function fetchMenu() {
   return request('/fetchMenu', { method: 'POST' });
 }
+
+export function fetchAccessCollection() {
+  return request('/fetchAccessCollection', { method: 'POST' });
+}

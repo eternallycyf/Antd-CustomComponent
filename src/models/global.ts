@@ -16,6 +16,7 @@ export interface IGlobalModelState {
   sliderMenuState: '1' | '2';
   breadcrumbNameMap: any;
   menuList: any;
+  accessCollection: any[];
 }
 
 export interface IGlobalModel {
@@ -28,6 +29,7 @@ export interface IGlobalModel {
     fetch: Effect;
     fetchUserInfo: Effect;
     fetchMenu: Effect;
+    fetchAccessCollection: Effect;
   };
   subscriptions: {
     setup: Effect;
@@ -45,6 +47,8 @@ const GlobalModel: IGlobalModel = {
     userInfo: {},
     breadcrumbNameMap: {},
     menuList: [],
+    accessCollection:
+      (sessionStorage.getItem('accessCollection') as any as any[]) || [],
   },
   reducers: {
     updateState(state, { payload }) {
@@ -55,6 +59,7 @@ const GlobalModel: IGlobalModel = {
     *fetch({ payload }, { call, put, select }) {
       yield put({ type: 'fetchUserInfo', payload: {} });
       yield put({ type: 'fetchMenu', payload: {} });
+      yield put({ type: 'fetchAccessCollection', payload: {} });
       // @ts-ignore
       const data = yield select((state: any) => state.global);
       return data;
@@ -97,6 +102,15 @@ const GlobalModel: IGlobalModel = {
           },
         });
       }
+    },
+    *fetchAccessCollection({ payload }, { call, put }) {
+      const { data } = yield call(service.fetchAccessCollection);
+      yield put({
+        type: 'updateState',
+        payload: {
+          accessCollection: data,
+        },
+      });
     },
   },
   subscriptions: {
