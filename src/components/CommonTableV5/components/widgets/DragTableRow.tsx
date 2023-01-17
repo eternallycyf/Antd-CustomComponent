@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import styles from './index.less'
 const type = 'DraggableBodyRow';
 
 interface DraggableBodyRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
@@ -19,7 +20,7 @@ export const DraggableBodyRow = (props: DraggableBodyRowProps) => {
       }
       return {
         isOver: monitor.isOver(),
-        dropClassName: dragIndex < index ? ' drop-over-downward' : ' drop-over-upward',
+        dropClassName: dragIndex < index ? styles['drop-over-downward'] : styles['drop-over-upward'],
       };
     },
     drop: (item: { index: number }) => {
@@ -34,11 +35,12 @@ export const DraggableBodyRow = (props: DraggableBodyRowProps) => {
     }),
   });
   drop(drag(ref));
+
   return (
     <tr
       ref={ref}
       className={`${className}${isOver ? dropClassName : ''}`}
-      style={{ cursor: 'move', ...style }}
+      style={{ cursor: 'move', background: isOver ? 'cornflowerblue' : '', ...style }}
       {...restProps}
     />
   );

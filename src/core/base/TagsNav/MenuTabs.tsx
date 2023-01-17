@@ -109,7 +109,7 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
 
   const setTab = (tab: string, key: string, index: number) => {
     return (
-      <span onContextMenu={(event) => event.preventDefault()}>
+      <div onContextMenu={(event) => event.preventDefault()}>
         <Dropdown
           menu={{
             items: getMenu(key, index),
@@ -117,15 +117,15 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
           }}
           trigger={['contextMenu']}
         >
-          <span className={cx(styles.tabTitle)}>
+          <div className={cx(styles.tabTitle)}>
             {key === homePagePath ? (
               <HomeOutlined className={styles['icon-home']} />
             ) : (
               tab
             )}
-          </span>
+          </div>
         </Dropdown>
-      </span>
+      </div>
     );
   };
 
