@@ -3,7 +3,7 @@ import { ColumnsType, TablePaginationConfig } from 'antd/lib/table';
 import { ButtonProps } from 'antd/lib/button';
 import React, { ReactNode } from 'react';
 import { FormInstance } from 'antd/es/form';
-import { TableProps } from 'antd';
+import { TableColumnType, TableProps } from 'antd';
 import {
   IBaseFormControlType,
   IDynamicBaseFormControlType,
@@ -28,6 +28,7 @@ type boolFunc = (config: {
 export type IColumnsType<T = any> = ColumnsType<
   FormControl & { key: React.Key } & T
 >;
+
 interface ISearchMoreProps extends FormControl {}
 
 export type ISearchesType = ISearchMoreProps[];
@@ -149,19 +150,18 @@ export interface ICommonTable<T> extends TableProps<T> {
   isSummary?: boolean;
   /**@description 网络请求后data的路径 */
   dataPath?: string;
+  /**@description 渲染前最后处理一次column */
+  formatColumn?: (column: any[]) => any[];
   children?: React.ReactNode;
   [propName: string]: any;
 }
 
-export interface EditTableProps extends ICommonTable<any> {
-  form: FormInstance;
-  columns: IColumnsType;
-  handleSave?: any; // 保存
-}
-
-export interface EditTableProps extends ICommonTable<any> {
-  form: FormInstance;
-  columns: IColumnsType;
+export interface EditTableProps {
+  rowKey?: string;
+  columns?: (TableColumnType<any> & { editable?: boolean } & {
+    formItemProps?: FormControl;
+  })[];
+  operateList?: any[];
   handleSave?: any; //保存
 }
 
@@ -232,6 +232,8 @@ export interface FormControl extends IBaseFormControlProps {
   /**@description 控件状态配置 */
   hide?: boolean | boolFunc;
   disabled?: boolean | boolFunc;
+  /**@description 是否可编辑 */
+  editable?: boolean | boolFunc;
   condition?: [
     {
       //匹配规则 正则或者字符串

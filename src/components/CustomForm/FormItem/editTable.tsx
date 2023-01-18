@@ -1,90 +1,210 @@
-import React, { useImperativeHandle } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import { Form } from 'antd';
+import React, {
+  Fragment,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
+import { PlusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { Col, Form, FormItemProps, Popconfirm, Row } from 'antd';
 import { Button } from 'antd';
 import CommonTable from '@/components/CommonTableV5/CommonTableV5';
-import { IControlProps } from '@/typings';
+import { ICommonTable, IControlProps } from '@/typings';
 import { getFieldComp } from '@/core/helpers';
 import styles from './index.less';
-const FormItem = Form.Item;
-let uuid = 0;
+import { FormInstance } from 'antd/lib/form/Form';
+import { IBaseCol, IBaseFormControlType, IBaseLayout } from '@/typings/base';
 
-const EditTableControl: React.FC<IControlProps> = React.forwardRef(
-  ({ form, name, tableProps }: any, ref) => {
-    const { getFieldValue } = form;
-    const { rowKey, columns, operateList, ...otherTableProps } = tableProps;
-    const dataSource = getFieldValue(name); // [{ id: '1', name: '1', age: '11' }]
+interface IEditTableProps {
+  form: FormInstance;
+  layout: IBaseLayout;
+  col: IBaseCol;
+  label: string;
+  name: string;
+  record: any;
+  rules: FormItemProps['rules'] | any;
+  type: IBaseFormControlType;
+  value: any;
+  tableProps: any;
+  [props: string]: any;
+}
 
-    useImperativeHandle(ref, () => ({}));
+type IHandle = {
+  ref: any;
+};
 
-    /**
-     * 新增行记录
-     */
-    const newMember = () => {
-      const data = form.getFieldValue(name);
-      const fieldMap = columns.reduce((prev: any, curr: any) => {
-        prev[`${curr.name}`] = '';
-        prev[`${curr.type}`] = curr.type || 'input';
-        return prev;
-      }, {});
+const EditTableControl: React.ForwardRefRenderFunction<
+  IHandle,
+  IEditTableProps
+> = (props, ref: any) => {
+  const {
+    form,
+    col = 24,
+    name = 'tableForm',
+    tableProps,
+    ...restProps
+  } = props;
+  const { getFieldValue } = form;
+  const { rowKey, columns, operateList, ...otherTableProps } = tableProps;
 
-      data.push({ [rowKey as string]: `NEW_TEMP_ID_${uuid++}`, ...fieldMap });
-      form.setFieldsValue({ [name]: data });
+  useImperativeHandle(ref, () => ({}));
+
+  useEffect(() => {}, []);
+
+  console.log(props);
+
+  const handleDelete = ({ index }: { index: React.Key }) => {};
+
+  const handleAdd = () => {
+    // if (editingKey) return message.error('必须先保存当前编辑项');
+    // const newData: IDataType = {
+    //   key: ~~key + 1 + '',
+    //   section: null,
+    // };
+    // form.resetFields();
+    // setData([newData, ...data]);
+    // setKey(key + 1);
+    // setEditingKey(newData.key);
+  };
+
+  const handleSave = (record: any) => {
+    const { index } = record;
+    let values = form.getFieldsValue();
+    const keys = columns.map((item: any) => item.dataIndex);
+    const keysValueObj = keys.reduce((pre: any, cur: any) => {
+      pre[cur] = values[cur];
+      return pre;
+    }, {});
+
+    values.tableForm[index] = {
+      ...values.tableForm[index],
     };
+    console.log(record, keysValueObj);
+  };
 
-    /**
-     * 删除行记录
-     * @param key
-     */
-    const handleRemove = (key: any) => {
-      const data = form.getFieldValue(name);
-      const newData = data.filter(
-        (item: any) => item[rowKey as string] !== key,
-      );
-      form.setFieldsValue({ [name]: newData });
-    };
+  const renderColumns = (columns: any[]) => {
+    return columns.map((col: any, index: number) => {
+      if (!col?.editable) {
+        console.log(col);
+        const dataIndex = col.dataIndex;
+        if (dataIndex == 'index') {
+          return {
+            ...col,
+            render: (_: any, __: any, index: number) => index + 1,
+          };
+        }
+        return col;
+      }
+      return {
+        ...col,
+        render: (text: any, field: any, index: number) => {
+          const {
+            controlProps,
+            name,
+            type,
+            formFieldProps = {},
+            itemProps = {},
+            ...restFieldProps
+          } = col.formItemProps;
 
-    // 渲染表格列
-    const renderColumns = () => {
-      const formatColumns = columns.map((item: any) => ({
-        title: item.label,
-        key: item.name,
-        dataIndex: item.name,
-        render: (text: string, record: any, index: number) => {
+          console.log(restFieldProps);
+
+          const defaultControlProps = controlProps ? controlProps : {};
+
+          const myControlProps = {
+            allowClear: true,
+            ...defaultControlProps,
+            size: (controlProps && controlProps?.size) || 'small',
+          };
+
+          if (type && type == 'select') {
+            myControlProps.labelInValue = true;
+          }
+
           const fieldProps = {
             form,
-            type: item.type || 'input',
-            initialValue: text,
-            name: `${name}_${item.name}_[${index}]`,
-            controlProps: item.controlProps,
-            formFieldProps: item.formFieldProps,
+            name: [field.name, name],
+            type,
+            formFieldProps,
+            controlProps: myControlProps,
+            itemProps,
+            ...restFieldProps,
           };
-          return <FormItem>{getFieldComp(fieldProps)}</FormItem>;
-        },
-      }));
-      return [...formatColumns];
-    };
 
-    return (
-      <div className={styles['edit-table']}>
-        <CommonTable
-          {...otherTableProps}
-          rowKey={rowKey}
-          selectType={false}
-          columns={renderColumns()}
-          dataSource={dataSource}
-        />
-        <Button
-          ghost
-          onClick={newMember}
-          type="primary"
-          size="small"
-          icon={<PlusOutlined />}
-        >
-          添加
-        </Button>
-      </div>
-    );
-  },
-);
-export default EditTableControl;
+          if (type == 'operate' || type == 'index') {
+            return text;
+          }
+
+          return getFieldComp(fieldProps);
+        },
+        onCell: (record: any) => ({
+          record,
+          editable: col.editable,
+          dataIndex: col.dataIndex,
+          title: col.title,
+          columnsIndex: index,
+        }),
+      };
+    });
+  };
+
+  const tableParams: ICommonTable<any> = {
+    editable: true,
+    showIndex: true,
+    selectType: false,
+    columns,
+    formatColumn: renderColumns,
+    extraParams: {
+      form,
+      formListProps: props,
+    },
+    itemButton: [
+      {
+        text: '删除',
+        type: 'primary',
+        buttonType: 'delete',
+        onClick: handleDelete,
+      },
+      {
+        text: '保存',
+        type: 'primary',
+        onClick: handleSave,
+      },
+      {
+        text: '取消',
+        type: 'primary',
+        onClick: () => {},
+      },
+    ],
+    ...otherTableProps,
+  };
+
+  return (
+    <Row>
+      <Col span={col}>
+        <Form.Item>
+          <Form.List name="tableForm">
+            {(fields, { add, remove }, { errors }) => {
+              return (
+                <Fragment>
+                  <CommonTable dataSource={fields} {...tableParams} />
+                  <Form.Item>
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        add();
+                      }}
+                    >
+                      新增
+                    </Button>
+                  </Form.Item>
+                </Fragment>
+              );
+            }}
+          </Form.List>
+        </Form.Item>
+      </Col>
+    </Row>
+  );
+};
+
+export default React.forwardRef(EditTableControl);

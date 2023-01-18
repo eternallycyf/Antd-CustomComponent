@@ -192,7 +192,7 @@ class BaseTable<
   };
 
   handleBasicColumns = (props: any) => {
-    const { showIndex, columns, resizable, draggable }: any =
+    const { showIndex, columns, resizable, draggable, editable }: any =
       props || this.props;
     const { dev } = this.state;
     let columnList = handleColumns(columns);
@@ -204,6 +204,7 @@ class BaseTable<
           title: '序号',
           width: 44,
           align: 'center',
+          editable: false,
         },
         columnList,
       );

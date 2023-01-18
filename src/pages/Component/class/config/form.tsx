@@ -3,6 +3,9 @@ import Activity from '../index';
 import projectConfig from '@/config/projectConfig';
 import { ISearchesType } from '@/typings';
 import dayjs from 'dayjs';
+import { PlusCircleOutlined } from '@ant-design/icons';
+import { Button, Popconfirm } from 'antd';
+import { add } from 'lodash';
 const { apiPrefix } = projectConfig;
 
 const layout = {
@@ -127,7 +130,99 @@ export const getFormList = (
       label: 'otherButtonClick',
       type: 'select',
       otherType: 'button',
-      otherText: "自动生成"
-    }
+      otherText: '自动生成',
+    },
+    {
+      name: 'tableForm',
+      label: 'tableForm',
+      type: 'editTable',
+      tableProps: {
+        // rowKey: 'index',
+        columns: [
+          {
+            title: '活动编码',
+            dataIndex: 'tableFormCode',
+            width: 200,
+            editable: true,
+            formItemProps: {
+              name: 'tableFormCode',
+              label: '活动编码',
+              type: 'input',
+              col: 12,
+              layout,
+              allowClear: true,
+              formFieldProps: {
+                rules: FormRules.withName('活动编码').isRequired().create(),
+              },
+              // dictConfig: { textKey: 'name', valueKey: 'code' },
+              itemProps: {
+                ...ITEM_PROPS,
+              },
+            },
+          },
+          {
+            title: '活动名称',
+            dataIndex: 'tableFormName',
+            width: 200,
+            editable: true,
+            formItemProps: {
+              name: 'tableFormName',
+              label: '活动名称',
+              type: 'input',
+              col: 12,
+              layout,
+              formFieldProps: {
+                rules: FormRules.withName('活动名称').isRequired().create(),
+              },
+              allowClear: true,
+              itemProps: {
+                ...ITEM_PROPS,
+              },
+              condition: [
+                {
+                  action: 'disabled',
+                  regex: { textarea: '禁用' },
+                },
+              ],
+            },
+          },
+          {
+            title: 'text',
+            dataIndex: 'tableFormText',
+            width: 200,
+            editable: true,
+            formItemProps: {
+              name: 'tableFormText',
+              label: 'textarea',
+              type: 'textarea',
+              disabled: false,
+              // formFieldProps: {
+              //   rules: FormRules.withName('活动名称').isRequired().create(),
+              // },
+              formFieldProps: {
+                rules: [
+                  { required: true, message: '请输入' },
+                  { max: 100, message: '最多100个字符' },
+                ],
+              },
+              controlProps: {
+                maxLength: 100,
+                showCount: true,
+                autoSize: {
+                  minRows: 5,
+                },
+                onChange: (e: any) => console.log(e),
+              },
+              itemProps: {
+                style: {
+                  marginBottom: 0,
+                },
+              },
+            },
+          },
+        ],
+        operateList: [],
+      },
+    },
   ];
 };

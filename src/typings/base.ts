@@ -40,7 +40,8 @@ export type IBaseFormControlType =
   | 'time'
   | 'monthRange'
   | 'editor'
-  | 'custom';
+  | 'custom'
+  | 'editTable';
 
 //#region
 export type IDynamicBaseFormControlType<T extends IBaseFormControlType> =

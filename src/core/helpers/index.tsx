@@ -35,7 +35,14 @@ export function getFieldComp({
     }
   }
 
-  const formProps = { name, type, record, ...controlProps, ...otherProps };
+  const formProps = {
+    name,
+    type,
+    record,
+    form,
+    ...controlProps,
+    ...otherProps,
+  };
   if (tableProps) formProps.tableProps = tableProps;
   if (arrayProps) formProps.arrayProps = arrayProps;
   if (fetchConfig) formProps.fetchConfig = fetchConfig;

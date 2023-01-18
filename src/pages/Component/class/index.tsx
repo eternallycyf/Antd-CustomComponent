@@ -154,7 +154,6 @@ class Activity extends BaseComponent<IProps, IState> {
       draggable: true,
       resizable: true,
       isSummary: true,
-      // editable: true
     };
 
     return (
@@ -172,7 +171,7 @@ class Activity extends BaseComponent<IProps, IState> {
           // isTable={true}
           className={styles.customForm}
           modalType={ModalType.modal}
-          modalConf={{ width: 800 }}
+          modalConf={{ width: 2000 }}
           defaultLayout={{ labelCol: { span: 5 }, wrapperCol: { span: 19 } }}
           ref={this.formRef}
           formList={getFormList(this)}
@@ -188,6 +187,7 @@ class Activity extends BaseComponent<IProps, IState> {
             console.log('click');
           }}
           handleSubmitPreCallBack={async () => {
+            console.log(this.formRef.current?.form.getFieldsValue());
             // return Promise.reject 就阻止提交 用于额外的表单
             // return Promise.resolve({})
             await this.OtherFormRef.current?.validateFields();

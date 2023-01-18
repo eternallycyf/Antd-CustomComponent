@@ -6,7 +6,7 @@ import Table from './components/EnhancedTable';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { IButtonProps, ICommonTable } from '@/typings';
-import { formatColumn } from '@/utils/util';
+import { formatColumn as formatColumnUtil } from '@/utils/util';
 import BaseTable, { IBaseTableState } from './components/BaseTable';
 import TableBtn from '@/components/CommonTableV5/components/widgets/TableBtn';
 import AccessBtn from '@/components/AccessBtn';
@@ -238,7 +238,11 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
           ? [].concat(column, columnList)
           : [].concat(columnList, column);
     }
-    this.setState({ columns: formatColumn(columnList) });
+    let columns = formatColumnUtil(columnList);
+    if (this.props?.formatColumn) {
+      columns = this.props?.formatColumn(columns);
+    }
+    this.setState({ columns });
   };
 
   render(): any {
@@ -317,6 +321,28 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
         } as React.HTMLAttributes<any>);
     }
 
+    const BaseTable = (
+      <Table
+        {...restProps}
+        components={this.components}
+        rowHeight={40}
+        footer={footer}
+        className={this.cls}
+        height={height}
+        rowKey={rowKey}
+        scroll={scroll}
+        loading={loading}
+        pagination={paging}
+        columns={columns}
+        dataSource={data?.length > 0 ? data : dataSource}
+        rowSelection={selectOptions}
+        onChange={onTableChange ? onTableChange : this.handleTableChange}
+        size="small"
+      />
+    );
+
+    if (this.props.editable) return BaseTable;
+
     const table = (
       <Fragment>
         <div className={buttonOther ? styles.tableButton : ''}>
@@ -325,23 +351,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
         </div>
         <div className={styles.tableWrap}>
           {this.props.children}
-          <Table
-            {...restProps}
-            components={this.components}
-            rowHeight={40}
-            footer={footer}
-            className={this.cls}
-            height={height}
-            rowKey={rowKey}
-            scroll={scroll}
-            loading={loading}
-            pagination={paging}
-            columns={columns}
-            dataSource={data?.length > 0 ? data : dataSource}
-            rowSelection={selectOptions}
-            onChange={onTableChange ? onTableChange : this.handleTableChange}
-            size="small"
-          />
+          {BaseTable}
         </div>
       </Fragment>
     );
