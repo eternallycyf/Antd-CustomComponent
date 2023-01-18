@@ -1,6 +1,5 @@
 name: github pages
 
-
 permissions:
   pull-requests: write
   issues: write
