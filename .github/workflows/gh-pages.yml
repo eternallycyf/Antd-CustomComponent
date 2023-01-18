@@ -1,5 +1,9 @@
 name: github pages
 
+permissions:
+  pull-requests: write
+  issues: write
+  repository-projects: write
 on:
   push:
     branches:
@@ -16,6 +20,5 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          # github_token: ${{ secrets.GITHUB_TOKEN }}
-          deploy_key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
