@@ -24,6 +24,7 @@ export function getFieldComp({
   isEdit,
   format,
   hide,
+  itemProps,
   ...otherProps
 }: FieldCompType) {
   let initialValue = initValue;
@@ -40,6 +41,7 @@ export function getFieldComp({
     type,
     record,
     form,
+    ...itemProps,
     ...controlProps,
     ...otherProps,
   };

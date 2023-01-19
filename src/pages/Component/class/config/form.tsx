@@ -79,7 +79,9 @@ export const getFormList = (
         autoSize: {
           minRows: 5,
         },
-        onChange: (e: any) => console.log(e),
+        onChange: (e: any) => {
+          // console.log(e)
+        }
       },
       itemProps: {
         style: {
@@ -98,7 +100,7 @@ export const getFormList = (
       ],
       renderItem: (item: any) => `${item.value} - ${item.text}`,
       hide: (config) => {
-        console.log(config);
+        // console.log(config);
         return false;
       },
     },
@@ -135,9 +137,8 @@ export const getFormList = (
     {
       name: 'tableForm',
       label: 'tableForm',
-      type: 'editTable',
+      type: 'editCol',
       tableProps: {
-        // rowKey: 'index',
         columns: [
           {
             title: '活动编码',
@@ -187,41 +188,27 @@ export const getFormList = (
             },
           },
           {
-            title: 'text',
-            dataIndex: 'tableFormText',
+            title: 'time',
+            dataIndex: 'tableFormTime',
             width: 200,
             editable: true,
             formItemProps: {
-              name: 'tableFormText',
-              label: 'textarea',
-              type: 'textarea',
+              name: 'tableFormTime',
+              label: 'time',
+              type: 'dateRange',
               disabled: false,
               // formFieldProps: {
               //   rules: FormRules.withName('活动名称').isRequired().create(),
               // },
-              formFieldProps: {
-                rules: [
-                  { required: true, message: '请输入' },
-                  { max: 100, message: '最多100个字符' },
-                ],
-              },
               controlProps: {
-                maxLength: 100,
-                showCount: true,
-                autoSize: {
-                  minRows: 5,
-                },
-                onChange: (e: any) => console.log(e),
+
               },
               itemProps: {
-                style: {
-                  marginBottom: 0,
-                },
+
               },
             },
           },
         ],
-        operateList: [],
       },
     },
   ];

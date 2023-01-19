@@ -3,7 +3,12 @@ import { ColumnsType, TablePaginationConfig } from 'antd/lib/table';
 import { ButtonProps } from 'antd/lib/button';
 import React, { ReactNode } from 'react';
 import { FormInstance } from 'antd/es/form';
+import { FormListProps } from 'antd/es/form/FormList';
 import { TableColumnType, TableProps } from 'antd';
+import type {
+  FormListFieldData,
+  FormListOperation,
+} from 'antd/es/form/FormList';
 import {
   IBaseFormControlType,
   IDynamicBaseFormControlType,
@@ -78,10 +83,15 @@ export interface UserInfo<T> {
 export interface IButtonProps extends ButtonProps {
   text: string | ReactNode;
   code?: string;
-  visible?: boolean;
+  visible?:
+    | boolFunc
+    | ((field: FormListFieldData, e: Event, index: number) => void);
   /**@description 暂时只有Button支持 */
   element?: ReactNode;
   buttonType?: 'delete';
+  onClick?: (
+    record: any,
+  ) => void | ((field: FormListFieldData, e: Event, index: number) => void);
 }
 
 //表格
@@ -142,7 +152,7 @@ export interface ICommonTable<T> extends TableProps<T> {
   /**@description 指定选中项的key数组*/
   selectedRowKeys?: React.Key[];
   /**@description 多选／单选 */
-  selectType?: 'checkbox' | 'radio';
+  selectType?: 'checkbox' | 'radio' | boolean;
   /**@description 选择时候触发 */
   onSelect?: (selectRowKeys: React.Key[], selectedRows: any[]) => void;
   expandable?: TableProps<T>['expandable'];
@@ -156,13 +166,11 @@ export interface ICommonTable<T> extends TableProps<T> {
   [propName: string]: any;
 }
 
-export interface EditTableProps {
-  rowKey?: string;
+export interface EditTableProps extends ICommonTable<any> {
   columns?: (TableColumnType<any> & { editable?: boolean } & {
     formItemProps?: FormControl;
   })[];
-  operateList?: any[];
-  handleSave?: any; //保存
+  formListProps?: FormListProps;
 }
 
 export interface FieldCompType {

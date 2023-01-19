@@ -41,7 +41,8 @@ export type IBaseFormControlType =
   | 'monthRange'
   | 'editor'
   | 'custom'
-  | 'editTable';
+  | 'editCol' // 可编辑单元格 直接可以操作 没有保存和删除按钮
+  | 'editRow'; // 可编辑行 有保存和删除按钮
 
 //#region
 export type IDynamicBaseFormControlType<T extends IBaseFormControlType> =
