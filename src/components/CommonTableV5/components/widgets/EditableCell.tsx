@@ -1,43 +1,43 @@
 
-import { InputNumber, Input, Form } from "antd";
+import { EditableContext } from "@/components/CustomForm/FormItem/editRow";
+import { getFieldComp } from "@/core/helpers";
+import { IBaseFormControlType } from "@/typings/base";
+import { InputNumber, Input, Form, FormInstance, FormItemProps } from "antd";
+import React, { useContext } from "react";
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
-  editing: boolean;
-  dataIndex: string;
-  title: any;
-  inputType: 'number' | 'text';
+  fieldProps: {
+    form: FormInstance;
+    controlProps: any;
+    disabled: boolean;
+    formFieldProps: FormItemProps;
+    itemProps: any;
+    label: string;
+    name: string;
+    type: IBaseFormControlType;
+  };
   record: any;
-  index: number;
-  children: React.ReactNode;
+  type: IBaseFormControlType;
 }
 
-const EditableCell: React.FC<EditableCellProps> = (props) => {
+export const EditableCell: React.FC<EditableCellProps> = (props) => {
   const {
-    editing,
-    dataIndex,
-    title,
-    inputType,
-    record,
-    index,
     children,
+    fieldProps,
+    record,
+    type,
     ...restProps
   } = props
-  // console.log(props)
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+  const tableParams = useContext(EditableContext)!;
+  const {
+    editingKey = '',
+    rowKey = '',
+  } = tableParams;
+  const editing = record && record[rowKey as string] === editingKey;
 
   return (
     <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          style={{ margin: 0 }}
-        >
-
-        </Form.Item>
-      ) : (
-        children
-      )}
+      {editing ? getFieldComp(fieldProps) : children}
     </td>
   );
 };
-
-export default EditableCell;

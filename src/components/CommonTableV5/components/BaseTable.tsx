@@ -6,7 +6,7 @@ import { getAction, postAction } from '@/services/global';
 import { ResizableTitle } from '@/components/CommonTableV5/components/widgets/Resizable';
 import { renderBtn } from '@/components/CommonTableV5/components/widgets/TableBtn';
 import { DraggableBodyRow } from '@/components/CommonTableV5/components/widgets/DragTableRow';
-import EditableCell from "./widgets/EditableCell";
+import { EditableCell } from "./widgets/EditableCell";
 
 export interface IBaseTableState {
   loading: boolean;

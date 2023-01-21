@@ -170,6 +170,7 @@ export interface EditTableProps extends ICommonTable<any> {
   columns?: (TableColumnType<any> & { editable?: boolean } & {
     formItemProps?: FormControl;
   })[];
+  handleFormatRowValues?: (text: string, record: any, index: number) => string;
   formListProps?: FormListProps;
   hasCancelButton?: boolean;
   hasSaveButton?: boolean;

@@ -343,8 +343,6 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
       />
     );
 
-    console.log(this.props.editable)
-
     if (this.props.editable) return BaseTable;
 
     const table = (
