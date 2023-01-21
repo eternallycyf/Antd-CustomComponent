@@ -25,6 +25,7 @@ const CascadeControl: React.FC<IControlProps> = React.forwardRef(
 );
 
 CascadeControl.defaultProps = {
+  // @ts-ignore
   showSearch: (inputValue: any, path: any) => {
     return path.some(
       (option: any) =>

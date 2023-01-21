@@ -171,6 +171,8 @@ export interface EditTableProps extends ICommonTable<any> {
     formItemProps?: FormControl;
   })[];
   formListProps?: FormListProps;
+  hasCancelButton?: boolean;
+  hasSaveButton?: boolean;
 }
 
 export interface FieldCompType {

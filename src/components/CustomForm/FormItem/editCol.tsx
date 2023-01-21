@@ -10,7 +10,7 @@ import type {
   FormListOperation,
 } from 'antd/es/form/FormList';
 import { FormInstance } from 'antd/lib/form/Form';
-import React, { Fragment, useImperativeHandle } from 'react';
+import React, { Fragment, useEffect, useImperativeHandle, useState } from 'react';
 import styles from './index.less';
 
 // TODO: 1.提供时间区间不重复的参数 dateRange date 在 tableProps 中添加参数
@@ -39,15 +39,16 @@ const EditTableControl: React.ForwardRefRenderFunction<
   IHandle,
   IEditTableProps
 > = (props, ref: any) => {
+  const [cacheData, setCacheData] = useState<any[]>([]);
   const {
     form,
     col = 24,
-    name = 'tableForm',
+    name = 'EditCol',
     tableProps,
     handleAddCallback,
     ...restProps
   } = props;
-  const { columns, formListProps, ...otherTableProps } = tableProps;
+  const { columns, formListProps, hasCancelButton = true, hasSaveButton = true, ...otherTableProps } = tableProps;
   const rules = formListProps?.rules || [
     {
       validator: async (_: any, list: any) => {
@@ -60,12 +61,21 @@ const EditTableControl: React.ForwardRefRenderFunction<
 
   useImperativeHandle(ref, () => ({}));
 
+  useEffect(() => {
+    const data = form.getFieldValue(name);
+    setCacheData(data);
+  }, [])
+
   const handleAdd: FormListOperation['add'] = (add) => {
     add();
     if (handleAddCallback) {
       handleAddCallback(form);
     }
   };
+
+  const handleCancel = () => {
+    form.setFieldValue(name, cacheData);
+  }
 
   const renderColumns = (columns: any[]) => {
     return columns.map((col: any, index: number) => {
@@ -109,7 +119,8 @@ const EditTableControl: React.ForwardRefRenderFunction<
             name: [field.name, name],
             type,
             formFieldProps: {
-              key: [field.key, name],
+              name: [field.name, name],
+              key: field.key,
               fieldKey: [field.key, name],
               ...formFieldProps,
             },
@@ -134,6 +145,13 @@ const EditTableControl: React.ForwardRefRenderFunction<
     });
   };
 
+  const renderCancelButton = () => {
+    if (form.getFieldValue(name) && form.getFieldValue(name)?.length != 0) {
+      return <Button onClick={() => handleCancel()} style={{ marginRight: 12 }}>取消</Button>
+    }
+    return null
+  }
+
   //#region
   type IGetTableParams = ({
     remove,
@@ -141,7 +159,7 @@ const EditTableControl: React.ForwardRefRenderFunction<
     remove: FormListOperation['remove'];
   }) => ICommonTable<any>;
   const getTableParams: IGetTableParams = ({ remove }) => ({
-    editable: true,
+    rowKey: 'fieldKey',
     showIndex: true,
     selectType: false,
     pagination: false,
@@ -156,7 +174,13 @@ const EditTableControl: React.ForwardRefRenderFunction<
         text: '删除',
         type: 'primary',
         buttonType: 'delete',
-        onClick: (field: FormListFieldData) => remove(field.name),
+        onClick: (field: FormListFieldData) => {
+          // FIX: remove方法有问题 直接通过 form.setFieldValue 控制
+          const tableFormValues = form.getFieldValue(name);
+          if (!tableFormValues) return;
+          tableFormValues.splice(field.name, 1);
+          form.setFieldValue(name, tableFormValues);
+        },
         visible: () => {
           const tableFormValues = form.getFieldValue(name);
           if (!tableFormValues) return false;
@@ -169,35 +193,42 @@ const EditTableControl: React.ForwardRefRenderFunction<
   //#endregion
 
   return (
-    <Row className={styles['edit-table']}>
-      <Col span={col}>
-        <Form.List
-          name={name}
-          rules={rules}
-          initialValue={[{}]}
-          {...formListProps}
-        >
-          {(fields, { add, remove }: FormListOperation, { errors }) => {
-            return (
-              <Fragment>
-                <CommonTable
-                  dataSource={fields}
-                  {...getTableParams({
-                    remove,
-                  })}
-                />
-                <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 0 }} style={{ marginTop: 10 }}>
-                  <Button type='link' onClick={() => handleAdd(add)} block >
-                    <div style={{ color: '#3363D7' }}><PlusCircleOutlined /> &nbsp;新增</div>
-                  </Button>
-                  <Form.ErrorList errors={errors} />
-                </Form.Item>
-              </Fragment>
-            );
-          }}
-        </Form.List>
-      </Col>
-    </Row>
+    <Fragment>
+      <Row>
+        <Col span={24} style={{ textAlign: 'right' }}>
+          {hasCancelButton && renderCancelButton()}
+          {hasSaveButton && <Button htmlType='submit' type='primary'>保存</Button>}
+        </Col>
+      </Row>
+      <Row className={styles['edit-table']}>
+        <Col span={col}>
+          <Form.List
+            name={name}
+            rules={rules}
+            {...formListProps}
+          >
+            {(fields, { add, remove }: FormListOperation, { errors }) => {
+              return (
+                <Fragment>
+                  <CommonTable
+                    dataSource={fields}
+                    {...getTableParams({
+                      remove,
+                    })}
+                  />
+                  <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 0 }} style={{ marginTop: 10 }}>
+                    <Button type='link' onClick={() => handleAdd(add)} block>
+                      <div style={{ color: '#3363D7' }}><PlusCircleOutlined /> &nbsp;新增</div>
+                    </Button>
+                    <Form.ErrorList errors={errors} />
+                  </Form.Item>
+                </Fragment>
+              );
+            }}
+          </Form.List>
+        </Col>
+      </Row>
+    </Fragment>
   );
 };
 

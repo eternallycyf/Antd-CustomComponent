@@ -184,7 +184,7 @@ export default class VirtualList extends React.PureComponent<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const {
       estimatedItemSize,
       itemCount,
@@ -425,16 +425,16 @@ export default class VirtualList extends React.PureComponent<Props, State> {
 
     return (this.styleCache[index] = sticky
       ? {
-          ...STYLE_STICKY_ITEM,
-          [sizeProp[scrollDirection]]: size,
-          [marginProp[scrollDirection]]: offset,
-          [oppositeMarginProp[scrollDirection]]: -(offset + size),
-          zIndex: 1,
-        }
+        ...STYLE_STICKY_ITEM,
+        [sizeProp[scrollDirection]]: size,
+        [marginProp[scrollDirection]]: offset,
+        [oppositeMarginProp[scrollDirection]]: -(offset + size),
+        zIndex: 1,
+      }
       : {
-          ...STYLE_ITEM,
-          [sizeProp[scrollDirection]]: size,
-          [positionProp[scrollDirection]]: offset,
-        });
+        ...STYLE_ITEM,
+        [sizeProp[scrollDirection]]: size,
+        [positionProp[scrollDirection]]: offset,
+      });
   }
 }

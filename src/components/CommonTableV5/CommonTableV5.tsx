@@ -188,6 +188,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
                       size="small"
                       onClick={(e: any) => e.stopPropagation()}
                       type="link"
+                      danger={buttonType === 'delete'}
                     >
                       {text}
                     </Button>
@@ -341,6 +342,8 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
         size="small"
       />
     );
+
+    console.log(this.props.editable)
 
     if (this.props.editable) return BaseTable;
 

@@ -6,7 +6,7 @@ import { ICommonTable, ModalType } from '@/typings';
 import { formatParams } from '@/utils/util';
 import { Form, Input } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
-import React from 'react';
+import React, { Component } from 'react';
 import { getColumns } from './config/columns';
 import { getFormList } from './config/form';
 import { getSearches } from './config/search';
@@ -16,7 +16,7 @@ import { history } from '@umijs/max';
 import { History } from 'history';
 const { apiPrefixMock } = projectConfig;
 
-interface IProps {}
+interface IProps { }
 
 interface IState {
   searchParams: {
@@ -30,8 +30,8 @@ interface IState {
 }
 
 class Activity extends BaseComponent<IProps, IState> {
-  private OtherFormRef = React.createRef<FormInstance>();
-  constructor(props: any) {
+  private readonly OtherFormRef = React.createRef<FormInstance>();
+  constructor(props: IProps) {
     super(props);
     this.state = {
       searchParams: {
@@ -51,7 +51,7 @@ class Activity extends BaseComponent<IProps, IState> {
   }
 
   // 打开活动报名列表页面
-  handleOpenRegList = (record: any) => {};
+  handleOpenRegList = (record: any) => { };
 
   handleFormatValues: formatValuesType = (values, record, type) => {
     console.log(values, record, type);
@@ -122,11 +122,12 @@ class Activity extends BaseComponent<IProps, IState> {
         {
           text: '删除',
           buttonType: 'delete',
-          // code 如果后端接口没有返回 则不显示
+          // code 权限校验如果后端接口没有返回 则不显示
           // code: 'class-deleteButton',
           code: '错误的code',
-          onClick: (item: any) =>
-            this.handleDelete({ id: 1, idDel: 1 }, '/deleteActivityList'),
+          onClick: () => {
+            this.handleDelete({ id: 1, idDel: 1 }, '/deleteActivityList')
+          }
         },
       ],
       footer: (a) => {
@@ -171,8 +172,8 @@ class Activity extends BaseComponent<IProps, IState> {
           // isTable={true}
           className={styles.customForm}
           modalType={ModalType.modal}
-          modalConf={{ width: 2000 }}
-          defaultLayout={{ labelCol: { span: 5 }, wrapperCol: { span: 19 } }}
+          modalConf={{ width: 1000 }}
+          defaultLayout={{ labelCol: { span: 3 }, wrapperCol: { span: 21 } }}
           ref={this.formRef}
           formList={getFormList(this)}
           formatValues={this.handleFormatValues}

@@ -27,8 +27,6 @@ export const getFormList = (
       name: 'activityCode',
       label: '活动编码',
       type: 'input',
-      col: 12,
-      layout,
       allowClear: true,
       formFieldProps: {
         rules: FormRules.withName('活动编码').isRequired().create(),
@@ -42,8 +40,6 @@ export const getFormList = (
       name: 'activityName',
       label: '活动名称',
       type: 'input',
-      col: 12,
-      layout,
       formFieldProps: {
         rules: FormRules.withName('活动名称').isRequired().create(),
       },
@@ -135,22 +131,38 @@ export const getFormList = (
       otherText: '自动生成',
     },
     {
-      name: 'tableForm',
-      label: 'tableForm',
+      name: 'EditCol',
+      label: '实时编辑的表格',
       type: 'editCol',
+      initialValue: [
+        {
+          tableFormCode: '111',
+          tableFormName: '111',
+          tableFormTime: [dayjs(), dayjs()],
+        },
+        {
+          tableFormCode: '222',
+          tableFormName: '222',
+          tableFormTime: [dayjs(), dayjs()],
+        },
+        {
+          tableFormCode: '333',
+          tableFormName: '333',
+          tableFormTime: [dayjs(), dayjs()],
+        }
+      ],
       tableProps: {
         columns: [
           {
             title: '活动编码',
             dataIndex: 'tableFormCode',
-            width: 200,
+            // width: 200,
             editable: true,
             formItemProps: {
               name: 'tableFormCode',
               label: '活动编码',
               type: 'input',
               col: 12,
-              layout,
               allowClear: true,
               formFieldProps: {
                 rules: FormRules.withName('活动编码').isRequired().create(),
@@ -164,14 +176,13 @@ export const getFormList = (
           {
             title: '活动名称',
             dataIndex: 'tableFormName',
-            width: 200,
+            // width: 200,
             editable: true,
             formItemProps: {
               name: 'tableFormName',
               label: '活动名称',
               type: 'input',
               col: 12,
-              layout,
               formFieldProps: {
                 rules: FormRules.withName('活动名称').isRequired().create(),
               },
@@ -211,5 +222,80 @@ export const getFormList = (
         ],
       },
     },
+    // {
+    //   name: 'editRow',
+    //   label: '可保存的table',
+    //   type: 'editRow',
+    //   tableProps: {
+    //     columns: [
+    //       {
+    //         title: '活动编码',
+    //         dataIndex: 'editCode',
+    //         // width: 200,
+    //         editable: true,
+    //         formItemProps: {
+    //           name: 'editCode',
+    //           label: '活动编码',
+    //           type: 'input',
+    //           col: 12,
+    //           allowClear: true,
+    //           formFieldProps: {
+    //             rules: FormRules.withName('活动编码').isRequired().create(),
+    //           },
+    //           // dictConfig: { textKey: 'name', valueKey: 'code' },
+    //           itemProps: {
+    //             ...ITEM_PROPS,
+    //           },
+    //         },
+    //       },
+    //       {
+    //         title: '活动名称',
+    //         dataIndex: 'editName',
+    //         // width: 200,
+    //         editable: true,
+    //         formItemProps: {
+    //           name: 'editName',
+    //           label: '活动名称',
+    //           type: 'input',
+    //           col: 12,
+    //           formFieldProps: {
+    //             rules: FormRules.withName('活动名称').isRequired().create(),
+    //           },
+    //           allowClear: true,
+    //           itemProps: {
+    //             ...ITEM_PROPS,
+    //           },
+    //           condition: [
+    //             {
+    //               action: 'disabled',
+    //               regex: { textarea: '禁用' },
+    //             },
+    //           ],
+    //         },
+    //       },
+    //       {
+    //         title: 'time',
+    //         dataIndex: 'editTime',
+    //         width: 200,
+    //         editable: true,
+    //         formItemProps: {
+    //           name: 'editTime',
+    //           label: 'time',
+    //           type: 'dateRange',
+    //           disabled: false,
+    //           // formFieldProps: {
+    //           //   rules: FormRules.withName('活动名称').isRequired().create(),
+    //           // },
+    //           controlProps: {
+
+    //           },
+    //           itemProps: {
+
+    //           },
+    //         },
+    //       },
+    //     ],
+    //   },
+    // }
   ];
 };

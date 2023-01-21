@@ -6,6 +6,7 @@ import { getAction, postAction } from '@/services/global';
 import { ResizableTitle } from '@/components/CommonTableV5/components/widgets/Resizable';
 import { renderBtn } from '@/components/CommonTableV5/components/widgets/TableBtn';
 import { DraggableBodyRow } from '@/components/CommonTableV5/components/widgets/DragTableRow';
+import EditableCell from "./widgets/EditableCell";
 
 export interface IBaseTableState {
   loading: boolean;
@@ -192,7 +193,7 @@ class BaseTable<
   };
 
   handleBasicColumns = (props: any) => {
-    const { showIndex, columns, resizable, draggable, editable }: any =
+    const { showIndex, columns = [], resizable, draggable, editable }: any =
       props || this.props;
     const { dev } = this.state;
     let columnList = handleColumns(columns);
@@ -236,6 +237,12 @@ class BaseTable<
     if (draggable || dev) {
       const newComponents = { ...this.components };
       newComponents.body = { ...newComponents.body, row: DraggableBodyRow };
+      this.components = { ...newComponents };
+    }
+
+    if (editable || dev) {
+      const newComponents = { ...this.components };
+      newComponents.body = { ...newComponents.body, cell: EditableCell };
       this.components = { ...newComponents };
     }
 
@@ -298,10 +305,10 @@ class BaseTable<
     const sort =
       field && sorter.order
         ? field
-            .split('.')
-            .pop()
-            .replace(/\B([A-Z])/g, '_$1')
-            .toLowerCase()
+          .split('.')
+          .pop()
+          .replace(/\B([A-Z])/g, '_$1')
+          .toLowerCase()
         : null;
 
     this.setState(
@@ -362,16 +369,16 @@ class BaseTable<
    */
   handleResize =
     (index: number) =>
-    (e: any, { size }: any) => {
-      this.setState(({ columns }) => {
-        const nextColumns = [...columns];
-        nextColumns[index] = {
-          ...nextColumns[index],
-          width: size.width,
-        };
-        return { columns: nextColumns };
-      });
-    };
+      (e: any, { size }: any) => {
+        this.setState(({ columns }) => {
+          const nextColumns = [...columns];
+          nextColumns[index] = {
+            ...nextColumns[index],
+            width: size.width,
+          };
+          return { columns: nextColumns };
+        });
+      };
 
   /**
    *  拖拽行
