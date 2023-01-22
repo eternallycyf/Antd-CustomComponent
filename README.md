@@ -66,7 +66,7 @@
 
 ## FAQ
 
-### 页签切换后不触发生命周期
+### 1.页签切换后不触发生命周期
 
 ```js
 // hooks
@@ -89,4 +89,37 @@ useEffect(() => {
     })
   }
 // 5.写一个子hoooks组件 专门监听
+```
+
+### 2.redux connect 推断 forwardRef 类型
+
+```ts
+interface IProps {}
+type IHandle = { form: FormInstance };
+const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
+  props,
+  ref,
+) => {
+  useImperativeHandle(ref, () => ({
+    form,
+  }));
+  return null;
+};
+
+const Activity = connect(
+  ({ global, login }: ConnectState) => ({
+    token: login.token,
+  }),
+  null,
+  null,
+  { forwardRef: true },
+)(forwardRef(IndexPage));
+
+const App = () => {
+  const Ref = useRef<React.ElementRef<typeof Activity>>(null!);
+  useEffect(() => {
+    console.log(Ref.current.form);
+  }, []);
+  return <Activity ref={Ref} />;
+};
 ```

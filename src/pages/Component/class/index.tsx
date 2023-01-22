@@ -16,7 +16,7 @@ import { history } from '@umijs/max';
 import { History } from 'history';
 const { apiPrefixMock } = projectConfig;
 
-interface IProps { }
+interface IProps {}
 
 interface IState {
   searchParams: {
@@ -51,7 +51,7 @@ class Activity extends BaseComponent<IProps, IState> {
   }
 
   // 打开活动报名列表页面
-  handleOpenRegList = (record: any) => { };
+  handleOpenRegList = (record: any) => {};
 
   handleFormatValues: formatValuesType = (values, record, type) => {
     console.log(values, record, type);
@@ -123,11 +123,11 @@ class Activity extends BaseComponent<IProps, IState> {
           text: '删除',
           buttonType: 'delete',
           // code 权限校验如果后端接口没有返回 则不显示
-          // code: 'class-deleteButton',
-          code: '错误的code',
+          code: 'class-deleteButton',
+          // code: '错误的code',
           onClick: () => {
-            this.handleDelete({ id: 1, idDel: 1 }, '/deleteActivityList')
-          }
+            this.handleDelete({ id: 1, idDel: 1 }, '/deleteActivityList');
+          },
         },
       ],
       footer: (a) => {

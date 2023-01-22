@@ -1,23 +1,34 @@
 import { CommonSearch, CommonTable, CustomForm, Page } from '@/components';
+import { formatValuesType } from '@/components/CustomForm';
 import projectConfig from '@/config/projectConfig';
 import useBaseComponent from '@/hook/useBaseComponent';
-import { formatParams } from '@/utils/util';
 import { ICommonTable, ModalType } from '@/typings';
-import styles from './index.less';
-import { getFormList } from './config/form';
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
-import { formatValuesType } from '@/components/CustomForm';
-import { columns } from './config/columns';
-import { searches } from './config/search';
-import { Form, Input } from 'antd';
-import { FormInstance } from 'rc-field-form';
-const { apiPrefixMock } = projectConfig;
+import { ConnectState } from '@/typings/connect';
+import { formatParams } from '@/utils/util';
+import { connect } from '@umijs/max';
+import { Form, FormInstance, Input } from 'antd';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import { saveActivity } from '../service';
+import { columns } from './config/columns';
+import { getFormList } from './config/form';
+import { searches } from './config/search';
+import styles from './index.less';
+const { apiPrefixMock } = projectConfig;
 
 interface IProps {}
-type IHandle = {};
+type IHandle = {
+  form: FormInstance;
+};
 
-const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
+const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
+  props,
+  ref,
+) => {
   const [form] = Form.useForm();
   const self = useBaseComponent({
     searchParams: {
@@ -30,6 +41,10 @@ const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
   useEffect(() => {
     self.tableRef.current?.handleRefreshPage();
   }, [self.searchParams]);
+
+  useImperativeHandle(ref, () => ({
+    form,
+  }));
 
   // 手动控制刷新
   // useEffect(() => {
@@ -103,8 +118,8 @@ const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
         text: '编辑',
         onClick: self.handleEdit,
         // code 如果后端接口没有返回 则不显示
-        // code: 'class-editButton'
-        code: '错误的code',
+        code: 'class-editButton',
+        // code: '错误的code',
       },
       {
         text: '删除',
@@ -158,7 +173,7 @@ const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
         // isTable={true}
         className={styles.customForm}
         modalType={ModalType.modal}
-        modalConf={{ width: 800 }}
+        modalConf={{ width: 1200 }}
         defaultLayout={{ labelCol: { span: 5 }, wrapperCol: { span: 19 } }}
         ref={self.formRef}
         formList={getFormList(self)}
@@ -188,4 +203,21 @@ const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
   );
 };
 
-export default forwardRef(Activity);
+const Activity = connect(
+  ({ global, login }: ConnectState) => ({
+    token: login.token,
+  }),
+  null,
+  null,
+  { forwardRef: true },
+)(forwardRef(IndexPage));
+
+const App = () => {
+  const Ref = useRef<React.ElementRef<typeof Activity>>(null!);
+  useEffect(() => {
+    console.log(Ref);
+  }, []);
+  return <Activity ref={Ref} />;
+};
+
+export default App;
