@@ -150,6 +150,7 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
     tableRef.current.handleRefreshPage();
   };
 
+  // TODO: 限制同时只能编辑一行
   const handleEdit = (record: any) => {
     // @ts-ignore
     const currentEditKey = record?.[rowKey];
