@@ -80,10 +80,11 @@ export interface UserInfo<T> {
   [otherField: string]: any;
 }
 
-export interface IButtonProps extends ButtonProps {
+export interface IButtonProps extends Omit<ButtonProps, 'onClick'> {
   text: string | ReactNode;
   code?: string;
   visible?:
+    | boolean
     | boolFunc
     | ((field: FormListFieldData, e: Event, index: number) => void);
   /**@description 暂时只有Button支持 */
@@ -91,6 +92,7 @@ export interface IButtonProps extends ButtonProps {
   buttonType?: 'delete';
   onClick?: (
     record: any,
+    index: number,
   ) => void | ((field: FormListFieldData, e: Event, index: number) => void);
 }
 

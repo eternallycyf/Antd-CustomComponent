@@ -2,17 +2,22 @@ import CommonTable from '@/components/CommonTableV5/CommonTableV5';
 import { ICommonTable } from '@/typings';
 import { IBaseCol, IBaseFormControlType, IBaseLayout } from '@/typings/base';
 import { EditTableProps } from '@/typings/index';
-import { getUUID } from "@/utils/random";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Col, Form, FormItemProps, message, Row } from 'antd';
-import type {
-  FormListFieldData
-} from 'antd/es/form/FormList';
 import { FormInstance } from 'antd/lib/form/Form';
 import dayjs from 'dayjs';
-import { add } from "lodash";
-import React, { useCallback, useEffect, useImperativeHandle, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from 'react';
 import styles from './index.less';
+
+function addArrayIndex(arr: any[]) {
+  return arr.map((item, index) => ({ ...item, index }));
+}
 
 interface IEditTableProps {
   form: FormInstance;
@@ -35,13 +40,13 @@ type IHandle = {
 
 export const EditableContext = React.createContext<ICommonTable<any>>({});
 
-const EditRow: React.ForwardRefRenderFunction<
-  IHandle,
-  IEditTableProps
-> = (props, ref: any) => {
+const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
+  props,
+  ref: any,
+) => {
   //#region
-  const [data, setData] = useState<any[]>([]);
   const [editingKey, setEditingKey] = useState<string>('');
+  const tableRef = React.useRef<any>(null!);
   const {
     form,
     col = 24,
@@ -56,33 +61,31 @@ const EditRow: React.ForwardRefRenderFunction<
     formListProps,
     rowKey,
     handleFormatRowValues,
-    getData,
     ...otherTableProps
   } = tableProps;
-  const isEditing = (record: any) => record?.[rowKey as any] === editingKey;
+
+  const typeList =
+    columns?.map((item) => ({
+      type: item.formItemProps?.type,
+      dataIndex: item.dataIndex,
+    })) || [];
+  const dataIndexList = typeList.map((item) => item?.dataIndex) || [];
   //#endregion
 
   useEffect(() => {
     if (initialValue && initialValue.length > 0) {
-      const initData = initialValue.map((item: any, index: number) => ({
-        ...item,
-        index
-      }))
-      console.log(initData)
-      setData(initData)
+      const initData = addArrayIndex(initialValue);
+      form.setFieldsValue({ [name]: initData });
     }
-  }, [])
+  }, []);
 
   useImperativeHandle(ref, () => ({}));
 
-  useEffect(() => {
-    // TODO: 暴露给外部获取数据
-    if (getData) {
-      getData(data, editingKey, setData)
-    }
-  }, [])
-
-  const _transformRowData = (type: IBaseFormControlType, text: any, transFormType: 'edit' | 'show' = 'show') => {
+  const _transformRowData = (
+    type: IBaseFormControlType,
+    text: any,
+    transFormType: 'edit' | 'show' = 'show',
+  ) => {
     // TODO: 兼容其他特殊表单类型
     // console.log(type, text)
     if (transFormType === 'edit') return text;
@@ -90,123 +93,208 @@ const EditRow: React.ForwardRefRenderFunction<
     if (type.includes('select')) {
       return text;
     }
-    if (type === ('date')) {
-      return text ? dayjs(text).format('YYYY-MM-DD') : '--'
+    if (type === 'date') {
+      return text ? dayjs(text).format('YYYY-MM-DD') : '--';
     }
-    if (type === ('dateRange')) {
+    if (type === 'dateRange') {
       const startTime = text?.[0];
       const endTime = text?.[1];
-      return startTime && endTime ? `${dayjs(startTime).format('YYYY-MM-DD')} ~ ${dayjs(endTime).format('YYYY-MM-DD')}` : '--'
+      return startTime && endTime
+        ? `${dayjs(startTime).format('YYYY-MM-DD')} ~ ${dayjs(endTime).format(
+            'YYYY-MM-DD',
+          )}`
+        : '--';
     }
     return text ?? '--';
-  }
-
-  const handleAdd = () => {
-    const newData = [...data, { index: data.length, [rowKey as string]: Math.random() }];
-    setData(newData);
-  }
-
-  const handleEdit = (record: any, index: number) => {
-    // @ts-ignore
-    const currentEditKey = record?.[rowKey];
-    if (!currentEditKey) {
-      message.error('当前行数据异常');
-      return setEditingKey('');
-    } else {
-      const { index, ...restRecord } = record;
-      Object.entries(restRecord).forEach(([key, value]) => {
-        const type = columns.find((item) => item.dataIndex === key)?.formItemProps?.type;
-        form.setFieldsValue({
-          [key]: type ? _transformRowData(type, value, 'edit') : '--'
-        });
-      });
-      setEditingKey(currentEditKey);
-    }
-  }
-
-  const handleSave = () => {
-    // TODO: 查找对应的data
-    console.log(form.getFieldsValue())
-  }
-
-  const handleDelete = (record: any) => {
-    // TODO: 查找对应的data
-  }
-
-  const handleCancel = () => {
-    setEditingKey('');
-  }
+  };
 
   const getHandleFormatRowValues = (col: any) => {
     if (handleFormatRowValues) return handleFormatRowValues;
     const formItemType: IBaseFormControlType = col?.formItemProps?.type;
     return (text: any, record: any) => {
-      return _transformRowData(formItemType, text)
-    }
-  }
+      return _transformRowData(formItemType, text);
+    };
+  };
 
-  const renderColumns = useCallback((columns: any[]) => {
-    return columns.map((col: any, index: number) => {
-      if (!col?.editable) {
-        const dataIndex = col.dataIndex;
-        if (dataIndex == 'index') {
-          return {
-            ...col,
-            render: (_: any, __: any, index: number) => index + 1,
-          };
-        }
-        return col;
-      }
+  const getData = useCallback(() => {
+    const rowValues = form ? form.getFieldValue(name) : [];
+    const lastRowValues = rowValues ? rowValues : {};
+    if (!rowValues || rowValues.length === 0 || !columns) return [];
 
-      const {
-        controlProps,
-        name,
-        type,
-        formFieldProps = {},
-        itemProps = {},
-        ...restFieldProps
-      } = col.formItemProps;
-
-      const defaultControlProps = controlProps ? controlProps : {};
-
-      const myControlProps = {
-        allowClear: true,
-        ...defaultControlProps,
-        size: (controlProps && controlProps?.size) || 'small',
-      };
-
-      if (type && type == 'select') {
-        myControlProps.labelInValue = true;
-      }
-
-      const fieldProps = {
-        form,
-        name,
-        type,
-        formFieldProps: {
-          name,
-          ...formFieldProps,
-        },
-        controlProps: myControlProps,
-        itemProps,
-        ...restFieldProps,
-      };
-
+    const dataIndexList = typeList.map((item) => item.dataIndex);
+    return rowValues?.map((item: any) => {
+      if (!dataIndexList.includes(item.dataIndex)) return item;
+      const type = typeList.find(
+        (typeItem) => typeItem.dataIndex === item.dataIndex,
+      )?.type as IBaseFormControlType;
       return {
-        ...col,
-        render: getHandleFormatRowValues(col),
-        onCell: (record: any) => ({
-          record,
-          editable: String(col.editable),
-          dataindex: col.dataIndex,
-          title: col.title,
-          columnsindex: index,
-          type: col?.formItemProps?.type,
-          fieldProps
-        }),
+        ...item,
+        [item.dataIndex]: _transformRowData(type, item.value),
       };
     });
-  }, [editingKey])
+  }, [form, columns, editingKey]);
+
+  const handleAdd = () => {
+    let rowValues = form ? form.getFieldValue(name) : [];
+    rowValues = rowValues ? rowValues : {};
+
+    let obj: any = {};
+    dataIndexList.forEach((item: any) => {
+      obj[item] = undefined;
+    });
+    obj.index = getData().length;
+    obj[rowKey as string] = Math.random();
+    form.setFieldsValue({
+      [name]: [...rowValues, obj],
+    });
+    tableRef.current.handleRefreshPage();
+  };
+
+  const handleEdit = (record: any) => {
+    // @ts-ignore
+    const currentEditKey = record?.[rowKey];
+    if (!currentEditKey) {
+      message.error('当前行数据异常');
+      setEditingKey('');
+      return;
+    } else {
+      const { index, ...restRecord } = record;
+      Object.entries(restRecord).forEach(([key, value]) => {
+        const type = columns.find((item) => item.dataIndex === key)
+          ?.formItemProps?.type;
+        form.setFieldsValue({
+          [key]: type ? _transformRowData(type, value, 'edit') : '--',
+        });
+      });
+      setEditingKey(currentEditKey);
+    }
+    tableRef.current.handleRefreshPage();
+  };
+
+  const handleSave = (record: any) => {
+    const currentEditKey = record?.[rowKey as string];
+    let rowValues = form ? form.getFieldValue(name) : [];
+    rowValues = rowValues ? rowValues : {};
+
+    if (!currentEditKey) {
+      message.error('当前行数据异常');
+      setEditingKey('');
+      return;
+    }
+
+    let newRecord = {};
+    Object.entries(record).forEach(([key, value]) => {
+      const type = columns.find((item) => item.dataIndex === key)?.formItemProps
+        ?.type as IBaseFormControlType;
+      if (dataIndexList.includes(key)) {
+        const val = form.getFieldValue(key);
+        newRecord = {
+          ...newRecord,
+          [key]: _transformRowData(type, val, 'edit'),
+        };
+      } else {
+        newRecord = {
+          ...newRecord,
+          [key]: value,
+        };
+      }
+      form.setFieldsValue({ [key]: undefined });
+      tableRef.current.handleRefreshPage();
+    });
+
+    const formValues = rowValues.map((item: any) => {
+      if (item[rowKey as string] === currentEditKey) {
+        return { ...item, ...newRecord };
+      }
+      return item;
+    });
+
+    setEditingKey('');
+    form.setFieldsValue({
+      [name]: formValues,
+    });
+  };
+
+  const handleDelete = (record: any) => {
+    const rowValues = form ? form.getFieldValue(name) : [];
+    const lastRowValues = rowValues ? rowValues : {};
+    const newValues = rowValues.filter(
+      (item: any) => item[rowKey as string] !== record[rowKey as string],
+    );
+    form.setFieldsValue({
+      [name]: newValues,
+    });
+    tableRef.current.handleRefreshPage();
+  };
+
+  const handleCancel = () => setEditingKey('');
+
+  const renderColumns = useCallback(
+    (columns: any[]) => {
+      return columns.map((col: any, index: number) => {
+        if (!col?.editable) {
+          const dataIndex = col.dataIndex;
+          if (dataIndex == 'index') {
+            return {
+              ...col,
+              render: (_: any, __: any, index: number) => index + 1,
+            };
+          }
+          return col;
+        }
+
+        const {
+          controlProps,
+          name,
+          type,
+          formFieldProps = {},
+          itemProps = {},
+          ...restFieldProps
+        } = col.formItemProps;
+
+        const defaultControlProps = controlProps ? controlProps : {};
+
+        const myControlProps = {
+          allowClear: true,
+          ...defaultControlProps,
+          size: (controlProps && controlProps?.size) || 'small',
+        };
+
+        if (type && type == 'select') {
+          myControlProps.labelInValue = true;
+        }
+
+        const fieldProps = {
+          form,
+          name,
+          type,
+          formFieldProps: {
+            name,
+            ...formFieldProps,
+          },
+          controlProps: myControlProps,
+          itemProps,
+          ...restFieldProps,
+        };
+
+        return {
+          ...col,
+          render: getHandleFormatRowValues(col),
+          isEditing: (record: any) => record[rowKey as string] === editingKey,
+          onCell: (record: any) => ({
+            record,
+            editable: String(col.editable),
+            dataindex: col.dataIndex,
+            title: col.title,
+            columnsindex: index,
+            type: col?.formItemProps?.type,
+            fieldProps,
+          }),
+        };
+      });
+    },
+    [editingKey],
+  );
 
   //#region
   const tableParams: ICommonTable<any> = {
@@ -216,60 +304,59 @@ const EditRow: React.ForwardRefRenderFunction<
     selectType: false,
     pagination: false,
     columns,
-    dataSource: data,
+    dataSource: getData(),
     formatColumn: renderColumns,
     extraParams: {
       editingKey,
     },
+    // TODO: 根据editingKey判断是否显示按钮
     itemButton: [
       {
         text: '删除',
         type: 'primary',
         buttonType: 'delete',
         onClick: handleDelete,
-        // visible: () => {
-        //   const tableFormValues = form.getFieldValue(name);
-        //   if (!tableFormValues) return false;
-        //   return tableFormValues.length > 1;
-        // },
       },
       {
         text: '编辑',
         type: 'primary',
-        onClick: handleEdit
+        onClick: handleEdit,
       },
       {
         text: '保存',
         type: 'primary',
-        onClick: handleSave
+        onClick: handleSave,
       },
       {
         text: '取消',
         type: 'primary',
-        onClick: handleCancel
-      }
+        onClick: handleCancel,
+      },
     ],
     ...otherTableProps,
-  }
+  };
   //#endregion
 
   return (
     <Row className={styles['edit-table']}>
       <Col span={col}>
         <EditableContext.Provider value={{ editingKey, rowKey }}>
-          <CommonTable {...tableParams} />
+          <CommonTable {...tableParams} ref={tableRef} />
         </EditableContext.Provider>
       </Col>
-      <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 0 }} style={{ marginTop: 10 }}>
-        <Button type='link' onClick={handleAdd} block>
-          <div style={{ color: '#3363D7' }}><PlusCircleOutlined /> &nbsp;新增</div>
+      <Form.Item
+        wrapperCol={{ span: 24 }}
+        labelCol={{ span: 0 }}
+        style={{ marginTop: 10 }}
+      >
+        <Button type="link" onClick={handleAdd} block>
+          <div style={{ color: '#3363D7' }}>
+            <PlusCircleOutlined /> &nbsp;新增
+          </div>
         </Button>
       </Form.Item>
-      {/* TODO: 做一个假的表单，用来存储table的值 */}
     </Row>
   );
 };
 
 export default React.memo(React.forwardRef(EditRow));
-
-

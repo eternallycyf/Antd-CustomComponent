@@ -110,8 +110,9 @@ const Activity: React.ForwardRefRenderFunction<IHandle, IProps> = () => {
         text: '删除',
         buttonType: 'delete',
         code: 'class-deleteButton',
-        onClick: (item: any) =>
-          self.handleDelete({ id: 1, idDel: 1 }, '/deleteActivityList'),
+        onClick: (item: any) => {
+          self.handleDelete({ id: 1, idDel: 1 }, '/deleteActivityList');
+        },
       },
     ],
     footer: (a) => {
