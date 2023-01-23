@@ -5,10 +5,11 @@ import useBaseComponent from '@/hook/useBaseComponent';
 import { ICommonTable, ModalType } from '@/typings';
 import { ConnectState } from '@/typings/connect';
 import { formatParams } from '@/utils/util';
-import { connect } from '@umijs/max';
+import { connect, Provider } from '@umijs/max';
 import { Form, FormInstance, Input } from 'antd';
 import React, {
   forwardRef,
+  useContext,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -21,14 +22,16 @@ import styles from './index.less';
 const { apiPrefixMock } = projectConfig;
 
 interface IProps {}
-type IHandle = {
-  form: FormInstance;
-};
+type IHandle = { form: FormInstance };
+type ThemeContextType = 'light' | 'dark';
+const MyContext = React.createContext<ThemeContextType>('light');
 
 const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
   props,
   ref,
 ) => {
+  const theme = useContext<ThemeContextType>(MyContext);
+  console.log(theme);
   const [form] = Form.useForm();
   const self = useBaseComponent({
     searchParams: {
@@ -209,7 +212,7 @@ const Activity = connect(
   }),
   null,
   null,
-  { forwardRef: true },
+  { forwardRef: true, pure: undefined },
 )(forwardRef(IndexPage));
 
 const App = () => {
@@ -217,7 +220,11 @@ const App = () => {
   useEffect(() => {
     console.log(Ref);
   }, []);
-  return <Activity ref={Ref} />;
+  return (
+    <MyContext.Provider value={'light'}>
+      <Activity ref={Ref} />;
+    </MyContext.Provider>
+  );
 };
 
 export default App;
