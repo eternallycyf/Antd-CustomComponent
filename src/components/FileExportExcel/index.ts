@@ -306,9 +306,12 @@ export function addCellStyle(cell: Cell, attr?: IStyleAttr) {
   };
 }
 
-export function addHeaderStyle(row: Row, attr?: IStyleAttr) {
+export function addHeaderStyle(row: Row, attr?: IStyleAttr, border?: any) {
   // eslint-disable-next-line no-param-reassign
   row.height = DEFAULT_ROW_HEIGHT;
+  if (border) {
+    row.border = border;
+  }
   row.eachCell((cell) => addCellStyle(cell, attr));
 }
 
@@ -390,5 +393,22 @@ export function mergeRowCell(
       }
       colIndex += colNum;
     }
+  });
+}
+
+export function addDataTable(
+  dataSource: any[],
+  worksheet: Worksheet,
+  headerKeys: string[],
+  headers: ITableHeader[],
+) {
+  dataSource?.forEach((item: any) => {
+    const rowData = headerKeys?.map((key) => item[key]);
+    const row = worksheet.addRow(rowData);
+    mergeRowCell(headers, row, worksheet);
+    row.height = 26;
+    // 设置行样式, wrapText: 自动换行
+    row.alignment = { vertical: 'middle', wrapText: true, shrinkToFit: false };
+    row.font = { size: 11, name: '微软雅黑' };
   });
 }
