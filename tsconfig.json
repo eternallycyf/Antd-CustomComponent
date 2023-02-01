@@ -15,7 +15,8 @@
       "@@/*": ["src/.umi/*"],
       "@/pages/*": ["src/pages/*"]
     },
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "suppressImplicitAnyIndexErrors": true
   },
   "include": [
     "./typings/*.ts",

@@ -1,5 +1,8 @@
 ## TODO
 
+- toogle to vite
+  - 登录页 验证码权限流程
+  - 自定义 menu
 - 集成 threejs 着色器
 - 天网图
 - ts 加强
