@@ -11,3 +11,4 @@
 /dist
 /.mfsu
 yarn.lock
+.vscode/*
