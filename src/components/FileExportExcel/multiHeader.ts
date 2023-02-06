@@ -21,12 +21,13 @@ export function onExportMultiHeaderExcel(
   columns: any[],
   dataSource: any[],
   slash?: ISlash,
-  fileName = 'simple-demo',
+  fileName = 'excel',
+  title = '导出数据',
 ) {
   // 创建工作簿
   const workbook = new ExcelJs.Workbook();
   // 添加sheet
-  const worksheet = workbook.addWorksheet('demo sheet');
+  const worksheet = workbook.addWorksheet(fileName);
   // 设置 sheet 的默认行高
   worksheet.properties.defaultRowHeight = 20;
   // 解析 AntD Table 的 columns
@@ -54,6 +55,19 @@ export function onExportMultiHeaderExcel(
       }
     }
   });
+  if (title && dataSource.length > 0) {
+    //@ts-ignore
+    worksheet.insertRow(1);
+    //@ts-ignore
+    const row = worksheet.insertRow(1);
+    const headerMergeCell = String.fromCharCode(64 + columns.length);
+    row.border = {
+      bottom: { style: 'medium', color: { argb: 'd3dbea' } },
+    };
+    worksheet.mergeCells(`A1:${headerMergeCell}1`);
+    worksheet.getCell('A1').value = title;
+    worksheet.getRow(1).commit();
+  }
   handleHeader(worksheet, headers, names1, names2);
   // 添加数据
   addDataTable(dataSource, worksheet, headerKeys, headers);
@@ -64,16 +78,16 @@ export function onExportMultiHeaderExcel(
   }));
 
   if (slash) {
-    worksheet.getCell('A1').border = {
+    worksheet.getCell('A3').border = {
       diagonal: { up: false, down: true, style: 'thin' },
     };
-    worksheet.getCell('A1').alignment = {
+    worksheet.getCell('A3').alignment = {
       vertical: 'middle',
       horizontal: 'left',
       wrapText: true,
     };
     worksheet.getCell(
-      'A1',
+      'A3',
     ).value = `                                             ${slash?.left}\n     ${slash?.right}`;
   }
 
