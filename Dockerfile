@@ -1,16 +1,13 @@
 FROM node:14-alpine AS installer
-COPY package.json ./
-RUN npm i tyarn -g
-RUN tyarn
+WORKDIR /usr/app
 
-FROM node:14-alpine AS builder
-COPY --from=installer /node_modules ./node_modules
-COPY . .
-RUN npm run build
+COPY ./package*.json ./
+RUN yarn install
+COPY ./ ./
+RUN yarn build
 
-FROM  vixlet/nginx:alpine
-COPY --from=builder /dist /usr/share/nginx/html
-# RUN  cp dist /usr/share/nginx/html
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+ENV HOST 0.0.0.0
+EXPOSE 3000
+USER node
 
-EXPOSE 80
+CMD [ "yarn","start" ]
