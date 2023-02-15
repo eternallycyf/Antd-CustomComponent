@@ -124,6 +124,10 @@ export interface ICommonTable<T> extends TableProps<T> {
     data: { index: number; rowKey: string; [props: string]: any },
     dataSource: any[],
   ) => any;
+  /**@description 是否使用虚拟列表*/
+  isVirtual?: boolean;
+  /**@description 固定行 */
+  fixRowKeys?: number[];
   /**@description 是否可拖动 */
   draggable?: boolean;
   /**@description 是否自适应*/

@@ -103,7 +103,7 @@ export default function VirtualScrollTable(props: any) {
   useEffect(() => {
     const table: any = tableRef.current;
     const headCellNodeList = table?.querySelectorAll(
-      '.ant-table-thead th.ant-table-cell-fix-1eft',
+      '.ant-table-thead th.ant-table-cell-fix-left',
     );
     let left = 0;
     fixLeftColumnList.forEach((column: any, index: number) => {

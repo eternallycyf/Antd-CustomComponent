@@ -23,6 +23,10 @@ type IToggleButtonProps<T> = {
   cb?: (status: keyof T) => void;
 };
 
+type IDefaultProps = {
+  [Key in string as `default${Key & string}`]: any;
+};
+
 const ToggleButton = <T extends Record<string, IToggleBtnValue>>({
   status,
   setStatus,
@@ -36,16 +40,18 @@ const ToggleButton = <T extends Record<string, IToggleBtnValue>>({
   ) as string;
   const otherDict: IToggleBtnValue = dict[toggleDictStatus];
 
-  const defaultHasTooltip: IToggleBtnValue['hasTooltip'] = true;
-  const defaultToggleIcon: IToggleBtnValue['toggleIcon'] = <RetweetOutlined />;
-  const defaultButtonStyle: CSSProperties =
-    currentDict.buttonType == 'primary'
-      ? {}
-      : { color: '#1348a2', border: '1px solid #1348a2', background: '#fff' };
-  const defaultIconStyle: CSSProperties =
-    currentDict.buttonType == 'default'
-      ? {}
-      : { color: 'rgba(255,255,255,0.7)' };
+  const defaultProps: IDefaultProps = {
+    defaultHasTooltip: true,
+    defaultToggleIcon: <RetweetOutlined />,
+    defaultButtonStyle:
+      currentDict.buttonType == 'primary'
+        ? {}
+        : { color: '#1348a2', border: '1px solid #1348a2', background: '#fff' },
+    defaultIconStyle:
+      currentDict.buttonType == 'default'
+        ? {}
+        : { color: 'rgba(255,255,255,0.7)' },
+  };
 
   return (
     <Button
@@ -57,15 +63,18 @@ const ToggleButton = <T extends Record<string, IToggleBtnValue>>({
           setStatus({ status: toggleDictStatus });
         }
       }}
-      icon={currentDict?.toggleIcon || defaultToggleIcon}
+      icon={currentDict?.toggleIcon || defaultProps.defaultToggleIcon}
       size={currentSize}
-      style={{ ...defaultButtonStyle, ...currentDict.buttonStyle }}
+      style={{ ...defaultProps.defaultButtonStyle, ...currentDict.buttonStyle }}
     >
       {otherDict.label}
-      {(otherDict?.hasTooltip || defaultHasTooltip) && (
+      {(otherDict?.hasTooltip || defaultProps.defaultHasTooltip) && (
         <Tooltip title={otherDict?.tooltip || ''}>
           <QuestionCircleFilled
-            style={{ ...defaultIconStyle, ...currentDict.toggleIconStyle }}
+            style={{
+              ...defaultProps.defaultIconStyle,
+              ...currentDict.toggleIconStyle,
+            }}
           />
         </Tooltip>
       )}

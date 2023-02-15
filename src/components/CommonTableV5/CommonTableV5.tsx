@@ -43,7 +43,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
       sorter: {},
       current: 1,
       pageSize: props.defaultPageSize || 30,
-      extraParams: props.params || {},
+      extraParams: props.extraParams || {},
       columns: [],
       selectedRowkeys: props.selectedRowkeys || [],
       selectedRows: props.selectedRows || [],
@@ -101,8 +101,8 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
           fixed: openFixed
             ? openFixed
             : expandedRowRender || isFixed
-              ? false
-              : 'right',
+            ? false
+            : 'right',
           render: (text: any, record: any) => {
             const button = itemButton.map((item: any) => {
               const flag =
@@ -284,28 +284,28 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
     const paging =
       typeof pagination !== 'boolean'
         ? {
-          total,
-          current,
-          pageSize,
-          defaultPageSize,
-          showQuickJumper: true,
-          showSizeChanger: true,
-          pageSizeOptions: ['10', '30', '50'],
-          showTotal: (total: number, range: any[]) => {
-            return `一共${total}条记录， 当前第${range[0]}条到${range[1]}条`;
-          },
-          ...pagination,
-        }
+            total,
+            current,
+            pageSize,
+            defaultPageSize,
+            showQuickJumper: true,
+            showSizeChanger: true,
+            pageSizeOptions: ['10', '30', '50'],
+            showTotal: (total: number, range: any[]) => {
+              return `一共${total}条记录， 当前第${range[0]}条到${range[1]}条`;
+            },
+            ...pagination,
+          }
         : false;
 
     const selectOptions = onSelect
       ? {
-        type: selectType === 'radio' ? 'radio' : 'checkbox',
-        selectedRowkeys,
-        columnWidth: 40,
-        onChange: this.onSelectChange,
-        ...rowSelection,
-      }
+          type: selectType === 'radio' ? 'radio' : 'checkbox',
+          selectedRowkeys,
+          columnWidth: 40,
+          onChange: this.onSelectChange,
+          ...rowSelection,
+        }
       : null;
 
     // scroll 滚动条处理
@@ -317,10 +317,10 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
 
     if (draggable) {
       restProps.onRow = (_: any, index: number) =>
-      ({
-        index,
-        moveRow: this.moveRow,
-      } as React.HTMLAttributes<any>);
+        ({
+          index,
+          moveRow: this.moveRow,
+        } as React.HTMLAttributes<any>);
     }
 
     const BaseTable = (
