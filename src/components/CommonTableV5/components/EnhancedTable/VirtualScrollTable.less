@@ -1,23 +1,4 @@
-:global {
-  .fix-row-top {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: -5px 4px 6px 0 #ddd;
-  }
-
-  .header-container {
-    .header-row {
-      display: flex;
-      flex-wrap: nowrap;
-
-      .header-cell {
-        display: block;
-        padding: 0 16px;
-      }
-    }
-  }
-
+.virtual-table {
   .virtual-table-cell {
     display: flex;
     align-items: center;
@@ -25,6 +6,10 @@
     padding: 7px 6px;
     border-right: 1px solid #f0f0fe;
     border-bottom: 1px solid #f0f0fe;
+  }
+
+  .virtual-table-cell-selected {
+    padding: 10px;
   }
 
   .virtual-table-cell-center {
@@ -88,6 +73,29 @@
     }
   }
 
+  .header-container {
+    .header-row {
+      display: flex;
+      flex-wrap: nowrap;
+
+      .header-cell {
+        display: block;
+        padding: 0 16px;
+      }
+    }
+  }
+
+  .scroll-container {
+    position: relative;
+    overflow: auto;
+    border-right: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .table-content-container {
+    position: absolute;
+  }
+
   .row {
     display: flex;
     align-items: flex-start;
@@ -117,38 +125,36 @@
     }
   }
 
-  .scroll-container {
-    position: relative;
-    overflow: auto;
-    border-right: 1px solid #f0f0f0;
-    border-bottom: 1px solid #f0f0f0;
+  .fix-row-top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: -5px 4px 6px 0 #ddd;
   }
 
-  .table-content-container {
-    position: absolute;
-  }
+  :global {
+    // 使用ant-table-cell-fix-left-last-reset类覆盖默认样式
+    .ant-table-wrapper
+      .ant-table
+      .ant-table-thead
+      th.ant-table-cell-fix-left-last-reset {
+      border-right: 1px solid #f0f0f0 !important;
 
-  // 使用ant-table-cell-fix-left-last-reset类覆盖默认样式
-  .ant-table-wrapper
-    .ant-table
-    .ant-table-thead
-    th.ant-table-cell-fix-left-last-reset {
-    border-right: 1px solid #f0f0f0 !important;
-
-    &::before {
-      display: none;
+      &::before {
+        display: none;
+      }
     }
-  }
 
-  .ant-table-thead > tr > th[colSpan]:not(:last-child)::before {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    width: 1px;
-    height: 1.6em;
-    background-color: rgb(0 0 0 6%);
-    content: '';
-    transition: background-color 0.3s;
-    transform: translateY(-50%);
+    .ant-table-thead > tr > th[colSpan]:not(:last-child)::before {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: 1px;
+      height: 1.6em;
+      background-color: rgb(0 0 0 6%);
+      content: '';
+      transition: background-color 0.3s;
+      transform: translateY(-50%);
+    }
   }
 }

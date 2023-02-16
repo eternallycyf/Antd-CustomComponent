@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import Table from './MemoTable';
-import './VirtualScrollTable.less';
+import styles from './VirtualScrollTable.less';
 import { debounce } from 'lodash';
 import { Checkbox, Radio } from 'antd';
 import { getUUID } from '@/utils/random';
@@ -86,8 +86,8 @@ export default function VirtualScrollTable(props: any) {
     rowKey,
     rowSelection,
     onSelect,
-    selectedRowkeys,
-    selectedRows,
+    selectedRowkeys = [],
+    selectedRows = [],
     rowClassName,
   } = props;
   const tableRef = useRef(null);
@@ -109,8 +109,12 @@ export default function VirtualScrollTable(props: any) {
     );
     let left = 0;
     fixLeftColumnList.forEach((column: any, index: number) => {
-      headCellNodeList[index].style.left = left + 'px';
-      left += column.width;
+      if (headCellNodeList[index]) {
+        headCellNodeList[index].style.left = left + 'px';
+        left += column.width;
+      } else {
+        left += 10;
+      }
     });
   }, []);
 
@@ -179,8 +183,10 @@ export default function VirtualScrollTable(props: any) {
     const selectColumn = {
       width: 42,
       realWidth,
-      align: 'center',
       title: '',
+      align: 'center',
+      fixed: 'left' as 'left',
+      className: styles['virtual-table-cell-selected'],
       render(text: any, record: any, index: number) {
         const onChange = rowSelection?.onChange;
         let currentRowKey = record[rowKey];
@@ -397,7 +403,7 @@ export default function VirtualScrollTable(props: any) {
         startRowIndex = Math.floor(scrollTop / rowHeight);
         {
           // 处理合并行的情况
-          displayColumns.forEach((column: any) => {
+          (displayColumns || [])?.forEach((column: any) => {
             if (!column.onCell) return;
             while (true) {
               const rowData = realDataSource[startRowIndex];
@@ -441,7 +447,7 @@ export default function VirtualScrollTable(props: any) {
     ]);
 
     const setTableData = (scrollItem: any) => {
-      const displayColumns = getColumns(scrollItem);
+      const displayColumns = getColumns(scrollItem) || [];
       setDisplayColumns(displayColumns);
       setRows(getRows(scrollItem, displayColumns));
     };
@@ -453,19 +459,21 @@ export default function VirtualScrollTable(props: any) {
         'th.ant-table-cell-fix-left-last',
       );
       if (scrollLeft > 0) {
-        table.classList.add('show-left-shadow');
-        lastFixLeftColumn?.classList.add('ant-table-cell-fix-left-last-reset');
+        table.classList.add(styles['show-left-shadow']);
+        lastFixLeftColumn?.classList.add(
+          styles['ant-table-cell-fix-left-last-reset'],
+        );
       } else {
-        table.classList.remove('show-left-shadow');
+        table.classList.remove(styles['show-left-shadow']);
         lastFixLeftColumn?.classList.remove(
-          'ant-table-cell-fix-left-last-reset',
+          styles['ant-table-cell-fix-left-last-reset'],
         );
       }
 
       {
-        table.classList.add('show-right-shadow');
+        table.classList.add(styles['show-right-shadow']);
         if (scrollLeft + clientWidth >= totalWidth) {
-          table.classList.remove('show-right-shadow');
+          table.classList.remove(styles['show-right-shadow']);
         }
       }
     };
@@ -598,17 +606,34 @@ export default function VirtualScrollTable(props: any) {
       );
       const content = setCellContent(column, row, rowIndex);
       if (colSpan === 0) return null;
+      // 正则去除 px
+      let newWidth = style?.width || 0;
+      newWidth = newWidth.replace(/px/gi, '');
+      console.log(columnIndex);
       return (
         <div
-          className={classNames('virtual-table-cell', {
-            'virtual-table-cell-last': columnIndex === mergedColumns.length - 1,
-            'virtual-table-cell-fix-left': column.fixed === 'left',
-            'virtual-table-cell-fix-left-last':
-              column.isLastFixLeft && left > 0,
-            'virtual-table-cell-fix-right': column.fixed === 'right',
-            'virtual-table-cell-fix-right-first': column.isFirstFixRight,
-          })}
-          style={style}
+          className={`
+          ${styles['virtual-table-cell']}
+          ${
+            columnIndex === mergedColumns.length - 1 &&
+            styles['virtual-table-cell-last']
+          }
+          ${column.fixed === 'left' && styles['virtual-table-cell-fix-left']}
+          ${
+            column.isLastFixLeft &&
+            left > 0 &&
+            styles['virtual-table-cell-fix-left-last']
+          }
+          ${column.fixed === 'right' && styles['virtual-table-cell-fix-right']}
+          ${
+            column.isFirstFixRight &&
+            styles['virtual-table-cell-fix-right-first']
+          }
+          `}
+          style={{
+            ...style,
+            width: newWidth - 6,
+          }}
           key={'column' + columnIndex}
         >
           {content}
@@ -619,12 +644,16 @@ export default function VirtualScrollTable(props: any) {
     const getRowStyle = (rowIndex: number) => {
       return tableScrollTop > 0
         ? { top: rowIndex * rowHeight, height: rowHeight + 'px' }
-        : { boxShadow: 'none', height: rowHeight + 'px' };
+        : {
+            boxShadow: 'none',
+            height: rowHeight + 'px',
+            borderBottom: '1px solid #e8e8e8',
+          };
     };
 
     return (
       <div
-        className="scroll-container"
+        className={styles['scroll-container']}
         onScroll={_onScroll}
         style={{ height: height + 'px' }}
         ref={scrollRef}
@@ -637,16 +666,16 @@ export default function VirtualScrollTable(props: any) {
           }}
         >
           <div
-            className="table-content-container"
+            className={styles['table-content-container']}
             style={{ top: top + 'px', left: left + 'px' }}
           >
             {rows.map((row, rowIndex) => (
               <div
-                className={classNames('row', {
-                  'row-active': rowIndex === activeRowIndex,
-                  'fix-row-top': fixRowkeys.includes(row[rowKey]),
-                  'row-grey': rowIndex % 2 === 0, // 偶数行背景色为灰
-                })}
+                className={`
+                ${styles['row']}
+                ${rowIndex === activeRowIndex && styles['row-active']}
+                ${fixRowkeys.includes(row[rowKey]) && styles['fix-row-top']}
+                `}
                 style={getRowStyle(rowIndex)}
                 key={rowIndex}
                 onClick={() =>
@@ -695,7 +724,7 @@ export default function VirtualScrollTable(props: any) {
     <Table
       {...props}
       ref={tableRef}
-      className="virtual-table"
+      className={styles['virtual-table']}
       pagination={false}
       components={{
         body: RenderVirtualList,
