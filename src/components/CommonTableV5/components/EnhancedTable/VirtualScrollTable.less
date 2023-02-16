@@ -1,12 +1,9 @@
 :global {
-  align-items: center;
-  padding: 7px 6px;
-
   .fix-row-top {
     position: sticky;
     top: 0;
     z-index: 10;
-    box-shadow: -5px 4px 6px e #ddd;
+    box-shadow: -5px 4px 6px 0 #ddd;
   }
 
   .header-container {
@@ -23,7 +20,9 @@
 
   .virtual-table-cell {
     display: flex;
+    align-items: center;
     justify-content: flex-start;
+    padding: 7px 6px;
     border-right: 1px solid #f0f0fe;
     border-bottom: 1px solid #f0f0fe;
   }
@@ -63,7 +62,7 @@
         width: 30px;
         box-shadow: inset 10px 0 8px -8px rgb(0 0 0 / 15%);
         content: '';
-        transition: box-shadow 0.35;
+        transition: box-shadow 0.3s;
         transform: translateX(100%);
         pointer-events: none;
       }
@@ -82,7 +81,7 @@
         width: 30px;
         box-shadow: -2px 0 4px 0 #eee;
         content: '';
-        transition: box-shadow 0.35;
+        transition: box-shadow 0.35s;
         transform: translateX(100%);
         pointer-events: none;
       }
@@ -121,8 +120,8 @@
   .scroll-container {
     position: relative;
     overflow: auto;
-    border-right: 1px solid #f0f0fe;
-    border-bottom: 1px solid #f0f0fe;
+    border-right: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
   }
 
   .table-content-container {
@@ -134,7 +133,7 @@
     .ant-table
     .ant-table-thead
     th.ant-table-cell-fix-left-last-reset {
-    border-right: 1px solid #f0f0fe !important;
+    border-right: 1px solid #f0f0f0 !important;
 
     &::before {
       display: none;
@@ -144,12 +143,12 @@
   .ant-table-thead > tr > th[colSpan]:not(:last-child)::before {
     position: absolute;
     top: 50%;
-    right: e;
+    right: 0;
     width: 1px;
     height: 1.6em;
-    background-color: rgb(0 0 0 / 6%);
+    background-color: rgb(0 0 0 6%);
     content: '';
-    transition: background-color 0.35;
+    transition: background-color 0.3s;
     transform: translateY(-50%);
   }
 }

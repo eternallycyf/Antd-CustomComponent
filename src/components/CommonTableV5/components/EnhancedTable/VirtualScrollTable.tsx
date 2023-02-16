@@ -88,14 +88,16 @@ export default function VirtualScrollTable(props: any) {
     onSelect,
     selectedRowkeys,
     selectedRows,
+    rowClassName,
   } = props;
   const tableRef = useRef(null);
 
   const dataSource = useMemo(() => {
     return (dataSource1 || []).map((item: any) => {
       const currentRowKey = item[rowKey];
-      if (currentRowKey === null || currentRowKey === undefined)
+      if (currentRowKey === null || currentRowKey === undefined) {
         item[rowKey] = getUUID();
+      }
       return item;
     });
   }, [dataSource1, rowKey]);
@@ -114,8 +116,8 @@ export default function VirtualScrollTable(props: any) {
 
   const setColumn = (column: any, index: number) => {
     column.fixed = column.fixed || column.frozen;
-    if (!column.width) column.width = 168;
-    column.isLastFixLeft = index == getLastFixLeft(columns);
+    if (!column.width) column.width = 160;
+    column.isLastFixLeft = index === getLastFixLeft(columns);
     column.isFirstFixRight = index === getFirstFixRight(columns);
     return column;
   };
@@ -598,7 +600,7 @@ export default function VirtualScrollTable(props: any) {
       if (colSpan === 0) return null;
       return (
         <div
-          className={classNames('virtual-table-cel1', {
+          className={classNames('virtual-table-cell', {
             'virtual-table-cell-last': columnIndex === mergedColumns.length - 1,
             'virtual-table-cell-fix-left': column.fixed === 'left',
             'virtual-table-cell-fix-left-last':
