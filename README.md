@@ -4,6 +4,7 @@
   - 登录页 验证码权限流程
   - 自定义 menu
 - ~~可编辑表格~~
+- ~~docker 部署方案~~
 - ~~封装虚拟列表，集成到 antd table 中~~
 - threejs 着色器
 - 天网图
@@ -70,6 +71,56 @@
     "typescript": "^4.1.2",
     "yorkie": "^2.0.0"
   }
+```
+
+## 2.Dockerfile
+
+```Dockerfile
+FROM node:14-alpine AS installer
+COPY package.json ./
+RUN npm i tyarn -g
+RUN tyarn
+
+FROM node:14-alpine AS builder
+COPY --from=installer /node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+FROM  vixlet/nginx:alpine
+COPY --from=builder /dist /usr/share/nginx/html
+# RUN  cp dist /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+```
+
+```shell
+server {
+    listen       80;
+    server_name  127.0.0.1;
+    client_max_body_size 10m;
+
+    add_header X-Frame-Options sameorigin always;
+
+    location / {
+        root /app;
+        try_files $uri $uri/ /index.html;
+        index index.html index.htm;
+    }
+
+    location /file/ {
+        root /usr/local;
+        add_header Content-Disposition "attachment; filename=$arg_n";
+    }
+
+    location /dpm/ {
+        proxy_pass http://127.0.0.1;
+    }
+
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+}
 ```
 
 ## FAQ
