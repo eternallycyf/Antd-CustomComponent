@@ -45,6 +45,7 @@ class Activity extends BaseComponent<IProps, IState> {
   }
 
   componentDidMount() {
+    const [value, values] = this.searchRef.current?.handleRealParams();
     history.listen(({ location }) => {
       console.log(location);
     });
