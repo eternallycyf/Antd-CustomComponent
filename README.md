@@ -196,3 +196,49 @@ tableParams: {
 }
 columns: {...,fixed:'left'}
 ```
+
+### 4.vscode debugger
+
+```shell
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir=/Users/eternallycyf/chrome-debugger
+```
+
+```shell
+yarn start
+```
+
+```json
+{
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "针对 localhost 启动 Chrome",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "userDataDir": false,
+      "runtimeExecutable": "canary",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "meteor://💻app/*": "${workspaceFolder}/*",
+        "webpack:///./~/*": "${workspaceFolder}/node_modules/*",
+        "webpack://?:*/*": "${workspaceFolder}/*"
+      },
+      "runtimeArgs": [
+        // 无痕模式
+        // "--incognito",
+        // 自动打开开发者工具
+        "--auto-open-devtools-for-tabs",
+        "--user-data-dir=${workspaceFolder}/.vscode/chrome"
+      ]
+    }
+  ]
+}
+```
+
+```shell
+http://localhost:8000/
+```
