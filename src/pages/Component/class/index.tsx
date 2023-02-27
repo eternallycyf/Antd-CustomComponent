@@ -39,7 +39,7 @@ class Activity extends BaseComponent<IProps, IState> {
       },
       selectedRows: [],
       selectedRowKeys: [],
-      expandedKey: 'activityCode',
+      expandedKey: 'index',
       expandedRowKeys: [],
     };
   }
@@ -145,12 +145,12 @@ class Activity extends BaseComponent<IProps, IState> {
       expandable: {
         expandedRowKeys,
         expandedRowRender: (record) => (
-          <p style={{ margin: 0 }}>{record.activityCode}</p>
+          <p style={{ margin: 0 }}>{record.index}</p>
         ),
         rowExpandable: (record) => record.name !== 'Not Expandable',
         onExpand: this.handleExpand,
       },
-      // onSelect: this.handleSelect,
+      onSelect: this.handleSelect,
       dataPath: 'data.list',
       totalPath: 'data.total',
       draggable: true,

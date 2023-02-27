@@ -86,7 +86,7 @@ export default function VirtualScrollTable(props: any) {
     rowKey,
     rowSelection,
     onSelect,
-    selectedRowkeys = [],
+    selectedRowKeys = [],
     selectedRows = [],
     rowClassName,
   } = props;
@@ -192,7 +192,7 @@ export default function VirtualScrollTable(props: any) {
         let currentRowKey = record[rowKey];
         const currentRow = record;
         const onRadioClick = () => {
-          if (!selectedRowkeys.includes(currentRowKey)) {
+          if (!selectedRowKeys.includes(currentRowKey)) {
             onChange([currentRowKey], [currentRow]);
           }
         };
@@ -200,12 +200,12 @@ export default function VirtualScrollTable(props: any) {
           const checked = e.target.checked;
           if (checked) {
             onChange(
-              [...selectedRowkeys, currentRowKey],
+              [...selectedRowKeys, currentRowKey],
               [...selectedRows, currentRow],
             );
           } else {
             onChange(
-              selectedRowkeys.filter((item: any) => item !== currentRowKey),
+              selectedRowKeys.filter((item: any) => item !== currentRowKey),
               selectedRows.filter((item: any) => item !== currentRow),
             );
           }
@@ -220,12 +220,12 @@ export default function VirtualScrollTable(props: any) {
           rowSelection.type === 'radio' ? (
             <Radio
               key={currentRowKey}
-              checked={currentRowKey === selectedRowkeys[0]}
+              checked={currentRowKey === selectedRowKeys[0]}
               onClick={onRadioClick}
             />
           ) : (
             <Checkbox
-              checked={selectedRowkeys.includes(currentRowKey)}
+              checked={selectedRowKeys.includes(currentRowKey)}
               onChange={onCheckboxChange}
               {...checkboxProps}
             />
@@ -237,7 +237,7 @@ export default function VirtualScrollTable(props: any) {
       },
     };
     return [selectColumn, ...columns];
-  }, [realColumns, rowSelection, selectedRowkeys, realWidth]);
+  }, [realColumns, rowSelection, selectedRowKeys, realWidth]);
 
   const notFixColumns: any[] = useMemo(
     () =>
@@ -324,7 +324,7 @@ export default function VirtualScrollTable(props: any) {
     useEffect(() => {
       setTableData(scrollRef.current);
       setShadow(scrollRef.current);
-    }, [dataSource, rowNumber, totalHeight, selectedRowkeys]);
+    }, [dataSource, rowNumber, totalHeight, selectedRowKeys]);
 
     // 查询时重置数据
     useEffect(() => {

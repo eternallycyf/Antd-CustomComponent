@@ -14,10 +14,11 @@ export const getColumns = (
     {
       dataIndex: 'activityName',
       title: '活动名称',
-      width: 112,
+      width: 30,
       sorter: true,
       align: 'center' as 'center',
       fixed: 'left' as 'left',
+      ellipsis: true,
     },
     {
       dataIndex: 'activityStartTime',
@@ -26,6 +27,7 @@ export const getColumns = (
       sorter: true,
       align: 'center' as 'center',
       fixed: 'left' as 'left',
+      ellipsis: true,
     },
     {
       dataIndex: 'activityEndTime',
@@ -34,16 +36,17 @@ export const getColumns = (
       sorter: true,
       align: 'center' as 'center',
       fixed: 'left' as 'left',
+      ellipsis: true,
     },
     {
       dataIndex: 'activityType',
       title: '活动类型',
       width: 112,
-
       render: (text: string) => ACTIVE_TYPE[text] || '--',
       sorter: true,
       align: 'center' as 'center',
       fixed: 'left' as 'left',
+      ellipsis: true,
     },
   ];
 };

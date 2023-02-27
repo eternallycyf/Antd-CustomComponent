@@ -231,6 +231,7 @@ export default class Ellipsis extends Component<IEllipsisProps, any> {
       const node = (
         <div id={id} className={cls} {...restProps}>
           <style>{style}</style>
+          {children}
         </div>
       );
 

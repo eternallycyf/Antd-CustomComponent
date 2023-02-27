@@ -73,6 +73,9 @@ export function formatColumn(data: any[]) {
           </Ellipsis>
         );
       };
+      item.ellipsis = {
+        showTitle: false,
+      };
     }
 
     return item;
