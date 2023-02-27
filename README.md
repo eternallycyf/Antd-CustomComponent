@@ -182,3 +182,17 @@ const App = () => {
   return <Activity ref={Ref} />;
 };
 ```
+
+### 3.虚拟 table 集成
+
+```js
+tableParams: {
+  isVirtual: true,
+  scroll: { y: 800 },
+  fixRowkeys: [1, 2, 3],
+  rowEventHandlers: {
+    onClick: (record, index, event) => {},
+  },
+}
+columns: {...,fixed:'left'}
+```

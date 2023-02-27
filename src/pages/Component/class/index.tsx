@@ -82,7 +82,7 @@ class Activity extends BaseComponent<IProps, IState> {
     const tableParams: ICommonTable<any> = {
       columns: getColumns(this),
       searchParams: formatParams(searchParams),
-      rowKey: 'activityCode',
+      rowKey: 'index',
       fetchMethod: 'get',
       extraParams: {
         my: '121213',
@@ -150,12 +150,19 @@ class Activity extends BaseComponent<IProps, IState> {
         rowExpandable: (record) => record.name !== 'Not Expandable',
         onExpand: this.handleExpand,
       },
-      onSelect: this.handleSelect,
+      // onSelect: this.handleSelect,
       dataPath: 'data.list',
       totalPath: 'data.total',
       draggable: true,
       resizable: true,
       isSummary: true,
+      // 虚拟列表配置
+      isVirtual: true,
+      scroll: { y: 800 },
+      fixRowkeys: [1, 2, 3],
+      rowEventHandlers: {
+        onClick: (record, index, event) => {},
+      },
     };
 
     return (

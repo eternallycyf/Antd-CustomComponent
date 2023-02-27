@@ -126,8 +126,12 @@ export interface ICommonTable<T> extends TableProps<T> {
   ) => any;
   /**@description 是否使用虚拟列表*/
   isVirtual?: boolean;
-  /**@description 固定行 */
-  fixRowKeys?: number[];
+  /**@description 虚拟列表固定行 */
+  fixRowKeys?: (number | string)[];
+  /**@description 虚拟列表-点击事件 */
+  rowEventHandlers?: {
+    onClick: (rowKey: string | number, rowData: any, rowIndex: number) => void;
+  };
   /**@description 是否可拖动 */
   draggable?: boolean;
   /**@description 是否自适应*/

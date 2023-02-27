@@ -6,7 +6,7 @@ import { getAction, postAction } from '@/services/global';
 import { ResizableTitle } from '@/components/CommonTableV5/components/widgets/Resizable';
 import { renderBtn } from '@/components/CommonTableV5/components/widgets/TableBtn';
 import { DraggableBodyRow } from '@/components/CommonTableV5/components/widgets/DragTableRow';
-import { EditableCell } from "./widgets/EditableCell";
+import { EditableCell } from './widgets/EditableCell';
 
 export interface IBaseTableState {
   loading: boolean;
@@ -174,12 +174,13 @@ class BaseTable<
       // dataSource 数据处理
       let dataSource = (rows || []).map((item: any, index: number) => ({
         ...item,
-        index: (currentPage - 1) * pageSize + (index + 1),
+        index: (currentPage - 1) * pageSize + (index + 1) || index + 1,
         rowKey:
           (typeof rowKey === 'function' ? rowKey(item, index) : item[rowKey]) ||
           (currentPage - 1) * pageSize + (index + 1),
       }));
       dataSource = dataHandler ? dataHandler(dataSource, data) : dataSource;
+
       this.setState({
         loading: false,
         dataSource,
@@ -193,8 +194,13 @@ class BaseTable<
   };
 
   handleBasicColumns = (props: any) => {
-    const { showIndex, columns = [], resizable, draggable, editable }: any =
-      props || this.props;
+    const {
+      showIndex,
+      columns = [],
+      resizable,
+      draggable,
+      editable,
+    }: any = props || this.props;
     const { dev } = this.state;
     let columnList = handleColumns(columns);
     //展示序号
@@ -305,10 +311,10 @@ class BaseTable<
     const sort =
       field && sorter.order
         ? field
-          .split('.')
-          .pop()
-          .replace(/\B([A-Z])/g, '_$1')
-          .toLowerCase()
+            .split('.')
+            .pop()
+            .replace(/\B([A-Z])/g, '_$1')
+            .toLowerCase()
         : null;
 
     this.setState(
@@ -369,16 +375,16 @@ class BaseTable<
    */
   handleResize =
     (index: number) =>
-      (e: any, { size }: any) => {
-        this.setState(({ columns }) => {
-          const nextColumns = [...columns];
-          nextColumns[index] = {
-            ...nextColumns[index],
-            width: size.width,
-          };
-          return { columns: nextColumns };
-        });
-      };
+    (e: any, { size }: any) => {
+      this.setState(({ columns }) => {
+        const nextColumns = [...columns];
+        nextColumns[index] = {
+          ...nextColumns[index],
+          width: size.width,
+        };
+        return { columns: nextColumns };
+      });
+    };
 
   /**
    *  拖拽行

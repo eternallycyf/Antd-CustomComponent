@@ -449,6 +449,9 @@ export default function VirtualScrollTable(props: any) {
     const setTableData = (scrollItem: any) => {
       const displayColumns = getColumns(scrollItem) || [];
       setDisplayColumns(displayColumns);
+      if (getRows(scrollItem, displayColumns)?.length === fixRowkeys?.length) {
+        return;
+      }
       setRows(getRows(scrollItem, displayColumns));
     };
 
@@ -609,7 +612,6 @@ export default function VirtualScrollTable(props: any) {
       // 正则去除 px
       let newWidth = style?.width || 0;
       newWidth = newWidth.replace(/px/gi, '');
-      console.log(columnIndex);
       return (
         <div
           className={`

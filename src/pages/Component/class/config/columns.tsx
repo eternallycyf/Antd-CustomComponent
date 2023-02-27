@@ -16,26 +16,34 @@ export const getColumns = (
       title: '活动名称',
       width: 112,
       sorter: true,
+      align: 'center' as 'center',
+      fixed: 'left' as 'left',
     },
     {
       dataIndex: 'activityStartTime',
       title: '活动开始时间',
       width: 112,
       sorter: true,
+      align: 'center' as 'center',
+      fixed: 'left' as 'left',
     },
     {
       dataIndex: 'activityEndTime',
       title: '活动结束时间',
       width: 112,
       sorter: true,
+      align: 'center' as 'center',
+      fixed: 'left' as 'left',
     },
     {
       dataIndex: 'activityType',
       title: '活动类型',
       width: 112,
-      align: 'center' as 'center',
+
       render: (text: string) => ACTIVE_TYPE[text] || '--',
       sorter: true,
+      align: 'center' as 'center',
+      fixed: 'left' as 'left',
     },
   ];
 };
