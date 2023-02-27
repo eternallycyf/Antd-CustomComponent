@@ -4,7 +4,7 @@ import { formatValuesType } from '@/components/CustomForm';
 import projectConfig from '@/config/projectConfig';
 import { ICommonTable, ModalType } from '@/typings';
 import { formatParams } from '@/utils/util';
-import { Form, Input } from 'antd';
+import { Form, Input, Table } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
 import React, { Component } from 'react';
 import { getColumns } from './config/columns';

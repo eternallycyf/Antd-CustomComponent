@@ -168,6 +168,8 @@ export interface ICommonTable<T> extends TableProps<T> {
   expandable?: TableProps<T>['expandable'];
   /**@description  是否显示汇总行 发送给后端的 limit为29*/
   isSummary?: boolean;
+  /**@description [汇总行位置] = top */
+  summaryPosition?: 'top' | 'bottom';
   /**@description 网络请求后data的路径 */
   dataPath?: string;
   /**@description 渲染前最后处理一次column */

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
 import { DownOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Popconfirm } from 'antd';
+import { Button, Dropdown, Popconfirm, Table as AntdTable } from 'antd';
 import Table from './components/EnhancedTable';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -31,6 +31,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
     calcHeight: true,
     initRequest: true,
     isSummary: false,
+    summaryPosition: 'top',
   };
   cls: string = '';
   constructor(props: any) {
@@ -247,6 +248,32 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
     this.setState({ columns });
   };
 
+  renderSummary = (currentData: any[], columns: any[]) => {
+    const hasSelect = this.props.selectType === 'checkbox';
+    const hasIndex = this.props.showIndex === true;
+    const summaryColumns = hasIndex ? columns.slice(1) : columns;
+    const summaryData = currentData?.[0];
+    const renderCell = (title = '', index: number, item: any = {}) => {
+      return (
+        <AntdTable.Summary.Cell index={index} align="center" {...item}>
+          {title}
+        </AntdTable.Summary.Cell>
+      );
+    };
+    return (
+      <AntdTable.Summary fixed={this.props.summaryPosition}>
+        <AntdTable.Summary.Row>
+          <AntdTable.Summary.Cell index={0}>0</AntdTable.Summary.Cell>
+          {renderCell('汇总', 1)}
+          {hasSelect ? renderCell('0', 1) : renderCell('合计', 1)}
+          {summaryColumns.map(({ dataIndex, ...item }, index) => {
+            return renderCell(summaryData?.[dataIndex], index + 2, item);
+          })}
+        </AntdTable.Summary.Row>
+      </AntdTable.Summary>
+    );
+  };
+
   render(): any {
     const {
       form,
@@ -340,6 +367,9 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
         rowSelection={selectOptions}
         onChange={onTableChange ? onTableChange : this.handleTableChange}
         size="small"
+        summary={(currentData: any[]) =>
+          this.props.isSummary ? this.renderSummary(currentData, columns) : null
+        }
       />
     );
 
