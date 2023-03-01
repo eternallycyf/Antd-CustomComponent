@@ -527,7 +527,7 @@ export default function VirtualScrollTable(props: any) {
     };
 
     const calcWidth = (colSpan: any, columns: any, columnIndex: number) => {
-      let width = 8;
+      let width = 1.2;
       for (let i = 0; i < colSpan; i++) {
         const column = columns[columnIndex + i];
         const columnWidth = column.realWidth || column.width;
@@ -565,6 +565,7 @@ export default function VirtualScrollTable(props: any) {
       const style = {
         width: calcWidth(colSpan, columns, columnIndex) + 'px',
         height: rowHeight * rowSpan + 'px',
+        display: 'grid',
         justifyContent:
           column.align === 'right'
             ? 'flex-end'
@@ -632,10 +633,7 @@ export default function VirtualScrollTable(props: any) {
             styles['virtual-table-cell-fix-right-first']
           }
           `}
-          style={{
-            ...style,
-            width: newWidth - 6,
-          }}
+          style={style}
           key={'column' + columnIndex}
         >
           {content}
