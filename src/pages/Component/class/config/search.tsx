@@ -1,9 +1,12 @@
 import { apiPrefixMock } from '@/config';
 import { ISearchesType, FormControl } from '@/typings';
 import FormRules from '@/utils/validate';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import React from 'react';
 import Activity from '../index';
+import styles from '../index.less';
 
 export const STATUS_DICT = [
   { text: '满折', value: '0' },
@@ -103,7 +106,21 @@ export const getSearches = (
     },
     {
       name: 'endTime',
-      label: 'month',
+      label: (
+        <div>
+          <span style={{ marginRight: 4 }}>month</span>
+          <Tooltip title="提示">
+            <QuestionCircleOutlined
+              style={{ marginLeft: 2, fontSize: 12, color: 'rgb(153,153,153)' }}
+            />
+            <span style={{ color: 'black', marginLeft: 2 }}>:</span>
+          </Tooltip>
+        </div>
+      ),
+      itemProps: {
+        colon: false,
+        className: styles.noColon,
+      },
       type: 'month',
       format: 'YYYYMM',
       initialValue: dayjs(),
