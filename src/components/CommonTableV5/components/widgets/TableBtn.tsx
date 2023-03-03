@@ -29,8 +29,8 @@ export const renderBtn = (button: any) => {
   if (!buttonList.length && !otherList.length) return null;
   return (
     <Fragment>
-      <AccessBtn btnList={buttonList} />
       {otherList.map((item: any) => item.element)}
+      <AccessBtn btnList={buttonList} />
     </Fragment>
   );
 };
