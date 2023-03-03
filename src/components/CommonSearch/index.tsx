@@ -12,11 +12,13 @@ export interface IToolTipTagProps {
   record?: any; // 值会映射到表单
   expandForm?: boolean; // 是否可展开
   columnNumber?: number; // 一行放几个 formItem
+  showSearchBtn?: boolean; // 是否展示搜索按钮
   showResetBtn?: boolean; // 是否展示重置按钮
   showToolTipTag?: boolean; // 是否展示toolTip tag
   checkBoxStatus?: boolean; // checkbox的状态
   handleSearch?: (values: any) => void; // 进行搜索
-  handleDeleteTagCallback?: () => void; // 删除tag的回调函数
+  handleResetCallback?: () => void; // 重置回调
+  handleDeleteTagCallback?: (name: string, itemValue: any) => void; // 删除tag的回调函数
   [propName: string]: any;
 }
 
@@ -39,6 +41,8 @@ const TooltipTag: React.ForwardRefRenderFunction<
     formList,
     children,
     checkBoxStatus,
+    showSearchBtn,
+    handleResetCallback,
     handleDeleteTagCallback,
     ...restProps
   } = props;
@@ -157,7 +161,7 @@ const TooltipTag: React.ForwardRefRenderFunction<
     index: string | number,
   ) => {
     if (checkBoxStatus) {
-      return handleDeleteTagCallback();
+      return handleDeleteTagCallback(name, itemValue);
     }
     const { form } = searchRef.current!;
     const deleteTag: any = tagList().find((item: any) => item.name === name);
@@ -179,7 +183,10 @@ const TooltipTag: React.ForwardRefRenderFunction<
       formList={formList}
       showToolTipTag={showToolTipTag}
       handleTagList={handleTagList}
-      handleRemoveTag={() => setTagList([])}
+      handleResetCallback={() => {
+        setTagList([]);
+        if (handleResetCallback) handleResetCallback();
+      }}
     >
       {showToolTipTag && tagList ? (
         <div ref={divRef} className={styles.tagRow}>

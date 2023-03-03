@@ -19,12 +19,18 @@ const quarterFormat = 'YYYY-Q';
 export interface ISearchProps extends IToolTipTagProps {
   children?: any;
   handleTagList?: any;
-  handleRemoveTag: () => void;
+  handleResetCallback: () => void;
 }
 
 const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
-  const { formList, showResetBtn, columnNumber, children, handleRemoveTag } =
-    props;
+  const {
+    formList,
+    showSearchBtn = true,
+    showResetBtn = true,
+    columnNumber,
+    children,
+    handleResetCallback,
+  } = props;
   const [form] = Form.useForm();
   const [state, setState] = useState({
     expandForm: props.expandForm,
@@ -155,9 +161,11 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
    */
   const handleReset = () => {
     form.resetFields();
-    handleRemoveTag();
     const formData = form.getFieldsValue();
     triggerSearch(formatSubmitValues(formData));
+    if (handleResetCallback) {
+      handleResetCallback();
+    }
   };
 
   /**
@@ -269,15 +277,17 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
           ))}
         </Row>
         <Row style={{ margin: '8px 0 5px 10px' }}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            size="small"
-            icon={<SearchOutlined />}
-            style={{ marginRight: 10 }}
-          >
-            查询
-          </Button>
+          {showSearchBtn && (
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="small"
+              icon={<SearchOutlined />}
+              style={{ marginRight: 10 }}
+            >
+              查询
+            </Button>
+          )}
           {showResetBtn ? (
             <Button
               size="small"
