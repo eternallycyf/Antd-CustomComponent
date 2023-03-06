@@ -3,10 +3,8 @@ import { localStore } from '@/utils/storage';
 import _ from 'lodash';
 import pathToRegexp from 'path-to-regexp';
 import React, { useEffect, useState } from 'react';
-import { History, history, useLocation, withRouter } from '@umijs/max';
-import { RouterProps } from 'react-router';
+import { History, history, useLocation } from '@umijs/max';
 import MenuTabs, { MenuTab } from './MenuTabs';
-import { ConnectState } from '@/typings/connect';
 import { homePage as homePagePath } from '@/config/projectConfig';
 
 function getMetaDataOfTab(
@@ -34,7 +32,7 @@ function setPathName(metaData: MenuItem, location: History['location']) {
 }
 
 function routeTo(targetTab: MenuTab) {
-  if (targetTab) history.push(targetTab?.location || '/');
+  if (targetTab) history.push(targetTab?.location ?? '/');
 }
 
 function addTab(newTab: MenuTab, activeTabs: MenuTab[]): any[] {
@@ -70,7 +68,6 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
   });
 
   useEffect(() => {
-    console.log(location.pathname);
     const metaData = getMetaDataOfTab(location.pathname, breadcrumbNameMap);
     const activeTitle = setPathName(metaData, location);
 

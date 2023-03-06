@@ -4,8 +4,6 @@ import { routerRedux } from 'dva';
 
 export interface ILoginModelState {
   token: string;
-  accessCollection: any[];
-  breadcrumbNameMap: any;
   loading: boolean;
   userTeamList: any[];
 }
@@ -31,9 +29,6 @@ const LoginModal: ILoginModel = {
   namespace: 'login',
   state: {
     token: sessionStorage.getItem('token') || '',
-    accessCollection:
-      (sessionStorage.getItem('accessCollection') as any as any[]) || [],
-    breadcrumbNameMap: {},
     loading: false,
     userTeamList:
       (sessionStorage.getItem('userTeamList') as any as any[]) || [],

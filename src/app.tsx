@@ -51,38 +51,38 @@ export async function getInitialState(): Promise<any> {
   return data;
 }
 
-export const layout = (event: any) => {
-  const { initialState, loading, error, refresh, setInitialState } = event;
-  console.log(Router);
-  return {
-    layout: 'mix',
-    logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
-    menu: { locale: false },
-    logout: () => {}, // do something
-    avatarProps: {
-      src: 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-      size: 'small',
-      title: '七妮妮',
-    },
-    menuItemRender: (menuItemProps: any, defaultDom: any) => {
-      return (
-        <div>
-          <Link to={menuItemProps.path}>{defaultDom}</Link>
-        </div>
-      );
-    },
-    collapsed: initialState?.layout?.collapsed,
-    onCollapse: (collapsed: boolean) => {
-      setInitialState({
-        ...initialState,
-        layout: { ...initialState.layout, collapsed },
-      });
-    },
-    pageTitleRender: false,
-    collapsedButtonRender: false,
-    childrenRender: (props: any) => (
-      <BasicLayout props={props}>{props}</BasicLayout>
-    ),
-    breadcrumbRender: false,
-  };
-};
+// export const layout = (event: any) => {
+//   const { initialState, loading, error, refresh, setInitialState } = event;
+//   console.log(Router);
+//   return {
+//     layout: 'mix',
+//     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
+//     menu: { locale: false },
+//     logout: () => {}, // do something
+//     avatarProps: {
+//       src: 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
+//       size: 'small',
+//       title: '七妮妮',
+//     },
+//     menuItemRender: (menuItemProps: any, defaultDom: any) => {
+//       return (
+//         <div>
+//           <Link to={menuItemProps.path}>{defaultDom}</Link>
+//         </div>
+//       );
+//     },
+//     collapsed: initialState?.layout?.collapsed,
+//     onCollapse: (collapsed: boolean) => {
+//       setInitialState({
+//         ...initialState,
+//         layout: { ...initialState.layout, collapsed },
+//       });
+//     },
+//     pageTitleRender: false,
+//     collapsedButtonRender: false,
+//     childrenRender: (props: any) => (
+//       <BasicLayout props={props}>{props}</BasicLayout>
+//     ),
+//     breadcrumbRender: false,
+//   };
+// };

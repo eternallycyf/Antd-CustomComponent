@@ -14,11 +14,12 @@ export default defineConfig({
       ? 'http://wangxince.site/Antd-CustomComponent/'
       : '/',
   routes: routerConfig,
-  layout: {
-    title: '公众crud组件"',
-    contentWidth: 'Fluid',
-    locale: false,
-  },
+  layout: false,
+  // layout: {
+  //   title: '公众crud组件"',
+  //   contentWidth: 'Fluid',
+  //   locale: false,
+  // },
   locale: {
     // 默认使用 src/locales/zh-CN.ts 作为多语言文件
     antd: true,

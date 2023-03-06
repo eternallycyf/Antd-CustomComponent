@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { UserInfo } from '@/typings';
+import { MenuItem, UserInfo } from '@/typings';
 import { Effect } from 'dva';
 import * as service from '@/services';
 import {
@@ -9,20 +9,23 @@ import {
 
 export interface IGlobalModelState {
   theme: 'dark' | 'light';
+  collapsed: boolean;
   showTagNav: boolean;
   showNotice: boolean;
   showFullScreen: boolean;
   userInfo: UserInfo<number | string>;
   sliderMenuState: '1' | '2';
   breadcrumbNameMap: any;
-  menuList: any;
-  accessCollection: any[];
+  menuList: MenuItem[];
+  accessCollection: string[];
 }
 
 export interface IGlobalModel {
   namespace: 'global';
   state: IGlobalModelState;
   reducers: {
+    changeCollapsed: Reducer<any>;
+    changeSliderMenuState: Reducer<any>;
     updateState: Reducer<any>;
   };
   effects: {
@@ -39,7 +42,8 @@ export interface IGlobalModel {
 const GlobalModel: IGlobalModel = {
   namespace: 'global',
   state: {
-    theme: 'dark',
+    theme: 'light',
+    collapsed: false,
     showTagNav: true,
     showNotice: true,
     showFullScreen: false,
@@ -51,6 +55,13 @@ const GlobalModel: IGlobalModel = {
       (sessionStorage.getItem('accessCollection') as any as any[]) || [],
   },
   reducers: {
+    changeCollapsed(state, { collapsed }) {
+      return { ...state, collapsed };
+    },
+    changeSliderMenuState(state, { sliderMenuState }) {
+      localStorage.setItem('sliderMenuState', sliderMenuState);
+      return { ...state, sliderMenuState };
+    },
     updateState(state, { payload }) {
       return { ...state, ...payload };
     },
@@ -117,9 +128,9 @@ const GlobalModel: IGlobalModel = {
     setup({ dispatch, history }) {
       return history.listen(({ location }: any) => {
         const { pathname } = location;
-        if (pathname === '/') {
-          // dispatch({ type: 'fetch', payload: {} });
-        }
+        // if (pathname === '/') {
+        //   dispatch({ type: 'fetch', payload: {} });
+        // }
       });
     },
   },

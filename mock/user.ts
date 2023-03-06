@@ -201,7 +201,9 @@ export default {
     code: 200,
     msg: '请求成功',
     success: true,
-    data: {},
+    data: {
+      name: 'zs',
+    },
   },
   'POST /fetchMenu': {
     code: 200,

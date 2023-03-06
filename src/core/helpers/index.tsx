@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { ForwardRefExoticComponent } from 'react';
 import _ from 'lodash';
 import dayjs from 'dayjs';
 import BraftEditor from 'braft-editor';
 import { Form } from 'antd';
 import { FieldCompType } from '@/typings';
+import Icon from '@ant-design/icons';
+import type { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon';
+
+export const urlPattern =
+  /^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/;
 
 /**
  * 获取控件
@@ -197,4 +202,20 @@ export const convertArrayToTree = (arr: any[], option?: any) => {
     return tree;
   };
   return createTree(rootNodes);
+};
+
+export const getIcon = (icon: string, className?: string) => {
+  if (typeof icon === 'string' && urlPattern.test(icon)) {
+    return <img src={icon} alt="icon" className={className} />;
+  }
+  if (typeof icon === 'string') {
+    return (
+      <Icon
+        component={icon as unknown as ForwardRefExoticComponent<any>}
+        style={{ fontSize: 14, marginRight: 6 }}
+        className={className}
+      />
+    );
+  }
+  return icon;
 };

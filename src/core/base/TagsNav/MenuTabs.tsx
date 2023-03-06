@@ -10,7 +10,7 @@ import { Dropdown, Menu, MenuProps, Tabs, TabsProps } from 'antd';
 import cx from 'classnames';
 import { connect } from 'dva';
 import React from 'react';
-import { RouterProps } from 'react-router';
+import { History } from '@umijs/max';
 import styles from './index.less';
 const { homePage: homePagePath } = projectConfig;
 
@@ -26,7 +26,7 @@ export interface MenuTab {
   key: string;
   refresh?: boolean;
   closeable?: boolean;
-  location?: RouterProps['location'];
+  location?: History['location'];
   extraProperties?: any;
 }
 
@@ -130,12 +130,9 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
   };
 
   const handleMenuCollapse = () => {
-    setInitialState({
-      ...initialState,
-      layout: {
-        ...initialState.layout,
-        collapsed: !initialState.layout.collapsed,
-      },
+    dispatch({
+      type: 'global/changeCollapsed',
+      collapsed: !collapsed,
     });
   };
 
@@ -153,11 +150,13 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
       tabBarExtraContent={{
         left: collapsed ? (
           <MenuUnfoldOutlined
+            className={styles.icon}
             onClick={handleMenuCollapse}
             style={{ padding: '0 10px' }}
           />
         ) : (
           <MenuFoldOutlined
+            className={styles.icon}
             onClick={handleMenuCollapse}
             style={{ padding: '0 10px' }}
           />

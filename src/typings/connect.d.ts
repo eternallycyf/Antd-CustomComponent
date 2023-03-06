@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { RouterProps } from 'react-router';
 import { FormInstance } from 'antd/es/form';
 import { ILoginModelState } from '../models/login';
 import { IGlobalModelState } from '../models/global';
+import { History } from '@umijs/max';
 
 export interface Loading {
   global: boolean;
@@ -23,9 +23,8 @@ export interface ConnectState {
  * @type T: Params matched in dynamic routing
  */
 export interface ConnectProps<P extends { [K in keyof P]?: string } = any>
-  extends Partial<RouterProps> {
+  extends Partial<History> {
   dispatch?: Dispatch;
-  form?: FormInstance;
 }
 
 export type Effect = (

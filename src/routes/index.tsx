@@ -6,8 +6,9 @@ const Router = [
   {
     path: '/',
     hideInPanelTab: true,
+    component: '../core/layouts/BasicLayout',
+    routes: Routes,
   },
-  ...flatMap(Routes),
   {
     path: '*',
     hideInPanelTab: true,
