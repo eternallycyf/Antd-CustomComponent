@@ -667,53 +667,59 @@ export default function VirtualScrollTable(props: any) {
         >
           <div
             className={styles['table-content-container']}
-            style={{ top: top + 'px', left: left + 'px' }}
+            style={{
+              right: rows.length ? 'unset' : 0,
+              top: top + 'px',
+              left: left + 'px',
+            }}
           >
-            {rows.map((row, rowIndex) => (
-              <div
-                className={`
+            {rows.length
+              ? rows.map((row, rowIndex) => (
+                  <div
+                    className={`
                 ${styles['row']}
                 ${rowIndex === activeRowIndex && styles['row-active']}
                 ${fixRowkeys.includes(row[rowKey]) && styles['fix-row-top']}
                 `}
-                style={getRowStyle(rowIndex)}
-                key={rowIndex}
-                onClick={() =>
-                  onClick({ rowKey: rowIndex, rowData: row, rowIndex })
-                }
-                onMouseEnter={() => setHoverRowIndex(rowIndex)}
-                onMouseLeave={() => setHoverRowIndex(-1)}
-              >
-                {fixLeftColumnList.map((column, columnIndex) =>
-                  renderCell(
-                    column,
-                    columnIndex,
-                    row,
-                    rowIndex,
-                    fixLeftColumnList,
-                  ),
-                )}
-                {displayColumns.map((column, columnIndex) =>
-                  renderCell(
-                    column,
-                    columnIndex,
-                    row,
-                    rowIndex,
-                    displayColumns,
-                  ),
-                )}
-                {/* 分开写的目的是为了避免闪屏。由于列数不固定，如果一起写会添加删除dom，固定在右边的列会闪屏 */}
-                {fixRightColumnList.map((column, columnIndex) =>
-                  renderCell(
-                    column,
-                    columnIndex,
-                    row,
-                    rowIndex,
-                    fixRightColumnList,
-                  ),
-                )}
-              </div>
-            ))}
+                    style={getRowStyle(rowIndex)}
+                    key={rowIndex}
+                    onClick={() =>
+                      onClick({ rowKey: rowIndex, rowData: row, rowIndex })
+                    }
+                    onMouseEnter={() => setHoverRowIndex(rowIndex)}
+                    onMouseLeave={() => setHoverRowIndex(-1)}
+                  >
+                    {fixLeftColumnList.map((column, columnIndex) =>
+                      renderCell(
+                        column,
+                        columnIndex,
+                        row,
+                        rowIndex,
+                        fixLeftColumnList,
+                      ),
+                    )}
+                    {displayColumns.map((column, columnIndex) =>
+                      renderCell(
+                        column,
+                        columnIndex,
+                        row,
+                        rowIndex,
+                        displayColumns,
+                      ),
+                    )}
+                    {/* 分开写的目的是为了避免闪屏。由于列数不固定，如果一起写会添加删除dom，固定在右边的列会闪屏 */}
+                    {fixRightColumnList.map((column, columnIndex) =>
+                      renderCell(
+                        column,
+                        columnIndex,
+                        row,
+                        rowIndex,
+                        fixRightColumnList,
+                      ),
+                    )}
+                  </div>
+                ))
+              : props?.locale?.emptyText}
           </div>
         </div>
       </div>

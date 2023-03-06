@@ -16,7 +16,7 @@ export interface IBaseTableState {
   sorter: any;
   current: number;
   pageSize: number;
-
+  requestCount: number;
   extraParams: any;
   columns: any[];
   dataSource: any[];
@@ -134,7 +134,14 @@ class BaseTable<
 
   // 请求数据
   loadData = async (isReset: boolean = false) => {
-    const { loading, sorter, filters, current, pageSize } = this.state;
+    const {
+      loading,
+      sorter,
+      filters,
+      current,
+      pageSize,
+      requestCount = 0,
+    } = this.state;
     const { extraParams } = this.props;
     const {
       urls,
@@ -186,6 +193,7 @@ class BaseTable<
         dataSource,
         current: currentPage,
         total,
+        requestCount: requestCount + 1,
       });
     } catch (e) {
       console.log(e);

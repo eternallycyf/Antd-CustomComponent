@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
 import { DownOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Popconfirm, Table as AntdTable } from 'antd';
+import { Button, Dropdown, Popconfirm, Table as AntdTable, Empty } from 'antd';
 import Table from './components/EnhancedTable';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -50,6 +50,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
       selectedRows: props.selectedRows || [],
       dev: false,
       dataSource: [],
+      requestCount: 0,
     };
 
     this.cls = cx('common-table', props.className, {
@@ -294,6 +295,8 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
       onSelect,
       dataSource: data = [],
       onTableChange,
+      initRequest,
+      requestCount,
       ...extraProps
     } = this.props;
     let restProps: any = { ...extraProps };
@@ -365,11 +368,38 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
         columns={columns}
         dataSource={data?.length > 0 ? data : dataSource}
         rowSelection={selectOptions}
-        onChange={onTableChange ? onTableChange : this.handleTableChange}
+        onChange={(...params: any[]) => {
+          const { requestCount = 0 } = this.state;
+          if (onTableChange) {
+            onTableChange(...params);
+          } else {
+            // @ts-ignore
+            this.handleTableChange(...params);
+          }
+          this.setState({ requestCount: requestCount + 1 });
+        }}
         size="small"
+        initRequest={initRequest}
         summary={(currentData: any[]) =>
           this.props.isSummary ? this.renderSummary(currentData, columns) : null
         }
+        locale={{
+          emptyText: (
+            <Empty
+              description={
+                !initRequest && requestCount
+                  ? '请选择筛选条件进行查询'
+                  : '暂无数据'
+              }
+              style={{ color: '#b3b8c2', fontSize: 12 }}
+              image={
+                !initRequest && !requestCount
+                  ? Empty.PRESENTED_IMAGE_SIMPLE
+                  : Empty.PRESENTED_IMAGE_SIMPLE
+              }
+            />
+          ),
+        }}
       />
     );
 
