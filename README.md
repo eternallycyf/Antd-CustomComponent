@@ -2,7 +2,7 @@
 
 - toggle to vite
   - 登录页 验证码权限流程
-  - 自定义 menu
+  - ~~自定义 menu~~
 - ~~可编辑表格~~
 - ~~docker 部署方案~~
 - ~~封装虚拟列表，集成到 antd table 中~~

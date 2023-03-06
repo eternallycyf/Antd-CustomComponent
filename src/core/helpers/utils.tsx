@@ -1,4 +1,4 @@
-import { Menu } from 'antd';
+import { Menu, MenuItemProps } from 'antd';
 import { Link } from '@umijs/max';
 import { MenuItem } from '@/typings';
 const { SubMenu } = Menu;
@@ -51,6 +51,15 @@ export const getMenuItemPath = (item: MenuItem, pathname: string) => {
   );
 };
 
+const getNavMenuItems = (list: MenuItem[], pathname: string) => {
+  if (!list) return [];
+  const menu = list
+    .filter((item) => item.name && !item.hideInMenu)
+    .map((item) => getSubMenuOrItem(item, pathname))
+    .filter((item) => item);
+  return menu;
+};
+
 export const getSubMenuOrItem = (item: MenuItem, pathname: string) => {
   if (item.children && item.children.some((child) => child.name)) {
     const { name, code } = item;
@@ -65,7 +74,7 @@ export const getSubMenuOrItem = (item: MenuItem, pathname: string) => {
           </div>
         }
       >
-        {item.children.map((child) => getSubMenuOrItem(child, pathname))}
+        {getNavMenuItems(item.children, pathname)}
       </SubMenu>
     );
   }

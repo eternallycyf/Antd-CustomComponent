@@ -194,6 +194,7 @@ export const menuList = [
     url: null,
   },
 ];
+
 export const breadcrumbNameMap = getBreadcrumbNameMap(menuList, Router);
 
 export default {
@@ -202,7 +203,7 @@ export default {
     msg: '请求成功',
     success: true,
     data: {
-      name: 'zs',
+      username: 'zs',
     },
   },
   'POST /fetchMenu': {

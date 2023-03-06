@@ -66,6 +66,7 @@ export interface MenuItem {
   hideInTab?: boolean; // 是否在tab中隐藏
   multiple?: boolean; // 是否多开标签页
   keepAlive?: boolean; // 是否缓存标签页
+  upperId?: string; // 父级菜单id
 }
 // 用户信息
 export interface UserInfo<T> {

@@ -5,13 +5,14 @@ import { useEffect, Fragment, FC } from 'react';
 import SiderMenu from '@/core/base/CustomMenu';
 import { Layout, Spin } from 'antd';
 import { Helmet, History } from '@umijs/max';
-import { Dispatch, Outlet } from 'umi';
+import { Dispatch, Outlet } from '@umijs/max';
 import _ from 'lodash';
 import { ConnectState } from '@/typings/connect';
 import styles from './index.less';
 import config from '@/config/projectConfig';
 import { WaterMark } from '@/components';
-import routes from '@/routes';
+import { menuList as routes } from 'mock/user';
+import GlobalHeader from '@/core/base/GlobalHeader';
 const { Sider, Content, Header } = Layout;
 const { title } = config;
 
@@ -84,11 +85,8 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
           content={userInfo?.realName || '未登录'}
           fillStyle="rgba(123,139,167,0.2)"
         >
-          <Header
-            style={{ background: 'transparent' }}
-            className="core-base-tags-nav-index-tabs"
-          >
-            <div className={styles.tab}>
+          <GlobalHeader>
+            <div>
               {!_.isEmpty(breadcrumbNameMap) && !_.isEmpty(userInfo) ? (
                 <TagsNav {...TagsNavProps}>{children}</TagsNav>
               ) : (
@@ -100,7 +98,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
                 />
               )}
             </div>
-          </Header>
+          </GlobalHeader>
           <Layout className={styles.content}>
             <Sider theme={theme} style={{ background: 'transparent' }}>
               <SiderMenu {...siderMenuProps} />
