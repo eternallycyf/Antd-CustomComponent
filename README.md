@@ -242,3 +242,48 @@ yarn start
 ```shell
 http://localhost:8000/
 ```
+
+## 路由跳转带参
+
+```ts
+## 需要按钮跳转页
+{
+  text:'跳转到xxx',
+  onClick:() => {
+    history.push({
+      pathname: '/跳转地址路由',
+      query: {
+        name: 'currentPage,
+        targetPath: '/当前页面路由'
+      },
+    });
+  },
+}
+
+## 接受参数
+import { withRouter, history} from 'umi'
+import _ from 'lodash';
+
+componentDidMount(){
+  this.props.history.listen({ query, pathname }) => {
+    const targetPath == query;
+    if(targetPath && targetPath === '/当前页面路由' && pathname == '/跳转地址路由'){
+      const { setFieldsValue } = this.searchRef.current.searchFormRef.current.form;
+      const [value, values] = this.searchRef.current?.handleRealParams();
+      const params = {...values, ..._.Omit(query,['targetPath'])},
+      setFieldsValue(_.Omit(query,['targetPath']);
+      this.handleSearch({ ...value, ...params }})
+    }
+  }
+}
+
+handleResetCallBack = () => router.push({ pathname: '/跳转地址路由', query: {} })
+
+<CommonSearch handleResetCallBack={this.handleResetCallBack} />
+
+export default withRouterPage(withRouter(connect({ login, global }: ConnectState) => ({
+  token: login.token,
+  accessCollection: login.accessCollection,
+  userInfo: global.userInfo
+}))(Page))
+```

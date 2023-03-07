@@ -21,7 +21,9 @@ const Page: React.FC<IPage> = (props) => {
     bodyStyle: {
       margin: '24px 24px 24px 32px',
       height: '100%',
-      minHeight: 'calc(100vh - 150px)',
+      minHeight: 'calc(100vh - 120px)',
+      maxHeight: 'calc(100vh - 120px)',
+      overflow: 'auto',
     },
   };
 
