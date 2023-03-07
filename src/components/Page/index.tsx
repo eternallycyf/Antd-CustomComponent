@@ -17,7 +17,7 @@ const Page: React.FC<IPage> = (props) => {
   const cardProps = {
     id: 'container',
     loading,
-    style: { marginLeft: 32 },
+    style: { marginLeft: 12 },
     bodyStyle: {
       margin: '24px 24px 24px 32px',
       height: '100%',

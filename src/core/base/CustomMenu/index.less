@@ -87,9 +87,12 @@
   overflow-x: hidden;
   overflow-y: auto;
   padding-top: 16px;
+  height: calc(100vh - 70px);
   background-size: 100% 100%;
   // background-image: url('@/assets/images/CustomMenu/slider_bg.png');
   background-repeat: no-repeat;
+
+  user-select: none;
 
   :global {
     .ant-layout-sider-children {
@@ -106,6 +109,11 @@
 
       .ant-menu-submenu-arrow {
         // color: #fff;
+      }
+
+      .ant-menu-submenu-title {
+        margin: 0 0 8px;
+        font-size: 16px;
       }
 
       >.ant-menu-item {
@@ -145,7 +153,7 @@
   align-items: center;
   justify-content: center;
   height: 32px;
-  background: hwb(242deg 56% 12% / 55%);
+  background: #77bcf6;
   cursor: pointer;
 }
 
@@ -217,8 +225,8 @@
 }
 
 .selected {
-  background-color: #f1f5fb;
-  color: @primary-color;
+  // background-color: #f1f5fb;
+  // color: @primary-color ;
 
   &.thirdMenu {
     background-color: transparent;
@@ -238,11 +246,23 @@
 }
 
 .selected:not(.menuItem) {
-  border-right: 3px solid @primary-color;
+  >a {
+    color: rgba(0, 0, 0, 0.88) !important;
+    font-weight: 400;
+  }
+
+  &:hover {
+    >a {
+      color: @primary-color !important;
+    }
+  }
+
+  // border-right: 3px solid @primary-color;
 }
 
 .unselected {
-  background-color: unset;
+  border-right: 3px solid @primary-color;
+  background-color: #E7F4FF;
 
   .link {
     color: #fff;

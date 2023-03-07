@@ -29,6 +29,7 @@ const BaseMenu: React.FC<IBaseMenuProps> = (props) => {
     (list: MenuItem[]) => {
       if (!list) return [];
       return list
+        .filter((item) => item.path !== '/404')
         .filter((item) => item.upperId === '1')
         .filter((item) => item.name && !item.hideInMenu)
         .map((item) => getSubMenuOrItem(item, pathname))

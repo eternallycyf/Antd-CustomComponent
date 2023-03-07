@@ -203,7 +203,7 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
         }
         content={contentWrapper}
       >
-        {getListItem(infos, flMenuClass)}
+        {getListItem(infos, styles.unselected)}
       </Popover>
     );
     return subMenu;
@@ -223,7 +223,9 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
   const getNavMenuItems = useCallback(
     (list: MenuItemProps[]) => {
       if (!list) return [];
+      console.log(list);
       const menu = list
+        .filter((item) => item.path !== '/404')
         .filter((item) => item.upperId === '1')
         .filter((item) => item.name && !item.hideInMenu)
         .map((item) => getSubMenuOrItem(item))
