@@ -5,7 +5,7 @@ export function trim(str: string) {
 
 /**
  * 数字千分位展示并显示n位小数
- * 也可以 Number('100000000.1122123123').toLocaleString()
+ * 也可以 Number(xxx).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
  * @param {(number | string)} 需要格式化的值
  * @param {number} [precision] 保留几位小数，不传小数不处理，不够会填充0
  * @param {string} [separator=','] 分隔符
