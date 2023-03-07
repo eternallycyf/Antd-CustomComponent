@@ -224,6 +224,7 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
     (list: MenuItemProps[]) => {
       if (!list) return [];
       const menu = list
+        .filter((item) => item.upperId === '1')
         .filter((item) => item.name && !item.hideInMenu)
         .map((item) => getSubMenuOrItem(item))
         .filter((item) => item);
