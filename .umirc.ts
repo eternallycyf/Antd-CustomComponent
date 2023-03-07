@@ -34,7 +34,7 @@ export default defineConfig({
     configProvider: {
       locale: zhCN,
     },
-    theme: { '@primary-color': '#00CA88' },
+    // theme: { '@primary-color': '#00CA88' },
   },
   metas: [
     {
