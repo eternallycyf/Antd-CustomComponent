@@ -6,7 +6,7 @@ import {
   HomeOutlined,
 } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
-import { Dropdown, Menu, MenuProps, Tabs, TabsProps } from 'antd';
+import { Dropdown, Tabs, TabsProps } from 'antd';
 import cx from 'classnames';
 import { connect } from 'dva';
 import React from 'react';

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { LogoutOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import { Avatar, MenuProps, Spin } from 'antd';
 import { history, useModel } from '@umijs/max';
 import HeaderDropdown from './HeaderDropdown';
 import styles from '../index.less';
@@ -55,16 +55,28 @@ const AvatarDropdown = () => {
     // history.push('/user/login');
   }
 
-  const menuHeaderDropdown = (
-    <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-      <Menu.Item key="logout">
-        <LogoutOutlined />
-        退出登录
-      </Menu.Item>
-    </Menu>
-  );
+  const items: MenuProps['items'] = [
+    {
+      key: 'logout',
+      type: 'group',
+      label: (
+        <div>
+          <LogoutOutlined />
+          退出登录
+        </div>
+      ),
+      className: styles.menu,
+    },
+  ];
+
   return (
-    <HeaderDropdown overlay={menuHeaderDropdown}>
+    <HeaderDropdown
+      menu={{
+        items,
+        selectedKeys: ['logout'],
+        onClick: onMenuClick,
+      }}
+    >
       <span className={`${styles.action} ${styles.account}`}>
         <Avatar size="small" className={styles.avatar} alt="avatar" />
         <span className={`${styles.name} anticon`}>{currentUser?.name}</span>
