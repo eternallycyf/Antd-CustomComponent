@@ -211,7 +211,7 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
 
   const handleSubMenu = (content: JSX.Element[], count: number) => {
     return content.filter(
-      (item: JSX.Element, ind: number) => (ind + 1) % 3 === count,
+      (_item: JSX.Element, ind: number) => (ind + 1) % 3 === count,
     );
   };
 
@@ -222,9 +222,7 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
 
   const getNavMenuItems = useCallback(
     (list: MenuItemProps[]) => {
-      if (!list) {
-        return [];
-      }
+      if (!list) return [];
       const menu = list
         .filter((item) => item.name && !item.hideInMenu)
         .map((item) => getSubMenuOrItem(item))

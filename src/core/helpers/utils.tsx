@@ -1,7 +1,5 @@
-import { Menu, MenuItemProps } from 'antd';
 import { Link } from '@umijs/max';
 import { MenuItem } from '@/typings';
-const { SubMenu } = Menu;
 // 去除多余斜杠
 export const conversionPath = (path: string) => {
   if (path && path.indexOf('http') === 0) {
@@ -51,34 +49,32 @@ export const getMenuItemPath = (item: MenuItem, pathname: string) => {
   );
 };
 
-const getNavMenuItems = (list: MenuItem[], pathname: string) => {
+export const getSubMenuOrItem = (item: MenuItem, pathname: string): any => {
+  if (item.children && item.children.some((child) => child.name)) {
+    const { name, code } = item;
+    return {
+      key: item.code,
+      className: 'sider-base-menu',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {getImage(code as any)}
+          <span>{name}</span>
+        </div>
+      ),
+      children: getNavMenuItems(item.children, pathname),
+    };
+  }
+  return {
+    key: item.code,
+    label: getMenuItemPath(item, pathname),
+  };
+};
+
+export const getNavMenuItems = (list: MenuItem[], pathname: string) => {
   if (!list) return [];
   const menu = list
     .filter((item) => item.name && !item.hideInMenu)
     .map((item) => getSubMenuOrItem(item, pathname))
     .filter((item) => item);
   return menu;
-};
-
-export const getSubMenuOrItem = (item: MenuItem, pathname: string) => {
-  if (item.children && item.children.some((child) => child.name)) {
-    const { name, code } = item;
-    return (
-      <SubMenu
-        className="sider-base-menu"
-        key={item.code}
-        title={
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            {getImage(code as any)}
-            <span>{name}</span>
-          </div>
-        }
-      >
-        {getNavMenuItems(item.children, pathname)}
-      </SubMenu>
-    );
-  }
-  return (
-    <Menu.Item key={item.code}>{getMenuItemPath(item, pathname)}</Menu.Item>
-  );
 };

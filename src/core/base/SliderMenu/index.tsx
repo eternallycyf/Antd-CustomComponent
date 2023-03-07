@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Layout } from 'antd';
 import classNames from 'classnames';
-import { ConnectProps } from '@/typings/connect';
 import BaseMenu from './BaseMenu';
 import styles from './index.less';
 import { MenuItem } from '@/typings';

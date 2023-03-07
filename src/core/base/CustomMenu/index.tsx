@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { SwapOutlined } from '@ant-design/icons';
 import { Layout } from 'antd';
 import classNames from 'classnames';

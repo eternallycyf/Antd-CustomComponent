@@ -19,7 +19,7 @@ const BaseMenu: React.FC<IBaseMenuProps> = (props) => {
   const {
     collapsed,
     flatMenuKeys,
-    menuList,
+    menuList = [],
     location: { pathname },
     openKeys,
     ...restProps
@@ -27,9 +27,7 @@ const BaseMenu: React.FC<IBaseMenuProps> = (props) => {
 
   const getNavMenuItems = useCallback(
     (list: MenuItem[]) => {
-      if (!list) {
-        return [];
-      }
+      if (!list) return [];
       return list
         .filter((item) => item.upperId === '1')
         .filter((item) => item.name && !item.hideInMenu)
@@ -46,9 +44,8 @@ const BaseMenu: React.FC<IBaseMenuProps> = (props) => {
       selectedKeys={openKeys}
       {...restProps}
       openKeys={openKeys}
-    >
-      {getNavMenuItems(menuList as any)}
-    </Menu>
+      items={getNavMenuItems(menuList)}
+    />
   );
 };
 
