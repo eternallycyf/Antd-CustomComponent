@@ -47,7 +47,20 @@ export const getColumns = (
       align: 'center' as 'center',
       fixed: 'left' as 'left',
       ellipsis: true,
-      sorter: (a, b) => (a.area || '').localeCompare(b.area || ''),
+      // sorter: (a, b) => (a.area || '').localeCompare(b.area || ''),
+      sorter: true,
+      // TODO: add types
+      //     {
+      //   sorterFn?: (
+      //     dataIndex: string,
+      //     sorter: string,
+      //   ) => { order: 'ascend' | 'descend'; sort: string };
+      //   isRefresh?: boolean;
+      // }
+      // sorterFn: (dataIndex, sorter, self) => ({
+      //   order: sorter,
+      //   sort: 'xxxxxx',
+      // }),
     },
   ];
 };

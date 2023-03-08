@@ -313,9 +313,10 @@ class BaseTable<
 
   // 表格change
   handleTableChange = async (pagination: any, filters: any, sorter: any) => {
-    const { field } = sorter;
+    const { field, column: { sorterFn = null, isRefresh = true } = {} } =
+      sorter;
     const { current, pageSize } = pagination;
-    const order = (sorter.order == 'ascend' && 'asc') || 'desc';
+    const order = (sorter.order === 'ascend' && 'asc') || 'desc';
     const sort =
       field && sorter.order
         ? field
@@ -330,10 +331,15 @@ class BaseTable<
         current,
         pageSize,
         filters,
-        sorter: order && sort ? { order, sort } : {},
+        sorter:
+          order && sort
+            ? sorterFn
+              ? sorterFn(field, order)
+              : { order, sort }
+            : {},
       },
       () => {
-        this.loadData();
+        if (isRefresh) this.loadData();
       },
     );
   };

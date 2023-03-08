@@ -31,7 +31,9 @@ type boolFunc = (config: {
 }) => boolean;
 
 export type IColumnsType<T = any> = ColumnsType<
-  FormControl & { key: React.Key } & T
+  FormControl & {
+    key: React.Key;
+  } & T
 >;
 
 interface ISearchMoreProps extends FormControl {}
@@ -270,6 +272,7 @@ export interface FormControl extends IBaseFormControlProps {
   /**description 多余的按钮 */
   otherType?: 'button';
   otherText?: React.ReactNode;
+
   [props: number]: FormItemProps;
 }
 
