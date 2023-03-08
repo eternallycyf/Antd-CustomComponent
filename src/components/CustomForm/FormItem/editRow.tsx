@@ -48,7 +48,6 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
   const [editingKey, setEditingKey] = useState<string>('');
   const tableRef = React.useRef<any>(null!);
   const {
-    form,
     col = 24,
     name = 'EditRow',
     value: initialValue = [],
@@ -63,6 +62,7 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
     handleFormatRowValues,
     ...otherTableProps
   } = tableProps;
+  const form = Form.useFormInstance();
 
   const typeList =
     columns?.map((item) => ({

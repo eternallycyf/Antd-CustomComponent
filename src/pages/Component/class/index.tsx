@@ -4,16 +4,18 @@ import { formatValuesType } from '@/components/CustomForm';
 import projectConfig from '@/config/projectConfig';
 import { ICommonTable, ModalType } from '@/typings';
 import { formatParams } from '@/utils/util';
-import { Form, Input, Table } from 'antd';
+import { Col, Form, Input, Row, Table } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
 import React, { Component } from 'react';
 import { getColumns } from './config/columns';
 import { getFormList } from './config/form';
 import { getSearches } from './config/search';
+import { getOtherFormList } from './config/otherFormList';
 import styles from './index.less';
 import { saveActivity } from '../service';
 import { history } from '@umijs/max';
 import { History } from 'history';
+import { getFieldComp } from '@/core/helpers';
 const { apiPrefixMock } = projectConfig;
 
 interface IProps {}
@@ -30,7 +32,7 @@ interface IState {
 }
 
 class Activity extends BaseComponent<IProps, IState> {
-  private readonly OtherFormRef = React.createRef<FormInstance>();
+  public readonly OtherFormRef = React.createRef<FormInstance>();
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -62,18 +64,30 @@ class Activity extends BaseComponent<IProps, IState> {
     return { values };
   };
 
-  otherRender = () => {
-    return (
-      <Form ref={this.OtherFormRef}>
-        <Form.Item
-          label="otherFormItem"
-          name="otherFormItem"
-          rules={[{ required: true, message: '请输入otherFormItem' }]}
-        >
-          <Input />
-        </Form.Item>
-      </Form>
-    );
+  renderFormItem = (item: any, index?: number) => {
+    const form = this.OtherFormRef.current;
+    const {
+      name,
+      type,
+      initialValue,
+      formFieldProps,
+      controlProps,
+      ...otherProps
+    } = item;
+    const myControlProps = {
+      ...controlProps,
+      size: (controlProps && controlProps.size) || 'small',
+    };
+    const fieldProps = {
+      form,
+      name,
+      type,
+      initialValue,
+      formFieldProps,
+      controlProps: myControlProps,
+      ...otherProps,
+    };
+    return getFieldComp(fieldProps);
   };
 
   render() {
@@ -180,7 +194,7 @@ class Activity extends BaseComponent<IProps, IState> {
           // isTable={true}
           className={styles.customForm}
           modalType={ModalType.modal}
-          modalConf={{ width: 1000 }}
+          modalConf={{ width: 1000, forceRender: true }}
           defaultLayout={{ labelCol: { span: 3 }, wrapperCol: { span: 21 } }}
           ref={this.formRef}
           formList={getFormList(this)}
@@ -196,7 +210,8 @@ class Activity extends BaseComponent<IProps, IState> {
             console.log('click');
           }}
           handleSubmitPreCallBack={async () => {
-            console.log(this.formRef.current?.form.getFieldsValue());
+            console.table(this.formRef.current?.form.getFieldsValue());
+            console.table(this.OtherFormRef.current?.getFieldsValue());
             // return Promise.reject 就阻止提交 用于额外的表单
             // return Promise.resolve({})
             await this.OtherFormRef.current?.validateFields();
@@ -205,7 +220,34 @@ class Activity extends BaseComponent<IProps, IState> {
           handleFieldsChange={(changedFields, allFields, form) => {
             // console.log(changedFields, allFields, form);
           }}
-          otherRender={this.otherRender}
+          otherRender={() => (
+            <Form ref={this.OtherFormRef}>
+              <Form.Item label="以下都是使用getFieldComp方法构造的form"></Form.Item>
+              <Form.Item
+                label="otherFormItem"
+                name="otherFormItem"
+                rules={[{ required: true, message: '请输入otherFormItem' }]}
+              >
+                <Input />
+              </Form.Item>
+              <Row>
+                {(getOtherFormList(this) || []).map((item: any, index) => (
+                  <Col span={item['span'] || 24} key={item.name}>
+                    <Form.Item
+                      labelAlign="right"
+                      labelCol={item.layout.labelCol}
+                      label={item.label}
+                      name={item.name}
+                      rules={item?.rules || []}
+                      initialValue={item.initialValue}
+                    >
+                      {this.renderFormItem(item)}
+                    </Form.Item>
+                  </Col>
+                ))}
+              </Row>
+            </Form>
+          )}
         />
       </Page>
     );
