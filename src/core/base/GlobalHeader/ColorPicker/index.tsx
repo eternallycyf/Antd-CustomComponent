@@ -2,20 +2,21 @@ import React, { useState, useEffect, FC } from 'react';
 import { Popover } from 'antd';
 import { SketchPicker } from 'react-color';
 import styles from './index.less';
+import { IRgba } from '@/core/layouts/BasicLayout';
 
 interface IProps {
-  color: any;
-  setColor: (color: any) => void;
-  value?: any;
-  style?: any;
-  onChange?: (value: any) => void;
+  color: IRgba;
+  setColor: React.Dispatch<React.SetStateAction<IRgba>>;
+  value?: IRgba;
+  style?: React.CSSProperties;
+  onChange?: (value: IRgba) => void;
 }
 
 const ColorPicker: FC<IProps> = (props) => {
   const { value, style, color, setColor, onChange } = props;
 
   useEffect(() => {
-    setColor(value);
+    setColor(value || { r: '25', g: '141', b: '241', a: '100' });
   }, [value]);
 
   return (

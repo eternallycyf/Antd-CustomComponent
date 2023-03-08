@@ -27,9 +27,16 @@ type IBasicLayout = IBaseBasicLayout &
   Pick<ConnectState, 'global'>['global'] &
   Pick<ConnectState, 'login'>['login'];
 
+export interface IRgba {
+  r: string;
+  g: string;
+  b: string;
+  a: string;
+}
+
 const BasicLayout: FC<IBasicLayout> = (props) => {
-  const [isDark, setIsDark] = useState(false);
-  const [color, setColor] = useState({
+  const [isDark, setIsDark] = useState<boolean>(false);
+  const [color, setColor] = useState<IRgba>({
     r: '25',
     g: '141',
     b: '241',

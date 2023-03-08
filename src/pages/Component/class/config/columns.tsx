@@ -43,10 +43,11 @@ export const getColumns = (
       title: '活动类型',
       width: 112,
       render: (text: string) => ACTIVE_TYPE[text] || '--',
-      sorter: true,
+      // sorter: true,
       align: 'center' as 'center',
       fixed: 'left' as 'left',
       ellipsis: true,
+      sorter: (a, b) => (a.area || '').localeCompare(b.area || ''),
     },
   ];
 };

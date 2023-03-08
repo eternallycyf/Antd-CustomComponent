@@ -3,29 +3,24 @@ import { connect, Dispatch, withRouter, Outlet } from '@umijs/max';
 import { History } from 'history';
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
+import { RouteComponentProps } from '@umijs/renderer-react';
 
-interface IProps {
+interface IProps extends RouteComponentProps<any> {
   token: string;
   children: React.ReactNode;
-  userInfo: any;
+  userInfo: ConnectState['global']['userInfo'];
   dispatch: Dispatch;
-  location: History['location'];
 }
 
 const Authorized: React.FC<IProps> = (props) => {
-  const {
-    token,
-    children,
-    dispatch,
-    location: { pathname, search },
-  } = props;
+  const { token, children, dispatch, location } = props;
 
   useEffect(() => {
     dispatch({ type: 'login/login', payload: { props } });
   }, [dispatch, props]);
 
-  // if (!token && pathname !== '/login') {
-  //   const path = `/login?redirect=${pathname}${search}`;
+  // if (!token && location?.pathname !== '/login') {
+  //   const path = `/login?redirect=${locaton?.pathname}${locaton?.search}`;
   //   return <Navigate to={path} />;
   // }
 
@@ -35,4 +30,4 @@ const Authorized: React.FC<IProps> = (props) => {
 export default connect(({ login, global }: ConnectState) => ({
   token: login.token,
   userInfo: global.userInfo,
-}))(withRouter<any>(Authorized));
+}))(withRouter<IProps>(Authorized));

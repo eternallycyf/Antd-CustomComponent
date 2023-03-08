@@ -5,10 +5,10 @@ import styles from './index.less';
 import FullScreen from '../FullScreen';
 const { Header } = Layout;
 interface IProps {
-  ColorPicker: any;
+  ColorPicker: React.ReactNode;
   children: React.ReactNode;
   isDark: boolean;
-  setIsDark: any;
+  setIsDark: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const GlobalHeader: FC<IProps> = (props) => {
   const { children, ColorPicker, isDark, setIsDark } = props;
