@@ -36,7 +36,7 @@ export type IColumnsType<T = any> = ColumnsType<
   } & T
 >;
 
-interface ISearchMoreProps extends FormControl {}
+type ISearchMoreProps = FormControl
 
 export type ISearchesType = ISearchMoreProps[];
 

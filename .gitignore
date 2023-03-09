@@ -12,3 +12,4 @@
 /.mfsu
 yarn.lock
 .vscode/*
+.eslintcache

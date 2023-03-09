@@ -8,11 +8,14 @@
     "build:pro": "yarn biz-init && cross-env NODE_ENV=production max build",
     "deploy": "bash ./deploy.sh",
     "format": "prettier --cache --write .",
-    "postinstall": "max setup",
+    "lint-fix:script": "npm run lint:script -- --fix",
+    "lint:script": "eslint . --ext .js,.jsx,.ts,.tsx --cache",
     "prepare": "husky install",
     "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
-    "setup": "max setup",
     "start": "rm -rf ./src/pages/.DS_Store && cross-env NODE_ENV=development max dev"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
   },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
@@ -82,8 +85,5 @@
     "ts-node": "^10.9.0",
     "typescript": "^4.1.2",
     "yorkie": "^2.0.0"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
   }
 }

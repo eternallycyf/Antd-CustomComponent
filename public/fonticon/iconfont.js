@@ -34,7 +34,7 @@
     h();
   }
   (t = function () {
-    var a,
+    let a,
       t = document.createElement('div');
     (t.innerHTML = o),
       (o = null),
