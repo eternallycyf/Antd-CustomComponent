@@ -31,37 +31,43 @@ export default {
     ],
   },
   'GET /getActivityList': (req, res) => {
-    res.send({
-      code: 200,
-      data: {
-        ...mockjs.mock({
-          'list|130': [
-            {
-              name: '@city',
-              'value|1-100': 50,
-              'type|0-2': 1,
-              'activeStatus|0-2': 1,
-              activityCode: '@guid',
-              activityName: MockSearchKey(req, 'activityName', '@ctitle'),
-              type: req.query?.activityType,
-              [`activityType|${MockSearchKey(req, 'activityType', '0-2')}`]: 1,
-              activityStartTime: '@datetime',
-              activityEndTime: '@datetime',
-              'activityStatus|0-2': 1,
-              activityDesc: '@cparagraph',
-              activityRule: '@cparagraph',
-              activityRuleDesc: '@cparagraph',
-            },
-          ],
-        }),
-        page: req.query.page,
-        pageSize: 130,
-        total: 3000,
-      },
-      message: 'string',
-      success: true,
-      unSuccess: true,
-    });
+    setTimeout(() => {
+      res.send({
+        code: 200,
+        data: {
+          ...mockjs.mock({
+            'list|130': [
+              {
+                name: '@city',
+                'value|1-100': 50,
+                'type|0-2': 1,
+                'activeStatus|0-2': 1,
+                activityCode: '@guid',
+                activityName: MockSearchKey(req, 'activityName', '@ctitle'),
+                type: req.query?.activityType,
+                [`activityType|${MockSearchKey(
+                  req,
+                  'activityType',
+                  '0-2',
+                )}`]: 1,
+                activityStartTime: '@datetime',
+                activityEndTime: '@datetime',
+                'activityStatus|0-2': 1,
+                activityDesc: '@cparagraph',
+                activityRule: '@cparagraph',
+                activityRuleDesc: '@cparagraph',
+              },
+            ],
+          }),
+          page: req.query.page,
+          pageSize: 130,
+          total: 3000,
+        },
+        message: 'string',
+        success: true,
+        unSuccess: true,
+      });
+    }, 500);
   },
   'POST /updateActivityList': (req, res) => {
     res.send({
