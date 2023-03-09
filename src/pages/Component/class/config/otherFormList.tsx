@@ -3,7 +3,6 @@ import Activity from '../index';
 import projectConfig from '@/config/projectConfig';
 import { ISearchesType } from '@/typings';
 import dayjs from 'dayjs';
-import { getFormList } from './form';
 const { apiPrefix } = projectConfig;
 
 const layout = {

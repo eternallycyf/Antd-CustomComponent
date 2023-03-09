@@ -5,8 +5,8 @@ import useBaseComponent from '@/hook/useBaseComponent';
 import { ICommonTable, ModalType } from '@/typings';
 import { ConnectState } from '@/typings/connect';
 import { formatParams } from '@/utils/util';
-import { connect, Provider } from '@umijs/max';
-import { Form, FormInstance, Input } from 'antd';
+import { connect, Provider, withRouter } from '@umijs/max';
+import { Col, Form, FormInstance, Input, Row } from 'antd';
 import React, {
   forwardRef,
   useContext,
@@ -15,10 +15,14 @@ import React, {
   useRef,
 } from 'react';
 import { saveActivity } from '../service';
-import { columns } from './config/columns';
+import { getColumns } from './config/columns';
 import { getFormList } from './config/form';
-import { searches } from './config/search';
+import { getSearches } from './config/search';
 import styles from './index.less';
+import { History } from 'history';
+import { getFieldComp } from '@/core/helpers';
+import { getOtherFormList } from './config/otherFormList';
+import { withRoutePage } from '@/core/Enhance/withRoutePage';
 const { apiPrefixMock } = projectConfig;
 
 interface IProps {}
@@ -33,12 +37,15 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
   const theme = useContext<ThemeContextType>(MyContext);
   console.log(theme);
   const [form] = Form.useForm();
+  const OtherFormRef = Form.useForm()[0];
   const self = useBaseComponent({
     searchParams: {
-      activityType: 0,
       aaaaaa: 1,
     },
-    expandedKey: 'activityCode',
+    selectedRows: [],
+    selectedRowKeys: [],
+    expandedKey: 'index',
+    expandedRowKeys: [],
   });
 
   useEffect(() => {
@@ -67,24 +74,36 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
     return { values };
   };
 
-  const otherRender = () => {
-    return (
-      <Form form={form}>
-        <Form.Item
-          label="otherFormItem"
-          name="otherFormItem"
-          rules={[{ required: true, message: '请输入otherFormItem' }]}
-        >
-          <Input />
-        </Form.Item>
-      </Form>
-    );
+  const renderFormItem = (item: any, index?: number) => {
+    const form = OtherFormRef;
+    const {
+      name,
+      type,
+      initialValue,
+      formFieldProps,
+      controlProps,
+      ...otherProps
+    } = item;
+    const myControlProps = {
+      ...controlProps,
+      size: (controlProps && controlProps.size) || 'small',
+    };
+    const fieldProps = {
+      form,
+      name,
+      type,
+      initialValue,
+      formFieldProps,
+      controlProps: myControlProps,
+      ...otherProps,
+    };
+    return getFieldComp(fieldProps);
   };
 
   const tableParams: ICommonTable<any> = {
-    columns,
+    columns: getColumns(self),
     searchParams: formatParams(self.searchParams),
-    rowKey: 'activityCode',
+    rowKey: 'index',
     fetchMethod: 'get',
     extraParams: {
       my: '121213',
@@ -120,15 +139,15 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
       {
         text: '编辑',
         onClick: self.handleEdit,
-        // code 如果后端接口没有返回 则不显示
         code: 'class-editButton',
-        // code: '错误的code',
       },
       {
         text: '删除',
         buttonType: 'delete',
+        // code 权限校验如果后端接口没有返回 则不显示
         code: 'class-deleteButton',
-        onClick: (item: any) => {
+        // code: '错误的code',
+        onClick: () => {
           self.handleDelete({ id: 1, idDel: 1 }, '/deleteActivityList');
         },
       },
@@ -147,7 +166,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
     expandable: {
       expandedRowKeys: self.expandedRowKeys,
       expandedRowRender: (record) => (
-        <p style={{ margin: 0 }}>{record.activityCode}</p>
+        <p style={{ margin: 0 }}>{record.index}</p>
       ),
       rowExpandable: (record) => record.name !== 'Not Expandable',
       onExpand: self.handleExpand,
@@ -158,13 +177,19 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
     draggable: true,
     resizable: true,
     isSummary: true,
-    // editable: true
+    // 虚拟列表配置
+    isVirtual: true,
+    scroll: { y: 800 },
+    fixRowkeys: [1, 2, 3],
+    rowEventHandlers: {
+      onClick: (record, index, event) => {},
+    },
   };
 
   return (
     <Page>
       <CommonSearch
-        formList={searches}
+        formList={getSearches(self)}
         handleSearch={self.setSearchParams}
         ref={self.searchRef}
         columnNumber={3}
@@ -176,7 +201,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
         // isTable={true}
         className={styles.customForm}
         modalType={ModalType.modal}
-        modalConf={{ width: 1200 }}
+        modalConf={{ width: 1000, forceRender: true }}
         defaultLayout={{ labelCol: { span: 5 }, wrapperCol: { span: 19 } }}
         ref={self.formRef}
         formList={getFormList(self)}
@@ -192,39 +217,54 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
           console.log('click');
         }}
         handleSubmitPreCallBack={async () => {
+          console.table(self.formRef.current?.form.getFieldsValue());
+          console.table(OtherFormRef?.getFieldsValue());
           // return Promise.reject 就阻止提交 用于额外的表单
           // return Promise.resolve({})
-          await form?.validateFields();
+          await OtherFormRef?.validateFields();
           return Promise.resolve({});
         }}
         handleFieldsChange={(changedFields, allFields, form) => {
           // console.log(changedFields, allFields, form);
         }}
-        otherRender={otherRender}
+        otherRender={() => (
+          <Form form={OtherFormRef}>
+            <Form.Item label="以下都是使用getFieldComp方法构造的form"></Form.Item>
+            <Form.Item
+              label="otherFormItem"
+              name="otherFormItem"
+              rules={[{ required: true, message: '请输入otherFormItem' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Row>
+              {(getOtherFormList(self) || []).map((item: any, index) => (
+                <Col span={item['span'] || 24} key={item.name}>
+                  <Form.Item
+                    labelAlign="right"
+                    labelCol={item.layout.labelCol}
+                    label={item.label}
+                    name={item.name}
+                    rules={item?.rules || []}
+                    initialValue={item.initialValue}
+                  >
+                    {renderFormItem(item)}
+                  </Form.Item>
+                </Col>
+              ))}
+            </Row>
+          </Form>
+        )}
       />
     </Page>
   );
 };
 
-const Activity = connect(
-  ({ global, login }: ConnectState) => ({
-    token: login.token,
-  }),
-  null,
-  null,
-  { forwardRef: true, pure: undefined },
-)(forwardRef(IndexPage));
-
-const App = () => {
-  const Ref = useRef<React.ElementRef<typeof Activity>>(null!);
-  useEffect(() => {
-    console.log(Ref);
-  }, []);
-  return (
-    <MyContext.Provider value={'light'}>
-      <Activity ref={Ref} />;
-    </MyContext.Provider>
-  );
-};
-
-export default App;
+export default withRoutePage<IHandle>(
+  connect(
+    ({ global, login }: ConnectState) => ({ token: login.token }),
+    null,
+    null,
+    { forwardRef: true, pure: undefined },
+  )(forwardRef(withRouter(IndexPage))),
+);

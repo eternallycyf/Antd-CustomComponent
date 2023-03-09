@@ -2,8 +2,8 @@ import FormRules from '@/utils/validate';
 import projectConfig from '@/config/projectConfig';
 import { ISearchesType } from '@/typings';
 import dayjs from 'dayjs';
-import useBaseComponent from '@/hook/useBaseComponent';
 const { apiPrefix } = projectConfig;
+import useBaseComponent from '@/hook/useBaseComponent';
 
 const layout = {
   labelCol: { span: 4 },
@@ -15,10 +15,10 @@ const ITEM_PROPS = {
     marginBottom: 0,
   },
 };
-
-export const getFormList = (
+export const getOtherFormList = (
   self: ReturnType<typeof useBaseComponent>,
 ): ISearchesType => {
+  // return getFormList(self).map((item) => ({ ...item, layout }));
   return [
     {
       name: 'activityCode',
@@ -32,6 +32,7 @@ export const getFormList = (
       itemProps: {
         ...ITEM_PROPS,
       },
+      layout,
     },
     {
       name: 'activityName',
@@ -50,6 +51,7 @@ export const getFormList = (
           regex: { textarea: '禁用' },
         },
       ],
+      layout,
     },
     {
       name: 'textarea',
@@ -81,6 +83,7 @@ export const getFormList = (
           marginBottom: 0,
         },
       },
+      layout,
     },
     {
       name: 'type',
@@ -96,6 +99,7 @@ export const getFormList = (
         // console.log(config);
         return false;
       },
+      layout,
     },
     {
       name: 'custom',
@@ -104,6 +108,7 @@ export const getFormList = (
       Component: (props) => {
         return '--';
       },
+      layout,
     },
     {
       name: 'week',
@@ -112,6 +117,7 @@ export const getFormList = (
       format: 'YYYY-w',
       picker: 'week',
       controlProps: {},
+      layout,
     },
     {
       name: 'startMonth,endMonth',
@@ -119,18 +125,13 @@ export const getFormList = (
       type: 'monthRange',
       format: 'YYYYMM',
       initialValue: [dayjs('2020-01'), dayjs('2020-02')],
-    },
-    {
-      name: 'otherButtonClick',
-      label: 'otherButtonClick',
-      type: 'select',
-      otherType: 'button',
-      otherText: '自动生成',
+      layout,
     },
     {
       name: 'EditCol',
       label: '实时编辑的表格',
       type: 'editCol',
+      layout,
       initialValue: [
         {
           tableFormCode: '111',
@@ -219,6 +220,7 @@ export const getFormList = (
       name: 'editRow',
       label: '可保存的table',
       type: 'editRow',
+      layout,
       initialValue: [
         {
           editCode: '1',

@@ -12,11 +12,15 @@ type IBaseTableInstance = InstanceType<typeof BaseTable> & {
   componentWilMount: any;
   getOpenWidth: any;
   handleColumns: any;
+  renderSummary: any;
 };
 
 interface IProps {
   searchParams?: any;
   expandedKey?: string;
+  selectedRows?: any[];
+  selectedRowKeys?: any[];
+  expandedRowKeys?: any[];
 }
 
 const useBaseComponent = (props: IProps) => {
@@ -24,16 +28,23 @@ const useBaseComponent = (props: IProps) => {
   const searchRef = useRef<React.ElementRef<typeof CommonSearch>>(null!);
   const formRef = useRef<React.ElementRef<typeof CustomForm>>(null!);
 
-  const { searchParams: propsSearchParams, expandedKey: propsExpandedKey } =
-    props;
+  const {
+    searchParams: propsSearchParams,
+    expandedKey: propsExpandedKey = '',
+    selectedRows: propsSelectedRows = [],
+    selectedRowKeys: propsSelectedRowKeys = [],
+    expandedRowKeys: propsExpandedRowKeys = [],
+  } = props;
 
   const [loading, setLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useState<any>(
     propsSearchParams ?? {},
   );
-  const [selectedRows, setSelectedRows] = useState<any[]>([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
-  const [expandedRowKeys, setExpandedRowKeys] = useState<any[]>([]);
+  const [selectedRows, setSelectedRows] = useState<any[]>(propsSelectedRows);
+  const [selectedRowKeys, setSelectedRowKeys] =
+    useState<any[]>(propsSelectedRowKeys);
+  const [expandedRowKeys, setExpandedRowKeys] =
+    useState<any[]>(propsExpandedRowKeys);
   const [expandedKey, setExpandedKey] = useState<string>(
     propsExpandedKey ?? '',
   );

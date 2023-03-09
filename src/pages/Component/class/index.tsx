@@ -13,9 +13,10 @@ import { getSearches } from './config/search';
 import { getOtherFormList } from './config/otherFormList';
 import styles from './index.less';
 import { saveActivity } from '../service';
-import { history } from '@umijs/max';
+import { history, withRouter } from '@umijs/max';
 import { History } from 'history';
 import { getFieldComp } from '@/core/helpers';
+import { withRoutePage } from '@/core/Enhance/withRoutePage';
 const { apiPrefixMock } = projectConfig;
 
 interface IProps {}
@@ -254,4 +255,4 @@ class Activity extends BaseComponent<IProps, IState> {
   }
 }
 
-export default Activity;
+export default withRoutePage<typeof Activity>(withRouter(Activity));

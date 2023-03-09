@@ -7,7 +7,7 @@ const Router = [
     path: '/',
     hideInPanelTab: true,
     component: '../core/layouts/BasicLayout',
-    wrappers: ['@/core/wrappers/Authorized'],
+    wrappers: ['@/core/Enhance/Authorized'],
     routes: Routes,
   },
   {
