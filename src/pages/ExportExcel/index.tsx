@@ -357,7 +357,7 @@ export default () => {
             导出分文件夹zip
           </Button>
         </Space>
-        <Table columns={columns} dataSource={list} />
+        <Table rowKey={'id'} columns={columns} dataSource={list} />
       </Card>
     </Page>
   );

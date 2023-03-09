@@ -11,6 +11,7 @@ import BaseTable, { IBaseTableState } from './components/BaseTable';
 import TableBtn from '@/components/CommonTableV5/components/widgets/TableBtn';
 import AccessBtn from '@/components/AccessBtn';
 import styles from './index.less';
+import { getUUID } from '@/utils/random';
 
 class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
   static defaultProps = {
@@ -256,7 +257,12 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
     const summaryData = currentData?.[0];
     const renderCell = (title = '', index: number, item: any = {}) => {
       return (
-        <AntdTable.Summary.Cell index={index} align="center" {...item}>
+        <AntdTable.Summary.Cell
+          key={getUUID()}
+          index={index}
+          align="center"
+          {...item}
+        >
           {title}
         </AntdTable.Summary.Cell>
       );

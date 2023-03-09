@@ -634,7 +634,7 @@ export default function VirtualScrollTable(props: any) {
           }
           `}
           style={style}
-          key={'column' + columnIndex}
+          key={getUUID()}
         >
           {content}
         </div>
@@ -682,7 +682,7 @@ export default function VirtualScrollTable(props: any) {
                 ${fixRowkeys.includes(row[rowKey]) && styles['fix-row-top']}
                 `}
                     style={getRowStyle(rowIndex)}
-                    key={rowIndex}
+                    key={getUUID()}
                     onClick={() =>
                       onClick({ rowKey: rowIndex, rowData: row, rowIndex })
                     }
