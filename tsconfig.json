@@ -19,7 +19,8 @@
       "@/pages/*": ["src/pages/*"]
     },
     "allowSyntheticDefaultImports": true,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "experimentalDecorators": true
   },
   "include": [
     "./typings/*.ts",

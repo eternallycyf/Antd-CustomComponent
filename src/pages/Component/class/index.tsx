@@ -6,17 +6,19 @@ import { ICommonTable, ModalType } from '@/typings';
 import { formatParams } from '@/utils/util';
 import { Col, Form, Input, Row, Table } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
-import React, { Component } from 'react';
+import React, { Component, forwardRef } from 'react';
 import { getColumns } from './config/columns';
 import { getFormList } from './config/form';
 import { getSearches } from './config/search';
 import { getOtherFormList } from './config/otherFormList';
 import styles from './index.less';
 import { saveActivity } from '../service';
-import { history, withRouter } from '@umijs/max';
+import { connect, history, withRouter } from '@umijs/max';
 import { History } from 'history';
 import { getFieldComp } from '@/core/helpers';
 import { withRoutePage } from '@/core/Enhance/withRoutePage';
+import { compose } from 'redux';
+import { ConnectState } from '@/typings/connect';
 const { apiPrefixMock } = projectConfig;
 
 interface IProps {}
@@ -255,4 +257,8 @@ class Activity extends BaseComponent<IProps, IState> {
   }
 }
 
-export default withRoutePage<typeof Activity>(withRouter(Activity));
+export default compose<typeof Activity>(
+  withRoutePage,
+  withRouter,
+  connect(({ global, login }: ConnectState) => ({ token: login.token })),
+)(Activity);

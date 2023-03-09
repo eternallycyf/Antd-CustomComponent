@@ -24,6 +24,8 @@ import { getFieldComp } from '@/core/helpers';
 import { getOtherFormList } from './config/otherFormList';
 import { withRoutePage } from '@/core/Enhance/withRoutePage';
 const { apiPrefixMock } = projectConfig;
+import { compose } from 'redux';
+import _ from 'lodash';
 
 interface IProps {}
 type IHandle = { form: FormInstance };
@@ -260,11 +262,15 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
   );
 };
 
-export default withRoutePage<IHandle>(
+// IndexPage => forwardRef => connect => withRouter => withRoutePage
+export default compose<IHandle>(
+  withRoutePage,
+  withRouter,
   connect(
     ({ global, login }: ConnectState) => ({ token: login.token }),
     null,
     null,
     { forwardRef: true, pure: undefined },
-  )(forwardRef(withRouter(IndexPage))),
-);
+  ),
+  forwardRef,
+)(IndexPage);

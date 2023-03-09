@@ -1,4 +1,3 @@
-declare module 'lodash';
 declare module 'ejs';
 declare module 'js-cookie';
 declare module 'exceljs/dist/exceljs';
