@@ -1,5 +1,5 @@
-import { Page } from "@/components";
-import { Button } from "antd";
+import { Page } from '@/components';
+import { Button } from 'antd';
 
 const Add: React.FC = () => {
   return (

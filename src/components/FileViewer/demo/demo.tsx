@@ -1,8 +1,8 @@
-import FilePreView from "../FilePreView";
-import React, { useRef } from "react";
-import { Upload, Form, Button, Card, Table } from "antd";
-import { columns, dataSource } from "./constant";
-import Page from "@/components/Page";
+import FilePreView from '../FilePreView';
+import React, { useRef } from 'react';
+import { Upload, Form, Button, Card, Table } from 'antd';
+import { columns, dataSource } from './constant';
+import Page from '@/components/Page';
 
 const normFile = (e: any) => {
   if (Array.isArray(e)) return e;
@@ -14,7 +14,7 @@ const getBase64 = (
   cb: (result: string | ArrayBuffer | null) => void,
 ) => {
   const reader = new FileReader();
-  reader.addEventListener("load", () => cb(reader.result));
+  reader.addEventListener('load', () => cb(reader.result));
   reader.readAsDataURL(file);
 };
 
@@ -55,7 +55,7 @@ const PdfPage = () => {
       </Form>
       <FilePreView ref={pdfRef} />
       <Table pagination={false} dataSource={dataSource} columns={columns} />
-    </Page >
+    </Page>
   );
 };
 

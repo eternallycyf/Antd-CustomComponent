@@ -13,7 +13,7 @@ interface IWaterMarkProps {
   [props: string]: IWaterMarkProps[keyof IWaterMarkProps];
 }
 
-const WaterMark: FC<IWaterMarkProps> = props => {
+const WaterMark: FC<IWaterMarkProps> = (props) => {
   const {
     width = 300,
     height = 200,

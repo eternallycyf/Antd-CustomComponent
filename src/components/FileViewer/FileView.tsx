@@ -1,12 +1,12 @@
-import type { CSSProperties } from "react";
-import { PureComponent } from "react";
-import style from "./fileView.less";
-import cx from "classnames";
-import { Skeleton, Image } from "antd";
-import { OutTable } from "react-excel-renderer";
-import { defaultOptions, renderAsync } from "docx-preview";
-import MarkDown from "./MarkDown";
-import React from "react";
+import type { CSSProperties } from 'react';
+import { PureComponent } from 'react';
+import style from './fileView.less';
+import cx from 'classnames';
+import { Skeleton, Image } from 'antd';
+import { OutTable } from 'react-excel-renderer';
+import { defaultOptions, renderAsync } from 'docx-preview';
+import MarkDown from './MarkDown';
+import React from 'react';
 
 interface IProps {
   styles?: CSSProperties;
@@ -16,28 +16,28 @@ interface IProps {
 }
 
 const txtFileTypes = [
-  "txt",
-  "json",
-  "js",
-  "css",
-  "java",
-  "py",
-  "html",
-  "jsx",
-  "ts",
-  "tsx",
-  "xml",
-  "md",
-  "log",
+  'txt',
+  'json',
+  'js',
+  'css',
+  'java',
+  'py',
+  'html',
+  'jsx',
+  'ts',
+  'tsx',
+  'xml',
+  'md',
+  'log',
 ];
 
 class FileView extends PureComponent<IProps, any> {
   constructor(props: IProps | Readonly<IProps>) {
     super(props);
     this.state = {
-      pdfSrc: "",
+      pdfSrc: '',
       loading: false,
-      text: "",
+      text: '',
     };
   }
   componentDidMount() {
@@ -54,7 +54,7 @@ class FileView extends PureComponent<IProps, any> {
   //通过src展示
   showPDFBySrc = async (src: string) => {
     const { fileType } = this.props;
-    if (fileType == "pdf") {
+    if (fileType == 'pdf') {
       try {
         this.setState({
           loading: true,
@@ -63,7 +63,7 @@ class FileView extends PureComponent<IProps, any> {
           pdfSrc: src,
           loading: false,
         });
-      } catch (err) { }
+      } catch (err) {}
     }
 
     if (fileType == 'word') {
@@ -89,13 +89,12 @@ class FileView extends PureComponent<IProps, any> {
       //   },
       // );
     }
-
   };
 
   //base64转blob
   dataURItoBlob = (dataURI: string) => {
-    const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0]; // mime类型
-    const byteString = atob(dataURI.split(",")[1]); //base64 解码
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]; // mime类型
+    const byteString = atob(dataURI.split(',')[1]); //base64 解码
     const arrayBuffer = new ArrayBuffer(byteString.length); //创建缓冲数组
     const intArray = new Uint8Array(arrayBuffer); //创建视图
     for (let i = 0; i < byteString.length; i++) {
@@ -120,7 +119,7 @@ class FileView extends PureComponent<IProps, any> {
       const reader = new FileReader();
       reader.onload = (loadEvent: any) => resolve(loadEvent.target.result);
       reader.onerror = (e) => reject(e);
-      reader.readAsText(new Blob([buffer]), "utf-8");
+      reader.readAsText(new Blob([buffer]), 'utf-8');
     });
   };
 
@@ -143,14 +142,14 @@ class FileView extends PureComponent<IProps, any> {
     }
 
     // 当使用旧版浏览器时 需要兼容 globalThis
-    if (fileType === "docx") {
+    if (fileType === 'docx') {
       setTimeout(() => {
         renderAsync(
           blob,
           document.getElementById('file-preview-modal') as HTMLDivElement,
           null as unknown as HTMLDivElement,
           {
-            className: "docx", // 默认和文档样式类的类名/前缀
+            className: 'docx', // 默认和文档样式类的类名/前缀
             inWrapper: true, // 启用围绕文档内容渲染包装器
             ignoreWidth: false, // 禁止页面渲染宽度
             ignoreHeight: false, // 禁止页面渲染高度
@@ -162,7 +161,7 @@ class FileView extends PureComponent<IProps, any> {
             debug: false, // 启用额外的日志记录
           },
         );
-      }, 0)
+      }, 0);
     }
   };
 
@@ -175,13 +174,11 @@ class FileView extends PureComponent<IProps, any> {
       return <Skeleton loading paragraph={{ rows: 10 }} active />;
     }
 
-    if (fileType == "docx") {
-      return (
-        <div id="file-preview-modal" />
-      )
+    if (fileType == 'docx') {
+      return <div id="file-preview-modal" />;
     }
 
-    if (fileType == "xlsx") {
+    if (fileType == 'xlsx') {
       return (
         <OutTable
           data={excelData.rows}
@@ -192,7 +189,7 @@ class FileView extends PureComponent<IProps, any> {
       );
     }
 
-    if (fileType == "png" || fileType == "jpg") {
+    if (fileType == 'png' || fileType == 'jpg') {
       return <Image src={src} />;
     }
 
@@ -205,7 +202,7 @@ ${text}
       return <MarkDown markdown={newText} />;
     }
 
-    if (fileType == "pdf") {
+    if (fileType == 'pdf') {
       return (
         <iframe
           className={cx(style.iframeStyle, className)}
@@ -216,9 +213,7 @@ ${text}
       );
     }
 
-    return (
-      <span>不支持</span>
-    );
+    return <span>不支持</span>;
   }
 }
 export default FileView;

@@ -1,7 +1,7 @@
-import { Button, Card } from "antd";
-import { PageContainer } from "@ant-design/pro-layout";
+import { Button, Card } from 'antd';
+import { PageContainer } from '@ant-design/pro-layout';
 import { Line } from '@ant-design/charts';
-import { Page } from "@/components";
+import { Page } from '@/components';
 
 const data = [
   { year: '1991', value: 3 },
@@ -16,7 +16,6 @@ const data = [
 ];
 
 const Add: React.FC = () => {
-
   const config = {
     data,
     height: 400,
@@ -29,7 +28,7 @@ const Add: React.FC = () => {
   };
 
   return (
-    <Page >
+    <Page>
       <Line {...config} />
     </Page>
   );

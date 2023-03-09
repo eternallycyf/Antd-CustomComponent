@@ -1,8 +1,8 @@
-import { Button, Space, Card, Table } from "antd";
-import React, { useEffect, useState } from "react";
-import type { ColumnsType } from "antd/lib/table/interface";
+import { Button, Space, Card, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
+import type { ColumnsType } from 'antd/lib/table/interface';
 import ExcelJs from 'exceljs/dist/exceljs';
-import { ExportExcel, Page } from "@/components/";
+import { ExportExcel, Page } from '@/components/';
 const {
   generateHeaders,
   saveWorkbook,
@@ -11,7 +11,7 @@ const {
   downloadFiles2Zip,
 } = ExportExcel;
 
-interface SimpleDemoProps { }
+interface SimpleDemoProps {}
 
 interface StudentInfo {
   id: number;
@@ -23,27 +23,27 @@ interface StudentInfo {
 const columns: ColumnsType<any> = [
   {
     width: 50,
-    dataIndex: "id",
-    key: "id",
-    title: "ID",
+    dataIndex: 'id',
+    key: 'id',
+    title: 'ID',
   },
   {
     width: 100,
-    dataIndex: "name",
-    key: "name",
-    title: "姓名",
+    dataIndex: 'name',
+    key: 'name',
+    title: '姓名',
   },
   {
     width: 50,
-    dataIndex: "age",
-    key: "age",
-    title: "年龄",
+    dataIndex: 'age',
+    key: 'age',
+    title: '年龄',
   },
   {
     width: 80,
-    dataIndex: "gender",
-    key: "gender",
-    title: "性别",
+    dataIndex: 'gender',
+    key: 'gender',
+    title: '性别',
   },
 ];
 
@@ -61,7 +61,7 @@ export default () => {
         id: i,
         name: `小明${i}号`,
         age: i,
-        gender: i % 2 === 0 ? "男" : "女",
+        gender: i % 2 === 0 ? '男' : '女',
       });
     }
     setList(arr);
@@ -71,7 +71,7 @@ export default () => {
     // 创建工作簿
     const workbook = new ExcelJs.Workbook();
     // 添加sheet
-    const worksheet = workbook.addWorksheet("demo sheet");
+    const worksheet = workbook.addWorksheet('demo sheet');
     // 设置 sheet 的默认行高
     worksheet.properties.defaultRowHeight = 20;
     // 设置列
@@ -79,14 +79,14 @@ export default () => {
     // 添加行
     worksheet.addRows(list);
     // 导出excel
-    saveWorkbook(workbook, "simple-demo.xlsx");
+    saveWorkbook(workbook, 'simple-demo.xlsx');
   }
 
   function onExportBasicExcelWithStyle() {
     // 创建工作簿
     const workbook = new ExcelJs.Workbook();
     // 添加sheet
-    const worksheet = workbook.addWorksheet("demo sheet");
+    const worksheet = workbook.addWorksheet('demo sheet');
     // 设置 sheet 的默认行高
     worksheet.properties.defaultRowHeight = 20;
     // 设置列
@@ -103,22 +103,22 @@ export default () => {
     headerRow.eachCell((cell: any, colNum: any) => {
       // 设置背景色
       cell.fill = {
-        type: "pattern",
-        pattern: "solid",
-        fgColor: { argb: "dff8ff" },
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'dff8ff' },
       };
       // 设置字体
       cell.font = {
         bold: true,
         italic: true,
         size: 12,
-        name: "微软雅黑",
-        color: { argb: "ff0000" },
+        name: '微软雅黑',
+        color: { argb: 'ff0000' },
       };
       // 设置对齐方式
       cell.alignment = {
-        vertical: "middle",
-        horizontal: "left",
+        vertical: 'middle',
+        horizontal: 'left',
         wrapText: false,
       };
     });
@@ -129,28 +129,28 @@ export default () => {
       // 设置字体
       row.font = {
         size: 11,
-        name: "微软雅黑",
+        name: '微软雅黑',
       };
       // 设置对齐方式
       row.alignment = {
-        vertical: "middle",
-        horizontal: "left",
+        vertical: 'middle',
+        horizontal: 'left',
         wrapText: false,
       };
     });
     // 导出excel
-    saveWorkbook(workbook, "simple-demo.xlsx");
+    saveWorkbook(workbook, 'simple-demo.xlsx');
   }
 
   function onExportExcel() {
     downloadExcel({
-      filename: "test",
+      filename: 'test',
       sheets: [
         {
-          sheetName: "test",
+          sheetName: 'test',
           columns: columns,
           dataSource: list,
-          header: 'xxxxxHeader'
+          header: 'xxxxxHeader',
         },
       ],
     });
@@ -158,38 +158,38 @@ export default () => {
 
   function onExportZip() {
     downloadFiles2Zip({
-      zipName: "压缩包",
+      zipName: '压缩包',
       files: [
         {
-          filename: "test",
+          filename: 'test',
           sheets: [
             {
-              sheetName: "test",
+              sheetName: 'test',
               columns: columns,
               dataSource: list,
             },
             {
-              sheetName: "test2",
-              columns: columns,
-              dataSource: list,
-            },
-          ],
-        },
-        {
-          filename: "test2",
-          sheets: [
-            {
-              sheetName: "test",
+              sheetName: 'test2',
               columns: columns,
               dataSource: list,
             },
           ],
         },
         {
-          filename: "test3",
+          filename: 'test2',
           sheets: [
             {
-              sheetName: "test",
+              sheetName: 'test',
+              columns: columns,
+              dataSource: list,
+            },
+          ],
+        },
+        {
+          filename: 'test3',
+          sheets: [
+            {
+              sheetName: 'test',
               columns: columns,
               dataSource: list,
             },
@@ -201,26 +201,26 @@ export default () => {
 
   function onExportFolderZip() {
     downloadFiles2ZipWithFolder({
-      zipName: "压缩包",
+      zipName: '压缩包',
       folders: [
         {
-          folderName: "文件夹1",
+          folderName: '文件夹1',
           files: [
             {
-              filename: "test",
+              filename: 'test',
               sheets: [
                 {
-                  sheetName: "test",
+                  sheetName: 'test',
                   columns: columns,
                   dataSource: list,
                 },
               ],
             },
             {
-              filename: "test2",
+              filename: 'test2',
               sheets: [
                 {
-                  sheetName: "test",
+                  sheetName: 'test',
                   columns: columns,
                   dataSource: list,
                 },
@@ -229,23 +229,23 @@ export default () => {
           ],
         },
         {
-          folderName: "文件夹2",
+          folderName: '文件夹2',
           files: [
             {
-              filename: "test",
+              filename: 'test',
               sheets: [
                 {
-                  sheetName: "test",
+                  sheetName: 'test',
                   columns: columns,
                   dataSource: list,
                 },
               ],
             },
             {
-              filename: "test2",
+              filename: 'test2',
               sheets: [
                 {
-                  sheetName: "test",
+                  sheetName: 'test',
                   columns: columns,
                   dataSource: list,
                 },
@@ -254,23 +254,23 @@ export default () => {
           ],
         },
         {
-          folderName: "文件夹2/文件夹2-1",
+          folderName: '文件夹2/文件夹2-1',
           files: [
             {
-              filename: "test",
+              filename: 'test',
               sheets: [
                 {
-                  sheetName: "test",
+                  sheetName: 'test',
                   columns: columns,
                   dataSource: list,
                 },
               ],
             },
             {
-              filename: "test2",
+              filename: 'test2',
               sheets: [
                 {
-                  sheetName: "test",
+                  sheetName: 'test',
                   columns: columns,
                   dataSource: list,
                 },
@@ -279,23 +279,23 @@ export default () => {
           ],
         },
         {
-          folderName: "文件夹2/文件夹2-1/文件夹2-1-1",
+          folderName: '文件夹2/文件夹2-1/文件夹2-1-1',
           files: [
             {
-              filename: "test",
+              filename: 'test',
               sheets: [
                 {
-                  sheetName: "test",
+                  sheetName: 'test',
                   columns: columns,
                   dataSource: list,
                 },
               ],
             },
             {
-              filename: "test2",
+              filename: 'test2',
               sheets: [
                 {
-                  sheetName: "test",
+                  sheetName: 'test',
                   columns: columns,
                   dataSource: list,
                 },
@@ -304,28 +304,28 @@ export default () => {
           ],
         },
         {
-          folderName: "",
+          folderName: '',
           files: [
             {
-              filename: "test",
+              filename: 'test',
               sheets: [
                 {
-                  sheetName: "test",
+                  sheetName: 'test',
                   columns: columns,
                   dataSource: list,
                 },
                 {
-                  sheetName: "test2",
+                  sheetName: 'test2',
                   columns: columns,
                   dataSource: list,
                 },
               ],
             },
             {
-              filename: "test2",
+              filename: 'test2',
               sheets: [
                 {
-                  sheetName: "test",
+                  sheetName: 'test',
                   columns: columns,
                   dataSource: list,
                 },
@@ -341,22 +341,19 @@ export default () => {
     <Page>
       <Card style={{ margin: 24 }}>
         <Space align="center" direction="horizontal">
-          <Button type={"primary"} onClick={onExportBasicExcel}>
+          <Button type={'primary'} onClick={onExportBasicExcel}>
             导出excel
           </Button>
-          <Button
-            type={"primary"}
-            onClick={onExportBasicExcelWithStyle}
-          >
+          <Button type={'primary'} onClick={onExportBasicExcelWithStyle}>
             导出带样式excel
           </Button>
-          <Button type={"primary"} onClick={onExportExcel}>
+          <Button type={'primary'} onClick={onExportExcel}>
             封装方法导出excel
           </Button>
-          <Button type={"primary"} onClick={onExportZip}>
+          <Button type={'primary'} onClick={onExportZip}>
             导出zip
           </Button>
-          <Button type={"primary"} onClick={onExportFolderZip}>
+          <Button type={'primary'} onClick={onExportFolderZip}>
             导出分文件夹zip
           </Button>
         </Space>

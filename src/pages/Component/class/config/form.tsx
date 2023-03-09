@@ -77,7 +77,7 @@ export const getFormList = (
         },
         onChange: (e: any) => {
           // console.log(e)
-        }
+        },
       },
       itemProps: {
         style: {
@@ -149,7 +149,7 @@ export const getFormList = (
           tableFormCode: '333',
           tableFormName: '333',
           tableFormTime: [dayjs(), dayjs()],
-        }
+        },
       ],
       tableProps: {
         columns: [
@@ -211,12 +211,8 @@ export const getFormList = (
               // formFieldProps: {
               //   rules: FormRules.withName('活动名称').isRequired().create(),
               // },
-              controlProps: {
-
-              },
-              itemProps: {
-
-              },
+              controlProps: {},
+              itemProps: {},
             },
           },
         ],
@@ -226,11 +222,13 @@ export const getFormList = (
       name: 'editRow',
       label: '可保存的table',
       type: 'editRow',
-      initialValue: [{
-        editCode: '1',
-        editName: '1',
-        editTime: [dayjs(), dayjs()],
-      }],
+      initialValue: [
+        {
+          editCode: '1',
+          editName: '1',
+          editTime: [dayjs(), dayjs()],
+        },
+      ],
       tableProps: {
         rowKey: 'editCode',
         columns: [
@@ -292,16 +290,12 @@ export const getFormList = (
               // formFieldProps: {
               //   rules: FormRules.withName('活动名称').isRequired().create(),
               // },
-              controlProps: {
-
-              },
-              itemProps: {
-
-              },
+              controlProps: {},
+              itemProps: {},
             },
           },
         ],
       },
-    }
+    },
   ];
 };

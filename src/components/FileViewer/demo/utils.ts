@@ -1,10 +1,10 @@
-import request from "umi-request";
+import request from 'umi-request';
 
 export function exportFile(url: string, params: any) {
   return request.get(url, {
     params,
     parseResponse: false,
-    responseType: "blob",
+    responseType: 'blob',
   });
 }
 
@@ -16,7 +16,7 @@ export function exportFile(url: string, params: any) {
  */
 export const handleDownload = (
   searchParams: any,
-  options = { url: "", fileName: "" },
+  options = { url: '', fileName: '' },
   callback?: () => void,
 ) => {
   exportFile(options.url, searchParams).then((response: any) => {
@@ -26,7 +26,7 @@ export const handleDownload = (
           (window as any).navigator.msSaveOrOpenBlob(blob, options.fileName);
         } else {
           const blobUrl = window.URL.createObjectURL(blob);
-          const aElement = document.createElement("a");
+          const aElement = document.createElement('a');
           const fileName = options.fileName;
           aElement.href = blobUrl;
           aElement.download = fileName;

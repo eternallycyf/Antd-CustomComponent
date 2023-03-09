@@ -1,12 +1,15 @@
-import { useRef, useImperativeHandle, forwardRef } from "react";
-import type { EChartsReactProps } from "echarts-for-react/lib/types";
-import ReactECharts from "echarts-for-react";
+import { useRef, useImperativeHandle, forwardRef } from 'react';
+import type { EChartsReactProps } from 'echarts-for-react/lib/types';
+import ReactECharts from 'echarts-for-react';
 
 interface IHandle {
-  ref: echarts.ECharts
+  ref: echarts.ECharts;
 }
 
-const ReactEChart: React.ForwardRefRenderFunction<IHandle, EChartsReactProps> = (props, echartsRef: any) => {
+const ReactEChart: React.ForwardRefRenderFunction<
+  IHandle,
+  EChartsReactProps
+> = (props, echartsRef: any) => {
   const { option, ...restProps } = props;
   const ref = useRef<any>(null!);
   useImperativeHandle(echartsRef, () => ({

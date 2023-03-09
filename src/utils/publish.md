@@ -1,4 +1,4 @@
-### use 
+### use
 
 ```ts
 constructor() {

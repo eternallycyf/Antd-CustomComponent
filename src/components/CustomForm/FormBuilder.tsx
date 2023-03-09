@@ -167,8 +167,14 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
         field.condition,
       );
       // 构造formProps
-      const { itemProps, controlProps, name, otherType, otherText, ...restProps } =
-        field;
+      const {
+        itemProps,
+        controlProps,
+        name,
+        otherType,
+        otherText,
+        ...restProps
+      } = field;
       const fieldType = field.type || 'input';
       const myControlProps = {
         ...controlProps,
@@ -253,13 +259,13 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
 
       {children
         ? React.Children.map(
-          children as any,
-          (child: React.ReactElement<any>, index) => {
-            return React.cloneElement(child, {
-              size: child.props.size || 'small',
-            });
-          },
-        )
+            children as any,
+            (child: React.ReactElement<any>, index) => {
+              return React.cloneElement(child, {
+                size: child.props.size || 'small',
+              });
+            },
+          )
         : null}
 
       {modalType === ModalType.normal && (

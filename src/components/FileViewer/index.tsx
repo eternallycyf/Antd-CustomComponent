@@ -1,2 +1,2 @@
-import FileViewer from "./FilePreView";
+import FileViewer from './FilePreView';
 export default FileViewer;

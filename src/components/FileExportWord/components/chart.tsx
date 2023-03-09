@@ -4,8 +4,8 @@ import React, {
   useRef,
   forwardRef,
   useImperativeHandle,
-} from "react";
-import { Line } from "@ant-design/plots";
+} from 'react';
+import { Line } from '@ant-design/plots';
 
 const DemoLine = (props: any, charts: any) => {
   const [data, setData] = useState([]);
@@ -13,12 +13,12 @@ const DemoLine = (props: any, charts: any) => {
 
   const asyncFetch = () => {
     fetch(
-      "https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json",
+      'https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json',
     )
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => {
-        console.log("fetch data failed", error);
+        console.log('fetch data failed', error);
       });
   };
 
@@ -37,9 +37,9 @@ const DemoLine = (props: any, charts: any) => {
 
   const config = {
     data,
-    padding: "auto" as 'auto',
-    xField: "Date",
-    yField: "scales",
+    padding: 'auto' as 'auto',
+    xField: 'Date',
+    yField: 'scales',
     xAxis: {
       // type: 'timeCat',
       tickCount: 5,

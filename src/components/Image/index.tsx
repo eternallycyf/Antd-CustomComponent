@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Avatar, AvatarProps } from "antd";
+import { Avatar, AvatarProps } from 'antd';
 import imageDefault from '@/assets/image_default.png';
 
 interface IProps {
@@ -18,15 +18,14 @@ interface IState {
 }
 
 class Image extends PureComponent<IProps, IState> {
-
   static defaultProps = {
     type: 'img',
-    defaultValue: imageDefault
-  }
+    defaultValue: imageDefault,
+  };
 
   state: Readonly<IState> = {
-    src: ''
-  }
+    src: '',
+  };
 
   // 获取base64 如果不存在使用默认图片
   async componentDidMount(): Promise<void> {
@@ -37,15 +36,15 @@ class Image extends PureComponent<IProps, IState> {
       await this.setState({ src });
       if (handleGetSrc) handleGetSrc(src);
     } catch (e) {
-      await this.setState({ src: defaultValue })
+      await this.setState({ src: defaultValue });
     }
   }
 
   renderImg = () => {
     const { src } = this.state;
     const { style, className, defaultValue } = this.props;
-    const defaultValueStyle = src === defaultValue
-      ? this.props.defaultValueStyle : {}
+    const defaultValueStyle =
+      src === defaultValue ? this.props.defaultValueStyle : {};
 
     return (
       <div
@@ -59,18 +58,18 @@ class Image extends PureComponent<IProps, IState> {
           border: '1px solid #e8e8e8',
           borderRadius: 2,
           ...style,
-          ...defaultValueStyle
+          ...defaultValueStyle,
         }}
         className={className}
       />
-    )
-  }
+    );
+  };
 
   renderAvatar = () => {
     const { src } = this.state;
     const { ...otherProps } = this.props;
     return <Avatar src={src} {...otherProps} />;
-  }
+  };
 
   render(): React.ReactNode {
     const { type } = this.props;

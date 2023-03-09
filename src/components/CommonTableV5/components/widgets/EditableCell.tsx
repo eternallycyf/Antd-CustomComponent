@@ -1,9 +1,8 @@
-
-import { EditableContext } from "@/components/CustomForm/FormItem/editRow";
-import { getFieldComp } from "@/core/helpers";
-import { IBaseFormControlType } from "@/typings/base";
-import { InputNumber, Input, Form, FormInstance, FormItemProps } from "antd";
-import React, { useContext } from "react";
+import { EditableContext } from '@/components/CustomForm/FormItem/editRow';
+import { getFieldComp } from '@/core/helpers';
+import { IBaseFormControlType } from '@/typings/base';
+import { InputNumber, Input, Form, FormInstance, FormItemProps } from 'antd';
+import React, { useContext } from 'react';
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   fieldProps: {
@@ -21,23 +20,12 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export const EditableCell: React.FC<EditableCellProps> = (props) => {
-  const {
-    children,
-    fieldProps,
-    record,
-    type,
-    ...restProps
-  } = props
+  const { children, fieldProps, record, type, ...restProps } = props;
   const tableParams = useContext(EditableContext)!;
-  const {
-    editingKey = '',
-    rowKey = '',
-  } = tableParams;
+  const { editingKey = '', rowKey = '' } = tableParams;
   const editing = record && record[rowKey as string] === editingKey;
 
   return (
-    <td {...restProps}>
-      {editing ? getFieldComp(fieldProps) : children}
-    </td>
+    <td {...restProps}>{editing ? getFieldComp(fieldProps) : children}</td>
   );
 };

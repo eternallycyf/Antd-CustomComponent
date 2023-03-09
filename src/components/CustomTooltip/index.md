@@ -120,7 +120,7 @@ useLayoutEffect(() => {
   if (contentRef.current) {
     const node = contentRef.current as HTMLDivElement;
     console.log(node.firstElementChild!);
-    const rObserver = new ResizeObserver(entries => {
+    const rObserver = new ResizeObserver((entries) => {
       const newHeight = entries[0].contentRect.height;
       console.log(newHeight);
       if (newHeight !== 0) {

@@ -1,5 +1,5 @@
-import HookDemo from "@/components/VirtualList/useVirtualList/demo";
-import VirtualListDemo from "@/components/VirtualList/VirtualList/demo";
+import HookDemo from '@/components/VirtualList/useVirtualList/demo';
+import VirtualListDemo from '@/components/VirtualList/VirtualList/demo';
 import Page from '@/components/Page';
 
 export default function VirtualList() {
@@ -10,9 +10,9 @@ export default function VirtualList() {
           <VirtualListDemo />
         </div>
       </Page>
-      <Page >
+      <Page>
         <HookDemo />
-      </Page >
+      </Page>
     </>
   );
 }

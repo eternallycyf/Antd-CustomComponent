@@ -1,8 +1,8 @@
-import React from "react";
-import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
-import remarkGfm from "remark-gfm";
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import remarkGfm from 'remark-gfm';
 
 export default (props: any) => {
   return (
@@ -12,11 +12,11 @@ export default (props: any) => {
       remarkPlugins={[remarkGfm]}
       components={{
         code({ inline, className, children }) {
-          const match = /language-(\w+)/.exec(className || "");
+          const match = /language-(\w+)/.exec(className || '');
           return !inline && match ? (
             <SyntaxHighlighter
               // eslint-disable-next-line react/no-children-prop
-              children={String(children).replace(/\n$/, "")}
+              children={String(children).replace(/\n$/, '')}
               style={dracula}
               language={match[1]}
               showLineNumbers

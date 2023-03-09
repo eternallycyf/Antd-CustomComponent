@@ -3,7 +3,7 @@ import { Card } from 'antd';
 const IndexPage = () => {
   return (
     <Page>
-      <WaterMark ></WaterMark>
+      <WaterMark></WaterMark>
     </Page>
   );
 };

@@ -139,7 +139,7 @@ export default class UploadDemo extends React.Component<EditorProps> {
     const { editorRef, handlePastedText } = this;
     // 自定义控件
     const customControlsKeys = Object.keys(CustomControls);
-    const extendControls: any = extendControlKey!.map(key => {
+    const extendControls: any = extendControlKey!.map((key) => {
       const index = customControlsKeys.indexOf(key);
       if (key !== -1) {
         return (CustomControls as any)[customControlsKeys[index]];

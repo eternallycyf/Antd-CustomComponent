@@ -149,7 +149,7 @@ export default class VirtualList extends React.PureComponent<Props, State> {
   };
 
   itemSizeGetter = (itemSize: Props['itemSize']) => {
-    return index => this.getSize(index, itemSize);
+    return (index) => this.getSize(index, itemSize);
   };
 
   sizeAndPositionManager = new SizeAndPositionManager({
@@ -418,23 +418,21 @@ export default class VirtualList extends React.PureComponent<Props, State> {
     }
 
     const { scrollDirection = DIRECTION.VERTICAL } = this.props;
-    const {
-      size,
-      offset,
-    } = this.sizeAndPositionManager.getSizeAndPositionForIndex(index);
+    const { size, offset } =
+      this.sizeAndPositionManager.getSizeAndPositionForIndex(index);
 
     return (this.styleCache[index] = sticky
       ? {
-        ...STYLE_STICKY_ITEM,
-        [sizeProp[scrollDirection]]: size,
-        [marginProp[scrollDirection]]: offset,
-        [oppositeMarginProp[scrollDirection]]: -(offset + size),
-        zIndex: 1,
-      }
+          ...STYLE_STICKY_ITEM,
+          [sizeProp[scrollDirection]]: size,
+          [marginProp[scrollDirection]]: offset,
+          [oppositeMarginProp[scrollDirection]]: -(offset + size),
+          zIndex: 1,
+        }
       : {
-        ...STYLE_ITEM,
-        [sizeProp[scrollDirection]]: size,
-        [positionProp[scrollDirection]]: offset,
-      });
+          ...STYLE_ITEM,
+          [sizeProp[scrollDirection]]: size,
+          [positionProp[scrollDirection]]: offset,
+        });
   }
 }

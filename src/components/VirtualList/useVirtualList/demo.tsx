@@ -28,5 +28,4 @@ const App = () =>
     <Section key={index + 1} title={`${index + 1}`} />
   ));
 
-
 export default App;
