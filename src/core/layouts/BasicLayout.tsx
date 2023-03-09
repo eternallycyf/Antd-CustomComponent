@@ -1,19 +1,24 @@
-import TagsNav from '@/core/base/TagsNav';
-import { connect, withRouter } from '@umijs/max';
-import { RouteComponentProps } from '@umijs/renderer-react';
-import { useEffect, Fragment, FC, useState } from 'react';
-import SiderMenu from '@/core/base/CustomMenu';
-import { Layout, Spin, ConfigProvider, theme as antdTheme } from 'antd';
-import { Helmet, History } from '@umijs/max';
-import { Dispatch, Outlet } from '@umijs/max';
-import _ from 'lodash';
-import { ConnectState } from '@/typings/connect';
-import styles from './index.less';
-import config from '@/config/projectConfig';
 import { WaterMark } from '@/components';
-import { menuList as routes } from 'mock/user';
+import config from '@/config/projectConfig';
+import SiderMenu from '@/core/base/CustomMenu';
 import GlobalHeader from '@/core/base/GlobalHeader';
+import TagsNav from '@/core/base/TagsNav';
+import { ConnectState } from '@/typings/connect';
+import {
+  connect,
+  Dispatch,
+  getDvaApp,
+  Helmet,
+  History,
+  Outlet,
+  withRouter,
+} from '@umijs/max';
+import { RouteComponentProps } from '@umijs/renderer-react';
+import { ConfigProvider, Layout, Spin, theme as antdTheme } from 'antd';
+import _ from 'lodash';
+import { FC, Fragment, useEffect, useState } from 'react';
 import ColorPicker from '../base/GlobalHeader/ColorPicker';
+import styles from './index.less';
 const { Sider, Content, Header } = Layout;
 const { title } = config;
 
@@ -69,9 +74,14 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
     handleRouterChange();
   }, [dispatch]);
 
+  const {
+    breadcrumbNameMap: localBreadcrumbNameMap = {},
+    menuList: localMenuList = [],
+  } = getDvaApp()._store.getState().global;
+
   const siderMenuProps = {
     theme,
-    menuList,
+    menuList: menuList || localMenuList,
     location,
     collapsed,
     sliderMenuState,
@@ -79,8 +89,8 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
   };
 
   const TagsNavProps = {
-    breadcrumbNameMap,
-    menuList,
+    breadcrumbNameMap: breadcrumbNameMap || localBreadcrumbNameMap,
+    menuList: menuList || localMenuList,
     location,
   };
 
