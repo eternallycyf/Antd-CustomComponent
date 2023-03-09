@@ -21,8 +21,10 @@ import {
   theme as antdTheme,
   TourProps,
   Tour,
+  FloatButton,
 } from 'antd';
 import _ from 'lodash';
+import { BellOutlined } from '@ant-design/icons';
 import { localStore } from '@/utils/storage';
 import { FC, Fragment, useEffect, useState, useRef } from 'react';
 import ColorPicker from '../base/GlobalHeader/ColorPicker';
@@ -206,6 +208,15 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
             </Layout>
           </WaterMark>
         </Layout>
+        <FloatButton
+          type="primary"
+          icon={<BellOutlined />}
+          tooltip={'重新打开操作指引'}
+          onClick={() => {
+            setOpen('1');
+            localStore.set('hasTour', '1');
+          }}
+        />
       </ConfigProvider>
     </Fragment>
   );
