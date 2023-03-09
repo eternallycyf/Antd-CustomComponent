@@ -36,14 +36,14 @@ export default defineConfig({
     },
     // theme: { '@primary-color': '#00CA88' },
   },
-  metas: [
-    {
-      'http-equiv': 'Content-Security-Policy',
-      content: 'upgrade-insecure-requests',
-    },
-    { 'http-equiv': 'Cache-control', content: 'no-cache' },
-    { 'http-equiv': 'Cache', content: 'no-cache' },
-  ],
+  // metas: [
+  //   {
+  //     'http-equiv': 'Content-Security-Policy',
+  //     content: 'upgrade-insecure-requests',
+  //   },
+  //   { 'http-equiv': 'Cache-control', content: 'no-cache' },
+  //   { 'http-equiv': 'Cache', content: 'no-cache' },
+  // ],
   fastRefresh: true,
   proxy: proxyConfig,
   clickToComponent: {},
