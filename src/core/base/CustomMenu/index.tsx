@@ -19,6 +19,7 @@ export interface IBaseMenuProps {
   sliderMenuState: '1' | '2';
   location: History['location'];
   dispatch: Dispatch;
+  ref0: React.RefObject<HTMLDivElement>;
 }
 
 const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
@@ -29,6 +30,7 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
     location: { pathname },
     sliderMenuState,
     dispatch,
+    ref0,
   } = props;
 
   const [openKeys, setOpenKeys] = useState<string[]>(
@@ -59,50 +61,52 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
   });
 
   return (
-    <Sider
-      theme={theme}
-      style={{ background: '#fff' }}
-      trigger={null}
-      collapsible
-      collapsed={collapsed}
-      collapsedWidth={0}
-      width={180}
-      className={siderClassName}
-    >
-      {sliderMenuState === '2' ? (
-        <OldBaseMenu
-          {...defaultProps}
-          mode="inline"
-          location={props.location}
-          menuList={menuList}
-          collapsed={collapsed}
-          flatMenuKeys={flatMenuKeys}
-          openKeys={openKeys}
-          onOpenChange={handleOpenChange}
-        />
-      ) : (
-        <NewBaseMenu
-          {...defaultProps}
-          mode="inline"
-          location={props.location}
-          menuList={menuList}
-          collapsed={collapsed}
-          flatMenuKeys={flatMenuKeys}
-        />
-      )}
-
-      <div
-        className={styles.swap}
-        onClick={() => {
-          dispatch({
-            type: 'global/changeSliderMenuState',
-            sliderMenuState: sliderMenuState === '1' ? '2' : '1',
-          });
-        }}
+    <div ref={ref0}>
+      <Sider
+        theme={theme}
+        style={{ background: '#fff' }}
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        collapsedWidth={0}
+        width={180}
+        className={siderClassName}
       >
-        <SwapOutlined />
-      </div>
-    </Sider>
+        {sliderMenuState === '2' ? (
+          <OldBaseMenu
+            {...defaultProps}
+            mode="inline"
+            location={props.location}
+            menuList={menuList}
+            collapsed={collapsed}
+            flatMenuKeys={flatMenuKeys}
+            openKeys={openKeys}
+            onOpenChange={handleOpenChange}
+          />
+        ) : (
+          <NewBaseMenu
+            {...defaultProps}
+            mode="inline"
+            location={props.location}
+            menuList={menuList}
+            collapsed={collapsed}
+            flatMenuKeys={flatMenuKeys}
+          />
+        )}
+
+        <div
+          className={styles.swap}
+          onClick={() => {
+            dispatch({
+              type: 'global/changeSliderMenuState',
+              sliderMenuState: sliderMenuState === '1' ? '2' : '1',
+            });
+          }}
+        >
+          <SwapOutlined />
+        </div>
+      </Sider>
+    </div>
   );
 };
 

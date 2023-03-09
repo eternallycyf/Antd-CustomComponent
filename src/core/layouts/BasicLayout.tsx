@@ -14,9 +14,17 @@ import {
   withRouter,
 } from '@umijs/max';
 import { RouteComponentProps } from '@umijs/renderer-react';
-import { ConfigProvider, Layout, Spin, theme as antdTheme } from 'antd';
+import {
+  ConfigProvider,
+  Layout,
+  Spin,
+  theme as antdTheme,
+  TourProps,
+  Tour,
+} from 'antd';
 import _ from 'lodash';
-import { FC, Fragment, useEffect, useState } from 'react';
+import { localStore } from '@/utils/storage';
+import { FC, Fragment, useEffect, useState, useRef } from 'react';
 import ColorPicker from '../base/GlobalHeader/ColorPicker';
 import styles from './index.less';
 const { Sider, Content, Header } = Layout;
@@ -47,6 +55,11 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
     b: '241',
     a: '100',
   });
+  const [open, setOpen] = useState<'1' | '0'>(localStore.get('hasTour') || '1');
+  const ref0 = useRef<HTMLDivElement>(null!);
+  const ref1 = useRef<HTMLDivElement>(null!);
+  const ref2 = useRef<HTMLDivElement>(null!);
+  const ref3 = useRef<HTMLDivElement>(null!);
   const {
     menuList,
     breadcrumbNameMap,
@@ -58,6 +71,36 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
     dispatch,
     userInfo,
   } = props;
+
+  const steps: TourProps['steps'] = [
+    {
+      title: '自定义的menu',
+      description: (
+        <div>
+          <div>鼠标悬浮时展开-而不是点击下拉图标-更加清晰-更易使用</div>
+          <div style={{ color: 'blue' }}>可以鼠标悬浮一下 权限管理</div>
+          <div>公众组件路由：home-class</div>
+        </div>
+      ),
+      target: () => ref0.current,
+      placement: 'right',
+    },
+    {
+      title: '多tabs页签切换',
+      description: '增加了缓存功能',
+      target: () => ref1.current,
+    },
+    {
+      title: '主题色切换',
+      description: '动态改变',
+      target: () => ref2.current,
+    },
+    {
+      title: '暗黑色调切换',
+      description: '点击即可切换',
+      target: () => ref3.current,
+    },
+  ];
 
   const handleRouterChange = async () => {
     await dispatch({ type: 'global/fetch', payload: {} });
@@ -98,8 +141,6 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
     ? { algorithm: antdTheme.darkAlgorithm }
     : { algorithm: antdTheme.defaultAlgorithm };
 
-  console.log(isDark, algorithmObj);
-
   return (
     <Fragment>
       <ConfigProvider
@@ -121,12 +162,23 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
           ></meta>
           <meta name="keyword" content="react, umi, antd"></meta>
         </Helmet>
+        <Tour
+          open={Boolean(Number(open))}
+          onClose={() => {
+            setOpen('0');
+            localStore.set('hasTour', '0');
+          }}
+          steps={steps}
+        />
         <Layout className={styles.container}>
           <WaterMark
             content={userInfo?.realName || '未登录'}
             fillStyle="rgba(123,139,167,0.2)"
           >
             <GlobalHeader
+              ref1={ref1}
+              ref2={ref2}
+              ref3={ref3}
               isDark={isDark}
               setIsDark={setIsDark}
               ColorPicker={<ColorPicker color={color} setColor={setColor} />}
@@ -146,7 +198,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
             </GlobalHeader>
             <Layout className={styles.content}>
               <Sider theme={theme} style={{ background: 'transparent' }}>
-                <SiderMenu {...siderMenuProps} />
+                <SiderMenu {...siderMenuProps} ref0={ref0} />
               </Sider>
               <Content>
                 <Outlet />

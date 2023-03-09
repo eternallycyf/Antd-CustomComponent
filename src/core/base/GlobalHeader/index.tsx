@@ -9,9 +9,12 @@ interface IProps {
   children: React.ReactNode;
   isDark: boolean;
   setIsDark: React.Dispatch<React.SetStateAction<boolean>>;
+  ref1: React.RefObject<HTMLDivElement>;
+  ref2: React.RefObject<HTMLDivElement>;
+  ref3: React.RefObject<HTMLDivElement>;
 }
 const GlobalHeader: FC<IProps> = (props) => {
-  const { children, ColorPicker, isDark, setIsDark } = props;
+  const { children, ColorPicker, isDark, setIsDark, ref1, ref2, ref3 } = props;
   return (
     <Header
       style={{ background: 'transparent', paddingInline: 0 }}
@@ -24,7 +27,7 @@ const GlobalHeader: FC<IProps> = (props) => {
               <span className={styles['core-base-title']}>后台管理</span>
             </Col>
             <Col span={14}>
-              <div>{children}</div>
+              <div ref={ref1}>{children}</div>
             </Col>
             <Col span={2}>
               <Input
@@ -33,10 +36,14 @@ const GlobalHeader: FC<IProps> = (props) => {
                 style={{ width: '90%' }}
               />
             </Col>
-            <Col span={1} style={{ display: 'grid', placeContent: 'center' }}>
+            <Col
+              ref={ref2}
+              span={1}
+              style={{ display: 'grid', placeContent: 'center' }}
+            >
               {ColorPicker}
             </Col>
-            <Col>
+            <Col ref={ref3}>
               <Switch
                 unCheckedChildren={
                   <svg
