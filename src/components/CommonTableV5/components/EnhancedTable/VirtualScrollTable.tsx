@@ -11,6 +11,7 @@ import styles from './VirtualScrollTable.less';
 import { debounce } from 'lodash';
 import { Checkbox, Radio } from 'antd';
 import { getUUID } from '@/utils/random';
+import _ from 'lodash';
 
 function getFirstFixRight(columns: any) {
   let firstFixRightColumnIndex = -1;
@@ -43,7 +44,7 @@ const getRangeBuilder = (fn: any, rowOrColumn: any) => {
   // 计算展示的行列分布函数生成器
   let prevScrollTop: null = null;
   let prevScrollLeft: null = null;
-  let prevScrollDirection: string | null = null; // 'horizontal' 'vertical'，默认为垂直方向滚动
+  let prevScrollDirection: string | null = 'vertical'; // 'horizontal' 'vertical'，默认为垂直方向滚动
   let cache: null = null;
   return (...args: any) => {
     const [scrollItem, displayColumns] = args;
@@ -70,8 +71,8 @@ const getRangeBuilder = (fn: any, rowOrColumn: any) => {
     prevScrollDirection = scrollDirection;
     prevScrollLeft = scrollLeft;
     prevScrollTop = scrollTop;
-    cache = value;
-    return value;
+    cache = value || [];
+    return value || [];
   };
 };
 
@@ -319,7 +320,7 @@ export default function VirtualScrollTable(props: any) {
     const [activeRowIndex, setActiveRowIndex] = useState(-1);
     const [hoverRowIndex, setHoverRowIndex] = useState(-1);
     const [tableScrollTop, setTableScrollTop] = useState(0);
-    const scrollRef: any = useRef(null);
+    const scrollRef = useRef<any>(null);
 
     useEffect(() => {
       setTableData(scrollRef.current);
@@ -370,17 +371,17 @@ export default function VirtualScrollTable(props: any) {
             i === notFixColumns.length - 1 &&
             scrollLeft + clientWidth >= totalWidth
           ) {
-            if (fixRightColumnList.length == 0) {
+            if (fixRightColumnList.length === 0) {
               column.style = {
                 ...column.style,
                 width: width - 12 + 'px',
               }; // 这里的12是滚动条宽度
             }
-            displayColumns.push(column);
           }
+          displayColumns.push(column);
         }
-        return displayColumns;
       }
+      return displayColumns;
     };
 
     const getColumns = useCallback(getRangeBuilder(getColumnsInner, 'column'), [
@@ -614,7 +615,7 @@ export default function VirtualScrollTable(props: any) {
       let newWidth = style?.width || 0;
       newWidth = newWidth.replace(/px/gi, '');
       return (
-        <div
+        <td
           className={`
           ${styles['virtual-table-cell']}
           ${
@@ -637,7 +638,7 @@ export default function VirtualScrollTable(props: any) {
           key={'column' + columnIndex}
         >
           {content}
-        </div>
+        </td>
       );
     };
 
@@ -654,8 +655,8 @@ export default function VirtualScrollTable(props: any) {
     return (
       <div
         className={styles['scroll-container']}
-        onScroll={_onScroll}
-        style={{ height: height + 'px' }}
+        onScroll={_.throttle(_onScroll, 3000)}
+        style={{ height: height }}
         ref={scrollRef}
       >
         <div
@@ -675,7 +676,7 @@ export default function VirtualScrollTable(props: any) {
           >
             {rows.length
               ? rows.map((row, rowIndex) => (
-                  <div
+                  <tr
                     className={`
                 ${styles['row']}
                 ${rowIndex === activeRowIndex && styles['row-active']}
@@ -717,7 +718,7 @@ export default function VirtualScrollTable(props: any) {
                         fixRightColumnList,
                       ),
                     )}
-                  </div>
+                  </tr>
                 ))
               : props?.locale?.emptyText}
           </div>
