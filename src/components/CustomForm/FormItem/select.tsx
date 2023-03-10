@@ -158,18 +158,12 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
                 key={String(dic[valueKey])}
                 value={String(dic[valueKey])}
                 title={dic[textKey]}
+                label={dic[textKey]}
                 option={dic}
               >
                 {(renderItem && renderItem(dic)) || dic[textKey]}
               </Option>
             ))}
-        {options
-          ? options.map((item: any, index: number) => (
-              <Option key={index} value={item.value}>
-                {item.title}
-              </Option>
-            ))
-          : null}
       </Select>
     );
   },
