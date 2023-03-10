@@ -4,6 +4,13 @@ import zhCN from 'antd/locale/zh_CN';
 const proxyConfig = require('./src/config/proxyConfig');
 const path = require('path');
 
+const repo = 'Antd-CustomComponent';
+const content = `(function(){
+  let divs = document.createElement('div');
+  divs.className = 'snow-container';
+  document.querySelector('body')?.appendChild(divs);
+})()`;
+
 export default defineConfig({
   define: {
     'process.env': process.env,
@@ -55,4 +62,15 @@ export default defineConfig({
   hash: true,
   mfsu: true,
   npmClient: 'yarn',
+  headScripts: [{ src: 'https://unpkg.com/jquery@3.6.4/dist/jquery.js' }],
+  scripts: [
+    { content, charset: 'utf-8' },
+    {
+      src:
+        process.env.NODE_ENV === 'development'
+          ? '/js/snow.js'
+          : `/${repo}/js/snow.js`,
+    },
+  ],
+  tailwindcss: {},
 });
