@@ -18,7 +18,6 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
       onChange,
       isSearch, //支持输入
       editValue,
-      options,
       isNeedAll,
       ...controlProps
     }: any,
@@ -177,7 +176,6 @@ SelectControl.defaultProps = {
     const { children = '' } = option;
     return children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   },
-  options: false,
   allowClear: true,
 };
 
