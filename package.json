@@ -2,6 +2,7 @@
   "private": true,
   "author": "eternallycyf <a969475322@gmail.com>",
   "scripts": {
+    "autotest": "node test",
     "biz-init": "ts-node scripts/generateBizConfig.ts",
     "build": "max build",
     "build:dev": "yarn biz-init && cross-env NODE_ENV=development max build",
