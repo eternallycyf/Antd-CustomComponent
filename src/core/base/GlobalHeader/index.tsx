@@ -17,7 +17,12 @@ const GlobalHeader: FC<IProps> = (props) => {
   const { children, ColorPicker, isDark, setIsDark, ref1, ref2, ref3 } = props;
   return (
     <Header
-      style={{ background: 'transparent', paddingInline: 0 }}
+      style={{
+        background: 'transparent',
+        paddingInline: 0,
+        position: 'relative',
+        zIndex: 99,
+      }}
       className="core-base-tags-nav-index-tabs"
     >
       <Row style={{ width: '100%', height: '100%' }}>
@@ -26,7 +31,7 @@ const GlobalHeader: FC<IProps> = (props) => {
             <Col span={4}>
               <span className={styles['core-base-title']}>后台管理</span>
             </Col>
-            <Col span={14}>
+            <Col span={13}>
               <div ref={ref1}>{children}</div>
             </Col>
             <Col span={2}>
@@ -76,7 +81,7 @@ const GlobalHeader: FC<IProps> = (props) => {
             <Col span={1}>
               <FullScreen />
             </Col>
-            <Col span={1}>
+            <Col span={2}>
               <RightContent />
             </Col>
           </Row>

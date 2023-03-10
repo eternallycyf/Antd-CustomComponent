@@ -14,7 +14,6 @@ const GlobalHeaderRight: FC<IProps> = (props) => {
   if (!Object.keys(userInfo)) return null;
   return (
     <Space className={`${styles.right} ${styles.dark}`}>
-      {userInfo?.username ?? ''}
       <Avatar />
     </Space>
   );

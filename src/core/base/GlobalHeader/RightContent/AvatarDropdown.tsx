@@ -1,66 +1,27 @@
-import React, { useCallback } from 'react';
+import React, { FC, useCallback } from 'react';
 import { LogoutOutlined } from '@ant-design/icons';
 import { Avatar, MenuProps, Spin } from 'antd';
-import { history, useModel } from '@umijs/max';
+import { connect, history, useModel, withRouter, Dispatch } from '@umijs/max';
+import { RouteComponentProps } from '@umijs/renderer-react';
 import HeaderDropdown from './HeaderDropdown';
 import styles from '../index.less';
+import { ConnectState } from '@/typings/connect';
 
-const loginOut = async () => {
-  // await outLogin();
-  // store.remove('TOKEN');
-  // const { query = {}, search, pathname } = history.location;
-  // const { redirect } = query; // Note: There may be security issues, please note
-  // if (window.location.pathname !== '/user/login' && !redirect) {
-  //   history.replace({
-  //     pathname: '/user/login',
-  //     search: stringify({
-  //       redirect: pathname + search,
-  //     }),
-  //   });
-  // }
-};
-
-const AvatarDropdown = () => {
-  const { initialState, setInitialState } = useModel('@@initialState');
-  const onMenuClick = useCallback(
-    (event: any) => {
-      const { key } = event;
-      if (key === 'logout') {
-        loginOut();
-        return;
-      }
-      history.push(`/account/${key}`);
-    },
-    [setInitialState],
-  );
-  const loading = (
-    <span className={`${styles.action} ${styles.account}`}>
-      <Spin
-        size="small"
-        style={{
-          marginLeft: 8,
-          marginRight: 8,
-        }}
-      />
-    </span>
-  );
-
-  if (!initialState) {
-    return loading;
-  }
-
-  const { currentUser } = initialState;
-
-  if (!currentUser) {
-    // history.push('/user/login');
-  }
+interface IProps extends RouteComponentProps<any> {
+  userInfo: ConnectState['global']['userInfo'];
+  dispatch: Dispatch;
+}
+const AvatarDropdown: FC<IProps> = (props) => {
+  const { userInfo, dispatch } = props;
+  const handleLogout = () => {
+    dispatch({ type: 'login/logout' });
+  };
 
   const items: MenuProps['items'] = [
     {
       key: 'logout',
-      type: 'group',
       label: (
-        <div>
+        <div onClick={handleLogout}>
           <LogoutOutlined />
           退出登录
         </div>
@@ -74,15 +35,17 @@ const AvatarDropdown = () => {
       menu={{
         items,
         selectedKeys: ['logout'],
-        onClick: onMenuClick,
       }}
     >
       <span className={`${styles.action} ${styles.account}`}>
         <Avatar size="small" className={styles.avatar} alt="avatar" />
-        <span className={`${styles.name} anticon`}>{currentUser?.name}</span>
+        <span className={`${styles.name} anticon`}>{userInfo?.username}</span>
       </span>
     </HeaderDropdown>
   );
 };
 
-export default AvatarDropdown;
+export default connect(({ login, global }: ConnectState) => ({
+  token: login.token,
+  userInfo: global.userInfo,
+}))(withRouter<any>(AvatarDropdown));

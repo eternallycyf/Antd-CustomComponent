@@ -16,13 +16,17 @@ const Authorized: React.FC<IProps> = (props) => {
   const { token, children, dispatch, location } = props;
 
   useEffect(() => {
-    dispatch({ type: 'login/login', payload: { props } });
+    // dispatch({ type: 'login/login', payload: { props } });
   }, [dispatch, props]);
 
-  // if (!token && location?.pathname !== '/login') {
-  //   const path = `/login?redirect=${locaton?.pathname}${locaton?.search}`;
-  //   return <Navigate to={path} />;
-  // }
+  if (!token && location?.pathname !== '/login') {
+    const path = `/login?redirect=${location?.pathname}${location?.search}`;
+    return <Navigate to={path} />;
+  }
+
+  // 如果路由没有跳转到404
+  // if (location?.pathname !== '/404') {
+  //   return <Navigate to="/404" />;
 
   return <Outlet />;
 };

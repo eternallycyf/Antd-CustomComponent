@@ -1,5 +1,9 @@
 import { request } from '@umijs/max';
 
+export function fetchToken() {
+  return request('/login', { method: 'POST' });
+}
+
 export function fetchUserInfo() {
   return request('/fetchUserInfo', { method: 'POST' });
 }

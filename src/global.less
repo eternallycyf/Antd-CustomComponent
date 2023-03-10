@@ -15,6 +15,12 @@ body {
   background: #f1f2f6;
 }
 
+button,
+[type='button'],
+[type='submit'] {
+  background-color: cornflowerblue;
+}
+
 .ant-pro-global-header-layout-mix {
   background: #fff !important;
 }
@@ -59,6 +65,7 @@ body {
 }
 
 .common-table {
+
   .ant-spin-nested-loading,
   .ant-spin-container,
   .ant-table,
@@ -81,17 +88,17 @@ body {
     }
   }
 
-  .ant-table-small > .ant-table-content > .ant-table-body {
+  .ant-table-small>.ant-table-content>.ant-table-body {
     margin: 0;
   }
 
-  .ant-table-thead > tr > th,
-  .ant-table-tbody > tr > td {
+  .ant-table-thead>tr>th,
+  .ant-table-tbody>tr>td {
     padding-right: 10px !important;
     padding-left: 10px !important;
   }
 
-  .ant-table-thead > tr > th {
+  .ant-table-thead>tr>th {
     background-color: @color-main !important;
     color: #333;
     font-size: normal;
@@ -100,4 +107,15 @@ body {
 
 .ant-pro-layout-content {
   padding: 0 !important;
+}
+
+.snow-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.02);
+  pointer-events: none;
 }

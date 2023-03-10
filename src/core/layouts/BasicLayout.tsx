@@ -25,10 +25,12 @@ import {
 } from 'antd';
 import _ from 'lodash';
 import { BellOutlined } from '@ant-design/icons';
+import { StyleProvider } from '@ant-design/cssinjs';
 import { localStore } from '@/utils/storage';
 import { FC, Fragment, useEffect, useState, useRef } from 'react';
 import ColorPicker from '../base/GlobalHeader/ColorPicker';
 import styles from './index.less';
+import IndexPage from './IndexPage';
 const { Sider, Content, Header } = Layout;
 const { title } = config;
 
@@ -172,42 +174,44 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
           }}
           steps={steps}
         />
-        <Layout className={styles.container}>
-          <WaterMark
-            content={userInfo?.realName || '未登录'}
-            fillStyle="rgba(123,139,167,0.2)"
-          >
-            <GlobalHeader
-              ref1={ref1}
-              ref2={ref2}
-              ref3={ref3}
-              isDark={isDark}
-              setIsDark={setIsDark}
-              ColorPicker={<ColorPicker color={color} setColor={setColor} />}
+        <StyleProvider hashPriority="high">
+          <Layout className={styles.container}>
+            <WaterMark
+              content={userInfo?.username || '未登录'}
+              fillStyle="rgba(123,139,167,0.2)"
             >
-              <div>
-                {!_.isEmpty(breadcrumbNameMap) && !_.isEmpty(userInfo) ? (
-                  <TagsNav {...TagsNavProps}>{children}</TagsNav>
-                ) : (
-                  <Spin
-                    spinning={true}
-                    size="large"
-                    className={styles.spinning}
-                    tip="加载中..."
-                  />
-                )}
-              </div>
-            </GlobalHeader>
-            <Layout className={styles.content}>
-              <Sider theme={theme} style={{ background: 'transparent' }}>
-                <SiderMenu {...siderMenuProps} ref0={ref0} />
-              </Sider>
-              <Content>
-                <Outlet />
-              </Content>
-            </Layout>
-          </WaterMark>
-        </Layout>
+              <GlobalHeader
+                ref1={ref1}
+                ref2={ref2}
+                ref3={ref3}
+                isDark={isDark}
+                setIsDark={setIsDark}
+                ColorPicker={<ColorPicker color={color} setColor={setColor} />}
+              >
+                <div>
+                  {!_.isEmpty(breadcrumbNameMap) && !_.isEmpty(userInfo) ? (
+                    <TagsNav {...TagsNavProps}>{children}</TagsNav>
+                  ) : (
+                    <Spin
+                      spinning={true}
+                      size="large"
+                      className={styles.spinning}
+                      tip="加载中..."
+                    />
+                  )}
+                </div>
+              </GlobalHeader>
+              <Layout className={styles.content}>
+                <Sider theme={theme} style={{ background: 'transparent' }}>
+                  <SiderMenu {...siderMenuProps} ref0={ref0} />
+                </Sider>
+                <Content>
+                  {location.pathname !== '/' ? <Outlet /> : <IndexPage />}
+                </Content>
+              </Layout>
+            </WaterMark>
+          </Layout>
+        </StyleProvider>
         <FloatButton
           type="primary"
           icon={<BellOutlined />}

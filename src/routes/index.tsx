@@ -11,8 +11,12 @@ const Router = [
     routes: Routes,
   },
   {
+    path: '/login',
+    component: '../core/base/Login',
+  },
+  {
     path: '*',
-    hideInPanelTab: true,
+    component: '../core/base/404',
   },
 ];
 

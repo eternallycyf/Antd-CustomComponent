@@ -61,15 +61,18 @@ const checkLogin = (response: any) => {
   const { status, url } = response;
   const filter = '/api/user/login';
   const { pathname } = window.location;
-  // if (
-  //   status === 401 &&
-  //   pathname !== '/login' &&
-  //   !filter.includes(url.replace(/(http|https):\/\/[0-9a-zA-Z.]+)(:[0-9]+)?/, ''))
-  // ) {
-  //   localStore.remove('tabs');
-  //   sessionStore.removeAll();
-  //   return history.push('/login');
-  // }
+  if (
+    status === 401 &&
+    pathname !== '/login'
+    // &&
+    // !filter.includes(
+    //   url.replace(/(http|https):\/\/[0-9a-zA-Z.]+)(:[0-9]+)?/, ''),
+    // )
+  ) {
+    localStore.remove('tabs');
+    sessionStore.removeAll();
+    return history.push('/login');
+  }
   return response;
 };
 
