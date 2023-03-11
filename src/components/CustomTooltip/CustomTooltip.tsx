@@ -1,4 +1,4 @@
-import { Col, Input, Tooltip, Typography } from 'antd';
+import { Col, ColProps, Input, Tooltip, Typography } from 'antd';
 import React, { FC, Fragment, useState, useRef, useCallback } from 'react';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import cx from './index.less';
@@ -30,6 +30,9 @@ interface IBaseProps {
    * @default false
    */
   copyable?: boolean;
+  colProps?: ColProps;
+  paragraphClassName?: string;
+  tooltipClassName?: string;
 }
 interface ISingleRowProps {
   /**
@@ -70,6 +73,12 @@ interface RowProps {
    * @default false
    */
   isRight?: boolean;
+  /**
+   * @description 自定义是否展示 展开收起按钮
+   * customShowBtn: () => arr.length > 10 ? true : false
+   * @default undefined
+   */
+  customShowBtn?: () => boolean;
 }
 interface IRowProps {
   /**
@@ -79,22 +88,27 @@ interface IRowProps {
    */
   row?: RowProps;
 }
-type ICustomTooltipProps = IBaseProps & ISingleRowProps & IRowProps;
-type Iprops = {
-  [key in keyof ICustomTooltipProps]: ICustomTooltipProps[keyof ICustomTooltipProps];
-};
+interface ICustomTooltipProps extends IBaseProps, ISingleRowProps, IRowProps {}
+type ICustomTooltipSimpleProps = IBaseProps & ISingleRowProps;
+type ICustomTooltipRowProps = IBaseProps & IRowProps;
+type Iprops<T extends boolean | unknown> = T extends true
+  ? ICustomTooltipRowProps
+  : T extends false
+  ? ICustomTooltipSimpleProps
+  : ICustomTooltipProps;
 
-const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
+const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) => {
   const [isExpand, setIsExpand] = useState<boolean>(false);
-  const [overflowStatus, setOverflowStatus] = useState<'hidden' | 'unset'>(
-    'hidden',
-  );
+  const [overflowStatus, setOverflowStatus] = useState<'hidden' | 'unset'>('hidden');
 
   // 如果没有展开的话 height只会有一个值 如果可以展开 会先输出两个值 (展开前的高度 收起后的高度)
   const heightList = useRef<number[]>([]);
   const [hasExpend, setHasExpend] = useState<boolean>(false);
   const contentRef = useCallback((node: HTMLDivElement) => {
     if (node !== null) {
+      if (props!.row!.customShowBtn) {
+        return setHasExpend(props!.row!.customShowBtn());
+      }
       const newHeight = node.getBoundingClientRect().height;
       const list = [...new Set([...heightList.current, newHeight])];
       heightList.current = [...list];
@@ -145,16 +159,18 @@ const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
       expend: true,
       lineMaxHeight: 50,
       isRight: false,
+      customShowBtn: undefined,
     },
-    col = 8,
+    col = 24,
+    colProps = {},
     copyable = false,
+    paragraphClassName = '',
+    tooltipClassName = '',
   } = props;
 
   const isTextToObject = typeof text === 'object';
   const isShowEllipsisSymbol = row.EllipsisSymbol ? '...' : '';
-  const copyableProps = copyable
-    ? { copyable: { text, tooltips: ['点击复制', '复制成功'] } }
-    : {};
+  const copyableProps = copyable ? { copyable: { text, tooltips: ['点击复制', '复制成功'] } } : {};
   const ellipsisClassName = row.EllipsisSymbol ? cx.ellipsis : '';
   const styles = {
     // maxWidth: 370,
@@ -188,11 +204,7 @@ const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
       );
     } else {
       return (
-        <a
-          style={buttonStyle}
-          className="ant-typography-expand"
-          onClick={() => setIsExpand(isExpandStatus)}
-        >
+        <a style={buttonStyle} className="ant-typography-expand" onClick={() => setIsExpand(isExpandStatus)}>
           收起 <DownOutlined className={cx['apply-shake']} />
         </a>
       );
@@ -206,12 +218,14 @@ const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
   // 如果是元素 Paragraph 组件设置row为1时候 只显示... 需要手动设置为 rows >= 2
   const customRows = isTextToObject
     ? typeof row.rows === 'number'
-      ? row.rows + 1
+      ? typeof props.row?.customShowBtn === 'function'
+        ? row.rows
+        : row.rows + 1
       : 2
     : row.rows;
   // 处理 初始化的闪烁问题 设置最大高度 为一行的高度, 溢出隐藏 当点击时恢复
   const customRowsColStyles = {
-    maxHeight: overflowStatus === 'hidden' ? row.lineMaxHeight : '100%',
+    maxHeight: overflowStatus == 'hidden' ? row.lineMaxHeight : '100%',
     overflow: overflowStatus,
     paddingRight: row.isRight ? 46 : 0,
   };
@@ -222,11 +236,7 @@ const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
         ellipsis: {
           rows: customRows as number,
           expandable: hasExpend ? isExpand : false,
-          suffix: hasExpend
-            ? isExpand
-              ? ''
-              : (getToggleButton(true) as any as string)
-            : '',
+          suffix: hasExpend ? (isExpand ? '' : (getToggleButton(true) as any as string)) : '',
           tooltip: isTextToObject ? '' : text,
           onExpand: () => setIsExpand(true),
         },
@@ -242,18 +252,16 @@ const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
 
   // row.rows = 1 且 text.length > maxLength
   const SingleOverflowParagraph = (
-    <Tooltip title={text} style={styles} className={ellipsisClassName}>
-      <Paragraph {...copyableProps} style={styles}>
-        {isTextToObject
-          ? ''
-          : text.slice(0, maxLength) + isShowEllipsisSymbol ?? '--'}
+    <Tooltip title={text} style={styles} className={`${ellipsisClassName} ${tooltipClassName}`}>
+      <Paragraph {...copyableProps} style={styles} className={paragraphClassName}>
+        {isTextToObject ? '' : String(text).slice(0, maxLength) + isShowEllipsisSymbol ?? '--'}
       </Paragraph>
     </Tooltip>
   );
 
   // row.rows = 1 且 text.length <= maxLength
   const SingleParagraph = (
-    <Paragraph {...copyableProps} style={styles} className={ellipsisClassName}>
+    <Paragraph {...copyableProps} style={styles} className={`${ellipsisClassName} ${paragraphClassName}`}>
       {text ?? '--'}
     </Paragraph>
   );
@@ -261,19 +269,15 @@ const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
   // 设置了 row.autoSize
   const AutoSizeParagraph = isTextToObject ? (
     <Fragment>
-      <Col span={col}>{text ?? '--'}</Col>
+      <Col span={col} {...colProps}>
+        {text ?? '--'}
+      </Col>
     </Fragment>
   ) : (
     <Fragment>
-      <Col span={col}>
-        <Paragraph {...copyableProps} className={ellipsisClassName}>
-          <TextArea
-            style={{ resize: 'none', ...styles }}
-            autoSize
-            bordered={false}
-            readOnly
-            value={text ?? '--'}
-          />
+      <Col span={col} {...colProps}>
+        <Paragraph {...copyableProps} className={`${ellipsisClassName} ${paragraphClassName}`}>
+          <TextArea style={{ resize: 'none', ...styles }} autoSize bordered={false} readOnly value={text ?? '--'} />
         </Paragraph>
       </Col>
     </Fragment>
@@ -284,8 +288,9 @@ const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
       span={col}
       className={ellipsisClassName}
       style={{ ...customRowsColStyles, position: 'relative' }}
+      {...colProps}
     >
-      <Paragraph {...customRowEllipsisParagraphProps} ref={contentRef}>
+      <Paragraph {...customRowEllipsisParagraphProps} ref={contentRef} className={`${paragraphClassName}`}>
         {text ?? '--'}
         {isExpand && getToggleButton(false)}
       </Paragraph>
@@ -293,20 +298,18 @@ const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
   );
 
   const CustomRowNotExpendParagraph = (
-    <Col span={col} className={ellipsisClassName}>
-      <Paragraph {...customRowEllipsisNotExpandParagraphProps}>
+    <Col span={col} className={`${ellipsisClassName}`} {...colProps}>
+      <Paragraph {...customRowEllipsisNotExpandParagraphProps} className={paragraphClassName}>
         {text ?? '--'}
       </Paragraph>
     </Col>
   );
 
-  if (row.rows === 'autoSize' && isTextToObject) {
-    console.log(
-      '当传入的text不是string类型时, 建议使用row={{ rows:1, expend: true }}',
-    );
+  if (row.rows == 'autoSize' && isTextToObject) {
+    console.log('当传入的text不是string类型时, 建议使用row={{ rows:1, expend: true }}');
   }
-  if (row.rows === 'autoSize') return AutoSizeParagraph;
-  if (row.rows > 1 && row.expend === true) return CustomRowExpendParagraph;
+  if (row.rows == 'autoSize') return AutoSizeParagraph;
+  if (row.rows > 1 && row.expend == true) return CustomRowExpendParagraph;
   if (row.rows > 1 && !row.expend) return CustomRowNotExpendParagraph;
   if (isTextToObject) {
     console.log('只有当 row.rows >= 2 的时候才可以配置 row.expend');
@@ -314,11 +317,9 @@ const CustomTooltip: FC<ICustomTooltipProps> = (props) => {
   }
 
   return (
-    <Col span={col}>
-      <Paragraph style={styles} className={ellipsisClassName}>
-        {text && text.length > maxLength
-          ? SingleOverflowParagraph
-          : SingleParagraph}
+    <Col span={col} style={{ display: 'inline-block' }} {...colProps}>
+      <Paragraph style={styles} className={`${ellipsisClassName} ${paragraphClassName}`}>
+        {text && text.length > maxLength ? SingleOverflowParagraph : SingleParagraph}
       </Paragraph>
     </Col>
   );
