@@ -251,9 +251,10 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
   };
 
   renderSummary = (currentData: any[], columns: any[]) => {
-    const hasSelect = this.props.selectType === 'checkbox';
+    const hasSelect = typeof this.props.onSelect === 'function';
     const hasIndex = this.props.showIndex === true;
     const summaryColumns = hasIndex ? columns.slice(1) : columns;
+    summaryColumns.pop();
     const summaryData = currentData?.[0];
     const renderCell = (title = '', index: number, item: any = {}) => {
       return (
@@ -271,11 +272,12 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
       <AntdTable.Summary fixed={this.props.summaryPosition}>
         <AntdTable.Summary.Row>
           <AntdTable.Summary.Cell index={0}>0</AntdTable.Summary.Cell>
-          {renderCell('汇总', 1)}
-          {hasSelect ? renderCell('0', 1) : renderCell('合计', 1)}
+          {hasSelect ? renderCell('-', 0) : renderCell('合计', 1)}
+          {hasSelect ? renderCell('合计', 1) : null}
           {summaryColumns.map(({ dataIndex, ...item }, index) => {
             return renderCell(summaryData?.[dataIndex], index + 2, item);
           })}
+          {renderCell('-', 999)}
         </AntdTable.Summary.Row>
       </AntdTable.Summary>
     );
