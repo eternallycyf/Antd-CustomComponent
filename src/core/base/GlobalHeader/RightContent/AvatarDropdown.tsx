@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { LogoutOutlined } from '@ant-design/icons';
 import { Avatar, MenuProps, Spin } from 'antd';
-import { connect, history, useModel, withRouter, Dispatch } from '@umijs/max';
+import { connect, history, withRouter, Dispatch } from '@umijs/max';
 import { RouteComponentProps } from '@umijs/renderer-react';
 import HeaderDropdown from './HeaderDropdown';
 import styles from '../index.less';

@@ -5,7 +5,6 @@ import {
   MenuFoldOutlined,
   HomeOutlined,
 } from '@ant-design/icons';
-import { useModel } from '@umijs/max';
 import { Dropdown, Tabs, TabsProps } from 'antd';
 import cx from 'classnames';
 import { connect } from 'dva';
@@ -45,8 +44,6 @@ export interface MenuTabsProps {
 }
 
 const MenuTabs: React.FC<MenuTabsProps> = (props) => {
-  const { initialState, loading, error, refresh, setInitialState } =
-    useModel('@@initialState');
   const {
     tabs,
     activeKey,
