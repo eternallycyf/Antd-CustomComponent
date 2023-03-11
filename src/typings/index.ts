@@ -27,7 +27,8 @@ type boolFunc = (config: { form: FormInstance; formData: any; record: any }) => 
 type AnyData = Record<string, unknown>;
 type RenderReturn<TRecord = AnyData> = ReturnType<NonNullable<ColumnType<TRecord>['render']>>;
 type Column<TRecord = AnyData> =
-  | (Omit<ColumnGroupType<TRecord>, 'render'> & {
+  | (Omit<ColumnGroupType<TRecord>, 'render' | 'title'> & {
+      title: ReactNode | (() => ReactNode);
       render?: (value: TRecord, record: TRecord, index: number) => RenderReturn<TRecord>;
     })
   | (ColumnType<TRecord> & {
@@ -50,10 +51,10 @@ export type IColumnsType<T = AnyData> = Columns<T>;
 //#region
 type Search<TRecord = AnyData> =
   | (Omit<FormControl, 'name'> & {
-      name?: keyof TRecord;
+      name: keyof TRecord;
     })
   | (Omit<FormControl, 'name'> & {
-      name?: keyof TRecord;
+      name: keyof TRecord;
       // TODO: 拓展属性
     } & FormControl);
 type Searches<TRecord = AnyData> = Search<TRecord>[];
