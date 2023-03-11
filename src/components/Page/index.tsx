@@ -5,6 +5,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 
 interface IPage {
   loading?: boolean;
+  style?: React.CSSProperties;
   children?: React.ReactNode;
   spinProps?: SpinProps;
   CardProps?: CardProps;
@@ -12,7 +13,7 @@ interface IPage {
 }
 
 const Page: React.FC<IPage> = (props) => {
-  const { loading, children, hasBreadcrumb } = props;
+  const { loading, children, hasBreadcrumb, style } = props;
 
   const cardProps = {
     id: 'container',
@@ -24,6 +25,7 @@ const Page: React.FC<IPage> = (props) => {
       minHeight: 'calc(100vh - 120px)',
       maxHeight: 'calc(100vh - 120px)',
       overflow: 'auto',
+      ...style,
     },
   };
 

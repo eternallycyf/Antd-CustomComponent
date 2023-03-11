@@ -5,10 +5,7 @@ import React, { ReactNode } from 'react';
 import { FormInstance } from 'antd/es/form';
 import { FormListProps } from 'antd/es/form/FormList';
 import { TableColumnType, TableProps } from 'antd';
-import type {
-  FormListFieldData,
-  FormListOperation,
-} from 'antd/es/form/FormList';
+import type { FormListFieldData, FormListOperation } from 'antd/es/form/FormList';
 import {
   IBaseFormControlType,
   IDynamicBaseFormControlType,
@@ -22,23 +19,46 @@ import {
 } from './base';
 import { PaginationProps } from 'antd/lib/pagination';
 import { TableRowSelection } from 'antd/lib/table/interface';
+import { ColumnGroupType, ColumnType } from 'antd/lib/table/interface';
 
+type boolFunc = (config: { form: FormInstance; formData: any; record: any }) => boolean;
+
+//#region
+type AnyData = Record<string, unknown>;
+type RenderReturn<TRecord = AnyData> = ReturnType<NonNullable<ColumnType<TRecord>['render']>>;
+type Column<TRecord = AnyData> =
+  | (Omit<ColumnGroupType<TRecord>, 'render'> & {
+      render?: (value: TRecord, record: TRecord, index: number) => RenderReturn<TRecord>;
+    })
+  | (ColumnType<TRecord> & {
+      dataIndex?: keyof TRecord;
+      render?: <T = TRecord>(value: T, record: TRecord, index: number) => RenderReturn<TRecord>;
+    })
+  | (ColumnType<TRecord> & {
+      // TODO: 拓展属性
+      dataIndex?: keyof TRecord;
+      tooltip?: React.ReactNode;
+      editable?: boolean;
+    });
+// & FormControl
+// 传入泛型 Columns<{ code: string }> 指定dataIndex及render的record类型
+type Columns<TRecord = AnyData> = Column<TRecord>[];
 //表单控件
-type boolFunc = (config: {
-  form: FormInstance;
-  formData: any;
-  record: any;
-}) => boolean;
+export type IColumnsType<T = AnyData> = Columns<T>;
+//#endregion
 
-export type IColumnsType<T = any> = ColumnsType<
-  FormControl & {
-    key: React.Key;
-  } & T
->;
-
-type ISearchMoreProps = FormControl
-
-export type ISearchesType = ISearchMoreProps[];
+//#region
+type Search<TRecord = AnyData> =
+  | (Omit<FormControl, 'name'> & {
+      name?: keyof TRecord;
+    })
+  | (Omit<FormControl, 'name'> & {
+      name?: keyof TRecord;
+      // TODO: 拓展属性
+    } & FormControl);
+type Searches<TRecord = AnyData> = Search<TRecord>[];
+export type ISearchesType<T = AnyData> = Searches<T>;
+//#endregion
 
 //弹窗类型
 export enum ModalType {
@@ -86,17 +106,11 @@ export interface UserInfo<T> {
 export interface IButtonProps extends Omit<ButtonProps, 'onClick'> {
   text: string | ReactNode;
   code?: string;
-  visible?:
-    | boolean
-    | boolFunc
-    | ((field: FormListFieldData, e: Event, index: number) => void);
+  visible?: boolean | boolFunc | ((field: FormListFieldData, e: Event, index: number) => void);
   /**@description 暂时只有Button支持 */
   element?: ReactNode;
   buttonType?: 'delete';
-  onClick?: (
-    record: any,
-    index: number,
-  ) => void | ((field: FormListFieldData, e: Event, index: number) => void);
+  onClick?: (record: any, index: number) => void | ((field: FormListFieldData, e: Event, index: number) => void);
 }
 
 //表格
@@ -123,10 +137,7 @@ export interface ICommonTable<T> extends TableProps<T> {
   /**@description 默认一页多少个*/
   defaultPageSize?: number;
   /**@description 处理data 第一个参数多了index和rowKey */
-  dataHandler?: (
-    data: { index: number; rowKey: string; [props: string]: any },
-    dataSource: any[],
-  ) => any;
+  dataHandler?: (data: { index: number; rowKey: string; [props: string]: any }, dataSource: any[]) => any;
   /**@description 是否使用虚拟列表*/
   isVirtual?: boolean;
   /**@description 虚拟列表固定行 */
