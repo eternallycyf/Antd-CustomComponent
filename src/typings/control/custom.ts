@@ -6,7 +6,6 @@ export interface ICustomProps {
   form: FormInstance;
   id: string;
   label: React.ReactNode;
-  name: string;
   onChange: (value: any) => void;
   prefix: boolean;
   record: any;

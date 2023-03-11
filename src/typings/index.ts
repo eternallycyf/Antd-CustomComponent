@@ -1,65 +1,20 @@
 import { FormItemProps } from 'antd/es/form/FormItem';
-import { ColumnsType, TablePaginationConfig } from 'antd/lib/table';
+import { TablePaginationConfig } from 'antd/lib/table';
 import { ButtonProps } from 'antd/lib/button';
 import React, { ReactNode } from 'react';
 import { FormInstance } from 'antd/es/form';
 import { FormListProps } from 'antd/es/form/FormList';
 import { TableColumnType, TableProps } from 'antd';
-import type { FormListFieldData, FormListOperation } from 'antd/es/form/FormList';
-import {
-  IBaseFormControlType,
-  IDynamicBaseFormControlType,
-  IBaseFormControlProps,
-  IBaseControlProps,
-  IBaseCol,
-  IBaseFormat,
-  IBaseInitialValue,
-  IBaseLayout,
-  IFetchConfig,
-} from './base';
-import { PaginationProps } from 'antd/lib/pagination';
+import type { FormListFieldData } from 'antd/es/form/FormList';
+import { IBaseFormControlType, IBaseCol, IBaseFormat, IBaseInitialValue, IBaseLayout, IFetchConfig } from './base';
 import { TableRowSelection } from 'antd/lib/table/interface';
-import { ColumnGroupType, ColumnType } from 'antd/lib/table/interface';
-
+import type { IBaseColumnsType } from './core/column';
+import { IBaseSearchesType } from './core/form';
+import { IBaseControlProps } from './core/control';
 type boolFunc = (config: { form: FormInstance; formData: any; record: any }) => boolean;
 
-//#region
-type AnyData = Record<string, unknown>;
-type RenderReturn<TRecord = AnyData> = ReturnType<NonNullable<ColumnType<TRecord>['render']>>;
-type Column<TRecord = AnyData> =
-  | (Omit<ColumnGroupType<TRecord>, 'render' | 'title'> & {
-      title: ReactNode | (() => ReactNode);
-      render?: (value: TRecord, record: TRecord, index: number) => RenderReturn<TRecord>;
-    })
-  | (ColumnType<TRecord> & {
-      dataIndex?: keyof TRecord;
-      render?: <T = TRecord>(value: T, record: TRecord, index: number) => RenderReturn<TRecord>;
-    })
-  | (ColumnType<TRecord> & {
-      // TODO: 拓展属性
-      dataIndex?: keyof TRecord;
-      tooltip?: React.ReactNode;
-      editable?: boolean;
-    });
-// & FormControl
-// 传入泛型 Columns<{ code: string }> 指定dataIndex及render的record类型
-type Columns<TRecord = AnyData> = Column<TRecord>[];
-//表单控件
-export type IColumnsType<T = AnyData> = Columns<T>;
-//#endregion
-
-//#region
-type Search<TRecord = AnyData> =
-  | (Omit<FormControl, 'name'> & {
-      name: keyof TRecord;
-    })
-  | (Omit<FormControl, 'name'> & {
-      name: keyof TRecord;
-      // TODO: 拓展属性
-    } & FormControl);
-type Searches<TRecord = AnyData> = Search<TRecord>[];
-export type ISearchesType<T = AnyData> = Searches<T>;
-//#endregion
+export type IColumnsType<T = any> = IBaseColumnsType<T>;
+export type ISearchesType<T = any> = IBaseSearchesType<T>;
 
 //弹窗类型
 export enum ModalType {
@@ -193,10 +148,8 @@ export interface ICommonTable<T> extends TableProps<T> {
   [propName: string]: any;
 }
 
-export interface EditTableProps extends ICommonTable<any> {
-  columns?: (TableColumnType<any> & { editable?: boolean } & {
-    formItemProps?: FormControl;
-  })[];
+export interface EditTableProps extends Omit<TableProps<any>, 'columns'> {
+  columns?: IColumnsType<any>;
   handleFormatRowValues?: (text: string, record: any, index: number) => string;
   formListProps?: FormListProps;
   hasCancelButton?: boolean;
@@ -234,7 +187,7 @@ export interface CustomForm {
 }
 
 /**@description 通用配置 */
-export interface FormControl extends IBaseFormControlProps {
+export interface FormControl {
   /**@description 控件name */
   name: string;
   /**@description 控件名称 */
@@ -284,8 +237,6 @@ export interface FormControl extends IBaseFormControlProps {
   /**description 多余的按钮 */
   otherType?: 'button';
   otherText?: React.ReactNode;
-
-  [props: number]: FormItemProps;
 }
 
 //表単控件属性
@@ -306,5 +257,4 @@ export interface IControlProps extends IBaseControlProps {
     onChange?: (...args: any[]) => any;
     [propName: string]: any;
   }>;
-  [props: string]: any;
 }

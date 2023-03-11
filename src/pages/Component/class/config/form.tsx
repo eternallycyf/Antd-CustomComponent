@@ -19,9 +19,7 @@ const ITEM_PROPS = {
   },
 };
 
-export const getFormList = (
-  self: InstanceType<typeof Activity>,
-): ISearchesType => {
+export const getFormList = (self: InstanceType<typeof Activity>): ISearchesType => {
   return [
     {
       name: 'activityCode',
@@ -89,6 +87,7 @@ export const getFormList = (
       name: 'type',
       label: 'type',
       type: 'select',
+      allowClear: true,
       dict: [
         { text: '满折', value: '0' },
         { text: '满减', value: '1' },

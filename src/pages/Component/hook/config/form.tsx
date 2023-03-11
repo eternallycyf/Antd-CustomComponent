@@ -16,9 +16,7 @@ const ITEM_PROPS = {
   },
 };
 
-export const getFormList = (
-  self: ReturnType<typeof useBaseComponent>,
-): ISearchesType => {
+export const getFormList = (self: ReturnType<typeof useBaseComponent>): ISearchesType => {
   return [
     {
       name: 'activityCode',

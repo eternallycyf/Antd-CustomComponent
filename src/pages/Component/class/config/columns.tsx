@@ -7,9 +7,7 @@ const ACTIVE_TYPE: any = {
   '2': '立减',
 };
 
-export const getColumns = (
-  self: InstanceType<typeof Activity>,
-): IColumnsType => {
+export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType => {
   return [
     {
       dataIndex: 'activityName',

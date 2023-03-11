@@ -14,9 +14,7 @@ export const STATUS_DICT = [
   { text: '立减', value: '2' },
 ];
 
-export const getSearches = (
-  self: InstanceType<typeof Activity>,
-): FormControl[] => {
+export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType => {
   return [
     {
       name: 'activityNameSearch',
@@ -110,9 +108,7 @@ export const getSearches = (
         <div>
           <span style={{ marginRight: 4 }}>month</span>
           <Tooltip title="提示">
-            <QuestionCircleOutlined
-              style={{ marginLeft: 2, fontSize: 12, color: 'rgb(153,153,153)' }}
-            />
+            <QuestionCircleOutlined style={{ marginLeft: 2, fontSize: 12, color: 'rgb(153,153,153)' }} />
             <span style={{ color: 'black', marginLeft: 2 }}>:</span>
           </Tooltip>
         </div>
