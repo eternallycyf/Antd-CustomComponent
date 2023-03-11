@@ -4,7 +4,11 @@ import React, {
   useRef,
   useMemo,
   useCallback,
+  useDeferredValue,
+  Suspense,
+  useTransition,
 } from 'react';
+import { flushSync } from 'react-dom';
 import classNames from 'classnames';
 import Table from './MemoTable';
 import styles from './VirtualScrollTable.less';
@@ -76,12 +80,12 @@ const getRangeBuilder = (fn: any, rowOrColumn: any) => {
   };
 };
 
-export default function VirtualScrollTable(props: any) {
+const VirtualScrollTable = (props: any) => {
   const {
     columns,
     height = 600,
     rowHeight = 40,
-    dataSource: dataSource1 = [],
+    dataSource: dataSourceN = [],
     rowEventHandlers,
     fixRowkeys = [],
     rowKey,
@@ -92,6 +96,8 @@ export default function VirtualScrollTable(props: any) {
     rowClassName,
   } = props;
   const tableRef = useRef(null);
+  const dataSource1 = useDeferredValue(dataSourceN);
+  const [isPending, startTransition] = useTransition();
 
   const dataSource = useMemo(() => {
     return (dataSource1 || []).map((item: any) => {
@@ -312,19 +318,30 @@ export default function VirtualScrollTable(props: any) {
     { scrollbarSize, ref, onScroll, ...a }: any,
     ...b: any
   ) => {
-    const [top, setTop] = useState(0);
-    const [left, setLeft] = useState(0);
-    const [rows, setRows] = useState([]);
-    const [displayColumns, setDisplayColumns] = useState([]);
-    const [pointerEvents, setPointerEvents] = useState('auto');
-    const [activeRowIndex, setActiveRowIndex] = useState(-1);
-    const [hoverRowIndex, setHoverRowIndex] = useState(-1);
-    const [tableScrollTop, setTableScrollTop] = useState(0);
+    const [queryTop, setTop] = useState(0);
+    const [queryLeft, setLeft] = useState(0);
+    const [queryRows, setRows] = useState([]);
+    const [queryDisplayColumns, setDisplayColumns] = useState([]);
+    const [queryPointerEvents, setPointerEvents] = useState('auto');
+    const [queryActiveRowIndex, setActiveRowIndex] = useState(-1);
+    const [queryHoverRowIndex, setHoverRowIndex] = useState(-1);
+    const [queryTableScrollTop, setTableScrollTop] = useState(0);
     const scrollRef = useRef<any>(null);
+
+    const top = useDeferredValue(queryTop);
+    const left = useDeferredValue(queryLeft);
+    const rows = useDeferredValue(queryRows);
+    const displayColumns = useDeferredValue(queryDisplayColumns);
+    const pointerEvents = useDeferredValue(queryPointerEvents);
+    const activeRowIndex = useDeferredValue(queryActiveRowIndex);
+    const hoverRowIndex = useDeferredValue(queryHoverRowIndex);
+    const tableScrollTop = useDeferredValue(queryTableScrollTop);
 
     useEffect(() => {
       setTableData(scrollRef.current);
-      setShadow(scrollRef.current);
+      startTransition(() => {
+        setShadow(scrollRef.current);
+      });
     }, [dataSource, rowNumber, totalHeight, selectedRowKeys]);
 
     // 查询时重置数据
@@ -453,7 +470,9 @@ export default function VirtualScrollTable(props: any) {
       if (getRows(scrollItem, displayColumns)?.length === fixRowkeys?.length) {
         return;
       }
-      setRows(getRows(scrollItem, displayColumns));
+      flushSync(() => {
+        setRows(getRows(scrollItem, displayColumns));
+      });
     };
 
     const setShadow = (scrollItem: any) => {
@@ -515,7 +534,9 @@ export default function VirtualScrollTable(props: any) {
         setPointerEvents('none');
       }
       setPointerEventsDebounce();
-      setActiveRowIndex(-1); // 重置点击
+      startTransition(() => {
+        setActiveRowIndex(-1); // 重置点击
+      });
       const scrollItem = e.target;
       onScroll({ scrollLeft: scrollItem.scrollLeft });
       handleScroll(scrollItem);
@@ -524,7 +545,9 @@ export default function VirtualScrollTable(props: any) {
     const onClick = (rowObj: any) => {
       if (typeof rowEventHandlers?.onclick !== 'function') return;
       rowEventHandlers?.onclick(rowObj);
-      setActiveRowIndex(rowObj.rowIndex);
+      startTransition(() => {
+        setActiveRowIndex(rowObj.rowIndex);
+      });
     };
 
     const calcWidth = (colSpan: any, columns: any, columnIndex: number) => {
@@ -653,77 +676,79 @@ export default function VirtualScrollTable(props: any) {
     };
 
     return (
-      <div
-        className={styles['scroll-container']}
-        onScroll={_.throttle(_onScroll, 60)}
-        style={{ height: height }}
-        ref={scrollRef}
-      >
+      <Suspense fallback={<h2>Loading...</h2>}>
         <div
-          style={{
-            height: totalHeight + 'px',
-            width: totalWidth + 'px',
-            pointerEvents: pointerEvents as any,
-          }}
+          className={styles['scroll-container']}
+          onScroll={_.throttle(_onScroll, 60)}
+          style={{ height: height }}
+          ref={scrollRef}
         >
           <div
-            className={styles['table-content-container']}
             style={{
-              right: rows.length ? 'unset' : 0,
-              top: top + 'px',
-              left: left + 'px',
+              height: totalHeight + 'px',
+              width: totalWidth + 'px',
+              pointerEvents: pointerEvents as any,
             }}
           >
-            {rows.length
-              ? rows.map((row, rowIndex) => (
-                  <tr
-                    className={`
+            <div
+              className={styles['table-content-container']}
+              style={{
+                right: rows.length ? 'unset' : 0,
+                top: top + 'px',
+                left: left + 'px',
+              }}
+            >
+              {rows.length
+                ? rows.map((row, rowIndex) => (
+                    <tr
+                      className={`
                 ${styles['row']}
                 ${rowIndex === activeRowIndex && styles['row-active']}
                 ${fixRowkeys.includes(row[rowKey]) && styles['fix-row-top']}
                 `}
-                    style={getRowStyle(rowIndex)}
-                    key={rowIndex}
-                    onClick={() =>
-                      onClick({ rowKey: rowIndex, rowData: row, rowIndex })
-                    }
-                    onMouseEnter={() => setHoverRowIndex(rowIndex)}
-                    onMouseLeave={() => setHoverRowIndex(-1)}
-                  >
-                    {fixLeftColumnList.map((column, columnIndex) =>
-                      renderCell(
-                        column,
-                        columnIndex,
-                        row,
-                        rowIndex,
-                        fixLeftColumnList,
-                      ),
-                    )}
-                    {displayColumns.map((column, columnIndex) =>
-                      renderCell(
-                        column,
-                        columnIndex,
-                        row,
-                        rowIndex,
-                        displayColumns,
-                      ),
-                    )}
-                    {/* 分开写的目的是为了避免闪屏。由于列数不固定，如果一起写会添加删除dom，固定在右边的列会闪屏 */}
-                    {fixRightColumnList.map((column, columnIndex) =>
-                      renderCell(
-                        column,
-                        columnIndex,
-                        row,
-                        rowIndex,
-                        fixRightColumnList,
-                      ),
-                    )}
-                  </tr>
-                ))
-              : props?.locale?.emptyText}
+                      style={getRowStyle(rowIndex)}
+                      key={rowIndex}
+                      onClick={() =>
+                        onClick({ rowKey: rowIndex, rowData: row, rowIndex })
+                      }
+                      onMouseEnter={() => setHoverRowIndex(rowIndex)}
+                      onMouseLeave={() => setHoverRowIndex(-1)}
+                    >
+                      {fixLeftColumnList.map((column, columnIndex) =>
+                        renderCell(
+                          column,
+                          columnIndex,
+                          row,
+                          rowIndex,
+                          fixLeftColumnList,
+                        ),
+                      )}
+                      {displayColumns.map((column, columnIndex) =>
+                        renderCell(
+                          column,
+                          columnIndex,
+                          row,
+                          rowIndex,
+                          displayColumns,
+                        ),
+                      )}
+                      {/* 分开写的目的是为了避免闪屏。由于列数不固定，如果一起写会添加删除dom，固定在右边的列会闪屏 */}
+                      {fixRightColumnList.map((column, columnIndex) =>
+                        renderCell(
+                          column,
+                          columnIndex,
+                          row,
+                          rowIndex,
+                          fixRightColumnList,
+                        ),
+                      )}
+                    </tr>
+                  ))
+                : props?.locale?.emptyText}
+            </div>
           </div>
         </div>
-      </div>
+      </Suspense>
     );
   };
 
@@ -739,4 +764,6 @@ export default function VirtualScrollTable(props: any) {
       scroll={{ ...props.scroll, scrollToFirstRowOnChange: false }}
     />
   );
-}
+};
+
+export default React.memo(VirtualScrollTable);
