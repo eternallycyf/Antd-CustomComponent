@@ -494,14 +494,14 @@ export default function VirtualScrollTable(props: any) {
       setTop(top);
     };
 
-    const handleScroll = (scrollItem: any) => {
+    const handleScroll = _.throttle((scrollItem: any) => {
       const { scrollTop, scrollLeft, clientHeight } = scrollItem;
       setTableScrollTop(scrollTop);
       setTableData(scrollItem);
       setTopWrapper(scrollTop, clientHeight);
       setLeft(scrollLeft);
       setShadow(scrollItem);
-    };
+    }, 60);
 
     const setPointerEventsDebounce = useCallback(
       debounce(() => {
@@ -655,7 +655,7 @@ export default function VirtualScrollTable(props: any) {
     return (
       <div
         className={styles['scroll-container']}
-        onScroll={_.throttle(_onScroll, 3000)}
+        onScroll={_.throttle(_onScroll, 60)}
         style={{ height: height }}
         ref={scrollRef}
       >
