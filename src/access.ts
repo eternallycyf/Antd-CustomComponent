@@ -6,9 +6,7 @@ export default async (initialState: any) => {
     payload: {},
   });
 
-  const canSeeAdmin = !!(
-    initialState && initialState.name !== 'dontHaveAccess'
-  );
+  const canSeeAdmin = !!(initialState && initialState.name !== 'dontHaveAccess');
 
   return {
     canSeeAdmin,

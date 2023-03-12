@@ -6,10 +6,7 @@ import { IControlProps } from '@/typings';
 const { Option } = Mentions;
 
 const MentionsControl: React.FC<IControlProps> = React.forwardRef(
-  (
-    { form, name, dict = [], onChange, fetchConfig, ...controlProps }: any,
-    ref,
-  ) => {
+  ({ form, name, dict = [], onChange, fetchConfig, ...controlProps }: any, ref) => {
     const { apiUrl, method, params } = fetchConfig;
 
     const [data, setData] = useState(dict);

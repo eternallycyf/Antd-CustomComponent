@@ -7,9 +7,7 @@ const ACTIVE_TYPE: any = {
   '2': '立减',
 };
 
-export const getColumns = (
-  self: ReturnType<typeof useBaseComponent>,
-): IColumnsType => {
+export const getColumns = (self: ReturnType<typeof useBaseComponent>): IColumnsType => {
   return [
     {
       dataIndex: 'activityName',

@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-} from 'react';
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Line } from '@ant-design/plots';
 
 const DemoLine = (props: any, charts: any) => {
@@ -12,9 +6,7 @@ const DemoLine = (props: any, charts: any) => {
   const ref = useRef<any>(null!);
 
   const asyncFetch = () => {
-    fetch(
-      'https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json',
-    )
+    fetch('https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json')
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => {

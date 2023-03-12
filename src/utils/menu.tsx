@@ -63,10 +63,7 @@ export const getFlatMenuKeys = (menus: MenuItem[] = []): string[] => {
  * @param path
  * @returns
  */
-export const getMenuMatches = (
-  flatMenuKeys: string[],
-  path: string,
-): string[] => {
+export const getMenuMatches = (flatMenuKeys: string[], path: string): string[] => {
   return flatMenuKeys.filter((item) => {
     return item ? pathToRegXp(item).test(path) : false;
   });
@@ -90,11 +87,7 @@ export function urlToList(url: string): string[] {
  * @param path
  * @returns
  */
-export function getSubMenus(
-  pathname: string,
-  menus: MenuItem[] = [],
-  path?: string[],
-) {
+export function getSubMenus(pathname: string, menus: MenuItem[] = [], path?: string[]) {
   let newPath = path == undefined ? [] : path;
   let arr: any[] = [];
   menus.map((item) => {
@@ -120,10 +113,7 @@ export function getSubMenus(
  * @param menuList
  * @returns
  */
-export const getDefaultCollapsedSubMenus = (
-  pathName: string,
-  menuList: MenuItem[],
-): string[] => {
+export const getDefaultCollapsedSubMenus = (pathName: string, menuList: MenuItem[]): string[] => {
   const flatMenuKeys = getFlatMenuKeys(menuList);
   return urlToList(pathName)
     .map((item) => getMenuMatches(flatMenuKeys, item)[0])
@@ -149,16 +139,9 @@ export const mergeMenuList = (newMenuList: MenuItem[], routes: any[]) => {
           item.icon = menu.icon;
         }
 
-        if (
-          item.children &&
-          item.children.length &&
-          !_.isEmpty(menu?.children) &&
-          menu?.children.length
-        ) {
+        if (item.children && item.children.length && !_.isEmpty(menu?.children) && menu?.children.length) {
           // 合并隐藏的菜单
-          const hideMenu = menu.routes
-            .filter((item: any) => item.hideInMenu)
-            .filter((i: any) => i);
+          const hideMenu = menu.routes.filter((item: any) => item.hideInMenu).filter((i: any) => i);
           if (item.children) {
             item.children = [...item.children, ...hideMenu];
             merge(item.children, menu.routes);

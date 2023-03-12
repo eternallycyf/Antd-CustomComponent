@@ -78,14 +78,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
 
   // 处理列表columns
   handleColumns = () => {
-    const {
-      itemButton,
-      buttonLen,
-      expandedRowRender,
-      isFixed,
-      openFixed,
-      itemButtonWidth,
-    }: any = this.props;
+    const { itemButton, buttonLen, expandedRowRender, isFixed, openFixed, itemButtonWidth }: any = this.props;
     let columnList: any = this.handleBasicColumns(this.props);
     // 显示行操作项
     if (itemButton && itemButton.length) {
@@ -101,18 +94,11 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
           width,
           key: 'operate',
           title: '操作',
-          fixed: openFixed
-            ? openFixed
-            : expandedRowRender || isFixed
-            ? false
-            : 'right',
+          fixed: openFixed ? openFixed : expandedRowRender || isFixed ? false : 'right',
           render: (text: any, record: any) => {
             const button = itemButton.map((item: any) => {
               const flag =
-                !item.visible ||
-                (item.visible &&
-                  typeof item.visible === 'function' &&
-                  item.visible(record));
+                !item.visible || (item.visible && typeof item.visible === 'function' && item.visible(record));
               if (!flag) {
                 return {
                   text: '-',
@@ -152,19 +138,12 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
                             if (onClick) onClick(record);
                           }}
                         >
-                          <span
-                            onClick={(e: any) => e.stopPropagation()}
-                            {...otherProps}
-                          >
+                          <span onClick={(e: any) => e.stopPropagation()} {...otherProps}>
                             {text}
                           </span>
                         </Popconfirm>
                       ) : (
-                        <span
-                          {...otherProps}
-                          data-code={code}
-                          onClick={(e: any) => onClick && onClick(record, e)}
-                        >
+                        <span {...otherProps} data-code={code} onClick={(e: any) => onClick && onClick(record, e)}>
                           {text}
                         </span>
                       )}
@@ -177,14 +156,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
             return (
               <div className={styles.itemButtonRow}>
                 {mainBtn.map((item: any, index: number) => {
-                  const {
-                    text,
-                    buttonType,
-                    code,
-                    onClick,
-                    visible,
-                    ...otherProps
-                  } = item;
+                  const { text, buttonType, code, onClick, visible, ...otherProps } = item;
                   const button = (
                     <Button
                       {...otherProps}
@@ -223,11 +195,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
                 })}
                 {otherBtn.length ? (
                   <Dropdown menu={menu} overlayClassName={styles.dropdown}>
-                    <Button
-                      size="small"
-                      className={styles.more}
-                      onClick={(e: any) => e.stopPropagation()}
-                    >
+                    <Button size="small" className={styles.more} onClick={(e: any) => e.stopPropagation()}>
                       <DownOutlined onClick={(e: any) => e.stopPropagation()} />
                     </Button>
                   </Dropdown>
@@ -238,10 +206,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
         },
       ];
 
-      columnList =
-        expandedRowRender && !openFixed
-          ? [].concat(column, columnList)
-          : [].concat(columnList, column);
+      columnList = expandedRowRender && !openFixed ? [].concat(column, columnList) : [].concat(columnList, column);
     }
     let columns = formatColumnUtil(columnList);
     if (this.props?.formatColumn) {
@@ -258,12 +223,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
     const summaryData = currentData?.[0];
     const renderCell = (title = '', index: number, item: any = {}) => {
       return (
-        <AntdTable.Summary.Cell
-          key={getUUID()}
-          index={index}
-          align="center"
-          {...item}
-        >
+        <AntdTable.Summary.Cell key={getUUID()} index={index} align="center" {...item}>
           {title}
         </AntdTable.Summary.Cell>
       );
@@ -308,16 +268,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
       ...extraProps
     } = this.props;
     let restProps: any = { ...extraProps };
-    const {
-      loading,
-      height,
-      total,
-      current,
-      pageSize,
-      columns,
-      dataSource,
-      selectedRowkeys,
-    } = this.state;
+    const { loading, height, total, current, pageSize, columns, dataSource, selectedRowkeys } = this.state;
 
     const paging =
       typeof pagination !== 'boolean'
@@ -388,23 +339,13 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
         }}
         size="small"
         initRequest={initRequest}
-        summary={(currentData: any[]) =>
-          this.props.isSummary ? this.renderSummary(currentData, columns) : null
-        }
+        summary={(currentData: any[]) => (this.props.isSummary ? this.renderSummary(currentData, columns) : null)}
         locale={{
           emptyText: (
             <Empty
-              description={
-                !initRequest && requestCount
-                  ? '请选择筛选条件进行查询'
-                  : '暂无数据'
-              }
+              description={!initRequest && requestCount ? '请选择筛选条件进行查询' : '暂无数据'}
               style={{ color: '#b3b8c2', fontSize: 12 }}
-              image={
-                !initRequest && !requestCount
-                  ? Empty.PRESENTED_IMAGE_SIMPLE
-                  : Empty.PRESENTED_IMAGE_SIMPLE
-              }
+              image={!initRequest && !requestCount ? Empty.PRESENTED_IMAGE_SIMPLE : Empty.PRESENTED_IMAGE_SIMPLE}
             />
           ),
         }}
@@ -426,11 +367,7 @@ class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
       </Fragment>
     );
 
-    return draggable ? (
-      <DndProvider backend={HTML5Backend}>{table}</DndProvider>
-    ) : (
-      table
-    );
+    return draggable ? <DndProvider backend={HTML5Backend}>{table}</DndProvider> : table;
   }
 }
 

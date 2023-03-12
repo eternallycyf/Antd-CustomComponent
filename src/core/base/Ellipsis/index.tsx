@@ -24,39 +24,24 @@ const TooltipOverlayStyle = {
 
 const getTooltip = ({ tooltip, overlayStyle, title, children }: any) => {
   if (tooltip) {
-    const props =
-      tooltip === true
-        ? { overlayStyle, title }
-        : { ...tooltip, overlayStyle, title };
+    const props = tooltip === true ? { overlayStyle, title } : { ...tooltip, overlayStyle, title };
     return <Tooltip {...props}>{children}</Tooltip>;
   }
   return children;
 };
 
-const EllipsisText = ({
-  text,
-  length,
-  tooltip,
-  fullWidthRecognition,
-  ...other
-}: any) => {
+const EllipsisText = ({ text, length, tooltip, fullWidthRecognition, ...other }: any) => {
   if (typeof text !== 'string') {
     throw new Error('Ellipsis children must be string.');
   }
-  const textLength = fullWidthRecognition
-    ? getStrFullLength(text)
-    : text.length;
+  const textLength = fullWidthRecognition ? getStrFullLength(text) : text.length;
   if (textLength <= length || length < 0) {
     return <span {...other}>{text}</span>;
   }
 
   const tail = '...';
   const displayText =
-    length - tail.length <= 0
-      ? ''
-      : fullWidthRecognition
-      ? cutStrByFullLength(text, length)
-      : text.slice(0, length);
+    length - tail.length <= 0 ? '' : fullWidthRecognition ? cutStrByFullLength(text, length) : text.slice(0, length);
 
   const spanAttrs = tooltip ? {} : { ...other };
   return getTooltip({
@@ -123,12 +108,8 @@ export default class Ellipsis extends Component<IEllipsisProps, any> {
   computeLine = () => {
     const { lines } = this.props;
     if (lines && !isSupportLineClamp) {
-      const text =
-        this['shadowChildren'].innerText || this['shadowChildren'].textContent;
-      const lineHeight = parseInt(
-        getComputedStyle(this['root']).lineHeight,
-        10,
-      );
+      const text = this['shadowChildren'].innerText || this['shadowChildren'].textContent;
+      const lineHeight = parseInt(getComputedStyle(this['root']).lineHeight, 10);
       const targetHeight = lineHeight * lines;
       this['context'].style.height = `${targetHeight}px`;
       const totalHeight = this['shadowChildren'].offsetHeight;
@@ -184,15 +165,7 @@ export default class Ellipsis extends Component<IEllipsisProps, any> {
 
   render(): React.ReactNode {
     const { text, targetCount } = this.state;
-    const {
-      children,
-      tooltip,
-      length,
-      lines,
-      fullWidthRecognition,
-      className,
-      ...restProps
-    } = this.props;
+    const { children, tooltip, length, lines, fullWidthRecognition, className, ...restProps } = this.props;
 
     const cls = cx(styles.ellipsis, className, {
       [styles.lines]: lines && !isSupportLineClamp,
@@ -220,9 +193,7 @@ export default class Ellipsis extends Component<IEllipsisProps, any> {
       );
     }
 
-    const id = `ellipsis-${`${new Date().getTime()}${Math.floor(
-      Math.random() * 100,
-    )}`}`;
+    const id = `ellipsis-${`${new Date().getTime()}${Math.floor(Math.random() * 100)}`}`;
 
     // support document.body.style.webkitLineClamp
     if (isSupportLineClamp) {

@@ -38,11 +38,7 @@ export default class SizeAndPositionManager {
     this.lastMeasuredIndex = -1;
   }
 
-  updateConfig({
-    itemCount,
-    itemSizeGetter,
-    estimatedItemSize,
-  }: Partial<Options>) {
+  updateConfig({ itemCount, itemSizeGetter, estimatedItemSize }: Partial<Options>) {
     if (itemCount != null) {
       this.itemCount = itemCount;
     }
@@ -66,16 +62,12 @@ export default class SizeAndPositionManager {
    */
   getSizeAndPositionForIndex(index: number) {
     if (index < 0 || index >= this.itemCount) {
-      throw Error(
-        `Requested index ${index} is outside of range 0..${this.itemCount}`,
-      );
+      throw Error(`Requested index ${index} is outside of range 0..${this.itemCount}`);
     }
 
     if (index > this.lastMeasuredIndex) {
-      const lastMeasuredSizeAndPosition =
-        this.getSizeAndPositionOfLastMeasuredItem();
-      let offset =
-        lastMeasuredSizeAndPosition.offset + lastMeasuredSizeAndPosition.size;
+      const lastMeasuredSizeAndPosition = this.getSizeAndPositionOfLastMeasuredItem();
+      let offset = lastMeasuredSizeAndPosition.offset + lastMeasuredSizeAndPosition.size;
 
       for (let i = this.lastMeasuredIndex + 1; i <= index; i++) {
         const size = this.itemSizeGetter(i);
@@ -99,9 +91,7 @@ export default class SizeAndPositionManager {
   }
 
   getSizeAndPositionOfLastMeasuredItem() {
-    return this.lastMeasuredIndex >= 0
-      ? this.itemSizeAndPositionData[this.lastMeasuredIndex]
-      : { offset: 0, size: 0 };
+    return this.lastMeasuredIndex >= 0 ? this.itemSizeAndPositionData[this.lastMeasuredIndex] : { offset: 0, size: 0 };
   }
 
   /**
@@ -110,8 +100,7 @@ export default class SizeAndPositionManager {
    * As items as measured the estimate will be updated.
    */
   getTotalSize(): number {
-    const lastMeasuredSizeAndPosition =
-      this.getSizeAndPositionOfLastMeasuredItem();
+    const lastMeasuredSizeAndPosition = this.getSizeAndPositionOfLastMeasuredItem();
 
     return (
       lastMeasuredSizeAndPosition.offset +
@@ -234,8 +223,7 @@ export default class SizeAndPositionManager {
     // So make sure the offset is at least 0 or no match will be found.
     offset = Math.max(0, offset);
 
-    const lastMeasuredSizeAndPosition =
-      this.getSizeAndPositionOfLastMeasuredItem();
+    const lastMeasuredSizeAndPosition = this.getSizeAndPositionOfLastMeasuredItem();
     const lastMeasuredIndex = Math.max(0, this.lastMeasuredIndex);
 
     if (lastMeasuredSizeAndPosition.offset >= offset) {
@@ -256,15 +244,7 @@ export default class SizeAndPositionManager {
     }
   }
 
-  private binarySearch({
-    low,
-    high,
-    offset,
-  }: {
-    low: number;
-    high: number;
-    offset: number;
-  }) {
+  private binarySearch({ low, high, offset }: { low: number; high: number; offset: number }) {
     let middle = 0;
     let currentOffset = 0;
 
@@ -288,19 +268,10 @@ export default class SizeAndPositionManager {
     return 0;
   }
 
-  private exponentialSearch({
-    index,
-    offset,
-  }: {
-    index: number;
-    offset: number;
-  }) {
+  private exponentialSearch({ index, offset }: { index: number; offset: number }) {
     let interval = 1;
 
-    while (
-      index < this.itemCount &&
-      this.getSizeAndPositionForIndex(index).offset < offset
-    ) {
+    while (index < this.itemCount && this.getSizeAndPositionForIndex(index).offset < offset) {
       index += interval;
       interval *= 2;
     }

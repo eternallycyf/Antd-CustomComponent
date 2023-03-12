@@ -7,12 +7,7 @@ export const ResizableTitle = (props: any) => {
     return <th {...restProps} />;
   }
   return (
-    <Resizable
-      width={width}
-      height={0}
-      onResize={onResize}
-      draggableOpts={{ enableUserSelectHack: false }}
-    >
+    <Resizable width={width} height={0} onResize={onResize} draggableOpts={{ enableUserSelectHack: false }}>
       <th {...restProps} />
     </Resizable>
   );

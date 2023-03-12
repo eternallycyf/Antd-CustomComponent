@@ -119,30 +119,17 @@ export default class VirtualList extends React.PureComponent<Props, State> {
 
   static propTypes = {
     estimatedItemSize: PropTypes.number,
-    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-      .isRequired,
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     itemCount: PropTypes.number.isRequired,
-    itemSize: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.array,
-      PropTypes.func,
-    ]).isRequired,
+    itemSize: PropTypes.oneOfType([PropTypes.number, PropTypes.array, PropTypes.func]).isRequired,
     onScroll: PropTypes.func,
     onItemsRendered: PropTypes.func,
     overscanCount: PropTypes.number,
     renderItem: PropTypes.func.isRequired,
     scrollOffset: PropTypes.number,
     scrollToIndex: PropTypes.number,
-    scrollToAlignment: PropTypes.oneOf([
-      ALIGNMENT.AUTO,
-      ALIGNMENT.START,
-      ALIGNMENT.CENTER,
-      ALIGNMENT.END,
-    ]),
-    scrollDirection: PropTypes.oneOf([
-      DIRECTION.HORIZONTAL,
-      DIRECTION.VERTICAL,
-    ]),
+    scrollToAlignment: PropTypes.oneOf([ALIGNMENT.AUTO, ALIGNMENT.START, ALIGNMENT.CENTER, ALIGNMENT.END]),
+    scrollDirection: PropTypes.oneOf([DIRECTION.HORIZONTAL, DIRECTION.VERTICAL]),
     stickyIndices: PropTypes.arrayOf(PropTypes.number),
     style: PropTypes.object,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -161,8 +148,7 @@ export default class VirtualList extends React.PureComponent<Props, State> {
   readonly state: State = {
     offset:
       this.props.scrollOffset ||
-      (this.props.scrollToIndex != null &&
-        this.getOffsetForIndex(this.props.scrollToIndex)) ||
+      (this.props.scrollToIndex != null && this.getOffsetForIndex(this.props.scrollToIndex)) ||
       0,
     scrollChangeReason: SCROLL_CHANGE_REASON.REQUESTED,
   };
@@ -185,17 +171,9 @@ export default class VirtualList extends React.PureComponent<Props, State> {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    const {
-      estimatedItemSize,
-      itemCount,
-      itemSize,
-      scrollOffset,
-      scrollToAlignment,
-      scrollToIndex,
-    } = this.props;
+    const { estimatedItemSize, itemCount, itemSize, scrollOffset, scrollToAlignment, scrollToIndex } = this.props;
     const scrollPropsHaveChanged =
-      nextProps.scrollToIndex !== scrollToIndex ||
-      nextProps.scrollToAlignment !== scrollToAlignment;
+      nextProps.scrollToIndex !== scrollToIndex || nextProps.scrollToAlignment !== scrollToAlignment;
     const itemPropsHaveChanged =
       nextProps.itemCount !== itemCount ||
       nextProps.itemSize !== itemSize ||
@@ -207,10 +185,7 @@ export default class VirtualList extends React.PureComponent<Props, State> {
       });
     }
 
-    if (
-      nextProps.itemCount !== itemCount ||
-      nextProps.estimatedItemSize !== estimatedItemSize
-    ) {
+    if (nextProps.itemCount !== itemCount || nextProps.estimatedItemSize !== estimatedItemSize) {
       this.sizeAndPositionManager.updateConfig({
         itemCount: nextProps.itemCount,
         estimatedItemSize: this.getEstimatedItemSize(nextProps),
@@ -226,16 +201,9 @@ export default class VirtualList extends React.PureComponent<Props, State> {
         offset: nextProps.scrollOffset || 0,
         scrollChangeReason: SCROLL_CHANGE_REASON.REQUESTED,
       });
-    } else if (
-      typeof nextProps.scrollToIndex === 'number' &&
-      (scrollPropsHaveChanged || itemPropsHaveChanged)
-    ) {
+    } else if (typeof nextProps.scrollToIndex === 'number' && (scrollPropsHaveChanged || itemPropsHaveChanged)) {
       this.setState({
-        offset: this.getOffsetForIndex(
-          nextProps.scrollToIndex,
-          nextProps.scrollToAlignment,
-          nextProps.itemCount,
-        ),
+        offset: this.getOffsetForIndex(nextProps.scrollToIndex, nextProps.scrollToAlignment, nextProps.itemCount),
         scrollChangeReason: SCROLL_CHANGE_REASON.REQUESTED,
       });
     }
@@ -244,10 +212,7 @@ export default class VirtualList extends React.PureComponent<Props, State> {
   componentDidUpdate(_: Props, prevState: State) {
     const { offset, scrollChangeReason } = this.state;
 
-    if (
-      prevState.offset !== offset &&
-      scrollChangeReason === SCROLL_CHANGE_REASON.REQUESTED
-    ) {
+    if (prevState.offset !== offset && scrollChangeReason === SCROLL_CHANGE_REASON.REQUESTED) {
       this.scrollTo(offset);
     }
   }
@@ -370,11 +335,7 @@ export default class VirtualList extends React.PureComponent<Props, State> {
     const { onScroll } = this.props;
     const offset = this.getNodeOffset();
 
-    if (
-      offset < 0 ||
-      this.state.offset === offset ||
-      event.target !== this.rootNode
-    ) {
+    if (offset < 0 || this.state.offset === offset || event.target !== this.rootNode) {
       return;
     }
 
@@ -395,11 +356,7 @@ export default class VirtualList extends React.PureComponent<Props, State> {
   }
 
   private getEstimatedItemSize(props = this.props) {
-    return (
-      props.estimatedItemSize ||
-      (typeof props.itemSize === 'number' && props.itemSize) ||
-      50
-    );
+    return props.estimatedItemSize || (typeof props.itemSize === 'number' && props.itemSize) || 50;
   }
 
   private getSize(index: number, itemSize) {
@@ -418,8 +375,7 @@ export default class VirtualList extends React.PureComponent<Props, State> {
     }
 
     const { scrollDirection = DIRECTION.VERTICAL } = this.props;
-    const { size, offset } =
-      this.sizeAndPositionManager.getSizeAndPositionForIndex(index);
+    const { size, offset } = this.sizeAndPositionManager.getSizeAndPositionForIndex(index);
 
     return (this.styleCache[index] = sticky
       ? {

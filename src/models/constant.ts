@@ -214,9 +214,7 @@ const addAttrToNodes = (tree: any) => {
     if (!item?.code) item.code = item.path;
 
     if (item.children && item.children.length > 0) {
-      const redirectIndex = item.children.findIndex(
-        (item: any) => item?.redirect,
-      );
+      const redirectIndex = item.children.findIndex((item: any) => item?.redirect);
       item.children.forEach((ele: any, index: any) => {
         ele.upperId = item.id;
       });

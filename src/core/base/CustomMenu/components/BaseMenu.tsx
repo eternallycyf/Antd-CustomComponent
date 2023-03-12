@@ -8,11 +8,7 @@ import SubMenu from './SubMenu';
 import { IBaseMenuProps } from '../../SliderMenu/BaseMenu';
 import { getImage, getMenuItemPath } from '@/core/helpers/utils';
 
-const modifyClassForElement = (
-  selectors: string = '',
-  curClass = '',
-  method = 'add',
-) => {
+const modifyClassForElement = (selectors: string = '', curClass = '', method = 'add') => {
   const dom = document.querySelector(selectors)!;
   const className = dom.className || '';
   let classList = className.split(' ');
@@ -23,9 +19,7 @@ const modifyClassForElement = (
     classList = classList.filter((item: string) => item !== curClass);
   }
 
-  const finalClass = classList.reduce(
-    (total: string, next: string) => total + ' ' + next,
-  );
+  const finalClass = classList.reduce((total: string, next: string) => total + ' ' + next);
   dom.className = finalClass;
 };
 
@@ -38,9 +32,7 @@ const getSelectedMenuKeys = ({
   flatMenuKeys: string[];
   openKeys: string[];
 }) => {
-  const keys = urlToList(pathname).map((itemPath) =>
-    getMenuMatches(flatMenuKeys, itemPath).pop(),
-  );
+  const keys = urlToList(pathname).map((itemPath) => getMenuMatches(flatMenuKeys, itemPath).pop());
 
   // if pathname can't match, use the nearest parent's key
   let selectedKeys = keys.filter((key) => key);
@@ -54,36 +46,23 @@ const showContentMask = (e: React.MouseEvent<HTMLDivElement>) => {
   e.stopPropagation();
   e.preventDefault();
 
-  modifyClassForElement(
-    '.core-base-tags-nav-index-tabs',
-    '.core-base-tags-nav-index-showMask',
-    'add',
-  );
+  modifyClassForElement('.core-base-tags-nav-index-tabs', '.core-base-tags-nav-index-showMask', 'add');
 };
 
 const hideContentMask = (e: React.MouseEvent<HTMLDivElement>) => {
   e.stopPropagation();
   e.preventDefault();
-  modifyClassForElement(
-    '.core-base-tags-nav-index-tabs',
-    '.core-base-tags-nav-index-showMask',
-    'remove',
-  );
+  modifyClassForElement('.core-base-tags-nav-index-tabs', '.core-base-tags-nav-index-showMask', 'remove');
 };
 
-const getSelectedClass = (
-  curPath: any = '',
-  selectedPaths: string[] = [],
-): string => {
+const getSelectedClass = (curPath: any = '', selectedPaths: string[] = []): string => {
   const [firstPath] = selectedPaths;
   if (!curPath === !firstPath) {
     return styles.selected;
   }
 
   if (curPath instanceof Array) {
-    const flag = selectedPaths.some((path) =>
-      curPath.some((otherPath) => path === otherPath.path),
-    );
+    const flag = selectedPaths.some((path) => curPath.some((otherPath) => path === otherPath.path));
     return flag ? styles.selected : styles.unselected;
   }
   return '';
@@ -105,11 +84,7 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
     openKeys,
   }) as string[];
 
-  const getListItem = (
-    infos: MenuItemProps,
-    className: string,
-    hasLink = false,
-  ) => {
+  const getListItem = (infos: MenuItemProps, className: string, hasLink = false) => {
     return (
       <List.Item key={`list-item-${infos?.path}`} className={className}>
         {getImage(infos?.code || '')}
@@ -131,18 +106,10 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
     const content = children?.map((item) => {
       if (item.children && children.some((child) => child?.name)) {
         return (
-          <SubMenu
-            className={styles.subMenu}
-            path={item.path}
-            key={item.path || item.name}
-            title={item.name}
-          >
+          <SubMenu className={styles.subMenu} path={item.path} key={item.path || item.name} title={item.name}>
             {/* 三级菜单 */}
             {item?.children?.map((itemChild) => {
-              const subMenuClass = getSelectedClass(
-                itemChild?.path,
-                selectedKeys,
-              );
+              const subMenuClass = getSelectedClass(itemChild?.path, selectedKeys);
               if (!subMenuClass.includes(styles.selected)) {
                 flMenuClass = styles.unselected;
               }
@@ -160,32 +127,21 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
       }
       //  二级菜单
       return (
-        <SubMenu
-          className={styles.subMenu}
-          path={item.path}
-          key={item.path || item.name}
-          title={item.name}
-        ></SubMenu>
+        <SubMenu className={styles.subMenu} path={item.path} key={item.path || item.name} title={item.name}></SubMenu>
       );
     }) as JSX.Element[];
 
     const arr = new Array(2).fill(1);
     const contentWrapper = (
-      <div
-        onMouseOver={showContentMask}
-        onMouseOut={hideContentMask}
-        className={styles.overview}
-      >
+      <div onMouseOver={showContentMask} onMouseOut={hideContentMask} className={styles.overview}>
         {arr.map((_, ind) => (
           <div key={ind}>
-            {handleSubMenu(content, ind + 1 === 3 ? 0 : ind + 1).map(
-              (item: any, index: number) => {
-                if (index === 0) {
-                  return React.cloneElement(item, { type: '1' });
-                }
-                return item;
-              },
-            )}
+            {handleSubMenu(content, ind + 1 === 3 ? 0 : ind + 1).map((item: any, index: number) => {
+              if (index === 0) {
+                return React.cloneElement(item, { type: '1' });
+              }
+              return item;
+            })}
           </div>
         ))}
       </div>
@@ -196,11 +152,7 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
         arrow={false}
         placement="right"
         key={infos.path || infos.name}
-        getPopupContainer={() =>
-          document.getElementsByClassName(
-            'core-base-tags-nav-index-tabs',
-          )[0] as HTMLElement
-        }
+        getPopupContainer={() => document.getElementsByClassName('core-base-tags-nav-index-tabs')[0] as HTMLElement}
         content={contentWrapper}
       >
         {getListItem(infos, styles.unselected)}
@@ -210,9 +162,7 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
   };
 
   const handleSubMenu = (content: JSX.Element[], count: number) => {
-    return content.filter(
-      (_item: JSX.Element, ind: number) => (ind + 1) % 3 === count,
-    );
+    return content.filter((_item: JSX.Element, ind: number) => (ind + 1) % 3 === count);
   };
 
   const getSubMenuOrItem = (item: MenuItemProps) => {

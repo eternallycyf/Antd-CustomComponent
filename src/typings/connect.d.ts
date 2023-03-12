@@ -22,8 +22,7 @@ export interface ConnectState {
 /**
  * @type T: Params matched in dynamic routing
  */
-export interface ConnectProps<P extends { [K in keyof P]?: string } = any>
-  extends Partial<History> {
+export interface ConnectProps<P extends { [K in keyof P]?: string } = any> extends Partial<History> {
   dispatch?: Dispatch;
 }
 

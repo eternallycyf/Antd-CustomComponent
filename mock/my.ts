@@ -45,11 +45,7 @@ export default {
                 activityCode: '@guid',
                 activityName: MockSearchKey(req, 'activityName', '@ctitle'),
                 type: req.query?.activityType,
-                [`activityType|${MockSearchKey(
-                  req,
-                  'activityType',
-                  '0-2',
-                )}`]: 1,
+                [`activityType|${MockSearchKey(req, 'activityType', '0-2')}`]: 1,
                 activityStartTime: '@datetime',
                 activityEndTime: '@datetime',
                 'activityStatus|0-2': 1,

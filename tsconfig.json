@@ -22,13 +22,6 @@
     "suppressImplicitAnyIndexErrors": true,
     "experimentalDecorators": true
   },
-  "include": [
-    "./typings/*.ts",
-    "mock/**/*",
-    "src/**/*",
-    "config/**/*",
-    ".umirc.ts",
-    "typings.d.ts"
-  ],
+  "include": ["./typings/*.ts", "mock/**/*", "src/**/*", "config/**/*", ".umirc.ts", "typings.d.ts"],
   "exclude": ["node_modules", "jest"]
 }

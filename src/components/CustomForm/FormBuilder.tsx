@@ -7,13 +7,9 @@ import { getFieldComp } from '@/core/helpers';
 import styles from './index.less';
 
 const FormItem = Form.Item;
-const PlainComp = ({
-  className,
-  children,
-}: {
-  className: string;
-  children: React.ReactNode;
-}) => <div className={className}>{children}</div>;
+const PlainComp = ({ className, children }: { className: string; children: React.ReactNode }) => (
+  <div className={className}>{children}</div>
+);
 
 // 行内元素默认宽度
 const defaultInlineWidth = {
@@ -58,13 +54,7 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
   };
 
   // 表单属性设置
-  const formProps = [
-    'hideRequiredMark',
-    'labelAlign',
-    'colon',
-    'labelCol',
-    'wrapperCo1',
-  ].reduce((prev: any, next) => {
+  const formProps = ['hideRequiredMark', 'labelAlign', 'colon', 'labelCol', 'wrapperCo1'].reduce((prev: any, next) => {
     if (otherProps[next]) {
       prev[next] = otherProps[next];
       delete otherProps[next];
@@ -161,20 +151,9 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
       } else if (type !== 'grid') {
         layout = {};
       }
-      const { hide, disabled } = statusJudge(
-        field.hide,
-        field.disabled,
-        field.condition,
-      );
+      const { hide, disabled } = statusJudge(field.hide, field.disabled, field.condition);
       // 构造formProps
-      const {
-        itemProps,
-        controlProps,
-        name,
-        otherType,
-        otherText,
-        ...restProps
-      } = field;
+      const { itemProps, controlProps, name, otherType, otherText, ...restProps } = field;
       const fieldType = field.type || 'input';
       const myControlProps = {
         ...controlProps,
@@ -192,22 +171,14 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
       };
 
       if (type === 'inline') {
-        fieldProps.width =
-          fieldProps.width ||
-          (defaultInlineWidth as any)[fieldType] ||
-          defaultInlineWidth.default;
+        fieldProps.width = fieldProps.width || (defaultInlineWidth as any)[fieldType] || defaultInlineWidth.default;
       }
 
       if (hide) return null;
 
       return (
         <ComponentCol key={`col-${i}`} className={styles['col-item']} {...col}>
-          <FormItem
-            className={styles.item}
-            {...layout}
-            {...itemProps}
-            label={field.label}
-          >
+          <FormItem className={styles.item} {...layout} {...itemProps} label={field.label}>
             {getFieldComp(fieldProps)}
             {otherType && (
               <span className="ant-form-text">
@@ -258,24 +229,16 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
       })}
 
       {children
-        ? React.Children.map(
-            children as any,
-            (child: React.ReactElement<any>, index) => {
-              return React.cloneElement(child, {
-                size: child.props.size || 'small',
-              });
-            },
-          )
+        ? React.Children.map(children as any, (child: React.ReactElement<any>, index) => {
+            return React.cloneElement(child, {
+              size: child.props.size || 'small',
+            });
+          })
         : null}
 
       {modalType === ModalType.normal && (
         <ComponentCol className={cx(styles['form-btn'])}>
-          <Button
-            title="提交"
-            type="primary"
-            htmlType="submit"
-            loading={loading}
-          >
+          <Button title="提交" type="primary" htmlType="submit" loading={loading}>
             提交
           </Button>
           <Button title="重置" htmlType="button" onClick={onReset}>
@@ -288,12 +251,7 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
           <Button title="取消" onClick={onCancel} style={{ marginRight: 8 }}>
             取消
           </Button>
-          <Button
-            title="提交"
-            type="primary"
-            htmlType="submit"
-            loading={loading}
-          >
+          <Button title="提交" type="primary" htmlType="submit" loading={loading}>
             提交
           </Button>
         </ComponentCol>

@@ -32,11 +32,7 @@ const DEFAULT_OBSERVE_PARAMS = {
   subtree: true, // 是否将观察器应用于该节点的所有后代节点
 };
 
-const initHeightParams = (
-  wrapClassStr: string,
-  buttonRow: any,
-  pagination: any,
-) => {
+const initHeightParams = (wrapClassStr: string, buttonRow: any, pagination: any) => {
   const container: any = document.querySelector(wrapClassStr);
   const theadHeight = container?.querySelector('.ant-table-thead').clientHeight;
   const containerHeight = container?.clientHeight - 32;
@@ -68,17 +64,12 @@ const handleColumns = (columns: any[]) => {
     }
     return {
       ...item,
-      sortDirection: item.sorter
-        ? item.sortDirections || ['descend', 'ascend']
-        : undefined,
+      sortDirection: item.sorter ? item.sortDirections || ['descend', 'ascend'] : undefined,
     };
   });
 };
 
-class BaseTable<
-  P extends ICommonTable<any>,
-  S extends IBaseTableState,
-> extends React.PureComponent<P, S> {
+class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends React.PureComponent<P, S> {
   protected observer: any;
   protected components: any = {};
   protected heightParams!: { container: any; height: number };
@@ -86,11 +77,7 @@ class BaseTable<
   componentDidMount() {
     const { calcHeight, wrapClassStr, button, pagination }: any = this.props;
     if (calcHeight) {
-      this.heightParams = initHeightParams(
-        wrapClassStr,
-        renderBtn(button),
-        pagination,
-      );
+      this.heightParams = initHeightParams(wrapClassStr, renderBtn(button), pagination);
       this.handleTableHeight();
     }
   }
@@ -134,36 +121,17 @@ class BaseTable<
 
   // 请求数据
   loadData = async (isReset: boolean = false) => {
-    const {
-      loading,
-      sorter,
-      filters,
-      current,
-      pageSize,
-      requestCount = 0,
-    } = this.state;
+    const { loading, sorter, filters, current, pageSize, requestCount = 0 } = this.state;
     const { extraParams } = this.props;
-    const {
-      urls,
-      recordKey,
-      fetchMethod,
-      searchParams,
-      dataHandler,
-      rowKey,
-      isSummary,
-      dataPath,
-      totalPath,
-    }: any = this.props;
+    const { urls, recordKey, fetchMethod, searchParams, dataHandler, rowKey, isSummary, dataPath, totalPath }: any =
+      this.props;
 
     if (!(urls && urls.listUrl)) return;
     if (loading) return;
 
     this.setState({ loading: true });
     try {
-      const action =
-        (fetchMethod && fetchMethod.toLocaleLowerCase()) === 'get'
-          ? getAction
-          : postAction;
+      const action = (fetchMethod && fetchMethod.toLocaleLowerCase()) === 'get' ? getAction : postAction;
       const currentPage = isReset ? 1 : current;
       const result = await action(urls.listUrl, {
         page: currentPage,
@@ -175,9 +143,7 @@ class BaseTable<
       });
       const data = dataPath ? _.get(result, dataPath) : result.data;
       const rows = Array.isArray(data) ? data : data[recordKey];
-      const total = totalPath
-        ? _.get(result, totalPath)
-        : data.totalCount || data.total || rows.length;
+      const total = totalPath ? _.get(result, totalPath) : data.totalCount || data.total || rows.length;
       // dataSource 数据处理
       let dataSource = (rows || []).map((item: any, index: number) => ({
         ...item,
@@ -202,13 +168,7 @@ class BaseTable<
   };
 
   handleBasicColumns = (props: any) => {
-    const {
-      showIndex,
-      columns = [],
-      resizable,
-      draggable,
-      editable,
-    }: any = props || this.props;
+    const { showIndex, columns = [], resizable, draggable, editable }: any = props || this.props;
     const { dev } = this.state;
     let columnList = handleColumns(columns);
     //展示序号
@@ -223,11 +183,7 @@ class BaseTable<
         },
         columnList,
       );
-      columnList[0]['fixed'] = columnList.some(
-        (item) => item['fixed'] === 'left',
-      )
-        ? 'left'
-        : null;
+      columnList[0]['fixed'] = columnList.some((item) => item['fixed'] === 'left') ? 'left' : null;
     }
 
     //表格列是否可伸缩
@@ -313,8 +269,7 @@ class BaseTable<
 
   // 表格change
   handleTableChange = async (pagination: any, filters: any, sorter: any) => {
-    const { field, column: { sorterFn = null, isRefresh = true } = {} } =
-      sorter;
+    const { field, column: { sorterFn = null, isRefresh = true } = {} } = sorter;
     const { current, pageSize } = pagination;
     const order = (sorter.order === 'ascend' && 'asc') || 'desc';
     const sort =
@@ -331,12 +286,7 @@ class BaseTable<
         current,
         pageSize,
         filters,
-        sorter:
-          order && sort
-            ? sorterFn
-              ? sorterFn(field, order)
-              : { order, sort }
-            : {},
+        sorter: order && sort ? (sorterFn ? sorterFn(field, order) : { order, sort }) : {},
       },
       () => {
         if (isRefresh) this.loadData();
@@ -363,9 +313,7 @@ class BaseTable<
     if (selectedRowkeys.length > selectedRows.length) {
       const partialSelectedRowKeys = selectedRows.map((row) => row.rowKey);
       const leftRows = stateRows.filter(
-        (row) =>
-          selectedRowkeys.indexOf(row.rowKey) >= 0 &&
-          partialSelectedRowKeys.indexOf(row.rowKey) < 0,
+        (row) => selectedRowkeys.indexOf(row.rowKey) >= 0 && partialSelectedRowKeys.indexOf(row.rowKey) < 0,
       );
       resultRows = leftRows.concat(selectedRows);
     } else {

@@ -226,28 +226,17 @@ form .has-feedback .ant-input-affix-wrapper .ant-input-suffix {
 form .has-feedback .ant-input-affix-wrapper .ant-input {
   padding-right: 49px;
 }
-form
-  .has-feedback
-  .ant-input-affix-wrapper.ant-input-affix-wrapper-input-with-clear-btn
-  .ant-input {
+form .has-feedback .ant-input-affix-wrapper.ant-input-affix-wrapper-input-with-clear-btn .ant-input {
   padding-right: 68px;
 }
 form .has-feedback > .ant-select .ant-select-arrow,
 form .has-feedback > .ant-select .ant-select-selection__clear,
 form .has-feedback :not(.ant-input-group-addon) > .ant-select .ant-select-arrow,
-form
-  .has-feedback
-  :not(.ant-input-group-addon)
-  > .ant-select
-  .ant-select-selection__clear {
+form .has-feedback :not(.ant-input-group-addon) > .ant-select .ant-select-selection__clear {
   right: 28px;
 }
 form .has-feedback > .ant-select .ant-select-selection-selected-value,
-form
-  .has-feedback
-  :not(.ant-input-group-addon)
-  > .ant-select
-  .ant-select-selection-selected-value {
+form .has-feedback :not(.ant-input-group-addon) > .ant-select .ant-select-selection-selected-value {
   padding-right: 42px;
 }
 form .has-feedback .ant-cascader-picker-arrow {
@@ -256,10 +245,7 @@ form .has-feedback .ant-cascader-picker-arrow {
 form .has-feedback .ant-cascader-picker-clear {
   right: 28px;
 }
-form
-  .has-feedback
-  .ant-input-search:not(.ant-input-search-enter-button)
-  .ant-input-suffix {
+form .has-feedback .ant-input-search:not(.ant-input-search-enter-button) .ant-input-suffix {
   right: 28px;
 }
 form .has-feedback .ant-calendar-picker-icon,
@@ -551,9 +537,7 @@ form .ant-input-group-wrapper {
 .ant-legacy-form-inline .ant-legacy-form-item-with-help {
   margin-bottom: 24px;
 }
-.ant-legacy-form-inline
-  .ant-legacy-form-item
-  > .ant-legacy-form-item-control-wrapper,
+.ant-legacy-form-inline .ant-legacy-form-item > .ant-legacy-form-item-control-wrapper,
 .ant-legacy-form-inline .ant-legacy-form-item > .ant-legacy-form-item-label {
   display: inline-block;
   vertical-align: top;
@@ -601,31 +585,19 @@ form .ant-input-group-wrapper {
   color: #faad14;
 }
 .has-warning :not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
+.has-warning :not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+.has-warning :not(.ant-input-disabled):not(.ant-input-borderless).ant-input:hover,
 .has-warning
-  :not(.ant-input-affix-wrapper-disabled):not(
-    .ant-input-affix-wrapper-borderless
-  ).ant-input-affix-wrapper,
-.has-warning
-  :not(.ant-input-disabled):not(.ant-input-borderless).ant-input:hover,
-.has-warning
-  :not(.ant-input-affix-wrapper-disabled):not(
-    .ant-input-affix-wrapper-borderless
-  ).ant-input-affix-wrapper:hover {
+  :not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
   border-color: #faad14;
   background-color: #fff;
 }
+.has-warning :not(.ant-input-disabled):not(.ant-input-borderless).ant-input:focus,
 .has-warning
-  :not(.ant-input-disabled):not(.ant-input-borderless).ant-input:focus,
+  :not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:focus,
+.has-warning :not(.ant-input-disabled):not(.ant-input-borderless).ant-input-focused,
 .has-warning
-  :not(.ant-input-affix-wrapper-disabled):not(
-    .ant-input-affix-wrapper-borderless
-  ).ant-input-affix-wrapper:focus,
-.has-warning
-  :not(.ant-input-disabled):not(.ant-input-borderless).ant-input-focused,
-.has-warning
-  :not(.ant-input-affix-wrapper-disabled):not(
-    .ant-input-affix-wrapper-borderless
-  ).ant-input-affix-wrapper-focused {
+  :not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper-focused {
   outline: 0;
   border-color: #40a9ff;
   border-right-width: 1px !important;
@@ -683,9 +655,7 @@ form .ant-input-group-wrapper {
   border-right-width: 1px !important;
   box-shadow: 0 0 0 2px rgba(250, 173, 20, 0.2);
 }
-.has-warning
-  .ant-input-affix-wrapper:hover
-  .ant-input:not(.ant-input-disabled) {
+.has-warning .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
   border-color: #faad14;
 }
 .has-warning .ant-input-prefix {
@@ -762,29 +732,19 @@ form .ant-input-group-wrapper {
   color: #ff4d4f;
 }
 .has-error :not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
-.has-error
-  :not(.ant-input-affix-wrapper-disabled):not(
-    .ant-input-affix-wrapper-borderless
-  ).ant-input-affix-wrapper,
+.has-error :not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
 .has-error :not(.ant-input-disabled):not(.ant-input-borderless).ant-input:hover,
 .has-error
-  :not(.ant-input-affix-wrapper-disabled):not(
-    .ant-input-affix-wrapper-borderless
-  ).ant-input-affix-wrapper:hover {
+  :not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
   border-color: #ff4d4f;
   background-color: #fff;
 }
 .has-error :not(.ant-input-disabled):not(.ant-input-borderless).ant-input:focus,
 .has-error
-  :not(.ant-input-affix-wrapper-disabled):not(
-    .ant-input-affix-wrapper-borderless
-  ).ant-input-affix-wrapper:focus,
+  :not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:focus,
+.has-error :not(.ant-input-disabled):not(.ant-input-borderless).ant-input-focused,
 .has-error
-  :not(.ant-input-disabled):not(.ant-input-borderless).ant-input-focused,
-.has-error
-  :not(.ant-input-affix-wrapper-disabled):not(
-    .ant-input-affix-wrapper-borderless
-  ).ant-input-affix-wrapper-focused {
+  :not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper-focused {
   outline: 0;
   border-color: #40a9ff;
   border-right-width: 1px !important;
@@ -908,9 +868,7 @@ form .ant-input-group-wrapper {
 .has-error .ant-mention-wrapper .ant-mention-editor:not([disabled]):hover {
   border-color: #ff4d4f;
 }
-.has-error
-  .ant-mention-wrapper.ant-mention-active:not([disabled])
-  .ant-mention-editor,
+.has-error .ant-mention-wrapper.ant-mention-active:not([disabled]) .ant-mention-editor,
 .has-error .ant-mention-wrapper .ant-mention-editor:not([disabled]):focus {
   outline: 0;
   border-color: #40a9ff;
@@ -1169,9 +1127,7 @@ textarea.ant-mention-wrapper .ant-mention-editor {
   border-right-width: 1px !important;
   box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
 }
-.ant-input-rtl
-  .ant-mention-wrapper.ant-mention-active:not(.disabled)
-  .ant-mention-editor {
+.ant-input-rtl .ant-mention-wrapper.ant-mention-active:not(.disabled) .ant-mention-editor {
   border-right-width: 0;
   border-left-width: 1px !important;
 }
@@ -1191,9 +1147,7 @@ textarea.ant-mention-wrapper .ant-mention-editor {
   position: absolute;
   pointer-events: none;
 }
-.ant-mention-wrapper
-  .public-DraftEditorPlaceholder-root
-  .public-DraftEditorPlaceholder-inner {
+.ant-mention-wrapper .public-DraftEditorPlaceholder-root .public-DraftEditorPlaceholder-inner {
   padding: 5px 11px;
   height: auto;
   outline: none;
@@ -1222,8 +1176,7 @@ textarea.ant-mention-wrapper .ant-mention-editor {
   outline: none;
   border-radius: 2px;
   background-color: #fff;
-  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
-    0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
   color: rgba(0, 0, 0, 0.85);
   list-style: none;
   font-variant: tabular-nums;

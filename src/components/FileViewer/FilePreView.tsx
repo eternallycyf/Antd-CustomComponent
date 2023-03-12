@@ -2,26 +2,11 @@ import React, { PureComponent } from 'react';
 import { Modal, message } from 'antd';
 import FileView from './FileView';
 import { ExcelRenderer } from 'react-excel-renderer';
-const txtFileTypes = [
-  'txt',
-  'json',
-  'js',
-  'css',
-  'java',
-  'py',
-  'html',
-  'jsx',
-  'ts',
-  'tsx',
-  'xml',
-  'md',
-  'log',
-];
+const txtFileTypes = ['txt', 'json', 'js', 'css', 'java', 'py', 'html', 'jsx', 'ts', 'tsx', 'xml', 'md', 'log'];
 const fileAllTypes = ['docx', 'xlsx', 'png', 'jpg', 'pdf', ...txtFileTypes];
 class FilePreView extends PureComponent<any, any> {
   protected pdfViewRef: React.RefObject<any> = React.createRef();
-  protected previewWrapperRef: React.RefObject<HTMLDivElement> =
-    React.createRef();
+  protected previewWrapperRef: React.RefObject<HTMLDivElement> = React.createRef();
   constructor(props: any) {
     super(props);
     this.state = {
@@ -34,11 +19,7 @@ class FilePreView extends PureComponent<any, any> {
     };
   }
   //显隐状态的改变
-  controlIsShow = (params: {
-    src?: string;
-    base64?: string;
-    originFileObj?: any;
-  }) => {
+  controlIsShow = (params: { src?: string; base64?: string; originFileObj?: any }) => {
     const { modalVisible } = this.state;
     const { src, base64, originFileObj } = params;
     const { name } = originFileObj;

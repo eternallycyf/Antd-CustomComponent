@@ -50,15 +50,7 @@ export interface ITableHeader {
 export interface IStyleAttr {
   color?: string;
   fontSize?: number;
-  horizontal?:
-    | 'fill'
-    | 'distributed'
-    | 'justify'
-    | 'center'
-    | 'left'
-    | 'right'
-    | 'centerContinuous'
-    | undefined;
+  horizontal?: 'fill' | 'distributed' | 'justify' | 'center' | 'left' | 'right' | 'centerContinuous' | undefined;
   bold?: boolean;
 }
 
@@ -85,9 +77,7 @@ export function downloadExcel(params: IDownloadExcel) {
 export async function downloadFiles2Zip(params: IDownloadFiles2Zip) {
   const zip = new JsZip();
   // 待每个文件都写入完之后再生成 zip 文件
-  const promises = params?.files?.map(
-    async (param) => await handleEachFile(param, zip, ''),
-  );
+  const promises = params?.files?.map(async (param) => await handleEachFile(param, zip, ''));
   await Promise.all(promises);
   zip.generateAsync({ type: 'blob' }).then((blob) => {
     saveAs(blob, `${params.zipName}.zip`);
@@ -98,13 +88,9 @@ export async function downloadFiles2Zip(params: IDownloadFiles2Zip) {
  * 导出支持多级文件夹的压缩包
  * @param params
  */
-export async function downloadFiles2ZipWithFolder(
-  params: IDownloadFiles2ZipWithFolder,
-) {
+export async function downloadFiles2ZipWithFolder(params: IDownloadFiles2ZipWithFolder) {
   const zip = new JsZip();
-  const outPromises = params?.folders?.map(
-    async (folder) => await handleFolder(zip, folder),
-  );
+  const outPromises = params?.folders?.map(async (folder) => await handleFolder(zip, folder));
   await Promise.all(outPromises);
   zip.generateAsync({ type: 'blob' }).then((blob) => {
     saveAs(blob, `${params.zipName}.zip`);
@@ -114,17 +100,11 @@ export async function downloadFiles2ZipWithFolder(
 async function handleFolder(zip: JsZip, folder: IFolder) {
   console.log({ folder });
   const folderPromises: Promise<any>[] = [];
-  const promises = folder?.files?.map(
-    async (param) => await handleEachFile(param, zip, folder.folderName),
-  );
+  const promises = folder?.files?.map(async (param) => await handleEachFile(param, zip, folder.folderName));
   await Promise.all([...promises, ...folderPromises]);
 }
 
-async function handleEachFile(
-  param: IDownloadExcel,
-  zip: JsZip,
-  folderName: string,
-) {
+async function handleEachFile(param: IDownloadExcel, zip: JsZip, folderName: string) {
   // 创建工作簿
   const workbook = new ExcelJs.Workbook();
   param?.sheets?.forEach((sheet) => handleEachSheet(workbook, sheet));
@@ -170,9 +150,7 @@ export function handleHeader(worksheet: Worksheet) {
   const headerRow = worksheet.getRow(1);
   headerRow.height = 22;
   // 通过 cell 设置样式，更精准
-  headerRow.eachCell((cell) =>
-    addCellStyle(cell, { fontSize: 12, horizontal: 'center' }),
-  );
+  headerRow.eachCell((cell) => addCellStyle(cell, { fontSize: 12, horizontal: 'center' }));
 }
 
 export function handleData(worksheet: Worksheet, sheet: ISheet) {
@@ -262,10 +240,7 @@ export function generateHeaders(columns: any[]) {
       // 用于数据匹配的 key
       key: col.dataIndex,
       // 列宽
-      width:
-        col.width / 5 > DEFAULT_COLUMN_WIDTH
-          ? col.width / 5
-          : DEFAULT_COLUMN_WIDTH,
+      width: col.width / 5 > DEFAULT_COLUMN_WIDTH ? col.width / 5 : DEFAULT_COLUMN_WIDTH,
     };
     if (col.children) {
       obj.children = col.children?.map((item: any) => ({
@@ -344,12 +319,7 @@ export function mergeColumnCell(
       );
     } else if (shouldVerticalMerge && !shouldHorizontalMerge) {
       // 只在垂直方向上同一列的两行合并
-      worksheet.mergeCells(
-        Number(rowHeader1.number),
-        index + 1,
-        Number(rowHeader2.number),
-        index + 1,
-      );
+      worksheet.mergeCells(Number(rowHeader1.number), index + 1, Number(rowHeader2.number), index + 1);
     } else if (!shouldVerticalMerge && shouldHorizontalMerge) {
       // 只有水平方向同一行的多列合并
       worksheet.mergeCells(
@@ -366,11 +336,7 @@ export function mergeColumnCell(
 }
 
 // 行合并单元格
-export function mergeRowCell(
-  headers: ITableHeader[],
-  row: Row,
-  worksheet: Worksheet,
-) {
+export function mergeRowCell(headers: ITableHeader[], row: Row, worksheet: Worksheet) {
   // 当前列的索引
   let colIndex = 1;
   headers.forEach((header) => {
@@ -384,24 +350,14 @@ export function mergeRowCell(
       const colNum = getColumnNumber(width);
       // 如果 colNum > 1 说明需要合并
       if (colNum > 1) {
-        worksheet.mergeCells(
-          Number(row.number),
-          colIndex,
-          Number(row.number),
-          colIndex + colNum - 1,
-        );
+        worksheet.mergeCells(Number(row.number), colIndex, Number(row.number), colIndex + colNum - 1);
       }
       colIndex += colNum;
     }
   });
 }
 
-export function addDataTable(
-  dataSource: any[],
-  worksheet: Worksheet,
-  headerKeys: string[],
-  headers: ITableHeader[],
-) {
+export function addDataTable(dataSource: any[], worksheet: Worksheet, headerKeys: string[], headers: ITableHeader[]) {
   dataSource?.forEach((item: any) => {
     const rowData = headerKeys?.map((key) => item[key]);
     const row = worksheet.addRow(rowData);

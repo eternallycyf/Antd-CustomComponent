@@ -1,17 +1,6 @@
 import React, { useImperativeHandle } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
-import {
-  AutoComplete,
-  Checkbox,
-  DatePicker,
-  Input,
-  InputNumber,
-  Radio,
-  Rate,
-  Slider,
-  Switch,
-  TimePicker,
-} from 'antd';
+import { AutoComplete, Checkbox, DatePicker, Input, InputNumber, Radio, Rate, Slider, Switch, TimePicker } from 'antd';
 import 'dayjs/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import { IControlProps } from '@/typings';
@@ -28,18 +17,7 @@ interface ISimpleControlProps extends IControlProps {
 }
 
 const SimpleControl: React.FC<ISimpleControlProps> = React.forwardRef(
-  (
-    {
-      name,
-      form,
-      type,
-      dict,
-      defaultVal,
-      Component: CustomComponent,
-      ...newControlProps
-    }: any,
-    ref,
-  ) => {
+  ({ name, form, type, dict, defaultVal, Component: CustomComponent, ...newControlProps }: any, ref) => {
     let Component: any;
     let controlProps = { ...newControlProps } || {};
 
@@ -101,8 +79,7 @@ const SimpleControl: React.FC<ISimpleControlProps> = React.forwardRef(
         <AutoComplete {...controlProps}>
           {dict.map((dic: any) => (
             <AutoComplete.Option {...dic} key={dic.value} value={dic.value}>
-              {(controlProps.renderItem && controlProps.renderItem(dic)) ||
-                dic.text}{' '}
+              {(controlProps.renderItem && controlProps.renderItem(dic)) || dic.text}{' '}
             </AutoComplete.Option>
           ))}
         </AutoComplete>
@@ -125,12 +102,7 @@ const SimpleControl: React.FC<ISimpleControlProps> = React.forwardRef(
       return (
         <RadioGroup {...controlProps}>
           {dict.map((dic: any) => (
-            <RadioComp
-              {...dic}
-              key={dic.value}
-              value={dic.value}
-              title={dic.text}
-            >
+            <RadioComp {...dic} key={dic.value} value={dic.value} title={dic.text}>
               {dic.text}
             </RadioComp>
           ))}
@@ -138,8 +110,7 @@ const SimpleControl: React.FC<ISimpleControlProps> = React.forwardRef(
       );
     } else {
       const { transform, inputNumber, ...restControlProps } = controlProps;
-      const restSwitchProps =
-        type === 'switch' ? { transform: transform + '' } : {};
+      const restSwitchProps = type === 'switch' ? { transform: transform + '' } : {};
       const inputnumberProps = { inputnumber: inputNumber };
 
       return (

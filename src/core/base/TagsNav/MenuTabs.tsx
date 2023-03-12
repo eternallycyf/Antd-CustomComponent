@@ -1,10 +1,6 @@
 import projectConfig from '@/config/projectConfig';
 import { ConnectState } from '@/typings/connect';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  HomeOutlined,
-} from '@ant-design/icons';
+import { MenuUnfoldOutlined, MenuFoldOutlined, HomeOutlined } from '@ant-design/icons';
 import { Dropdown, Tabs, TabsProps } from 'antd';
 import cx from 'classnames';
 import { connect } from 'dva';
@@ -58,10 +54,7 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
     collapsed,
   } = props;
 
-  const handleTabEdit = (
-    targetKey: React.MouseEvent | React.KeyboardEvent | string,
-    action: 'add' | 'remove',
-  ) => {
+  const handleTabEdit = (targetKey: React.MouseEvent | React.KeyboardEvent | string, action: 'add' | 'remove') => {
     if (action === 'remove' && typeof targetKey === 'string') {
       onRemove(targetKey);
     }
@@ -115,11 +108,7 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
           trigger={['contextMenu']}
         >
           <div className={cx(styles.tabTitle)}>
-            {key === homePagePath ? (
-              <HomeOutlined className={styles['icon-home']} />
-            ) : (
-              tab
-            )}
+            {key === homePagePath ? <HomeOutlined className={styles['icon-home']} /> : tab}
           </div>
         </Dropdown>
       </div>
@@ -146,17 +135,9 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
       onEdit={handleTabEdit}
       tabBarExtraContent={{
         left: collapsed ? (
-          <MenuUnfoldOutlined
-            className={styles.icon}
-            onClick={handleMenuCollapse}
-            style={{ padding: '0 10px' }}
-          />
+          <MenuUnfoldOutlined className={styles.icon} onClick={handleMenuCollapse} style={{ padding: '0 10px' }} />
         ) : (
-          <MenuFoldOutlined
-            className={styles.icon}
-            onClick={handleMenuCollapse}
-            style={{ padding: '0 10px' }}
-          />
+          <MenuFoldOutlined className={styles.icon} onClick={handleMenuCollapse} style={{ padding: '0 10px' }} />
         ),
       }}
       items={tabs.map((item, index) => ({

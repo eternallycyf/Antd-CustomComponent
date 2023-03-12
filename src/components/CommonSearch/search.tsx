@@ -1,12 +1,7 @@
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import _ from 'lodash';
 import cx from 'classnames';
-import {
-  ReloadOutlined,
-  SearchOutlined,
-  DownOutlined,
-  UpOutlined,
-} from '@ant-design/icons';
+import { ReloadOutlined, SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import { Button, Col, Row, Form } from 'antd';
 import { getFieldComp } from '@/core/helpers';
 import { IToolTipTagProps } from './index';
@@ -23,14 +18,7 @@ export interface ISearchProps extends IToolTipTagProps {
 }
 
 const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
-  const {
-    formList,
-    showSearchBtn = true,
-    showResetBtn = true,
-    columnNumber,
-    children,
-    handleResetCallback,
-  } = props;
+  const { formList, showSearchBtn = true, showResetBtn = true, columnNumber, children, handleResetCallback } = props;
   const [form] = Form.useForm();
   const [state, setState] = useState({
     expandForm: props.expandForm,
@@ -76,18 +64,15 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
       }
 
       if (sourceItem.type === 'date') {
-        data[key] =
-          (format && value.format(format)) || value.format(dateFormat);
+        data[key] = (format && value.format(format)) || value.format(dateFormat);
       }
 
       if (sourceItem.type === 'year') {
-        data[key] =
-          (format && value.format(format)) || value.format(yearFormat);
+        data[key] = (format && value.format(format)) || value.format(yearFormat);
       }
 
       if (sourceItem.type === 'quarter') {
-        data[key] =
-          (format && value.format(format)) || value.format(quarterFormat);
+        data[key] = (format && value.format(format)) || value.format(quarterFormat);
       }
 
       if (sourceItem.type === 'dateRange') {
@@ -95,17 +80,14 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
         if (!startTime || !endTime) return;
 
         const [startTimeKey, endTimeKey] = key.split(',');
-        data[startTimeKey] =
-          (format && startTime.format(format)) || startTime.format(dateFormat);
-        data[endTimeKey] =
-          (format && endTime.format(format)) || endTime.format(dateFormat);
+        data[startTimeKey] = (format && startTime.format(format)) || startTime.format(dateFormat);
+        data[endTimeKey] = (format && endTime.format(format)) || endTime.format(dateFormat);
 
         delete data[key];
       }
 
       if (sourceItem.type === 'month') {
-        data[key] =
-          (format && value.format(format)) || value.format(monthFormat);
+        data[key] = (format && value.format(format)) || value.format(monthFormat);
       }
 
       if (sourceItem.type === 'monthRange') {
@@ -191,14 +173,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
    * @param field
    */
   const renderFormItem = (field: any) => {
-    const {
-      name,
-      type,
-      initialValue,
-      formFieldProps,
-      controlProps,
-      ...otherProps
-    } = field;
+    const { name, type, initialValue, formFieldProps, controlProps, ...otherProps } = field;
 
     const myControlProps = {
       ...controlProps,
@@ -224,13 +199,10 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
   const onFieldsChange = (changedFields: any, allFields: any) => {
     const { handleTagList, showToolTipTag } = props as any;
     if (showToolTipTag) {
-      const changedValues = Object.values(changedFields).reduce(
-        (prev: any, curr: any) => {
-          prev[curr.name] = curr.value;
-          return prev;
-        },
-        {},
-      );
+      const changedValues = Object.values(changedFields).reduce((prev: any, curr: any) => {
+        prev[curr.name] = curr.value;
+        return prev;
+      }, {});
       handleTagList(changedValues, allFields);
     }
   };
@@ -243,22 +215,9 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
   const isOneLine = formListLength <= (columnNumber as any);
 
   return (
-    <div
-      className={cx('searchWrap', styles.searchWrap)}
-      style={{ border: (isOneLine as any) && undefined }}
-    >
-      <Form
-        onFieldsChange={onFieldsChange}
-        layout="inline"
-        form={form}
-        onFinish={handleSubmit}
-        className={styles.form}
-      >
-        <Row
-          align="middle"
-          gutter={{ md: 4, lg: 12, xl: 24 }}
-          style={{ flex: 1 }}
-        >
+    <div className={cx('searchWrap', styles.searchWrap)} style={{ border: (isOneLine as any) && undefined }}>
+      <Form onFieldsChange={onFieldsChange} layout="inline" form={form} onFinish={handleSubmit} className={styles.form}>
+        <Row align="middle" gutter={{ md: 4, lg: 12, xl: 24 }} style={{ flex: 1 }}>
           {formList.map((field, index) => (
             <Col
               key={field.name}
@@ -278,23 +237,12 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
         </Row>
         <Row style={{ margin: '8px 0 5px 10px' }}>
           {showSearchBtn && (
-            <Button
-              type="primary"
-              htmlType="submit"
-              size="small"
-              icon={<SearchOutlined />}
-              style={{ marginRight: 10 }}
-            >
+            <Button type="primary" htmlType="submit" size="small" icon={<SearchOutlined />} style={{ marginRight: 10 }}>
               查询
             </Button>
           )}
           {showResetBtn ? (
-            <Button
-              size="small"
-              htmlType="button"
-              icon={<ReloadOutlined />}
-              onClick={handleReset}
-            >
+            <Button size="small" htmlType="button" icon={<ReloadOutlined />} onClick={handleReset}>
               重置
             </Button>
           ) : null}
@@ -302,10 +250,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
       </Form>
       {children}
       {!isOneLine ? (
-        <a
-          onClick={toggleForm}
-          className={cx(styles.toggleForm, !expandForm && styles.expand)}
-        >
+        <a onClick={toggleForm} className={cx(styles.toggleForm, !expandForm && styles.expand)}>
           {expandForm ? '展开' : '收起'}
           {expandForm ? <DownOutlined /> : <UpOutlined />}
         </a>

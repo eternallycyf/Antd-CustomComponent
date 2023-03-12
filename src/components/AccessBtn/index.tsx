@@ -43,33 +43,24 @@ const AccessBtn: React.FC<IProps> = (props) => {
     });
 
     const childrenList =
-      React.Children.map(
-        children as any,
-        (child: React.ReactElement<any>, index) => {
-          if (!child) return null;
+      React.Children.map(children as any, (child: React.ReactElement<any>, index) => {
+        if (!child) return null;
 
-          const hasPerm =
-            !child.props['data-code'] ||
-            accessCodeList.indexOf(child.props['data-code']) !== -1;
-          if (hasPerm) {
-            const key = child.props['data-code'] || index;
-            return React.cloneElement(child, {
-              key,
-              size: child.props.size || 'small',
-            });
-          }
-          return null;
-        },
-      ) || [];
+        const hasPerm = !child.props['data-code'] || accessCodeList.indexOf(child.props['data-code']) !== -1;
+        if (hasPerm) {
+          const key = child.props['data-code'] || index;
+          return React.cloneElement(child, {
+            key,
+            size: child.props.size || 'small',
+          });
+        }
+        return null;
+      }) || [];
 
     return [...btnEleList, ...childrenList].filter((item) => item);
   };
 
-  return type === 'ButtonGroup' ? (
-    <Button.Group>{button}</Button.Group>
-  ) : (
-    <Fragment>{button}</Fragment>
-  );
+  return type === 'ButtonGroup' ? <Button.Group>{button}</Button.Group> : <Fragment>{button}</Fragment>;
 };
 
 export default React.memo(

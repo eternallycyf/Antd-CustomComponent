@@ -7,10 +7,7 @@ import styles from './index.less';
 export const renderBtn = (button: any) => {
   if (!button || !button.length) return null;
   const filterButton = button.filter((item: any) => {
-    return (
-      !item.visible ||
-      (item.visible && typeof item.visible === 'function' && item.visible())
-    );
+    return !item.visible || (item.visible && typeof item.visible === 'function' && item.visible());
   });
 
   const [buttonList, otherList] = filterButton.reduce(
@@ -41,9 +38,7 @@ interface ITableBtnProps {
 class TableBtn extends React.PureComponent<ITableBtnProps, any> {
   render() {
     const { button } = this.props;
-    return button && button.length > 0 ? (
-      <div className={cx(styles.buttonRow)}>{renderBtn(button)}</div>
-    ) : null;
+    return button && button.length > 0 ? <div className={cx(styles.buttonRow)}>{renderBtn(button)}</div> : null;
   }
 }
 

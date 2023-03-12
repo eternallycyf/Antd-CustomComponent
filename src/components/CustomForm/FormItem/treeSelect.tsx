@@ -24,14 +24,7 @@ const treeSelectControl: React.FC<ISelectTree> = React.forwardRef(
     }: any,
     ref,
   ) => {
-    const {
-      apiUrl,
-      method = 'post',
-      params,
-      searchKey = 'search',
-      dataPath = 'data',
-      initDictFn,
-    } = fetchConfig;
+    const { apiUrl, method = 'post', params, searchKey = 'search', dataPath = 'data', initDictFn } = fetchConfig;
 
     const [treeData, setTreeData] = useState(treeList);
 
@@ -53,9 +46,7 @@ const treeSelectControl: React.FC<ISelectTree> = React.forwardRef(
         if (treeDataSimpleMode) setTreeData(_.get(res, dataPath) || []);
         if (!treeDataSimpleMode) {
           const dataSource = _.get(res, dataPath) || [];
-          const treeData = !formatRootId
-            ? dataSource
-            : arrayToTree(dataSource, formatRootId) || [];
+          const treeData = !formatRootId ? dataSource : arrayToTree(dataSource, formatRootId) || [];
           setTreeData(treeData);
         }
       } catch (e) {

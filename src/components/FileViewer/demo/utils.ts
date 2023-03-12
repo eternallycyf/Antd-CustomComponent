@@ -14,11 +14,7 @@ export function exportFile(url: string, params: any) {
  * @param options
  * @param callback
  */
-export const handleDownload = (
-  searchParams: any,
-  options = { url: '', fileName: '' },
-  callback?: () => void,
-) => {
+export const handleDownload = (searchParams: any, options = { url: '', fileName: '' }, callback?: () => void) => {
   exportFile(options.url, searchParams).then((response: any) => {
     response.blob().then((blob: Blob) => {
       if (response.status === 200) {

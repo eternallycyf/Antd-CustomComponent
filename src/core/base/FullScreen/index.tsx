@@ -16,8 +16,7 @@ declare const document: Document & {
 };
 
 const FullScreen: React.FC<any> = () => {
-  const showFullScreenBtn: boolean =
-    window.navigator.userAgent.indexOf('MSIE') < 0;
+  const showFullScreenBtn: boolean = window.navigator.userAgent.indexOf('MSIE') < 0;
   const [fullScreen, setFullScreen] = useState<boolean>(false);
   const main = document.body as any;
 

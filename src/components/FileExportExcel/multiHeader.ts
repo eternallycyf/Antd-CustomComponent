@@ -86,21 +86,14 @@ export function onExportMultiHeaderExcel(
       horizontal: 'left',
       wrapText: true,
     };
-    worksheet.getCell(
-      'A3',
-    ).value = `                                             ${slash?.left}\n     ${slash?.right}`;
+    worksheet.getCell('A3').value = `                                             ${slash?.left}\n     ${slash?.right}`;
   }
 
   // 导出excel
   saveWorkbook(workbook, `${fileName}.xlsx`);
 }
 
-function handleHeader(
-  worksheet: Worksheet,
-  headers: ITableHeader[],
-  names1: string[],
-  names2: string[],
-) {
+function handleHeader(worksheet: Worksheet, headers: ITableHeader[], names1: string[], names2: string[]) {
   // 判断是否有 children, 有的话是两行表头
   const isMultiHeader = headers?.some((item) => item.children);
   if (isMultiHeader) {

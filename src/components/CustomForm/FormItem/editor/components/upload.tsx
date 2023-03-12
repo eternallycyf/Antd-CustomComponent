@@ -16,10 +16,7 @@ import { ExtendControlType } from 'braft-editor';
 //   form.setFieldsValue({ [name]: content });
 // };
 
-const uploadControl = (
-  editor: any,
-  { form, name, uploadHandler }: any,
-): ExtendControlType => ({
+const uploadControl = (editor: any, { form, name, uploadHandler }: any): ExtendControlType => ({
   key: 'uploader',
   type: 'component',
   component: (
@@ -30,11 +27,7 @@ const uploadControl = (
       customRequest={uploadHandler}
     >
       {/* 这里的按钮最好加上 type='button' 避免在表单容器中触发表单提交 用antd的Button组件无需如此 */}
-      <button
-        type="button"
-        className="control-item button upload-button"
-        data-title="插入图片"
-      >
+      <button type="button" className="control-item button upload-button" data-title="插入图片">
         <PictureFilled />
       </button>
     </Upload>

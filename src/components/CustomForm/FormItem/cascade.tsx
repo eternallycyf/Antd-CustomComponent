@@ -27,10 +27,7 @@ const CascadeControl: React.FC<IControlProps> = React.forwardRef(
 CascadeControl.defaultProps = {
   // @ts-ignore
   showSearch: (inputValue: any, path: any) => {
-    return path.some(
-      (option: any) =>
-        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1,
-    );
+    return path.some((option: any) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
   },
 };
 

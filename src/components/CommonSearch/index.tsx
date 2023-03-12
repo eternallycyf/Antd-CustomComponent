@@ -32,10 +32,7 @@ interface ISearchRef {
   formatSubmitValues: (values: any) => void;
 }
 
-const TooltipTag: React.ForwardRefRenderFunction<
-  IHandle,
-  Omit<IToolTipTagProps, 'form'>
-> = (props, ref) => {
+const TooltipTag: React.ForwardRefRenderFunction<IHandle, Omit<IToolTipTagProps, 'form'>> = (props, ref) => {
   const {
     showToolTipTag = true,
     formList,
@@ -97,9 +94,7 @@ const TooltipTag: React.ForwardRefRenderFunction<
           if (Array.isArray(value)) {
             const [valueFirst, valueLast] = value;
             if (valueFirst) {
-              value =
-                valueFirst.format(format || 'YYYY-MM-DD') +
-                valueLast.format(format || 'YYYY-MM-DD');
+              value = valueFirst.format(format || 'YYYY-MM-DD') + valueLast.format(format || 'YYYY-MM-DD');
             } else {
               value = undefined;
             }
@@ -124,17 +119,11 @@ const TooltipTag: React.ForwardRefRenderFunction<
             { text: '是', value: true },
             { text: '否', value: false },
           ]);
-          let selectRow = dict.find(
-            (item: { [x: string]: any }) =>
-              String(item['value']) === String(value),
-          );
+          let selectRow = dict.find((item: { [x: string]: any }) => String(item['value']) === String(value));
           value = _.get(selectRow, 'text', value);
           break;
         case 'checkbox':
-          const item = changedField.dict.find(
-            (item: { [x: string]: any }) =>
-              String(item['value']) === String(value),
-          );
+          const item = changedField.dict.find((item: { [x: string]: any }) => String(item['value']) === String(value));
           value = _.get(item, 'text', value);
         default:
       }
@@ -156,10 +145,7 @@ const TooltipTag: React.ForwardRefRenderFunction<
   };
 
   // 删除tag
-  const handleDeleteTag = (
-    { name, itemValue }: { name: string; itemValue: string },
-    index: string | number,
-  ) => {
+  const handleDeleteTag = ({ name, itemValue }: { name: string; itemValue: string }, index: string | number) => {
     if (checkBoxStatus) {
       return handleDeleteTagCallback(name, itemValue);
     }

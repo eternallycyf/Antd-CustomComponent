@@ -120,9 +120,7 @@ const FileExport = () => {
         </Button>
         <div className={styles.word}>
           <h1 className={styles.title}>word文档</h1>
-          <p className="content">
-            8月3日，中国人民解放军东部战区在台岛周边海空域组织实战化联合演训。
-          </p>
+          <p className="content">8月3日，中国人民解放军东部战区在台岛周边海空域组织实战化联合演训。</p>
           <p className="content">
             今天上午，东部战区空军出动预警机、歼击机、轰炸机等多型先进战机，从多机场战斗起飞、到多空域执行任务，开展预警指挥、干扰压制、兵力进压等。东部战区海军在台岛周边海域开展联合封控和联合对陆对海打击等多课目针对性演练
           </p>

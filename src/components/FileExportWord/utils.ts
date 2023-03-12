@@ -3,10 +3,7 @@ import PizZip from 'pizzip';
 import JSZipUtils from 'jszip-utils';
 import { saveAs } from 'file-saver';
 
-const path =
-  process.env.NODE_ENV === 'development'
-    ? `./word.docx`
-    : `/Antd-CustomComponent/word.docx`;
+const path = process.env.NODE_ENV === 'development' ? `./word.docx` : `/Antd-CustomComponent/word.docx`;
 
 /**
  * description： 导出echarts图片，格式转换
@@ -78,8 +75,7 @@ export function exportWord(title: string, contentWord: object) {
     // 生成一个代表docxtemplater对象的zip文件（不是一个真实的文件，而是在内存中的表示）
     const out = doc.getZip().generate({
       type: 'blob',
-      mimeType:
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
     // 将目标文件对象保存为目标类型的文件，并命名
     saveAs(out, title + '.docx');

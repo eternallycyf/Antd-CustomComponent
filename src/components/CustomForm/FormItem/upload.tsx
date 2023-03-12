@@ -81,12 +81,7 @@ const UploadControl: React.FC<IUploadProps> = React.forwardRef(
           message.error(`请上传大小在 ${maxFileSize}MB 以内的文件`);
           reject(file);
         }
-        if (
-          fileTypes.every(
-            (type: any) =>
-              file.name.toLowerCase().indexof(type.toLowerCase()) === -1,
-          )
-        ) {
+        if (fileTypes.every((type: any) => file.name.toLowerCase().indexof(type.toLowerCase()) === -1)) {
           message.error(`请上传符合要求的文件`);
           reject(file);
         }
@@ -124,11 +119,7 @@ const UploadControl: React.FC<IUploadProps> = React.forwardRef(
         </Upload>
         <Modal open={previewVisible} footer={null} onCancel={handleCancel}>
           {' '}
-          <img
-            alt="preview"
-            style={{ width: '100%' }}
-            src={previewImage}
-          />{' '}
+          <img alt="preview" style={{ width: '100%' }} src={previewImage} />{' '}
         </Modal>
       </Fragment>
     );

@@ -21,11 +21,7 @@ const SubMenu: FC<ISubmenuProps> = (props) => {
 
   return (
     <div className={className} style={{ marginTop: type === '1' ? 0 : 32 }}>
-      <div
-        className={styles.title}
-        onClick={handleClick}
-        style={{ cursor: 'pointer' }}
-      >
+      <div className={styles.title} onClick={handleClick} style={{ cursor: 'pointer' }}>
         {title}
         <div className={styles.divider}></div>
       </div>

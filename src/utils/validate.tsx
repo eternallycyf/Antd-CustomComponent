@@ -29,12 +29,7 @@ export default class FormRules {
     return typeof value === 'string' && value.length ? Number(value) : void 0;
   }
 
-  private static formatMessageByLimit(
-    min?: number,
-    max?: number,
-    type: string = '',
-    unit: string = '',
-  ): string {
+  private static formatMessageByLimit(min?: number, max?: number, type: string = '', unit: string = ''): string {
     const existMin = typeof min === 'number';
     const existMax = typeof max === 'number';
     let message: string;
@@ -82,14 +77,9 @@ export default class FormRules {
     return this;
   }
 
-  public string(
-    min?: number,
-    max?: number,
-    newMessage: string = '',
-  ): FormRules {
+  public string(min?: number, max?: number, newMessage: string = ''): FormRules {
     let message = newMessage;
-    message =
-      message || FormRules.formatMessageByLimit(min, max, '字符串', '长度');
+    message = message || FormRules.formatMessageByLimit(min, max, '字符串', '长度');
     this.rules.push({
       type: FormRuleType.string,
       min,
@@ -124,11 +114,7 @@ export default class FormRules {
     return this;
   }
 
-  public number(
-    min?: number,
-    max?: number,
-    newMessage: string = '',
-  ): FormRules {
+  public number(min?: number, max?: number, newMessage: string = ''): FormRules {
     let message = newMessage;
     message = message || FormRules.formatMessageByLimit(min, max, '数字', '值');
     this.rules.push({
@@ -179,9 +165,7 @@ export default class FormRules {
     return this;
   }
 
-  public callback<T extends Error>(
-    func: (value: any, field: string) => T | T[] | void,
-  ): FormRules {
+  public callback<T extends Error>(func: (value: any, field: string) => T | T[] | void): FormRules {
     this.rules.push({
       validator: (rule: any, value, callback) => {
         const errors: T | T[] | void = func(value, rule.field);

@@ -15,9 +15,7 @@ const ITEM_PROPS = {
     marginBottom: 0,
   },
 };
-export const getOtherFormList = (
-  self: ReturnType<typeof useBaseComponent>,
-): ISearchesType => {
+export const getOtherFormList = (self: ReturnType<typeof useBaseComponent>): ISearchesType => {
   // return getFormList(self).map((item) => ({ ...item, layout }));
   return [
     {

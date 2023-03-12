@@ -26,22 +26,12 @@ export const shouldRoutePageUpdate = (nextProps: any, thisProps: any) => {
 
   if (!_.isEqual(nextRest, thisRest)) return false;
 
-  const {
-    pathname: nextPathname,
-    search: nextSearch,
-    state: nextState,
-  } = nextLocation || {};
+  const { pathname: nextPathname, search: nextSearch, state: nextState } = nextLocation || {};
 
-  const {
-    pathname: thisPathname,
-    search: thisSearch,
-    state: thisState,
-  } = thisLocation || {};
+  const { pathname: thisPathname, search: thisSearch, state: thisState } = thisLocation || {};
 
   const isLocationChange =
-    nextPathname !== thisPathname ||
-    nextSearch !== thisSearch ||
-    !_.isEqual(nextState, thisState);
+    nextPathname !== thisPathname || nextSearch !== thisSearch || !_.isEqual(nextState, thisState);
 
   if (isLocationChange) return false;
   return true;
@@ -58,9 +48,7 @@ export function withRoutePage<Wrapper = React.ComponentClass<any>>(
     return <WrappedComponent {...props} />;
   }, shouldRoutePageUpdate);
 
-  WithRoutePage.displayName = `WithRoutePage(${getDisplayName(
-    WrappedComponent,
-  )})`;
+  WithRoutePage.displayName = `WithRoutePage(${getDisplayName(WrappedComponent)})`;
 
   return WithRoutePage as Wrapper;
 }

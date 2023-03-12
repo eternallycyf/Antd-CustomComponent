@@ -33,11 +33,7 @@ interface IProps {
   ref?: any;
   formList: FormControl[];
   formatValues?: formatValuesType;
-  handleFieldsChange?: (
-    changedFields: any,
-    allFields: any,
-    form: FormInstance,
-  ) => void;
+  handleFieldsChange?: (changedFields: any, allFields: any, form: FormInstance) => void;
   otherRender?: () => React.ReactNode;
   onCancel?: () => void;
   otherClick?: () => void;
@@ -62,10 +58,7 @@ type IHandle = {
   handleCancel: () => void;
 };
 
-const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (
-  props,
-  ref,
-) => {
+const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) => {
   let { modalConf } = props;
   const {
     title,
@@ -132,9 +125,7 @@ const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (
     const values = form.getFieldsValue();
     form.validateFields().then(async () => {
       setLoading(true);
-      const data = formatValues
-        ? formatValues(values, record, isEdit ? 'edit_submit' : 'add_submit')
-        : values;
+      const data = formatValues ? formatValues(values, record, isEdit ? 'edit_submit' : 'add_submit') : values;
       const { action, callback, failCallback, completeCallback } = onSubmit;
       try {
         const res = _.isString(action)
@@ -142,9 +133,7 @@ const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (
           : await action(data, isEdit);
         if (res.code === 200) {
           const chinesePattern: RegExp = /^[\u4e00-\u9fa5]+$/;
-          const messageStr: string = chinesePattern.test(res.msg)
-            ? res.msg
-            : '操作成功';
+          const messageStr: string = chinesePattern.test(res.msg) ? res.msg : '操作成功';
           message.success(messageStr);
           if (_.isFunction(callback)) callback();
           handleCancel();
@@ -153,8 +142,7 @@ const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (
           if (failCallback && _.isFunction(failCallback)) failCallback();
         }
         setLoading(false);
-        if (completeCallback && _.isFunction(completeCallback))
-          completeCallback();
+        if (completeCallback && _.isFunction(completeCallback)) completeCallback();
       } catch (e) {
         setLoading(false);
       }
@@ -203,17 +191,10 @@ const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (
   }
 
   if (!visible && modalType) return null;
-  const modalTitle: string | undefined = isShowTitlePrefix
-    ? `${isEdit ? '编辑' : '新增'} ${title}`
-    : title;
+  const modalTitle: string | undefined = isShowTitlePrefix ? `${isEdit ? '编辑' : '新增'} ${title}` : title;
 
   return modalType && modalType !== ModalType.normal ? (
-    <Component
-      title={modalTitle}
-      open={visible}
-      destroyOnClose={true}
-      {...modalConf}
-    >
+    <Component title={modalTitle} open={visible} destroyOnClose={true} {...modalConf}>
       {formBuilder}
       {otherRender && otherRender()}
     </Component>

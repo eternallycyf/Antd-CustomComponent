@@ -81,24 +81,9 @@ export default () => (
   <Row gutter={10}>
     <CustomTooltip text={TEXT} copyable col={3} maxLength={3} />
     <CustomTooltip text={TEXT} copyable col={3} row={{ rows: 'autoSize' }} />
-    <CustomTooltip
-      text={TEXT}
-      copyable
-      col={4}
-      row={{ rows: 3, expend: true }}
-    />
-    <CustomTooltip
-      text={TEXT}
-      copyable
-      col={5}
-      row={{ rows: 3, expend: false }}
-    />
-    <CustomTooltip
-      text={TEXT}
-      copyable
-      col={6}
-      row={{ rows: 'autoSize', EllipsisSymbol: false }}
-    />
+    <CustomTooltip text={TEXT} copyable col={4} row={{ rows: 3, expend: true }} />
+    <CustomTooltip text={TEXT} copyable col={5} row={{ rows: 3, expend: false }} />
+    <CustomTooltip text={TEXT} copyable col={6} row={{ rows: 'autoSize', EllipsisSymbol: false }} />
   </Row>
 );
 ```

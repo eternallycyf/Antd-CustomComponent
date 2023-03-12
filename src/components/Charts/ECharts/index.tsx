@@ -6,10 +6,7 @@ interface IHandle {
   ref: echarts.ECharts;
 }
 
-const ReactEChart: React.ForwardRefRenderFunction<
-  IHandle,
-  EChartsReactProps
-> = (props, echartsRef: any) => {
+const ReactEChart: React.ForwardRefRenderFunction<IHandle, EChartsReactProps> = (props, echartsRef: any) => {
   const { option, ...restProps } = props;
   const ref = useRef<any>(null!);
   useImperativeHandle(echartsRef, () => ({

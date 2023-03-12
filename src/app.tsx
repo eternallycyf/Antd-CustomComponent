@@ -17,21 +17,14 @@ const persistConfig = {
 /**
  * 引入redux-persist持久化
  */
-const persistEnhancer =
-  () =>
-  (createStore: any) =>
-  (reducer: any, initialState: any, enhancer: any) => {
-    const store = createStore(
-      persistReducer(persistConfig, reducer),
-      initialState,
-      enhancer,
-    );
-    const persist = persistStore(store, null);
-    return {
-      ...store,
-      persist,
-    };
+const persistEnhancer = () => (createStore: any) => (reducer: any, initialState: any, enhancer: any) => {
+  const store = createStore(persistReducer(persistConfig, reducer), initialState, enhancer);
+  const persist = persistStore(store, null);
+  return {
+    ...store,
+    persist,
   };
+};
 
 export const dva = {
   config: {

@@ -6,13 +6,7 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Col, Form, FormItemProps, message, Row } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
 import dayjs from 'dayjs';
-import React, {
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import styles from './index.less';
 
 function addArrayIndex(arr: any[]) {
@@ -40,28 +34,12 @@ type IHandle = {
 
 export const EditableContext = React.createContext<ICommonTable<any>>({});
 
-const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
-  props,
-  ref: any,
-) => {
+const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (props, ref: any) => {
   //#region
   const [editingKey, setEditingKey] = useState<string>('');
   const tableRef = React.useRef<any>(null!);
-  const {
-    col = 24,
-    name = 'EditRow',
-    value: initialValue = [],
-    tableProps,
-    handleAddCallback,
-    ...restProps
-  } = props;
-  const {
-    columns = [],
-    formListProps,
-    rowKey,
-    handleFormatRowValues,
-    ...otherTableProps
-  } = tableProps;
+  const { col = 24, name = 'EditRow', value: initialValue = [], tableProps, handleAddCallback, ...restProps } = props;
+  const { columns = [], formListProps, rowKey, handleFormatRowValues, ...otherTableProps } = tableProps;
   const form = Form.useFormInstance();
 
   const typeList =
@@ -81,11 +59,7 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
 
   useImperativeHandle(ref, () => ({}));
 
-  const _transformRowData = (
-    type: IBaseFormControlType,
-    text: any,
-    transFormType: 'edit' | 'show' = 'show',
-  ) => {
+  const _transformRowData = (type: IBaseFormControlType, text: any, transFormType: 'edit' | 'show' = 'show') => {
     // TODO: 兼容其他特殊表单类型
     // console.log(type, text)
     if (transFormType === 'edit') return text;
@@ -100,9 +74,7 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
       const startTime = text?.[0];
       const endTime = text?.[1];
       return startTime && endTime
-        ? `${dayjs(startTime).format('YYYY-MM-DD')} ~ ${dayjs(endTime).format(
-            'YYYY-MM-DD',
-          )}`
+        ? `${dayjs(startTime).format('YYYY-MM-DD')} ~ ${dayjs(endTime).format('YYYY-MM-DD')}`
         : '--';
     }
     return text ?? '--';
@@ -124,9 +96,7 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
     const dataIndexList = typeList.map((item) => item.dataIndex);
     return rowValues?.map((item: any) => {
       if (!dataIndexList.includes(item.dataIndex)) return item;
-      const type = typeList.find(
-        (typeItem) => typeItem.dataIndex === item.dataIndex,
-      )?.type as IBaseFormControlType;
+      const type = typeList.find((typeItem) => typeItem.dataIndex === item.dataIndex)?.type as IBaseFormControlType;
       return {
         ...item,
         [item.dataIndex]: _transformRowData(type, item.value),
@@ -161,8 +131,7 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
     } else {
       const { index, ...restRecord } = record;
       Object.entries(restRecord).forEach(([key, value]) => {
-        const type = columns.find((item) => item.dataIndex === key)
-          ?.formItemProps?.type;
+        const type = columns.find((item) => item.dataIndex === key)?.formItemProps?.type;
         form.setFieldsValue({
           [key]: type ? _transformRowData(type, value, 'edit') : '--',
         });
@@ -185,8 +154,7 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
 
     let newRecord = {};
     Object.entries(record).forEach(([key, value]) => {
-      const type = columns.find((item) => item.dataIndex === key)?.formItemProps
-        ?.type as IBaseFormControlType;
+      const type = columns.find((item) => item.dataIndex === key)?.formItemProps?.type as IBaseFormControlType;
       if (dataIndexList.includes(key)) {
         const val = form.getFieldValue(key);
         newRecord = {
@@ -219,9 +187,7 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
   const handleDelete = (record: any) => {
     const rowValues = form ? form.getFieldValue(name) : [];
     const lastRowValues = rowValues ? rowValues : {};
-    const newValues = rowValues.filter(
-      (item: any) => item[rowKey as string] !== record[rowKey as string],
-    );
+    const newValues = rowValues.filter((item: any) => item[rowKey as string] !== record[rowKey as string]);
     form.setFieldsValue({
       [name]: newValues,
     });
@@ -244,14 +210,7 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
           return col;
         }
 
-        const {
-          controlProps,
-          name,
-          type,
-          formFieldProps = {},
-          itemProps = {},
-          ...restFieldProps
-        } = col.formItemProps;
+        const { controlProps, name, type, formFieldProps = {}, itemProps = {}, ...restFieldProps } = col.formItemProps;
 
         const defaultControlProps = controlProps ? controlProps : {};
 
@@ -345,11 +304,7 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (
           <CommonTable {...tableParams} ref={tableRef} />
         </EditableContext.Provider>
       </Col>
-      <Form.Item
-        wrapperCol={{ span: 24 }}
-        labelCol={{ span: 0 }}
-        style={{ marginTop: 10 }}
-      >
+      <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 0 }} style={{ marginTop: 10 }}>
         <Button type="link" onClick={handleAdd} block>
           <div style={{ color: '#3363D7' }}>
             <PlusCircleOutlined /> &nbsp;新增

@@ -54,11 +54,7 @@ const getRangeBuilder = (fn: any, rowOrColumn: any) => {
     const [scrollItem, displayColumns] = args;
     const { scrollTop, scrollLeft } = scrollItem;
     const scrollDirection =
-      scrollTop === prevScrollTop
-        ? 'horizontal'
-        : scrollLeft === prevScrollLeft
-        ? 'vertical'
-        : null; //当前是水平滚动还是垂直滚动
+      scrollTop === prevScrollTop ? 'horizontal' : scrollLeft === prevScrollLeft ? 'vertical' : null; //当前是水平滚动还是垂直滚动
     let value;
     if (prevScrollDirection === scrollDirection) {
       if (scrollDirection === 'vertical' && rowOrColumn === 'column') {
@@ -111,9 +107,7 @@ const VirtualScrollTable = (props: any) => {
 
   useEffect(() => {
     const table: any = tableRef.current;
-    const headCellNodeList = table?.querySelectorAll(
-      '.ant-table-thead th.ant-table-cell-fix-left',
-    );
+    const headCellNodeList = table?.querySelectorAll('.ant-table-thead th.ant-table-cell-fix-left');
     let left = 0;
     fixLeftColumnList.forEach((column: any, index: number) => {
       if (headCellNodeList[index]) {
@@ -149,12 +143,7 @@ const VirtualScrollTable = (props: any) => {
     return thList;
   };
 
-  const getColumnRealWidth = (
-    node: any,
-    column: any,
-    columnIndex: number,
-    mergedColumns: any,
-  ) => {
+  const getColumnRealWidth = (node: any, column: any, columnIndex: number, mergedColumns: any) => {
     let realWidth = 8;
     const thList = getThList(node, mergedColumns);
     for (let i = columnIndex; i < thList.length; i++) {
@@ -183,9 +172,7 @@ const VirtualScrollTable = (props: any) => {
   const [realWidth, setRealWidth] = useState(0);
 
   const mergedColumns = useMemo(() => {
-    const columns = realColumns.map((column: any, index: number) =>
-      setColumn(column, index),
-    );
+    const columns = realColumns.map((column: any, index: number) => setColumn(column, index));
     if (!rowSelection) return columns;
     const selectColumn = {
       width: 42,
@@ -206,10 +193,7 @@ const VirtualScrollTable = (props: any) => {
         const onCheckboxChange = (e: any) => {
           const checked = e.target.checked;
           if (checked) {
-            onChange(
-              [...selectedRowKeys, currentRowKey],
-              [...selectedRows, currentRow],
-            );
+            onChange([...selectedRowKeys, currentRowKey], [...selectedRows, currentRow]);
           } else {
             onChange(
               selectedRowKeys.filter((item: any) => item !== currentRowKey),
@@ -225,11 +209,7 @@ const VirtualScrollTable = (props: any) => {
         }
         const node =
           rowSelection.type === 'radio' ? (
-            <Radio
-              key={currentRowKey}
-              checked={currentRowKey === selectedRowKeys[0]}
-              onClick={onRadioClick}
-            />
+            <Radio key={currentRowKey} checked={currentRowKey === selectedRowKeys[0]} onClick={onRadioClick} />
           ) : (
             <Checkbox
               checked={selectedRowKeys.includes(currentRowKey)}
@@ -238,8 +218,7 @@ const VirtualScrollTable = (props: any) => {
             />
           );
         const renderCell = rowSelection.renderCell;
-        if (typeof renderCell === 'function')
-          return renderCell(false, record, index, node);
+        if (typeof renderCell === 'function') return renderCell(false, record, index, node);
         return node;
       },
     };
@@ -247,10 +226,7 @@ const VirtualScrollTable = (props: any) => {
   }, [realColumns, rowSelection, selectedRowKeys, realWidth]);
 
   const notFixColumns: any[] = useMemo(
-    () =>
-      mergedColumns.filter(
-        (item: any) => item.fixed !== 'left' && item.fixed !== 'right',
-      ),
+    () => mergedColumns.filter((item: any) => item.fixed !== 'left' && item.fixed !== 'right'),
     [mergedColumns],
   );
   const fixLeftColumnList: any[] = useMemo(
@@ -258,8 +234,7 @@ const VirtualScrollTable = (props: any) => {
     [mergedColumns],
   );
   const fixLeftColumnTotalWidth = useMemo(
-    () =>
-      fixLeftColumnList.reduce((accurate, item) => accurate + item.width, 0),
+    () => fixLeftColumnList.reduce((accurate, item) => accurate + item.width, 0),
     [fixLeftColumnList],
   );
   const fixRightColumnList: any[] = useMemo(
@@ -267,57 +242,31 @@ const VirtualScrollTable = (props: any) => {
     [mergedColumns],
   );
   const fixRightColumnTotalWidth = useMemo(
-    () =>
-      fixRightColumnList.reduce((accurate, item) => accurate + item.width, 0),
+    () => fixRightColumnList.reduce((accurate, item) => accurate + item.width, 0),
     [fixRightColumnList],
   );
   const columnTotalWidth = useMemo(
-    () =>
-      mergedColumns.reduce(
-        (accurate: any, item: any) => accurate + item.width,
-        0,
-      ),
+    () => mergedColumns.reduce((accurate: any, item: any) => accurate + item.width, 0),
     [mergedColumns],
   );
-  const totalWidth = Math.max(
-    columnTotalWidth,
-    (tableRef as any)?.current?.clientWidth - 14,
-  );
+  const totalWidth = Math.max(columnTotalWidth, (tableRef as any)?.current?.clientWidth - 14);
 
   useEffect(() => {
     if (totalWidth >= columnTotalWidth) {
       mergedColumns.forEach((column: any, index: number) => {
-        column.realWidth = getColumnRealWidth(
-          tableRef?.current,
-          column,
-          index,
-          mergedColumns,
-        );
+        column.realWidth = getColumnRealWidth(tableRef?.current, column, index, mergedColumns);
         if (rowSelection && index === 0) setRealWidth(column.realWidth);
       });
     }
-  }, [
-    columnTotalWidth,
-    totalWidth,
-    tableRef?.current,
-    mergedColumns,
-    rowSelection,
-  ]);
+  }, [columnTotalWidth, totalWidth, tableRef?.current, mergedColumns, rowSelection]);
 
-  const totalHeight = useMemo(
-    () => dataSource.length * rowHeight,
-    [dataSource, rowHeight],
-  );
+  const totalHeight = useMemo(() => dataSource.length * rowHeight, [dataSource, rowHeight]);
 
   const rowNumber = useMemo(() => {
     return Math.ceil(height / rowHeight) + 1; // 多渲染一行
   }, [height]);
 
-  const RenderVirtualList = (
-    dataSource = [],
-    { scrollbarSize, ref, onScroll, ...a }: any,
-    ...b: any
-  ) => {
+  const RenderVirtualList = (dataSource = [], { scrollbarSize, ref, onScroll, ...a }: any, ...b: any) => {
     const [queryTop, setTop] = useState(0);
     const [queryLeft, setLeft] = useState(0);
     const [queryRows, setRows] = useState([]);
@@ -364,8 +313,7 @@ const VirtualScrollTable = (props: any) => {
       for (let i = 0; i < notFixColumns.length; i++) {
         const column = { ...notFixColumns[i] };
         const { width } = column;
-        const displayWidth =
-          clientWidth - fixLeftColumnTotalWidth - fixRightColumnTotalWidth;
+        const displayWidth = clientWidth - fixLeftColumnTotalWidth - fixRightColumnTotalWidth;
         if (showedColumnWidth >= displayWidth) {
           break;
         }
@@ -377,17 +325,13 @@ const VirtualScrollTable = (props: any) => {
             column.style = { ...column.style, marginLeft: -hiddenWidth + 'px' };
             isFirstScrollColumn = false;
             if (scrollLeft > 0 && scrollLeft + clientWidth >= totalWidth) {
-              const marginLeft =
-                currentTotalColumnWidth - scrollLeft - width + 12 + 'px';
+              const marginLeft = currentTotalColumnWidth - scrollLeft - width + 12 + 'px';
               column.style = { ...column.style, marginLeft };
             }
           } else {
             showedColumnWidth += width;
           }
-          if (
-            i === notFixColumns.length - 1 &&
-            scrollLeft + clientWidth >= totalWidth
-          ) {
+          if (i === notFixColumns.length - 1 && scrollLeft + clientWidth >= totalWidth) {
             if (fixRightColumnList.length === 0) {
               column.style = {
                 ...column.style,
@@ -401,16 +345,9 @@ const VirtualScrollTable = (props: any) => {
       return displayColumns;
     };
 
-    const getColumns = useCallback(getRangeBuilder(getColumnsInner, 'column'), [
-      totalHeight,
-      notFixColumns,
-    ]);
+    const getColumns = useCallback(getRangeBuilder(getColumnsInner, 'column'), [totalHeight, notFixColumns]);
 
-    const setStartRowIndex = (
-      scrollTop: any,
-      displayColumns: any,
-      realDataSource: any,
-    ) => {
+    const setStartRowIndex = (scrollTop: any, displayColumns: any, realDataSource: any) => {
       let startRowIndex = 0;
       if (totalHeight <= height) {
         // 数据没有超过总高度
@@ -441,28 +378,14 @@ const VirtualScrollTable = (props: any) => {
     const getRowsInner = (scrollItem: any, displayColumns: any) => {
       if (!dataSource?.length) return [];
       const { scrollTop } = scrollItem;
-      const fixRowData = dataSource.filter((item) =>
-        fixRowkeys.includes(item[rowKey]),
-      ); // 固定的行
-      const realDataSource = dataSource.filter(
-        (item) => !fixRowkeys.includes(item[rowKey]),
-      ); // 正常显示的行
-      const startRowIndex: any = setStartRowIndex(
-        scrollTop,
-        displayColumns,
-        realDataSource,
-      );
-      const rows = [
-        ...fixRowData,
-        ...realDataSource.slice(startRowIndex, startRowIndex + rowNumber),
-      ];
+      const fixRowData = dataSource.filter((item) => fixRowkeys.includes(item[rowKey])); // 固定的行
+      const realDataSource = dataSource.filter((item) => !fixRowkeys.includes(item[rowKey])); // 正常显示的行
+      const startRowIndex: any = setStartRowIndex(scrollTop, displayColumns, realDataSource);
+      const rows = [...fixRowData, ...realDataSource.slice(startRowIndex, startRowIndex + rowNumber)];
       return rows;
     };
 
-    const getRows = useCallback(getRangeBuilder(getRowsInner, 'row'), [
-      totalHeight,
-      dataSource,
-    ]);
+    const getRows = useCallback(getRangeBuilder(getRowsInner, 'row'), [totalHeight, dataSource]);
 
     const setTableData = (scrollItem: any) => {
       const displayColumns = getColumns(scrollItem) || [];
@@ -478,19 +401,13 @@ const VirtualScrollTable = (props: any) => {
     const setShadow = (scrollItem: any) => {
       const { scrollLeft, clientWidth } = scrollItem;
       const table: any = tableRef?.current;
-      const lastFixLeftColumn = table.querySelector(
-        'th.ant-table-cell-fix-left-last',
-      );
+      const lastFixLeftColumn = table.querySelector('th.ant-table-cell-fix-left-last');
       if (scrollLeft > 0) {
         table.classList.add(styles['show-left-shadow']);
-        lastFixLeftColumn?.classList.add(
-          styles['ant-table-cell-fix-left-last-reset'],
-        );
+        lastFixLeftColumn?.classList.add(styles['ant-table-cell-fix-left-last-reset']);
       } else {
         table.classList.remove(styles['show-left-shadow']);
-        lastFixLeftColumn?.classList.remove(
-          styles['ant-table-cell-fix-left-last-reset'],
-        );
+        lastFixLeftColumn?.classList.remove(styles['ant-table-cell-fix-left-last-reset']);
       }
 
       {
@@ -578,35 +495,22 @@ const VirtualScrollTable = (props: any) => {
       colSpan: any,
       rowIndex: number,
     ) => {
-      const showHover =
-        rowSpan > 1 &&
-        rowIndex < hoverRowIndex &&
-        rowIndex + rowSpan > hoverRowIndex;
-      const showActive =
-        rowSpan > 1 &&
-        rowIndex < activeRowIndex &&
-        rowIndex + rowSpan > activeRowIndex;
+      const showHover = rowSpan > 1 && rowIndex < hoverRowIndex && rowIndex + rowSpan > hoverRowIndex;
+      const showActive = rowSpan > 1 && rowIndex < activeRowIndex && rowIndex + rowSpan > activeRowIndex;
       const style = {
         width: calcWidth(colSpan, columns, columnIndex) + 'px',
         height: rowHeight * rowSpan + 'px',
         display: 'grid',
-        justifyContent:
-          column.align === 'right'
-            ? 'flex-end'
-            : column.align === 'center'
-            ? 'center'
-            : 'flex-start',
+        justifyContent: column.align === 'right' ? 'flex-end' : column.align === 'center' ? 'center' : 'flex-start',
         opacity: rowSpan == 0 ? 0 : 1,
         background: showHover || showActive ? '#dfe8f8' : '',
       };
 
       const isLastColumn =
         columnIndex === columns.length - 1 &&
-        (column.fixed === 'right' ||
-          (!fixRightColumnList.length && column.fixed !== 'left'));
+        (column.fixed === 'right' || (!fixRightColumnList.length && column.fixed !== 'left'));
 
-      if (isLastColumn)
-        style.width = (column.realWidth || column.width) - 13 + 'px';
+      if (isLastColumn) style.width = (column.realWidth || column.width) - 13 + 'px';
       return { ...column.style, ...style };
     };
 
@@ -616,22 +520,9 @@ const VirtualScrollTable = (props: any) => {
         : row[column.dataIndex];
     };
 
-    const renderCell = (
-      column: any,
-      columnIndex: any,
-      row: any,
-      rowIndex: any,
-      columns: any,
-    ) => {
+    const renderCell = (column: any, columnIndex: any, row: any, rowIndex: any, columns: any) => {
       const { rowSpan, colSpan } = getRowAndColSpan(column, row, rowIndex);
-      const style = setCellStyle(
-        column,
-        columnIndex,
-        columns,
-        rowSpan,
-        colSpan,
-        rowIndex,
-      );
+      const style = setCellStyle(column, columnIndex, columns, rowSpan, colSpan, rowIndex);
       const content = setCellContent(column, row, rowIndex);
       if (colSpan === 0) return null;
       // 正则去除 px
@@ -641,21 +532,11 @@ const VirtualScrollTable = (props: any) => {
         <td
           className={`
           ${styles['virtual-table-cell']}
-          ${
-            columnIndex === mergedColumns.length - 1 &&
-            styles['virtual-table-cell-last']
-          }
+          ${columnIndex === mergedColumns.length - 1 && styles['virtual-table-cell-last']}
           ${column.fixed === 'left' && styles['virtual-table-cell-fix-left']}
-          ${
-            column.isLastFixLeft &&
-            left > 0 &&
-            styles['virtual-table-cell-fix-left-last']
-          }
+          ${column.isLastFixLeft && left > 0 && styles['virtual-table-cell-fix-left-last']}
           ${column.fixed === 'right' && styles['virtual-table-cell-fix-right']}
-          ${
-            column.isFirstFixRight &&
-            styles['virtual-table-cell-fix-right-first']
-          }
+          ${column.isFirstFixRight && styles['virtual-table-cell-fix-right-first']}
           `}
           style={style}
           key={'column' + columnIndex}
@@ -708,39 +589,19 @@ const VirtualScrollTable = (props: any) => {
                 `}
                       style={getRowStyle(rowIndex)}
                       key={rowIndex}
-                      onClick={() =>
-                        onClick({ rowKey: rowIndex, rowData: row, rowIndex })
-                      }
+                      onClick={() => onClick({ rowKey: rowIndex, rowData: row, rowIndex })}
                       onMouseEnter={() => setHoverRowIndex(rowIndex)}
                       onMouseLeave={() => setHoverRowIndex(-1)}
                     >
                       {fixLeftColumnList.map((column, columnIndex) =>
-                        renderCell(
-                          column,
-                          columnIndex,
-                          row,
-                          rowIndex,
-                          fixLeftColumnList,
-                        ),
+                        renderCell(column, columnIndex, row, rowIndex, fixLeftColumnList),
                       )}
                       {displayColumns.map((column, columnIndex) =>
-                        renderCell(
-                          column,
-                          columnIndex,
-                          row,
-                          rowIndex,
-                          displayColumns,
-                        ),
+                        renderCell(column, columnIndex, row, rowIndex, displayColumns),
                       )}
                       {/* 分开写的目的是为了避免闪屏。由于列数不固定，如果一起写会添加删除dom，固定在右边的列会闪屏 */}
                       {fixRightColumnList.map((column, columnIndex) =>
-                        renderCell(
-                          column,
-                          columnIndex,
-                          row,
-                          rowIndex,
-                          fixRightColumnList,
-                        ),
+                        renderCell(column, columnIndex, row, rowIndex, fixRightColumnList),
                       )}
                     </tr>
                   ))

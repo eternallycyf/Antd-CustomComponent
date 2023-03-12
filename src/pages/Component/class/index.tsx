@@ -69,14 +69,7 @@ class Activity extends BaseComponent<IProps, IState> {
 
   renderFormItem = (item: any, index?: number) => {
     const form = this.OtherFormRef.current;
-    const {
-      name,
-      type,
-      initialValue,
-      formFieldProps,
-      controlProps,
-      ...otherProps
-    } = item;
+    const { name, type, initialValue, formFieldProps, controlProps, ...otherProps } = item;
     const myControlProps = {
       ...controlProps,
       size: (controlProps && controlProps.size) || 'small',
@@ -94,8 +87,7 @@ class Activity extends BaseComponent<IProps, IState> {
   };
 
   render() {
-    const { searchParams, selectedRowKeys, selectedRows, expandedRowKeys } =
-      this.state;
+    const { searchParams, selectedRowKeys, selectedRows, expandedRowKeys } = this.state;
     const tableParams: ICommonTable<any> = {
       columns: getColumns(this),
       searchParams: formatParams(searchParams),
@@ -161,9 +153,7 @@ class Activity extends BaseComponent<IProps, IState> {
       selectedRows,
       expandable: {
         expandedRowKeys,
-        expandedRowRender: (record) => (
-          <p style={{ margin: 0 }}>{record.index}</p>
-        ),
+        expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.index}</p>,
         rowExpandable: (record) => record.name !== 'Not Expandable',
         onExpand: this.handleExpand,
       },

@@ -62,8 +62,7 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
     }, [record]);
 
     useEffect(() => {
-      if (!apiUrl && !initDictFn && !_.isEqual(dict, dataSource))
-        setDataSource(dict);
+      if (!apiUrl && !initDictFn && !_.isEqual(dict, dataSource)) setDataSource(dict);
     }, [dict]);
 
     useImperativeHandle(ref, () => ({}));
@@ -100,9 +99,7 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
     }, 300);
 
     const handleChange = (value: any, event: any) => {
-      const valItem = dataSource.find(
-        (item: any) => String(item[valueKey]) === String(value),
-      );
+      const valItem = dataSource.find((item: any) => String(item[valueKey]) === String(value));
       if (onChange) onChange(value, event, valItem);
     };
 
@@ -127,26 +124,16 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
     };
 
     function dataAddAllItem(data: any) {
-      return isNeedAll
-        ? [{ [textKey]: '全部', [valueKey]: '' }, ...data]
-        : data;
+      return isNeedAll ? [{ [textKey]: '全部', [valueKey]: '' }, ...data] : data;
     }
 
     return (
-      <Select
-        style={{ width: '100%' }}
-        {...props}
-        onChange={handleChange}
-        onClick={handleClick}
-      >
+      <Select style={{ width: '100%' }} {...props} onChange={handleChange} onClick={handleClick}>
         {group
           ? dataAddAllItem(dataSource).map((dic: any) => (
               <OptGroup label={dic[textKey]} key={dic[valueKey]}>
                 {dic.children.map((subItem: any) => (
-                  <Option
-                    value={String(subItem[valueKey])}
-                    key={subItem[valueKey]}
-                  >
+                  <Option value={String(subItem[valueKey])} key={subItem[valueKey]}>
                     {(renderItem && renderItem(subItem)) || subItem[textKey]}
                   </Option>
                 ))}

@@ -8,13 +8,4 @@ import FileViewer from '../pages/FileViewer/routes';
 import VirtualList from '../pages/VirtualList/routes';
 import WaterMark from '../pages/WaterMark/routes';
 
-export default [
-  Access,
-  Charts,
-  Component,
-  ExportExcel,
-  ExportWord,
-  FileViewer,
-  VirtualList,
-  WaterMark,
-];
+export default [Access, Charts, Component, ExportExcel, ExportWord, FileViewer, VirtualList, WaterMark];

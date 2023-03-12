@@ -37,17 +37,11 @@ const useBaseComponent = (props: IProps) => {
   } = props;
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [searchParams, setSearchParams] = useState<any>(
-    propsSearchParams ?? {},
-  );
+  const [searchParams, setSearchParams] = useState<any>(propsSearchParams ?? {});
   const [selectedRows, setSelectedRows] = useState<any[]>(propsSelectedRows);
-  const [selectedRowKeys, setSelectedRowKeys] =
-    useState<any[]>(propsSelectedRowKeys);
-  const [expandedRowKeys, setExpandedRowKeys] =
-    useState<any[]>(propsExpandedRowKeys);
-  const [expandedKey, setExpandedKey] = useState<string>(
-    propsExpandedKey ?? '',
-  );
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>(propsSelectedRowKeys);
+  const [expandedRowKeys, setExpandedRowKeys] = useState<any[]>(propsExpandedRowKeys);
+  const [expandedKey, setExpandedKey] = useState<string>(propsExpandedKey ?? '');
 
   useEffect(() => {
     tableRef.current?.handleRefreshPage();
@@ -87,9 +81,7 @@ const useBaseComponent = (props: IProps) => {
         sheets: [
           {
             sheetName: title,
-            columns: tableRef.current.state.columns.filter(
-              (item: any) => item.dataIndex !== 'operate',
-            ),
+            columns: tableRef.current.state.columns.filter((item: any) => item.dataIndex !== 'operate'),
             dataSource: tableRef.current?.getTableData(),
             header: title,
           },

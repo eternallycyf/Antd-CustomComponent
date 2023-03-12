@@ -39,9 +39,7 @@ button: [
         status={isPositive}
         setStatus={this.setSate}
         dict={toggleDict}
-        cb={(isPositive) =>
-          this.setSate({ isPositive }, () => this.handleRefreshPage())
-        }
+        cb={(isPositive) => this.setSate({ isPositive }, () => this.handleRefreshPage())}
       />
     ),
   },

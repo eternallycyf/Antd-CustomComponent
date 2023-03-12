@@ -1,21 +1,12 @@
-import {
-  SetStateAction,
-  useCallback,
-  useState,
-  useEffect,
-  useRef,
-} from 'react';
+import { SetStateAction, useCallback, useState, useEffect, useRef } from 'react';
 
 const useStateCallback = (defaultVal: any) => {
   const [state, setState] = useState(defaultVal);
   const listenRef = useRef<any>(); //监听新状态的回调器
-  const _setState = useCallback(
-    (newVal: SetStateAction<any>, callback: Function) => {
-      listenRef.current = callback;
-      setState(newVal);
-    },
-    [],
-  );
+  const _setState = useCallback((newVal: SetStateAction<any>, callback: Function) => {
+    listenRef.current = callback;
+    setState(newVal);
+  }, []);
   useEffect(() => {
     if (listenRef.current) {
       listenRef.current(state);

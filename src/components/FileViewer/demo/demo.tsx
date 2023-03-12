@@ -9,10 +9,7 @@ const normFile = (e: any) => {
   return e?.fileList;
 };
 
-const getBase64 = (
-  file: Blob,
-  cb: (result: string | ArrayBuffer | null) => void,
-) => {
+const getBase64 = (file: Blob, cb: (result: string | ArrayBuffer | null) => void) => {
   const reader = new FileReader();
   reader.addEventListener('load', () => cb(reader.result));
   reader.readAsDataURL(file);

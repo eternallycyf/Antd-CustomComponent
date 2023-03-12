@@ -13,13 +13,7 @@ export const getImage = (code: string = '') => {
   let icon: string | JSX.Element = '';
   try {
     const path = require(`@/assets/images/CustomMenu/${code}.png`);
-    icon = (
-      <img
-        src={path}
-        style={{ width: 24, height: 24, marginRight: 8 }}
-        alt={code}
-      />
-    );
+    icon = <img src={path} style={{ width: 24, height: 24, marginRight: 8 }} alt={code} />;
   } catch (error) {}
   return icon;
 };

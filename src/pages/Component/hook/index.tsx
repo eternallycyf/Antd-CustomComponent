@@ -7,13 +7,7 @@ import { ConnectState } from '@/typings/connect';
 import { formatParams } from '@/utils/util';
 import { connect, Provider, withRouter } from '@umijs/max';
 import { Col, Form, FormInstance, Input, Row } from 'antd';
-import React, {
-  forwardRef,
-  useContext,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-} from 'react';
+import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef } from 'react';
 import { saveActivity } from '../service';
 import { getColumns } from './config/columns';
 import { getFormList } from './config/form';
@@ -32,10 +26,7 @@ type IHandle = { form: FormInstance };
 type ThemeContextType = 'light' | 'dark';
 const MyContext = React.createContext<ThemeContextType>('light');
 
-const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
-  props,
-  ref,
-) => {
+const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) => {
   const theme = useContext<ThemeContextType>(MyContext);
   console.log(theme);
   const [form] = Form.useForm();
@@ -78,14 +69,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
 
   const renderFormItem = (item: any, index?: number) => {
     const form = OtherFormRef;
-    const {
-      name,
-      type,
-      initialValue,
-      formFieldProps,
-      controlProps,
-      ...otherProps
-    } = item;
+    const { name, type, initialValue, formFieldProps, controlProps, ...otherProps } = item;
     const myControlProps = {
       ...controlProps,
       size: (controlProps && controlProps.size) || 'small',
@@ -167,9 +151,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
     selectedRows: self.selectedRows,
     expandable: {
       expandedRowKeys: self.expandedRowKeys,
-      expandedRowRender: (record) => (
-        <p style={{ margin: 0 }}>{record.index}</p>
-      ),
+      expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.index}</p>,
       rowExpandable: (record) => record.name !== 'Not Expandable',
       onExpand: self.handleExpand,
     },
@@ -266,11 +248,9 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
 export default compose<IHandle>(
   withRoutePage,
   withRouter,
-  connect(
-    ({ global, login }: ConnectState) => ({ token: login.token }),
-    null,
-    null,
-    { forwardRef: true, pure: undefined },
-  ),
+  connect(({ global, login }: ConnectState) => ({ token: login.token }), null, null, {
+    forwardRef: true,
+    pure: undefined,
+  }),
   forwardRef,
 )(IndexPage);

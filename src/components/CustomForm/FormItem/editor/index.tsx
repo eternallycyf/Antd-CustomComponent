@@ -62,12 +62,7 @@ export default class UploadDemo extends React.Component<EditorProps> {
   };
 
   // 处理文本粘贴
-  handlePastedText = (
-    text: string,
-    HTML: string,
-    editorState: any,
-    editor: any,
-  ) => {
+  handlePastedText = (text: string, HTML: string, editorState: any, editor: any) => {
     // 在此处来自行处理HTML内容之类的
     const stripedHTMLStringFunc = (HTML: string) => {
       if (HTML) {
@@ -84,20 +79,13 @@ export default class UploadDemo extends React.Component<EditorProps> {
     };
 
     // 调用innerHTML 来将内容插入到编辑器
-    editor.setValue(
-      ContenntUtils.insertHTML(
-        editorState,
-        stripedHTMLStringFunc(HTML),
-        'paste',
-      ),
-    );
+    editor.setValue(ContenntUtils.insertHTML(editorState, stripedHTMLStringFunc(HTML), 'paste'));
     return 'handled'; // 一定要return handled 来告诉编辑器你自己已经处理过了粘贴内容 不需要编辑器处理
   };
 
   handleChange = (editorState: EditorState) => {
     const { form, name, valueType, onChange } = this.props;
-    const content =
-      valueType === 'raw' ? editorState.toRAW() : editorState.toHTML();
+    const content = valueType === 'raw' ? editorState.toRAW() : editorState.toHTML();
     this.setState({ editorState });
     form?.setFieldsValue({ [name as string]: content });
     if (onChange) {
@@ -114,9 +102,7 @@ export default class UploadDemo extends React.Component<EditorProps> {
     const content = ContentUtils.insertMedias(this.state.editorState, [
       {
         type: 'IMAGE',
-        url: getImageURL
-          ? await getImageURL(params.file)
-          : URL.createObjectURL(params.file),
+        url: getImageURL ? await getImageURL(params.file) : URL.createObjectURL(params.file),
       },
     ]);
     this.setState({

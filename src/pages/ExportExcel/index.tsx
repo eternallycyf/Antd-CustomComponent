@@ -3,13 +3,7 @@ import React, { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/lib/table/interface';
 import ExcelJs from 'exceljs/dist/exceljs';
 import { ExportExcel, Page } from '@/components/';
-const {
-  generateHeaders,
-  saveWorkbook,
-  downloadExcel,
-  downloadFiles2ZipWithFolder,
-  downloadFiles2Zip,
-} = ExportExcel;
+const { generateHeaders, saveWorkbook, downloadExcel, downloadFiles2ZipWithFolder, downloadFiles2Zip } = ExportExcel;
 
 interface SimpleDemoProps {}
 

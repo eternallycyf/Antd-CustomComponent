@@ -43,8 +43,7 @@ class Image extends PureComponent<IProps, IState> {
   renderImg = () => {
     const { src } = this.state;
     const { style, className, defaultValue } = this.props;
-    const defaultValueStyle =
-      src === defaultValue ? this.props.defaultValueStyle : {};
+    const defaultValueStyle = src === defaultValue ? this.props.defaultValueStyle : {};
 
     return (
       <div

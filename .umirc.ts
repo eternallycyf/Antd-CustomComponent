@@ -16,10 +16,7 @@ export default defineConfig({
     'process.env': process.env,
   },
   base: process.env.NODE_ENV === 'production' ? '/Antd-CustomComponent/' : '/',
-  publicPath:
-    process.env.NODE_ENV === 'production'
-      ? 'http://wangxince.site/Antd-CustomComponent/'
-      : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? 'http://wangxince.site/Antd-CustomComponent/' : '/',
   routes: routerConfig,
   layout: false,
   // layout: {
@@ -66,10 +63,7 @@ export default defineConfig({
   scripts: [
     { content, charset: 'utf-8' },
     {
-      src:
-        process.env.NODE_ENV === 'development'
-          ? '/js/snow.js'
-          : `/${repo}/js/snow.js`,
+      src: process.env.NODE_ENV === 'development' ? '/js/snow.js' : `/${repo}/js/snow.js`,
     },
   ],
   tailwindcss: {},

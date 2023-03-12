@@ -77,21 +77,15 @@ export function getFieldComp({
       FieldComp = require(`@/components/CustomForm/FormItem/simple`).default;
       break;
     case 'date':
-      formFieldProps.initialValue = initialValue
-        ? dayjs(initialValue, 'YYYY-MM-DD')
-        : null;
+      formFieldProps.initialValue = initialValue ? dayjs(initialValue, 'YYYY-MM-DD') : null;
       FieldComp = require(`@/components/CustomForm/FormItem/simple`).default;
       break;
     case 'year':
-      formFieldProps.initialValue = initialValue
-        ? dayjs(initialValue, 'YYYY')
-        : null;
+      formFieldProps.initialValue = initialValue ? dayjs(initialValue, 'YYYY') : null;
       FieldComp = require(`@/components/CustomForm/FormItem/simple`).default;
       break;
     case 'quarter':
-      formFieldProps.initialValue = initialValue
-        ? dayjs(initialValue, 'YYYY-Q')
-        : null;
+      formFieldProps.initialValue = initialValue ? dayjs(initialValue, 'YYYY-Q') : null;
       FieldComp = require(`@/components/CustomForm/FormItem/simple`).default;
       break;
     case 'dateRange':
@@ -100,17 +94,14 @@ export function getFieldComp({
       FieldComp = require(`@/components/CustomForm/FormItem/simple`).default;
       break;
     case 'monthRange':
-      FieldComp =
-        require(`@/components/CustomForm/FormItem/monthRange`).default;
+      FieldComp = require(`@/components/CustomForm/FormItem/monthRange`).default;
       break;
     case 'select':
       if (dictConfig) formProps.dictConfig = dictConfig;
       FieldComp = require(`@/components/CustomForm/FormItem/select`).default;
       break;
     case 'editor':
-      formFieldProps.initialValue = BraftEditor.createEditorState(
-        formFieldProps.initialValue,
-      );
+      formFieldProps.initialValue = BraftEditor.createEditorState(formFieldProps.initialValue);
       FieldComp = require(`@/components/CustomForm/FormItem/editor`).default;
       break;
     default:
@@ -135,11 +126,7 @@ export function getFieldComp({
  * @param callback
  * @returns {{remove(): void}}
  */
-export const addEvent = (
-  target: any,
-  eventType: string,
-  callback: () => void,
-) => {
+export const addEvent = (target: any, eventType: string, callback: () => void) => {
   if (target.addEventListener) {
     target.addEventListener(eventType, callback, false);
     return {

@@ -5,17 +5,9 @@ import { IBaseCol, IBaseFormControlType, IBaseLayout } from '@/typings/base';
 import { EditTableProps } from '@/typings/index';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Col, Form, FormItemProps, Row } from 'antd';
-import type {
-  FormListFieldData,
-  FormListOperation,
-} from 'antd/es/form/FormList';
+import type { FormListFieldData, FormListOperation } from 'antd/es/form/FormList';
 import { FormInstance } from 'antd/lib/form/Form';
-import React, {
-  Fragment,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from 'react';
+import React, { Fragment, useEffect, useImperativeHandle, useState } from 'react';
 import styles from './index.less';
 
 // TODO: 1.提供时间区间不重复的参数 dateRange date 在 tableProps 中添加参数
@@ -40,25 +32,10 @@ type IHandle = {
   ref: any;
 };
 
-const EditTableControl: React.ForwardRefRenderFunction<
-  IHandle,
-  IEditTableProps
-> = (props, ref: any) => {
+const EditTableControl: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (props, ref: any) => {
   const [cacheData, setCacheData] = useState<any[]>([]);
-  const {
-    col = 24,
-    name = 'EditCol',
-    tableProps,
-    handleAddCallback,
-    ...restProps
-  } = props;
-  const {
-    columns,
-    formListProps,
-    hasCancelButton = true,
-    hasSaveButton = true,
-    ...otherTableProps
-  } = tableProps;
+  const { col = 24, name = 'EditCol', tableProps, handleAddCallback, ...restProps } = props;
+  const { columns, formListProps, hasCancelButton = true, hasSaveButton = true, ...otherTableProps } = tableProps;
   const form = Form.useFormInstance();
   const rules = formListProps?.rules || [
     {
@@ -169,11 +146,7 @@ const EditTableControl: React.ForwardRefRenderFunction<
   };
 
   //#region
-  type IGetTableParams = ({
-    remove,
-  }: {
-    remove: FormListOperation['remove'];
-  }) => ICommonTable<any>;
+  type IGetTableParams = ({ remove }: { remove: FormListOperation['remove'] }) => ICommonTable<any>;
   const getTableParams: IGetTableParams = ({ remove }) => ({
     rowKey: 'fieldKey',
     showIndex: true,
@@ -232,11 +205,7 @@ const EditTableControl: React.ForwardRefRenderFunction<
                       remove,
                     })}
                   />
-                  <Form.Item
-                    wrapperCol={{ span: 24 }}
-                    labelCol={{ span: 0 }}
-                    style={{ marginTop: 10 }}
-                  >
+                  <Form.Item wrapperCol={{ span: 24 }} labelCol={{ span: 0 }} style={{ marginTop: 10 }}>
                     <Button type="link" onClick={() => handleAdd(add)} block>
                       <div style={{ color: '#3363D7' }}>
                         <PlusCircleOutlined /> &nbsp;新增

@@ -2,10 +2,7 @@ import { Reducer } from 'redux';
 import { MenuItem, UserInfo } from '@/typings';
 import { Effect } from 'dva';
 import * as service from '@/services';
-import {
-  menuList as MENU_LIST,
-  breadcrumbNameMap as BREAD_CRUMB_NAEMMAP,
-} from './constant';
+import { menuList as MENU_LIST, breadcrumbNameMap as BREAD_CRUMB_NAEMMAP } from './constant';
 
 export interface IGlobalModelState {
   theme: 'dark' | 'light';
@@ -51,8 +48,7 @@ const GlobalModel: IGlobalModel = {
     userInfo: {},
     breadcrumbNameMap: {},
     menuList: [],
-    accessCollection:
-      (sessionStorage.getItem('accessCollection') as any as any[]) || [],
+    accessCollection: (sessionStorage.getItem('accessCollection') as any as any[]) || [],
   },
   reducers: {
     changeCollapsed(state, { collapsed }) {

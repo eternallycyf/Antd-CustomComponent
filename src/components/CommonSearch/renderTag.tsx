@@ -3,12 +3,7 @@ import { Tooltip } from 'antd';
 import { CloseOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
-export default function RenderTag({
-  item,
-  index,
-  handleDeleteTag,
-  checkBoxStatus,
-}: any) {
+export default function RenderTag({ item, index, handleDeleteTag, checkBoxStatus }: any) {
   // 当formItem的 isShowCheckAllTag 判断是否有全选的checkbox
   let { isShowCheckAllTag = false } = item;
   const [toggle, setToggle] = useState(false);
@@ -50,11 +45,7 @@ export default function RenderTag({
         <div className={styles.tagItem}>
           <span className={styles.tagItemText}>{info}</span>
           <CloseOutlined
-            onClick={handleDeleteTag.bind(
-              null,
-              { ...item, itemValue: info },
-              index,
-            )}
+            onClick={handleDeleteTag.bind(null, { ...item, itemValue: info }, index)}
             className={styles.tagItemIcon}
           />
         </div>
@@ -66,12 +57,7 @@ export default function RenderTag({
         <div className={styles.tagItem}>
           <span className={styles.tagItemText}>全选</span>
           <CloseOutlined
-            onClick={handleDeleteTag.bind(
-              null,
-              { ...item, itemValue: info },
-              index,
-              checkBoxStatus,
-            )}
+            onClick={handleDeleteTag.bind(null, { ...item, itemValue: info }, index, checkBoxStatus)}
             className={styles.tagItemIcon}
           />
         </div>
@@ -93,14 +79,8 @@ export default function RenderTag({
       </div>
       {count !== 0 && values.length > count && !checkBoxStatus && (
         <div className={styles.tagItem} onClick={() => setToggle(!toggle)}>
-          <span className={styles.tagItemText}>
-            {toggle ? '收起' : `更多＋${values.length - count}`}
-          </span>
-          {toggle ? (
-            <UpOutlined className={styles.tagItemIcon} />
-          ) : (
-            <DownOutlined className={styles.tagItemIcon} />
-          )}
+          <span className={styles.tagItemText}>{toggle ? '收起' : `更多＋${values.length - count}`}</span>
+          {toggle ? <UpOutlined className={styles.tagItemIcon} /> : <DownOutlined className={styles.tagItemIcon} />}
         </div>
       )}
     </div>

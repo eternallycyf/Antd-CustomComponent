@@ -33,9 +33,7 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
     ref0,
   } = props;
 
-  const [openKeys, setOpenKeys] = useState<string[]>(
-    getSubMenus(pathname, menuList),
-  );
+  const [openKeys, setOpenKeys] = useState<string[]>(getSubMenus(pathname, menuList));
 
   useEffect(() => {
     setOpenKeys(getSubMenus(pathname, menuList));
@@ -46,8 +44,7 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
   };
 
   const handleOpenChange = (openKeys: string[]): void => {
-    const moreThanOne =
-      openKeys.filter((openKey) => isMainMenu(openKey)).length > 1;
+    const moreThanOne = openKeys.filter((openKey) => isMainMenu(openKey)).length > 1;
     setOpenKeys(moreThanOne ? [openKeys.pop() as string] : [...openKeys]);
   };
 

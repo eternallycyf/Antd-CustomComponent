@@ -7,10 +7,7 @@ import { History, history, useLocation } from '@umijs/max';
 import MenuTabs, { MenuTab } from './MenuTabs';
 import { homePage as homePagePath } from '@/config/projectConfig';
 
-function getMetaDataOfTab(
-  pathname: string,
-  breadcrumbNameMap: MenuItem,
-): MenuItem {
+function getMetaDataOfTab(pathname: string, breadcrumbNameMap: MenuItem): MenuItem {
   return Object.values(breadcrumbNameMap).find((item: MenuItem) => {
     return item.path && pathToRegexp(item.path).test(pathname);
   });
@@ -24,8 +21,7 @@ function getMetaDataOfTab(
 function setPathName(metaData: MenuItem, location: History['location']) {
   if (!metaData) return 'Error';
   if (metaData.multiple) {
-    const title =
-      _.get(location, 'query.title') || _.get(location, 'state.title');
+    const title = _.get(location, 'query.title') || _.get(location, 'state.title');
     return `${metaData.name}${title ? `-${title}` : ''}`;
   }
   return metaData.name;
@@ -72,9 +68,7 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
     const activeTitle = setPathName(metaData, location);
 
     if (!metaData) {
-      const activeTab = tabs.find((tab) =>
-        pathToRegexp(tab.key).test(_activeKey),
-      );
+      const activeTab = tabs.find((tab) => pathToRegexp(tab.key).test(_activeKey));
       if (!tabChildren[_activeKey]) {
         tabChildren[_activeKey] = children;
         setTabChildren({ ...tabChildren });
@@ -110,9 +104,7 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
         localStore.set('tabs', addedTabs);
       }
     } else {
-      const activeTab = tabs.find((tab) =>
-        pathToRegexp(tab.key).test(_activeKey),
-      );
+      const activeTab = tabs.find((tab) => pathToRegexp(tab.key).test(_activeKey));
       if (!tabChildren[metaData.path]) {
         tabChildren[metaData.path] = children;
         setTabChildren({ ...tabChildren });
@@ -174,9 +166,7 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
   };
 
   const handleRemoveOthers = (currentKeys: string) => {
-    const filteredTabs = tabs.filter(
-      (item, index) => index === 0 || item.key === currentKeys,
-    );
+    const filteredTabs = tabs.filter((item, index) => index === 0 || item.key === currentKeys);
     setTabChildren(_.pick(tabChildren, [homePagePath, currentKeys]));
     setTabs(filteredTabs);
     localStore.set('tabs', filteredTabs);

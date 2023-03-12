@@ -26,8 +26,7 @@ type IBaseTableInstance = InstanceType<typeof BaseTable> & {
 
 class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
   protected tableRef = React.createRef<IBaseTableInstance>();
-  protected searchRef =
-    React.createRef<React.ElementRef<typeof CommonSearch>>();
+  protected searchRef = React.createRef<React.ElementRef<typeof CommonSearch>>();
   protected formRef = React.createRef<React.ElementRef<typeof CustomForm>>();
 
   componentDidMount() {
@@ -75,9 +74,7 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
         sheets: [
           {
             sheetName: title,
-            columns: this.tableRef.current.state.columns.filter(
-              (item: any) => item.dataIndex !== 'operate',
-            ),
+            columns: this.tableRef.current.state.columns.filter((item: any) => item.dataIndex !== 'operate'),
             dataSource: this.tableRef.current?.getTableData(),
             header: title,
           },
@@ -86,10 +83,7 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
     }
   };
 
-  handleSelect = (
-    selectedRowKeys: IBaseState['selectedRowKeys'],
-    selectedRows: IBaseState['selectedRows'],
-  ) => {
+  handleSelect = (selectedRowKeys: IBaseState['selectedRowKeys'], selectedRows: IBaseState['selectedRows']) => {
     this.setState({ selectedRowKeys, selectedRows });
   };
 
@@ -128,8 +122,7 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
 
   handleBatchDelete = (deleteBatchUrl: string) => {
     const { selectedRowKeys } = this.state;
-    const { handleRefreshPage, handleClearSelected } =
-      this.tableRef.current || {};
+    const { handleRefreshPage, handleClearSelected } = this.tableRef.current || {};
 
     if (!deleteBatchUrl) {
       return message.error('请设置 deleteBatchUrl 属性');

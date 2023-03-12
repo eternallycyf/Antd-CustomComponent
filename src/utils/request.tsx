@@ -46,9 +46,7 @@ const cancelPending = (config: any, url?: string) => {
         options: { params, url },
       } = item;
       const isHasKw =
-        getUrl(url) === getUrl(config.url) &&
-        (params?.hasOwnProperty('kw') ||
-          getUrlParams(url).hasOwnProperty('kw'));
+        getUrl(url) === getUrl(config.url) && (params?.hasOwnProperty('kw') || getUrlParams(url).hasOwnProperty('kw'));
       if (JSON.stringify(item.options) === JSON.stringify(config) || isHasKw) {
         item.cancel();
         pending.splice(index, 1);
@@ -98,10 +96,7 @@ const errorHandler = (error: { response: Response }): Response | null => {
   return response;
 };
 
-const handleBusinessError = (
-  response: Response,
-  options: RequestOptionsInit,
-): void => {
+const handleBusinessError = (response: Response, options: RequestOptionsInit): void => {
   const { url } = response;
   response
     .clone()
@@ -117,11 +112,7 @@ const handleBusinessError = (
       }
     })
     .catch((error: Error) => {
-      if (
-        options.responseType === 'blob' &&
-        error.toString().includes('SyntaxError')
-      )
-        return;
+      if (options.responseType === 'blob' && error.toString().includes('SyntaxError')) return;
       console.error({
         message: `请求错误 ${url}`,
         description: error.toString(),
@@ -143,8 +134,7 @@ request.interceptors.request.use((url: string, options: any) => {
   };
 
   if (!(options.data instanceof FormData)) {
-    headers['Content-Type'] =
-      _.get(options, 'headers.Content-Type') || 'application/json';
+    headers['Content-Type'] = _.get(options, 'headers.Content-Type') || 'application/json';
   }
 
   // step1: 取消重复请求

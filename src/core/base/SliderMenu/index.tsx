@@ -25,9 +25,7 @@ const SiderMenuWrapper: React.FC<ISiderMenu> = (props) => {
     onCollapse,
   } = props;
 
-  const [openKeys, setOpenKeys] = useState<string[]>(
-    getDefaultCollapsedSubMenus(pathname, menuList),
-  );
+  const [openKeys, setOpenKeys] = useState<string[]>(getDefaultCollapsedSubMenus(pathname, menuList));
 
   useEffect(() => {
     setOpenKeys(getDefaultCollapsedSubMenus(pathname, menuList));
@@ -40,8 +38,7 @@ const SiderMenuWrapper: React.FC<ISiderMenu> = (props) => {
   };
 
   const handleOpenChange = (openKeys: string[]): void => {
-    const moreThanOne =
-      openKeys.filter((openKey) => isMainMenu(openKey)).length > 1;
+    const moreThanOne = openKeys.filter((openKey) => isMainMenu(openKey)).length > 1;
 
     setOpenKeys(moreThanOne ? [openKeys.pop() as string] : [...openKeys]);
   };

@@ -160,10 +160,7 @@ useEffect(() => {
 ```ts
 interface IProps {}
 type IHandle = { form: FormInstance };
-const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (
-  props,
-  ref,
-) => {
+const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) => {
   useImperativeHandle(ref, () => ({
     form,
   }));

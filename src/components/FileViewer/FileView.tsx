@@ -15,21 +15,7 @@ interface IProps {
   [onherProps: string]: any;
 }
 
-const txtFileTypes = [
-  'txt',
-  'json',
-  'js',
-  'css',
-  'java',
-  'py',
-  'html',
-  'jsx',
-  'ts',
-  'tsx',
-  'xml',
-  'md',
-  'log',
-];
+const txtFileTypes = ['txt', 'json', 'js', 'css', 'java', 'py', 'html', 'jsx', 'ts', 'tsx', 'xml', 'md', 'log'];
 
 class FileView extends PureComponent<IProps, any> {
   constructor(props: IProps | Readonly<IProps>) {
@@ -203,14 +189,7 @@ ${text}
     }
 
     if (fileType == 'pdf') {
-      return (
-        <iframe
-          className={cx(style.iframeStyle, className)}
-          style={styles}
-          src={src}
-          title="pdf预览"
-        />
-      );
+      return <iframe className={cx(style.iframeStyle, className)} style={styles} src={src} title="pdf预览" />;
     }
 
     return <span>不支持</span>;

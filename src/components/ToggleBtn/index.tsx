@@ -35,22 +35,15 @@ const ToggleButton = <T extends Record<string, IToggleBtnValue>>({
 }: IToggleButtonProps<T>) => {
   const currentDict: IToggleBtnValue = dict[status];
   const currentSize: IToggleBtnValue['size'] = currentDict?.size || 'small';
-  const toggleDictStatus: string = Object.keys(dict).find(
-    (item) => item != status,
-  ) as string;
+  const toggleDictStatus: string = Object.keys(dict).find((item) => item != status) as string;
   const otherDict: IToggleBtnValue = dict[toggleDictStatus];
 
   const defaultProps: IDefaultProps = {
     defaultHasTooltip: true,
     defaultToggleIcon: <RetweetOutlined />,
     defaultButtonStyle:
-      currentDict.buttonType == 'primary'
-        ? {}
-        : { color: '#1348a2', border: '1px solid #1348a2', background: '#fff' },
-    defaultIconStyle:
-      currentDict.buttonType == 'default'
-        ? {}
-        : { color: 'rgba(255,255,255,0.7)' },
+      currentDict.buttonType == 'primary' ? {} : { color: '#1348a2', border: '1px solid #1348a2', background: '#fff' },
+    defaultIconStyle: currentDict.buttonType == 'default' ? {} : { color: 'rgba(255,255,255,0.7)' },
   };
 
   return (

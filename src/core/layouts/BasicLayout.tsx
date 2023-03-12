@@ -4,25 +4,9 @@ import SiderMenu from '@/core/base/CustomMenu';
 import GlobalHeader from '@/core/base/GlobalHeader';
 import TagsNav from '@/core/base/TagsNav';
 import { ConnectState } from '@/typings/connect';
-import {
-  connect,
-  Dispatch,
-  getDvaApp,
-  Helmet,
-  History,
-  Outlet,
-  withRouter,
-} from '@umijs/max';
+import { connect, Dispatch, getDvaApp, Helmet, History, Outlet, withRouter } from '@umijs/max';
 import { RouteComponentProps } from '@umijs/renderer-react';
-import {
-  ConfigProvider,
-  Layout,
-  Spin,
-  theme as antdTheme,
-  TourProps,
-  Tour,
-  FloatButton,
-} from 'antd';
+import { ConfigProvider, Layout, Spin, theme as antdTheme, TourProps, Tour, FloatButton } from 'antd';
 import _ from 'lodash';
 import { BellOutlined } from '@ant-design/icons';
 import { StyleProvider } from '@ant-design/cssinjs';
@@ -40,9 +24,7 @@ interface IBaseBasicLayout extends RouteComponentProps<any> {
   dispatch: Dispatch;
 }
 
-type IBasicLayout = IBaseBasicLayout &
-  Pick<ConnectState, 'global'>['global'] &
-  Pick<ConnectState, 'login'>['login'];
+type IBasicLayout = IBaseBasicLayout & Pick<ConnectState, 'global'>['global'] & Pick<ConnectState, 'login'>['login'];
 
 export interface IRgba {
   r: string;
@@ -64,17 +46,8 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
   const ref1 = useRef<HTMLDivElement>(null!);
   const ref2 = useRef<HTMLDivElement>(null!);
   const ref3 = useRef<HTMLDivElement>(null!);
-  const {
-    menuList,
-    breadcrumbNameMap,
-    children,
-    theme,
-    collapsed,
-    location,
-    sliderMenuState,
-    dispatch,
-    userInfo,
-  } = props;
+  const { menuList, breadcrumbNameMap, children, theme, collapsed, location, sliderMenuState, dispatch, userInfo } =
+    props;
 
   const steps: TourProps['steps'] = [
     {
@@ -121,10 +94,8 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
     handleRouterChange();
   }, [dispatch]);
 
-  const {
-    breadcrumbNameMap: localBreadcrumbNameMap = {},
-    menuList: localMenuList = [],
-  } = getDvaApp()._store.getState().global;
+  const { breadcrumbNameMap: localBreadcrumbNameMap = {}, menuList: localMenuList = [] } =
+    getDvaApp()._store.getState().global;
 
   const siderMenuProps = {
     theme,
@@ -141,9 +112,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
     location,
   };
 
-  const algorithmObj = isDark
-    ? { algorithm: antdTheme.darkAlgorithm }
-    : { algorithm: antdTheme.defaultAlgorithm };
+  const algorithmObj = isDark ? { algorithm: antdTheme.darkAlgorithm } : { algorithm: antdTheme.defaultAlgorithm };
 
   return (
     <Fragment>
@@ -151,19 +120,14 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
         theme={{
           ...algorithmObj,
           token: {
-            colorPrimary: color
-              ? `rgba(${color?.r}, ${color?.g}, ${color?.b}, ${color?.a})`
-              : 'cornflowerblue',
+            colorPrimary: color ? `rgba(${color?.r}, ${color?.g}, ${color?.b}, ${color?.a})` : 'cornflowerblue',
           },
         }}
       >
         <Helmet>
           <title>{title}</title>
           <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1"></meta>
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-          ></meta>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
           <meta name="keyword" content="react, umi, antd"></meta>
         </Helmet>
         <Tour
@@ -176,10 +140,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
         />
         <StyleProvider hashPriority="high">
           <Layout className={styles.container}>
-            <WaterMark
-              content={userInfo?.username || '未登录'}
-              fillStyle="rgba(123,139,167,0.2)"
-            >
+            <WaterMark content={userInfo?.username || '未登录'} fillStyle="rgba(123,139,167,0.2)">
               <GlobalHeader
                 ref1={ref1}
                 ref2={ref2}
@@ -192,12 +153,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
                   {!_.isEmpty(breadcrumbNameMap) && !_.isEmpty(userInfo) ? (
                     <TagsNav {...TagsNavProps}>{children}</TagsNav>
                   ) : (
-                    <Spin
-                      spinning={true}
-                      size="large"
-                      className={styles.spinning}
-                      tip="加载中..."
-                    />
+                    <Spin spinning={true} size="large" className={styles.spinning} tip="加载中..." />
                   )}
                 </div>
               </GlobalHeader>
@@ -205,9 +161,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
                 <Sider theme={theme} style={{ background: 'transparent' }}>
                   <SiderMenu {...siderMenuProps} ref0={ref0} />
                 </Sider>
-                <Content>
-                  {location.pathname !== '/' ? <Outlet /> : <IndexPage />}
-                </Content>
+                <Content>{location.pathname !== '/' ? <Outlet /> : <IndexPage />}</Content>
               </Layout>
             </WaterMark>
           </Layout>

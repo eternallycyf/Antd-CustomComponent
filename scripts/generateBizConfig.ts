@@ -21,10 +21,7 @@ function getAllBiz(source: string): IBusinessList {
 }
 const targetFile: string = path.resolve(__dirname, '../src/routes/routes.ts');
 const bizPath: string = path.resolve(__dirname, '../src/pages');
-const templatePath: string = path.resolve(
-  __dirname,
-  './biz-stage-config.ts.ejs',
-);
+const templatePath: string = path.resolve(__dirname, './biz-stage-config.ts.ejs');
 
 console.log(chalk.green(`配置插件...`));
 

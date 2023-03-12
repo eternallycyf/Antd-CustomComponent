@@ -23,9 +23,6 @@ const Section = (props: any) => {
   );
 };
 
-const App = () =>
-  Array.from({ length: 100 }).map((_, index) => (
-    <Section key={index + 1} title={`${index + 1}`} />
-  ));
+const App = () => Array.from({ length: 100 }).map((_, index) => <Section key={index + 1} title={`${index + 1}`} />);
 
 export default App;

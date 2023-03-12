@@ -25,7 +25,5 @@ export const EditableCell: React.FC<EditableCellProps> = (props) => {
   const { editingKey = '', rowKey = '' } = tableParams;
   const editing = record && record[rowKey as string] === editingKey;
 
-  return (
-    <td {...restProps}>{editing ? getFieldComp(fieldProps) : children}</td>
-  );
+  return <td {...restProps}>{editing ? getFieldComp(fieldProps) : children}</td>;
 };

@@ -110,11 +110,7 @@ export const formatParams = (param: object, format: string = 'YYYYMMDD') => {
  * @param options
  * @param callback
  */
-export const handleDownload = (
-  searchParams: any,
-  options = { url: '', fileName: '' },
-  callback?: () => void,
-) => {
+export const handleDownload = (searchParams: any, options = { url: '', fileName: '' }, callback?: () => void) => {
   exportFile(options.url, searchParams).then((response: any) => {
     response.blob().then((blob: Blob) => {
       if (response.status === 200) {
@@ -185,10 +181,7 @@ export const copyText = (value: string): boolean => {
  * @param isRequired 是否必填
  * @returns
  */
-export const getTextRequired = (
-  message: string,
-  isRequired: boolean = true,
-): object => {
+export const getTextRequired = (message: string, isRequired: boolean = true): object => {
   return {
     required: isRequired,
     whiteSpace: true,

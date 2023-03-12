@@ -21,12 +21,7 @@ export const IProps = <T,>(props: Iprop) => <></>;
 
 function useVirtualList(
   elementRef: RefObject<Element>,
-  {
-    threshold = 0,
-    root = null,
-    rootMargin = '0%',
-    freezeOnceVisible = false,
-  }: Args,
+  { threshold = 0, root = null, rootMargin = '0%', freezeOnceVisible = false }: Args,
 ): IntersectionObserverEntry | undefined {
   const [entry, setEntry] = useState<IntersectionObserverEntry>();
   const frozen = entry?.isIntersecting && freezeOnceVisible;
