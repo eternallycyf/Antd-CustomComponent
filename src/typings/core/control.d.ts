@@ -1,46 +1,54 @@
 import {
   AutoCompleteProps,
+  CascaderProps,
   CheckboxProps,
-  ColProps,
-  DatePicker,
-  FormItemProps,
+  DatePickerProps,
   InputNumberProps,
   InputProps,
+  MentionProps,
   RadioProps,
   RateProps,
   SelectProps,
   SwitchProps,
-  DatePickerProps,
+  TimePickerProps,
+  TransferProps,
+  TreeSelectProps,
+  UploadProps,
 } from 'antd';
-import { SearchProps, PasswordProps, TextAreaProps } from 'antd/es/input';
+import { MonthPickerProps, RangePickerProps } from 'antd/es/date-picker';
+import { PasswordProps, SearchProps, TextAreaProps } from 'antd/es/input';
 import { SliderBaseProps } from 'antd/es/slider';
+import { BraftEditorProps } from 'braft-editor';
 import { IBaseFormControlType } from '../base';
-import { ISelectFetchConfig } from '../control/select';
 
 interface IOriginDatePickerProps {
   [props: string]: DatePickerProps | any;
 }
 
 // 拓展 IControlProps
-export interface IBaseControlProps
-  extends Partial<
-      InputProps &
-        SearchProps &
-        PasswordProps &
-        TextAreaProps &
-        InputNumberProps &
-        AutoCompleteProps &
-        SelectProps &
-        CheckboxProps &
-        RadioProps &
-        SwitchProps &
-        SliderBaseProps &
-        RateProps
-    >,
-    Partial<IOriginDatePickerProps> {}
+export type IBaseControlProps = (InputProps & SearchProps) &
+  PasswordProps &
+  TextAreaProps &
+  InputNumberProps &
+  AutoCompleteProps &
+  SelectProps &
+  CheckboxProps &
+  RadioProps &
+  SwitchProps &
+  SliderBaseProps &
+  RateProps &
+  DatePickerProps &
+  RangePickerProps &
+  TimePickerProps &
+  CascaderProps &
+  MentionProps &
+  TransferProps<any> &
+  TreeSelectProps &
+  UploadProps;
 
+// 自己使用的时候，可以这样使用 controlProps: {} as IControlType<'input'>
 //#region
-export type IDynamicBaseFormControlType<T extends IBaseFormControlType> = T extends 'input'
+export type IControlType<T extends IBaseFormControlType> = T extends 'input'
   ? InputProps
   : T extends 'search'
   ? SearchProps
@@ -67,19 +75,19 @@ export type IDynamicBaseFormControlType<T extends IBaseFormControlType> = T exte
   : T extends 'date'
   ? DatePickerProps
   : T extends 'year'
-  ? DatePickerProps
+  ? MonthPickerProps
   : T extends 'quarter'
-  ? DatePickerProps
+  ? MonthPickerProps
   : T extends 'dateRange'
-  ? DatePickerProps
+  ? RangePickerProps
   : T extends 'month'
-  ? DatePickerProps
+  ? MonthPickerProps
   : T extends 'time'
-  ? DatePickerProps
+  ? TimePickerProps
   : T extends 'monthRange'
-  ? DatePickerProps
+  ? MonthPickerProps
   : T extends 'editor'
-  ? TextAreaProps
+  ? BraftEditorProps
   : T extends 'custom'
   ? any
   : any;

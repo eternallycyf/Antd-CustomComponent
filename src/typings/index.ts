@@ -4,7 +4,7 @@ import { ButtonProps } from 'antd/lib/button';
 import React, { ReactNode } from 'react';
 import { FormInstance } from 'antd/es/form';
 import { FormListProps } from 'antd/es/form/FormList';
-import { TableColumnType, TableProps } from 'antd';
+import { TableProps } from 'antd';
 import type { FormListFieldData } from 'antd/es/form/FormList';
 import { IBaseFormControlType, IBaseCol, IBaseFormat, IBaseInitialValue, IBaseLayout, IFetchConfig } from './base';
 import { TableRowSelection } from 'antd/lib/table/interface';
@@ -148,12 +148,13 @@ export interface ICommonTable<T> extends TableProps<T> {
   [propName: string]: any;
 }
 
-export interface EditTableProps extends Omit<TableProps<any>, 'columns'> {
-  columns?: IColumnsType<any>;
+export interface EditTableProps {
+  columns: IColumnsType;
   handleFormatRowValues?: (text: string, record: any, index: number) => string;
   formListProps?: FormListProps;
   hasCancelButton?: boolean;
   hasSaveButton?: boolean;
+  [props: string]: any;
 }
 
 export interface FieldCompType {
@@ -169,7 +170,7 @@ export interface FieldCompType {
 
 //表単
 export interface CustomForm {
-  formList?: FormControl[]; //控件列表
+  formList?: ISearchesType; //控件列表
   type?: 'grid' | 'inline'; //布局类型
   rows?: object; //Row配置
   cols?: object; //Col配置
@@ -211,7 +212,7 @@ export interface FormControl {
   /**@description 表单配置 */
   formFieldProps?: FormItemProps;
   /**@description 控件属性配置 */
-  controlProps?: IControlProps;
+  controlProps?: IControlProps & IBaseControlProps;
 
   dict?: IControlProps['dict'];
   /**@description 表格属性配置 */
@@ -240,7 +241,7 @@ export interface FormControl {
 }
 
 //表単控件属性
-export interface IControlProps extends IBaseControlProps {
+export interface IControlProps {
   fetchConfig?: IFetchConfig;
   itemProps?: FormItemProps;
   tableProps?: EditTableProps;
@@ -257,4 +258,5 @@ export interface IControlProps extends IBaseControlProps {
     onChange?: (...args: any[]) => any;
     [propName: string]: any;
   }>;
+  [propName: string]: any;
 }
