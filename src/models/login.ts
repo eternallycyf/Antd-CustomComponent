@@ -1,7 +1,7 @@
 import { Effect } from '@/typings/connect';
 import { Reducer } from 'redux';
 import * as service from '@/services';
-import { routerRedux } from 'dva';
+import { history } from '@umijs/max';
 
 export interface ILoginModelState {
   token: string;
@@ -31,8 +31,7 @@ const LoginModal: ILoginModel = {
   state: {
     token: sessionStorage.getItem('token') || '',
     loading: false,
-    userTeamList:
-      (sessionStorage.getItem('userTeamList') as any as any[]) || [],
+    userTeamList: (sessionStorage.getItem('userTeamList') as any as any[]) || [],
   },
   effects: {
     *login({ payload }, { call, put }) {
@@ -55,7 +54,7 @@ const LoginModal: ILoginModel = {
         type: 'updateState',
         payload: { token: '' },
       });
-      routerRedux.push('/login');
+      history.push('/login');
       sessionStorage.removeItem('token');
     },
   },
