@@ -16,9 +16,27 @@ type Column<TRecord = AnyData> =
   //   })
   | ColumnType<TRecord> & {
       title: ReactNode | (() => ReactNode);
-      // TODO: 拓展属性
+      /**
+       * @description 仅针对title的tooltip
+       * 可传入字符串 或者传入对象
+       * */
+      tooltip?:
+        | ReactNode
+        | {
+            text?: ReactNode;
+            extraText?: ReactNode;
+          };
+      /**
+       * @description 格式化时间
+       * 针对特殊格式 可传入人对象 dayjs(text, type).format(format)
+       */
+      formatTime?: string | { type?: string; format: string };
+      /**
+       * @description 格式化金融数据 增加千分号
+       * 可传入具体的保留位数
+       */
+      formatNumber?: boolean | number;
       dataIndex?: keyof TRecord;
-      tooltip?: React.ReactNode;
       // 仅在editable为true时生效
       editable?: boolean;
       formItemProps?: Search;

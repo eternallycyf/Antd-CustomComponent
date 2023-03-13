@@ -36,7 +36,7 @@ export default {
         code: 200,
         data: {
           ...mockjs.mock({
-            'list|1300': [
+            'list|4': [
               {
                 name: '@city',
                 'value|1-100': 50,
@@ -52,12 +52,13 @@ export default {
                 activityDesc: '@cparagraph',
                 activityRule: '@cparagraph',
                 activityRuleDesc: '@cparagraph',
+                activityPrice: '@float(100, 10000, 2, 2)',
               },
             ],
           }),
           page: req.query.page,
-          pageSize: 1300,
-          total: 1300,
+          pageSize: 4,
+          total: 4,
         },
         message: 'string',
         success: true,

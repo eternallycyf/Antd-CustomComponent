@@ -225,7 +225,7 @@ export default {
     code: 200,
     msg: '请求成功',
     success: true,
-    data: '231231231231JSKJDLLSDH',
+    data: 'JSKJDLLSDH',
   },
   'POST /fetchUserInfo': {
     code: 200,

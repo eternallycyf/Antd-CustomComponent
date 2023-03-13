@@ -1,7 +1,25 @@
 import * as JsCookie from 'js-cookie';
 const { get, set, remove } = JsCookie.default;
 
-const cookieKey = 'admin-token';
+const cookieKey = 'token';
+
+function isJSON(str: string) {
+  if (!str) {
+    return false;
+  }
+  if (typeof str === 'string') {
+    try {
+      let obj = JSON.parse(str);
+      if (typeof obj === 'object' && obj) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+}
 
 const cookie = {
   getCookie(name?: string) {
@@ -18,7 +36,8 @@ const cookie = {
 type StorageType = 'localStorage' | 'sessionStorage';
 const store = (type: StorageType) => ({
   get(item: string): any {
-    return JSON.parse(window[type].getItem(item) || 'null');
+    const json = window[type].getItem(item) || 'null';
+    return isJSON(json) ? JSON.parse(json) : json;
   },
   set(item: string, value: any): void {
     window[type].setItem(item, JSON.stringify(value));

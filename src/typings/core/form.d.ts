@@ -1,21 +1,7 @@
-import {
-  AutoCompleteProps,
-  CheckboxProps,
-  ColProps,
-  DatePicker,
-  FormItemProps,
-  InputNumberProps,
-  InputProps,
-  RadioProps,
-  RateProps,
-  SelectProps,
-  SwitchProps,
-  DatePickerProps,
-} from 'antd';
+import { FormItemProps } from 'antd';
 import { FormControl } from '../';
 import { ICustomProps } from '../control/custom';
 import { ISelectProps } from '../control/select';
-import { ITextAreaProps } from '../control/textarea';
 import { IDatePickerProps } from '../control/time';
 
 // 拓展 FormControl

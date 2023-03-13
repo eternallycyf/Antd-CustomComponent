@@ -25,9 +25,9 @@ type IBaseTableInstance = InstanceType<typeof BaseTable> & {
 };
 
 class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
-  protected tableRef = React.createRef<IBaseTableInstance>();
-  protected searchRef = React.createRef<React.ElementRef<typeof CommonSearch>>();
-  protected formRef = React.createRef<React.ElementRef<typeof CustomForm>>();
+  public tableRef = React.createRef<IBaseTableInstance>();
+  public searchRef = React.createRef<React.ElementRef<typeof CommonSearch>>();
+  public formRef = React.createRef<React.ElementRef<typeof CustomForm>>();
 
   componentDidMount() {
     this.handleRefreshPage();

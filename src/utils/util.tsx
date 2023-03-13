@@ -2,8 +2,9 @@ import _, { some, isArray, keyBy, keys } from 'lodash';
 import dayjs from 'dayjs';
 import { exportFile } from '@/services/global';
 import React from 'react';
-import { Modal } from 'antd';
+import { Modal, Tooltip } from 'antd';
 import Ellipsis from '@/core/base/Ellipsis';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const reg = /xxx/g;
 
@@ -22,6 +23,42 @@ export const objectToQueryStr = (obj: any) => {
     }
   }
   return str.join('&');
+};
+
+const renderTooltip = (title: string = '', tooltip: string = '', extraText = '') => {
+  return (
+    <div>
+      <span style={{ marginRight: 4 }}>{title}</span>
+      <Tooltip title={tooltip}>
+        <QuestionCircleOutlined
+          style={{
+            marginLeft: 2,
+            fontSize: 12,
+            color: 'rgb(153,153,153)',
+          }}
+        />
+      </Tooltip>
+      {extraText}
+    </div>
+  );
+};
+
+const formatNumber = (options: any, value: number) => {
+  const fractionDigits = typeof options.formatNumber === 'number' ? options.formatNumber : 2;
+  if (_.isNil(value)) return '--';
+  return Number(value).toLocaleString(undefined, {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  });
+};
+
+const formatTime = (options: any, text: any) => {
+  if (_.isNil(text)) return '--';
+  if (typeof options.formatTime === 'object') {
+    const { format, type } = options.formatTime;
+    return dayjs(text, type).format(format);
+  }
+  return dayjs(text).format(options.format);
 };
 
 /**
@@ -46,30 +83,51 @@ export function formatColumn(data: any[]) {
     if (!item.render) {
       item.render = (newText: any) => {
         let text = newText;
-        if (item.dict) {
-          text = getDictMap(item.dict)[text];
-        }
-        return text == null ? '--' : text;
+        return _.isNil(text) ? '--' : text;
       };
+
+      if (item.dict) {
+        item.render = (newText: any) => {
+          let text = newText;
+          text = getDictMap(item.dict)[text];
+          return _.isNil(text) ? '--' : text;
+        };
+      }
+
+      if (item.formatTime) {
+        item.render = (text: any) => formatTime(item, text);
+      }
+
+      if (item.formatNumber || Number.isInteger(item.formatNumber)) {
+        item.render = (text: number) => formatNumber(item, text);
+      }
     }
 
-    if (item.formatTime) {
-      item.render = (text: any) => {
-        return text ? <span>{dayjs(text).format(options.format)}</span> : '--';
-      };
+    if (item.tooltip) {
+      const { title } = item;
+      if (typeof item.tooltip === 'string' || React.isValidElement(item.tooltip)) {
+        item.title = () => renderTooltip(title, item.tooltip);
+      } else {
+        const { text = '', extraText = '' } = item.tooltip;
+        item.title = () => renderTooltip(title, text, extraText);
+      }
     }
 
     if (item.ellipsis) {
-      item.render = (newText: any) => {
-        let text = newText;
-        text = text == null ? '--' : text;
+      item.render = (text: any) => {
+        if (_.isNil(text)) return '--';
+        let newText = text;
+        if (item.dict) newText = getDictMap(item.dict)[text];
+        if (item.formatTime) newText = formatTime(item, text);
+        if (item.formatNumber) newText = formatNumber(item, text);
+
         return options.ellipsisType === 'line' ? (
           <Ellipsis tooltip={true} lines={options.lines}>
-            {text}
+            {newText}
           </Ellipsis>
         ) : (
           <Ellipsis tooltip={true} length={options.number}>
-            {text}
+            {newText}
           </Ellipsis>
         );
       };
