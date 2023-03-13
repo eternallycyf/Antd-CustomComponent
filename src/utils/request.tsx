@@ -162,7 +162,6 @@ request.interceptors.response.use((response, option) => {
   cancelPending(option);
   handleBusinessError(response, option);
   return checkLogin(response);
-  return response;
 });
 
 export default request;
