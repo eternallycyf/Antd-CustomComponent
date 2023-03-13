@@ -121,7 +121,6 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
       collapsed: !collapsed,
     });
   };
-
   return (
     <Tabs
       hideAdd
@@ -140,7 +139,7 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
           <MenuFoldOutlined className={styles.icon} onClick={handleMenuCollapse} style={{ padding: '0 10px' }} />
         ),
       }}
-      items={tabs.map((item, index) => ({
+      items={(tabs || []).map((item, index) => ({
         ...item,
         tab: setTab(item.tab, item.key, index),
         label: setTab(item.tab, item.key, index),

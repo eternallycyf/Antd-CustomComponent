@@ -3,7 +3,7 @@ const { get, set, remove } = JsCookie.default;
 
 const cookieKey = 'token';
 
-function isJSON(str: string) {
+function isJSON(str: string | null) {
   if (!str) {
     return false;
   }
@@ -36,8 +36,8 @@ const cookie = {
 type StorageType = 'localStorage' | 'sessionStorage';
 const store = (type: StorageType) => ({
   get(item: string): any {
-    const json = window[type].getItem(item) || 'null';
-    return isJSON(json) ? JSON.parse(json) : json;
+    const json = window[type].getItem(item) || null;
+    return isJSON(json) ? JSON.parse(json!) : json;
   },
   set(item: string, value: any): void {
     window[type].setItem(item, JSON.stringify(value));
