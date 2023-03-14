@@ -70,6 +70,11 @@ export interface IButtonProps extends Omit<ButtonProps, 'onClick'> {
 }
 
 //表格
+//表格
+/**
+ * @泛型 T 为表格 name[]
+ * @example {name:string}
+ */
 export interface ICommonTable<T> extends TableProps<T> {
   /**@description 最外层容器 className */
   wrapClassStr?: string;
@@ -145,6 +150,7 @@ export interface ICommonTable<T> extends TableProps<T> {
   /**@description 渲染前最后处理一次column */
   formatColumn?: (column: any[]) => any[];
   children?: React.ReactNode;
+  columns: IColumnsType<T>;
   [propName: string]: any;
 }
 

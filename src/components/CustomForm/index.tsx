@@ -3,7 +3,7 @@ import { Form, FormItemProps, ModalProps, FormInstance } from 'antd';
 import { Drawer, message, Modal } from 'antd';
 import { postAction } from '@/services/global';
 import FormBuilder from '@/components/CustomForm/FormBuilder';
-import { FormControl, ModalType } from '@/typings';
+import { ISearchesType, ModalType } from '@/typings';
 import _ from 'lodash';
 
 export type formatValuesType = (
@@ -31,7 +31,7 @@ interface IProps {
     wrapperCol: FormItemProps['wrapperCol'];
   };
   ref?: any;
-  formList: FormControl[];
+  formList: ISearchesType;
   formatValues?: formatValuesType;
   handleFieldsChange?: (changedFields: any, allFields: any, form: FormInstance) => void;
   otherRender?: () => React.ReactNode;

@@ -13,7 +13,7 @@ import AccessBtn from '@/components/AccessBtn';
 import styles from './index.less';
 import { getUUID } from '@/utils/random';
 
-class CommonTable extends BaseTable<ICommonTable<any>, IBaseTableState> {
+class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
   static defaultProps = {
     wrapClassStr: '.tabs-tabPane-active',
     size: 'small',

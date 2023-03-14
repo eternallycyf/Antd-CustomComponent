@@ -218,7 +218,7 @@ const FormBuilder: React.FC<CustomForm> = (props) => {
           );
         } else if (item.WrappedComponent) {
           return (
-            <item.WrappedComponent {...funcCbParams}>
+            <item.WrappedComponent {...funcCbParams} key={funcCbParams.record}>
               <ComponentRow className={styles['row-item']} {...rows}>
                 {buildCol(item)}
               </ComponentRow>
