@@ -94,6 +94,27 @@ export default () => (
 
 ## FAQ
 
+### table 列表中使用需要使用 customShowBtn 手动判断长度
+
+- 根据行判断是否显示隐藏 无关数量
+- 由于样式影响
+
+```ts
+{
+  render: text => (
+    <CustomTooltip<true>
+      text={text.map(item => (<Tag key={index}>{item}</Tag>))}
+      row={{
+        rows: 2,
+        expend: true,
+        EllipsisSymbol: true,
+        customShowBtn: () => arr.length > 2 ? true : false;
+      }}
+    />
+  )
+}
+```
+
 ### 当 react 版本小于 18.0 监听 dom 高度失效
 
 ```tsx | pure

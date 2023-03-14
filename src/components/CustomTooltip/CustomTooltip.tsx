@@ -1,6 +1,7 @@
 import { Col, ColProps, Input, Tooltip, Typography } from 'antd';
 import React, { FC, Fragment, useState, useRef, useCallback } from 'react';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
+import useForceUpdate from '@/hook/useForceUpdate';
 import cx from './index.less';
 const { Paragraph } = Typography;
 const { TextArea } = Input;
@@ -98,6 +99,7 @@ type Iprops<T extends boolean | unknown> = T extends true
   : ICustomTooltipProps;
 
 const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) => {
+  const forceUpdate = useForceUpdate();
   const [isExpand, setIsExpand] = useState<boolean>(false);
   const [overflowStatus, setOverflowStatus] = useState<'hidden' | 'unset'>('hidden');
 
@@ -197,6 +199,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) 
           onClick={() => {
             setOverflowStatus('unset');
             setIsExpand(isExpandStatus);
+            forceUpdate();
           }}
         >
           展开 <UpOutlined className={cx['apply-shake']} />
@@ -204,7 +207,14 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) 
       );
     } else {
       return (
-        <a style={buttonStyle} className="ant-typography-expand" onClick={() => setIsExpand(isExpandStatus)}>
+        <a
+          style={buttonStyle}
+          className="ant-typography-expand"
+          onClick={() => {
+            setIsExpand(isExpandStatus);
+            forceUpdate();
+          }}
+        >
           收起 <DownOutlined className={cx['apply-shake']} />
         </a>
       );
@@ -238,7 +248,10 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) 
           expandable: hasExpend ? isExpand : false,
           suffix: hasExpend ? (isExpand ? '' : (getToggleButton(true) as any as string)) : '',
           tooltip: isTextToObject ? '' : text,
-          onExpand: () => setIsExpand(true),
+          onExpand: () => {
+            setIsExpand(true);
+            forceUpdate();
+          },
         },
       };
   const customRowEllipsisNotExpandParagraphProps = {
