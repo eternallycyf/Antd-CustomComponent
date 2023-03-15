@@ -338,4 +338,4 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) 
   );
 };
 
-export default React.memo(CustomTooltip);
+export default CustomTooltip;
