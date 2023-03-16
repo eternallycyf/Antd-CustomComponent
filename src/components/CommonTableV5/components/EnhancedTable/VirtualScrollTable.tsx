@@ -392,6 +392,9 @@ const VirtualScrollTable = (props: any) => {
     const setTableData = (scrollItem: any) => {
       const displayColumns = getColumns(scrollItem) || [];
       setDisplayColumns(displayColumns);
+      if (getRows(scrollItem, displayColumns)?.length === fixRowkeys?.length) {
+        return;
+      }
       setRows(getRows(scrollItem, displayColumns));
     };
 
