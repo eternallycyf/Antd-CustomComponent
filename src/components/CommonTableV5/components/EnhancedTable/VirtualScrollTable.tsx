@@ -552,52 +552,57 @@ const VirtualScrollTable = (props: any) => {
 
     return (
       <Suspense fallback={<h2>Loading...</h2>}>
-        <table
+        <div
           className={styles['scroll-container']}
           onScroll={_.throttle(_onScroll, 60)}
           style={{ height: height }}
           ref={scrollRef}
         >
-          <tbody
-            className={styles['table-content-container']}
+          <table
             style={{
               height: totalHeight + 'px',
               width: totalWidth + 'px',
               pointerEvents: pointerEvents as any,
-              right: rows.length ? 'unset' : 0,
-              top: top + 'px',
-              left: left + 'px',
             }}
           >
-            {rows.length
-              ? rows.map((row, rowIndex) => (
-                  <tr
-                    className={`
+            <tbody
+              className={styles['table-content-container']}
+              style={{
+                right: rows.length ? 'unset' : 0,
+                top: top + 'px',
+                left: left + 'px',
+              }}
+            >
+              {rows.length
+                ? rows.map((row, rowIndex) => (
+                    <tr
+                      className={`
                 ${styles['row']}
                 ${rowIndex === activeRowIndex && styles['row-active']}
                 ${fixRowkeys.includes(row[rowKey]) && styles['fix-row-top']}
                 `}
-                    style={getRowStyle(rowIndex)}
-                    key={rowIndex}
-                    onClick={() => onClick({ rowKey: rowIndex, rowData: row, rowIndex })}
-                    onMouseEnter={() => setHoverRowIndex(rowIndex)}
-                    onMouseLeave={() => setHoverRowIndex(-1)}
-                  >
-                    {fixLeftColumnList.map((column, columnIndex) =>
-                      renderCell(column, columnIndex, row, rowIndex, fixLeftColumnList),
-                    )}
-                    {displayColumns.map((column, columnIndex) =>
-                      renderCell(column, columnIndex, row, rowIndex, displayColumns),
-                    )}
-                    {/* 分开写的目的是为了避免闪屏。由于列数不固定，如果一起写会添加删除dom，固定在右边的列会闪屏 */}
-                    {fixRightColumnList.map((column, columnIndex) =>
-                      renderCell(column, columnIndex, row, rowIndex, fixRightColumnList),
-                    )}
-                  </tr>
-                ))
-              : props?.locale?.emptyText}
-          </tbody>
-        </table>
+                      style={getRowStyle(rowIndex)}
+                      key={rowIndex}
+                      onClick={() => onClick({ rowKey: rowIndex, rowData: row, rowIndex })}
+                      onMouseEnter={() => setHoverRowIndex(rowIndex)}
+                      onMouseLeave={() => setHoverRowIndex(-1)}
+                    >
+                      {fixLeftColumnList.map((column, columnIndex) =>
+                        renderCell(column, columnIndex, row, rowIndex, fixLeftColumnList),
+                      )}
+                      {displayColumns.map((column, columnIndex) =>
+                        renderCell(column, columnIndex, row, rowIndex, displayColumns),
+                      )}
+                      {/* 分开写的目的是为了避免闪屏。由于列数不固定，如果一起写会添加删除dom，固定在右边的列会闪屏 */}
+                      {fixRightColumnList.map((column, columnIndex) =>
+                        renderCell(column, columnIndex, row, rowIndex, fixRightColumnList),
+                      )}
+                    </tr>
+                  ))
+                : props?.locale?.emptyText}
+            </tbody>
+          </table>
+        </div>
       </Suspense>
     );
   };
