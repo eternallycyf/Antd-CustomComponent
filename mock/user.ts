@@ -123,7 +123,7 @@ export const menuList = [
     component: null,
     icon: null,
     id: 'home',
-    name: 'home',
+    name: '增删改组件',
     path: '/home',
     upperId: '1',
     url: null,

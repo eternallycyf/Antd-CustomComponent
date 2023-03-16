@@ -6,7 +6,7 @@ interface IToggleBtnValue {
   size?: ButtonProps['size'];
   buttonType: ButtonProps['type'];
   buttonStyle?: CSSProperties;
-  tootipStyle?: CSSProperties;
+  tooltipStyle?: CSSProperties;
   toggleIconStyle?: CSSProperties;
   label: ReactNode | string;
   tooltip?: ReactNode | string;

@@ -44,8 +44,8 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
   };
 
   const handleOpenChange = (openKeys: string[]): void => {
-    const moreThanOne = openKeys.filter((openKey) => isMainMenu(openKey)).length > 1;
-    setOpenKeys(moreThanOne ? [openKeys.pop() as string] : [...openKeys]);
+    // const moreThanOne = openKeys.filter((openKey) => isMainMenu(openKey)).length > 1;
+    setOpenKeys(openKeys);
   };
 
   const flatMenuKeys = useMemo(() => {

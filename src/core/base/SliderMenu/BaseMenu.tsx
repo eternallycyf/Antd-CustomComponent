@@ -22,6 +22,7 @@ const BaseMenu: React.FC<IBaseMenuProps> = (props) => {
     menuList = [],
     location: { pathname },
     openKeys,
+    onOpenChange,
     ...restProps
   } = props;
 
@@ -43,6 +44,7 @@ const BaseMenu: React.FC<IBaseMenuProps> = (props) => {
       key="Menu"
       inlineIndent={8}
       selectedKeys={openKeys}
+      onOpenChange={onOpenChange}
       {...restProps}
       openKeys={openKeys}
       items={getNavMenuItems(menuList)}
