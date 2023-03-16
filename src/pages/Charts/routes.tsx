@@ -3,7 +3,7 @@ export default {
   path: '/charts',
   routes: [
     {
-      name: 'echarts',
+      name: 'charts',
       path: '/charts',
       redirect: '/charts/echarts',
       hideInMenu: true,
@@ -11,13 +11,13 @@ export default {
     },
     {
       name: 'antd-charts',
-      path: '/charts/ACharts',
+      path: '/charts/antd-charts',
       component: '@/pages/Charts/ACharts',
       icon: 'smile',
     },
     {
-      name: 'ECharts',
-      path: '/charts/Echarts',
+      name: 'echarts',
+      path: '/charts/echarts',
       component: '@/pages/Charts/ECharts',
       icon: 'smile',
     },
