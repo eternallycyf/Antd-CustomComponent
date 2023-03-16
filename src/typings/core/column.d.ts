@@ -29,9 +29,13 @@ type Column<TRecord = AnyData> =
           };
       /**
        * @description 格式化时间
+       * 1. formatTime:true 默认格式化为YYYY-MM-DD
+       * 2. formatTime:true format:YYYY-MM-DD HH:mm:ss => 格式化为YYYY-MM-DD HH:mm:ss
+       * 3. formatTime:{ type: 'YYYY.MM.DD', format: 'YYYY-MM-DD' } => 格式化为YYYY-MM-DD
        * 针对特殊格式 可传入人对象 dayjs(text, type).format(format)
        */
-      formatTime?: string | { type?: string; format: string };
+      format?: string;
+      formatTime?: boolean | { type?: string; format: string };
       /**
        * @description 格式化金融数据 增加千分号
        * 可传入具体的保留位数

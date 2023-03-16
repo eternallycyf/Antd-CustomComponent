@@ -53,7 +53,6 @@ const formatNumber = (options: any, value: number) => {
 };
 
 const formatTime = (options: any, text: any) => {
-  console.log(options, text);
   if (_.isNil(text)) return '--';
   if (typeof options.formatTime === 'object') {
     const { format, type } = options.formatTime;
@@ -78,7 +77,7 @@ export function formatColumn(data: any[]) {
   return data.map((item, index) => {
     const options = {
       ...defaultOptions,
-      ..._.pick(item, _.keys(defaultOptions)),
+      ...item,
     };
 
     if (!item.render) {
@@ -96,11 +95,10 @@ export function formatColumn(data: any[]) {
       }
 
       if (item.formatTime) {
-        console.log(item);
-        item.render = (text: any) => formatTime(item, text);
+        item.render = (text: any) => formatTime(options, text);
       }
 
-      if (item.formatNumber || Number.isInteger(item.formatNumber)) {
+      if (Number.isInteger(item.formatNumber) || item.formatNumber) {
         item.render = (text: number) => formatNumber(item, text);
       }
     }
@@ -124,7 +122,7 @@ export function formatColumn(data: any[]) {
         if (_.isNil(text)) return '--';
         let newText = text;
         if (item.dict) newText = getDictMap(item.dict)[text];
-        if (item.formatTime) newText = formatTime(item, text);
+        if (item.formatTime) newText = formatTime(options, text);
         if (item.formatNumber) newText = formatNumber(item, text);
 
         return options.ellipsisType === 'line' ? (

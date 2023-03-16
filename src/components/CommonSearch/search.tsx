@@ -105,7 +105,6 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
         data[key] = value.unix();
       }
 
-      console.log(sourceItem);
       if (sourceItem.transform) {
         data[key] = sourceItem.transform(value);
       }
