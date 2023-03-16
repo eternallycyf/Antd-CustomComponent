@@ -46,6 +46,7 @@ const renderTooltip = (title: string = '', tooltip: string = '', extraText = '')
 const formatNumber = (options: any, value: number) => {
   const fractionDigits = typeof options.formatNumber === 'number' ? options.formatNumber : 2;
   if (_.isNil(value)) return '--';
+  if (isNaN(Number(value))) return value;
   return Number(value).toLocaleString(undefined, {
     minimumFractionDigits: fractionDigits,
     maximumFractionDigits: fractionDigits,

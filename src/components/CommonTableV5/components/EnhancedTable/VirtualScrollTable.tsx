@@ -148,8 +148,11 @@ const VirtualScrollTable = (props: any) => {
     for (let i = columnIndex; i < thList.length; i++) {
       const th = thList[i] || {};
       if (column.title === th.textContent) {
-        realWidth = th.clientWidth;
+        realWidth = th.clientWidth - 0.5;
         break;
+      }
+      if (column.tooltip && columnIndex === i) {
+        realWidth = th.clientWidth;
       }
     }
     return realWidth;
@@ -389,9 +392,6 @@ const VirtualScrollTable = (props: any) => {
     const setTableData = (scrollItem: any) => {
       const displayColumns = getColumns(scrollItem) || [];
       setDisplayColumns(displayColumns);
-      if (getRows(scrollItem, displayColumns)?.length === fixRowkeys?.length) {
-        return;
-      }
       setRows(getRows(scrollItem, displayColumns));
     };
 
@@ -522,9 +522,6 @@ const VirtualScrollTable = (props: any) => {
       const style = setCellStyle(column, columnIndex, columns, rowSpan, colSpan, rowIndex);
       const content = setCellContent(column, row, rowIndex);
       if (colSpan === 0) return null;
-      // 正则去除 px
-      let newWidth = style?.width || 0;
-      newWidth = newWidth.replace(/px/gi, '');
       return (
         <td
           className={`
@@ -555,57 +552,52 @@ const VirtualScrollTable = (props: any) => {
 
     return (
       <Suspense fallback={<h2>Loading...</h2>}>
-        <div
+        <table
           className={styles['scroll-container']}
           onScroll={_.throttle(_onScroll, 60)}
           style={{ height: height }}
           ref={scrollRef}
         >
-          <div
+          <tbody
+            className={styles['table-content-container']}
             style={{
               height: totalHeight + 'px',
               width: totalWidth + 'px',
               pointerEvents: pointerEvents as any,
+              right: rows.length ? 'unset' : 0,
+              top: top + 'px',
+              left: left + 'px',
             }}
           >
-            <div
-              className={styles['table-content-container']}
-              style={{
-                right: rows.length ? 'unset' : 0,
-                top: top + 'px',
-                left: left + 'px',
-              }}
-            >
-              {rows.length
-                ? rows.map((row, rowIndex) => (
-                    <tr
-                      className={`
+            {rows.length
+              ? rows.map((row, rowIndex) => (
+                  <tr
+                    className={`
                 ${styles['row']}
                 ${rowIndex === activeRowIndex && styles['row-active']}
                 ${fixRowkeys.includes(row[rowKey]) && styles['fix-row-top']}
                 `}
-                      style={getRowStyle(rowIndex)}
-                      key={rowIndex}
-                      onClick={() => onClick({ rowKey: rowIndex, rowData: row, rowIndex })}
-                      onMouseEnter={() => setHoverRowIndex(rowIndex)}
-                      onMouseLeave={() => setHoverRowIndex(-1)}
-                    >
-                      {fixLeftColumnList.map((column, columnIndex) =>
-                        renderCell(column, columnIndex, row, rowIndex, fixLeftColumnList),
-                      )}
-                      {displayColumns.map((column, columnIndex) =>
-                        renderCell(column, columnIndex, row, rowIndex, displayColumns),
-                      )}
-                      {/* 分开写的目的是为了避免闪屏。由于列数不固定，如果一起写会添加删除dom，固定在右边的列会闪屏 */}
-                      {fixRightColumnList.map((column, columnIndex) =>
-                        renderCell(column, columnIndex, row, rowIndex, fixRightColumnList),
-                      )}
-                    </tr>
-                  ))
-                : props?.locale?.emptyText}
-            </div>
-          </div>
-        </div>
+                    style={getRowStyle(rowIndex)}
+                    key={rowIndex}
+                    onClick={() => onClick({ rowKey: rowIndex, rowData: row, rowIndex })}
+                    onMouseEnter={() => setHoverRowIndex(rowIndex)}
+                    onMouseLeave={() => setHoverRowIndex(-1)}
+                  >
+                    {fixLeftColumnList.map((column, columnIndex) =>
+                      renderCell(column, columnIndex, row, rowIndex, fixLeftColumnList),
+                    )}
+                    {displayColumns.map((column, columnIndex) =>
+                      renderCell(column, columnIndex, row, rowIndex, displayColumns),
+                    )}
+                    {/* 分开写的目的是为了避免闪屏。由于列数不固定，如果一起写会添加删除dom，固定在右边的列会闪屏 */}
+                    {fixRightColumnList.map((column, columnIndex) =>
+                      renderCell(column, columnIndex, row, rowIndex, fixRightColumnList),
+                    )}
+                  </tr>
+                ))
+              : props?.locale?.emptyText}
+          </tbody>
+        </table>
       </Suspense>
     );
   };

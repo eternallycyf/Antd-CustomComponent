@@ -36,7 +36,7 @@ export default {
         code: 200,
         data: {
           ...mockjs.mock({
-            'list|31': [
+            'list|3': [
               {
                 name: '@city',
                 'value|1-100': 50,
@@ -57,8 +57,8 @@ export default {
             ],
           }),
           page: req.query.page,
-          pageSize: 30,
-          total: 31,
+          pageSize: 3,
+          total: 3,
         },
         message: 'string',
         success: true,
