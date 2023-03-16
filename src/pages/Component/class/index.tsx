@@ -32,6 +32,7 @@ interface IState {
   selectedRowKeys: React.Key[];
   expandedKey: string;
   expandedRowKeys: React.Key[];
+  radioValue: '0' | '1' | '2';
 }
 
 class Activity extends BaseComponent<IProps, IState> {
@@ -46,6 +47,7 @@ class Activity extends BaseComponent<IProps, IState> {
       selectedRowKeys: [],
       expandedKey: 'index',
       expandedRowKeys: [],
+      radioValue: '0',
     };
   }
 

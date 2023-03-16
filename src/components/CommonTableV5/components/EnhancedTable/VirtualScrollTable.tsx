@@ -8,7 +8,6 @@ import React, {
   Suspense,
   useTransition,
 } from 'react';
-import { flushSync } from 'react-dom';
 import classNames from 'classnames';
 import Table from './MemoTable';
 import styles from './VirtualScrollTable.less';
@@ -393,9 +392,7 @@ const VirtualScrollTable = (props: any) => {
       if (getRows(scrollItem, displayColumns)?.length === fixRowkeys?.length) {
         return;
       }
-      flushSync(() => {
-        setRows(getRows(scrollItem, displayColumns));
-      });
+      setRows(getRows(scrollItem, displayColumns));
     };
 
     const setShadow = (scrollItem: any) => {

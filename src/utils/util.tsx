@@ -53,6 +53,7 @@ const formatNumber = (options: any, value: number) => {
 };
 
 const formatTime = (options: any, text: any) => {
+  console.log(options, text);
   if (_.isNil(text)) return '--';
   if (typeof options.formatTime === 'object') {
     const { format, type } = options.formatTime;
@@ -95,6 +96,7 @@ export function formatColumn(data: any[]) {
       }
 
       if (item.formatTime) {
+        console.log(item);
         item.render = (text: any) => formatTime(item, text);
       }
 
@@ -105,10 +107,14 @@ export function formatColumn(data: any[]) {
 
     if (item.tooltip) {
       const { title } = item;
-      if (typeof item.tooltip === 'string' || React.isValidElement(item.tooltip)) {
+      if (typeof item.tooltip === 'string') {
         item.title = () => renderTooltip(title, item.tooltip);
+      } else if (typeof item.tooltip === 'function') {
+        item.title = () => renderTooltip(title, item.tooltip());
       } else {
-        const { text = '', extraText = '' } = item.tooltip;
+        const text = typeof item.tooltip.text === 'function' ? item.tooltip.text() || '' : item.tooltip.text || '';
+        const extraText =
+          item.tooltip.extraText === 'function' ? item.tooltip.extraText() || '' : item.tooltip.extraText || '';
         item.title = () => renderTooltip(title, text, extraText);
       }
     }

@@ -1,0 +1,188 @@
+export const DATA = [
+  {
+    total: 200,
+    time: '20200314',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20200414',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20200514',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20200614',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20200714',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20200814',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20200914',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20201014',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20201114',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20201214',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20200114',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20200214',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20200214',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20200314',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20210314',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20210414',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20210514',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20210614',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20210714',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20210814',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20210914',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20211014',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20211114',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20211214',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20220114',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20220214',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20230214',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+  {
+    total: 200,
+    time: '20230314',
+    pureCommis: 20,
+    crueCommis: 30,
+  },
+];
+
+export const DATA2 = [
+  {
+    pay: 30,
+    use: 102,
+    company: 'xxxx',
+  },
+  {
+    pay: 50,
+    use: 111,
+    company: '阿里巴巴',
+  },
+  {
+    pay: 60,
+    use: 111,
+    company: '阿里巴巴',
+  },
+];

@@ -22,6 +22,22 @@ export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType 
       type: 'search',
     },
     {
+      name: 'xxxxxStatus',
+      label: '状态',
+      type: 'radio',
+      dict: STATUS_DICT,
+      initialValue: STATUS_DICT[0]['value'],
+      controlProps: {
+        buttonStyle: 'solid',
+        onChange: (value: any) => {
+          const [_, values] = self.searchRef.current?.handleRealParams();
+          self.setState({ radioValue: value.target.value });
+          self.handleSearch({ ...values, status: value.target.value });
+        },
+      },
+    },
+
+    {
       name: 'activityName',
       label: '电话',
       disabled: true,

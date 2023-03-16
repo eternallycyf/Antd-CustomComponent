@@ -21,10 +21,11 @@ type Column<TRecord = AnyData> =
        * 可传入字符串 或者传入对象
        * */
       tooltip?:
-        | ReactNode
+        | string
+        | (() => ReactNode)
         | {
-            text?: ReactNode;
-            extraText?: ReactNode;
+            text?: () => ReactNode;
+            extraText?: () => ReactNode;
           };
       /**
        * @description 格式化时间

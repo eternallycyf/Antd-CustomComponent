@@ -12,7 +12,9 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType =>
     {
       dataIndex: 'activityName',
       title: '活动名称',
-      width: 30,
+      tooltip: () => 'tooltip',
+      formatNumber: true,
+      width: 300,
       sorter: true,
       align: 'center' as 'center',
       fixed: 'left' as 'left',
@@ -23,9 +25,10 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType =>
       title: '活动开始时间',
       width: 112,
       sorter: true,
+      formatTime: 'YYYY-MM-DD',
       align: 'center' as 'center',
       fixed: 'left' as 'left',
-      ellipsis: true,
+      // ellipsis: true,
     },
     {
       dataIndex: 'activityEndTime',
