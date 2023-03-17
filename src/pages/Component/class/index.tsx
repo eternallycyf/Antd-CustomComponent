@@ -180,7 +180,7 @@ class Activity extends BaseComponent<IProps, IState> {
           formList={getSearches(this)}
           handleSearch={this.handleSearch}
           ref={this.searchRef}
-          columnNumber={3}
+          columnNumber={4}
         />
         <CommonTable {...tableParams} ref={this.tableRef} />
         <CustomForm

@@ -216,18 +216,19 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
   return (
     <div className={cx('searchWrap', styles.searchWrap)} style={{ border: (isOneLine as any) && undefined }}>
       <Form onFieldsChange={onFieldsChange} layout="inline" form={form} onFinish={handleSubmit} className={styles.form}>
-        <Row align="middle" gutter={{ md: 4, lg: 12, xl: 24 }} style={{ flex: 1 }}>
+        <Row align="middle" gutter={{ md: 4, lg: 12, xl: 24 }} style={{ flex: 1, width: '100%' }}>
           {formList.map((field, index) => (
             <Col
               key={field.name}
               span={isOneLine ? field.col || span : span}
-              style={{ display: index < (showCount as any) ? 'block' : 'none' }}
+              style={{ display: index < (showCount as any) ? 'block' : 'none', width: '100%' }}
             >
               <Form.Item
-                {...(field.itemProps as any)}
                 labelAlign="right"
                 labelCol={{ style: { maxWidth: '250px', minWidth: '100px' } }}
+                // wrapperCol={{ span: 20 }}
                 label={field.label}
+                {...(field.itemProps as any)}
               >
                 {renderFormItem(field)}
               </Form.Item>

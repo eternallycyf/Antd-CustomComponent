@@ -28,7 +28,7 @@ const GlobalHeader: FC<IProps> = (props) => {
       <Row style={{ width: '100%', height: '100%' }}>
         <Col span={24}>
           <Row justify="center" align="middle">
-            <Col span={4}>
+            <Col span={2}>
               <span className={styles['core-base-title']}>后台管理</span>
             </Col>
             <Col span={13}>

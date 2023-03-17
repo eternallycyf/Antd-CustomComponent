@@ -158,7 +158,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
                 </div>
               </GlobalHeader>
               <Layout className={styles.content}>
-                <Sider theme={theme} style={{ background: 'transparent' }}>
+                <Sider theme={theme} style={{ background: 'transparent', display: collapsed ? 'none' : '' }}>
                   <SiderMenu {...siderMenuProps} ref0={ref0} />
                 </Sider>
                 <Content>{location.pathname !== '/' ? <Outlet /> : <IndexPage />}</Content>

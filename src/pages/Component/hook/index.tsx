@@ -176,7 +176,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) 
         formList={getSearches(self)}
         handleSearch={self.setSearchParams}
         ref={self.searchRef}
-        columnNumber={3}
+        columnNumber={4}
       />
       <CommonTable {...tableParams} ref={self.tableRef} />
       <CustomForm

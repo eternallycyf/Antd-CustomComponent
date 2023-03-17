@@ -59,12 +59,12 @@ export default defineConfig({
   hash: true,
   mfsu: true,
   npmClient: 'yarn',
-  headScripts: [{ src: 'https://unpkg.com/jquery@3.6.4/dist/jquery.js' }],
-  scripts: [
-    { content, charset: 'utf-8' },
-    {
-      src: process.env.NODE_ENV === 'development' ? '/js/snow.js' : `/${repo}/js/snow.js`,
-    },
-  ],
+  // headScripts: [{ src: 'https://unpkg.com/jquery@3.6.4/dist/jquery.js' }],
+  // scripts: [
+  //   { content, charset: 'utf-8' },
+  //   {
+  //     src: process.env.NODE_ENV === 'development' ? '/js/snow.js' : `/${repo}/js/snow.js`,
+  //   },
+  // ],
   tailwindcss: {},
 });
