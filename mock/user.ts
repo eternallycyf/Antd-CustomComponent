@@ -252,6 +252,17 @@ export const menuList = [
   },
   {
     children: null,
+    code: 'leaflet',
+    component: null,
+    icon: null,
+    id: 'leaflet',
+    name: 'leaflet',
+    path: '/leaflet',
+    upperId: '1',
+    url: null,
+  },
+  {
+    children: null,
     code: 'water_mark',
     component: null,
     icon: null,

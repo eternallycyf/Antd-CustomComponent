@@ -5,7 +5,8 @@ import Component from '../pages/Component/routes';
 import ExportExcel from '../pages/ExportExcel/routes';
 import ExportWord from '../pages/ExportWord/routes';
 import FileViewer from '../pages/FileViewer/routes';
+import Leaflet from '../pages/Leaflet/routes';
 import VirtualList from '../pages/VirtualList/routes';
 import WaterMark from '../pages/WaterMark/routes';
 
-export default [Access, Charts, Component, ExportExcel, ExportWord, FileViewer, VirtualList, WaterMark];
+export default [Access, Charts, Component, ExportExcel, ExportWord, FileViewer, Leaflet, VirtualList, WaterMark];
