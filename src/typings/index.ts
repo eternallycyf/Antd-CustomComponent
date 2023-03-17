@@ -215,8 +215,12 @@ export interface FormControl {
   fetchConfig?: IFetchConfig;
   /**@description form.item配置 */
   itemProps?: FormItemProps;
-  /**@description 表单配置 */
-  formFieldProps?: FormItemProps;
+  /**@description 表单配置 尽量使用itemProps formFieldProps一般用rules*/
+  /**
+   * @description 表单配置 尽量使用itemProps 传递form.Item的属性
+   * formFieldProps 一般用于传递 rules 如果包含嵌套情况 可能无法传递属性到form.Item
+   */
+  formFieldProps?: { rules?: FormItemProps['rules'] };
   /**@description 控件属性配置 */
   controlProps?: IControlProps & IBaseControlProps;
 
