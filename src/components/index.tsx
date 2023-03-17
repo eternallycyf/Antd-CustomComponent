@@ -1,6 +1,6 @@
 import AccessBtn from './AccessBtn';
 import BaseComponent from './BaseComponent';
-import * as LocalComponents from './LocalComponents';
+import * as Widget from './Widget';
 import CommonSearch from './CommonSearch';
 import CommonTable from './CommonTableV5/CommonTableV5';
 import CustomForm from './CustomForm';
@@ -17,7 +17,7 @@ import * as VirtualList from './VirtualList';
 
 export {
   AccessBtn,
-  LocalComponents,
+  Widget,
   CommonSearch,
   CommonTable,
   CustomForm,
