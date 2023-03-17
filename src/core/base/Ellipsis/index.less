@@ -1,14 +1,15 @@
 .ellipsis {
+  display: inline-block;
   overflow: hidden;
   width: 100%;
-  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .lines {
   position: relative;
 
   .shadow {
-    position: absolute;
+    position: relative;
     z-index: -999;
     display: block;
     color: transparent;
@@ -18,7 +19,7 @@
 
 .lineClamp {
   position: relative;
+  display: box;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }

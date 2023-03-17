@@ -3,13 +3,13 @@
  * @param str
  * @returns {number}
  */
-export const getStrFullLength = (str: string = ''): number =>
-  str.split('').reduce((acc, cur) => {
+export const getStrFullLength = (str = '') =>
+  str.split('').reduce((pre, cur) => {
     const charCode = cur.charCodeAt(0);
     if (charCode >= 0 && charCode <= 128) {
-      return acc + 1;
+      return pre + 1;
     }
-    return acc + 2;
+    return pre + 2;
   }, 0);
 
 /**
@@ -18,9 +18,9 @@ export const getStrFullLength = (str: string = ''): number =>
  * @param maxLength
  * @returns {string}
  */
-export const cutStrByFullLength = (str: string = '', maxLength: number): string => {
+export const cutStrByFullLength = (str = '', maxLength: number) => {
   let showLength = 0;
-  return str.split('').reduce((acc, cur) => {
+  return str.split('').reduce((pre, cur) => {
     const charCode = cur.charCodeAt(0);
     if (charCode >= 0 && charCode <= 128) {
       showLength += 1;
@@ -28,8 +28,8 @@ export const cutStrByFullLength = (str: string = '', maxLength: number): string 
       showLength += 2;
     }
     if (showLength <= maxLength) {
-      return acc + cur;
+      return pre + cur;
     }
-    return acc;
+    return pre;
   }, '');
 };
