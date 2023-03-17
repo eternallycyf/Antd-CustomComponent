@@ -17,67 +17,6 @@
 
 ## 1.安装依赖
 
-```JSON
-  "dependencies": {
-    "@ant-design/charts": "^1.4.2",
-    "@ant-design/icons": "^4.7.0",
-    "@ant-design/pro-components": "^2.0.1",
-    "@antv/data-set": "^0.11.4",
-    "@umijs/max": "^4.0.40",
-    "antd": "^5.1.1",
-    "braft-editor": "^2.3.9",
-    "braft-extensions": "^0.1.1",
-    "braft-utils": "^3.0.12",
-    "classnames": "^2.2.6",
-    "docx-preview": "^0.1.11",
-    "docxtemplater": "3.5",
-    "draft-js-prism": "^1.0.6",
-    "echarts": "^5.3.3",
-    "echarts-for-react": "^3.0.2",
-    "exceljs": "^4.3.0",
-    "file-saver": "^2.0.5",
-    "immutability-helper": "^3.1.1",
-    "js-cookie": "^3.0.1",
-    "jszip": "^3.10.1",
-    "jszip-utils": "^0.1.0",
-    "lodash": "^4.17.19",
-    "open-docxtemplater-image-module": "^1.0.3",
-    "pizzip": "^3.1.1",
-    "prismjs": "^1.29.0",
-    "react-color": "^2.19.3",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
-    "react-excel-renderer": "^1.1.0",
-    "react-markdown": "^8.0.3",
-    "react-resizable": "^3.0.4",
-    "react-syntax-highlighter": "^15.5.0",
-    "redux-persist": "^6.0.0",
-    "remark-gfm": "^3.0.1"
-  },
-  "devDependencies": {
-    "@types/ejs": "^3.1.1",
-    "@types/js-cookie": "^3.0.2",
-    "@types/lodash": "^4.14.191",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    "@types/react-resizable": "^3.0.3",
-    "@types/react-window": "^1.8.5",
-    "@umijs/preset-react": "1.x",
-    "cross-env": "^7.0.3",
-    "ejs": "^3.1.8",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
-    "mockjs": "^1.1.0",
-    "prettier": "^2.7.1",
-    "prettier-plugin-organize-imports": "^2",
-    "prettier-plugin-packagejson": "^2",
-    "react-dev-inspector": "^1.8.4",
-    "ts-node": "^10.9.0",
-    "typescript": "^4.1.2",
-    "yorkie": "^2.0.0"
-  }
-```
-
 ## 2.Dockerfile
 
 ```Dockerfile
