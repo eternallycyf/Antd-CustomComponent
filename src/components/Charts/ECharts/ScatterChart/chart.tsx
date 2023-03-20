@@ -64,7 +64,7 @@ export const getOptions = (config: IGetOptions) => {
           fontSize: 12,
           fontWeight: 400,
         },
-        formatter: (value: number) => ~~Number(value),
+        // formatter: (value: number) => ~~Number(value),
       },
       splitLine: {
         show: true,
@@ -107,7 +107,7 @@ export const getOptions = (config: IGetOptions) => {
           fontWeight: 400,
         },
         interval: 0,
-        formatter: (value: number) => ~~Number(value),
+        // formatter: (value: number) => ~~Number(value),
         // formatter: (v: string) => {
         //   const values = v?.split('-');
         //   if (!Array.isArray(values)) return '--';

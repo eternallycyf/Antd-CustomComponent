@@ -3,14 +3,14 @@ const fs = require('fs');
 /**
  * @param {*} path
  */
-async function RemoveDir(path) {
+async function removeDir(path) {
   if (fs.existsSync(path)) {
     const dirs = [];
     const files = fs.readFileSync(path);
     files.forEach(async (file) => {
       const childPath = `${path}/${file}`;
       if (fs.statSync(childPath).isDirectory()) {
-        await RemoveDir(childPath);
+        await removeDir(childPath);
         dirs.push(childPath);
       } else {
         fs.unlinkSync(path);
@@ -22,6 +22,13 @@ async function RemoveDir(path) {
   }
 }
 
+async function goto(page, link) {
+  return page.evaluate((link) => {
+    location.href = link;
+  }, link);
+}
+
 module.exports = {
-  RemoveDir,
+  removeDir,
+  goto,
 };

@@ -166,7 +166,7 @@ class Activity extends BaseComponent<IProps, IState> {
       resizable: true,
       isSummary: true,
       // 虚拟列表配置
-      isVirtual: true,
+      isVirtual: false,
       scroll: { y: 800 },
       fixRowkeys: [1, 2, 3],
       rowEventHandlers: {
@@ -189,7 +189,7 @@ class Activity extends BaseComponent<IProps, IState> {
           // isTable={true}
           className={styles.customForm}
           modalType={ModalType.modal}
-          modalConf={{ width: 1000, forceRender: true }}
+          modalConf={{ width: 1000, getContainer: false }}
           defaultLayout={{ labelCol: { span: 3 }, wrapperCol: { span: 21 } }}
           ref={this.formRef}
           formList={getFormList(this)}

@@ -56,7 +56,7 @@ const Login = ({ dispatch }: { dispatch: Dispatch }) => {
             label="Username"
             name="username"
             rules={[{ required: true, message: 'Please input your username!' }]}
-            initialValue="admin"
+            // initialValue="admin"
           >
             <Input placeholder="admin" />
           </Form.Item>
@@ -64,7 +64,7 @@ const Login = ({ dispatch }: { dispatch: Dispatch }) => {
           <Form.Item
             label="Password"
             name="password"
-            initialValue="admin"
+            // initialValue="admin"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
             <Input.Password placeholder="admin" />
