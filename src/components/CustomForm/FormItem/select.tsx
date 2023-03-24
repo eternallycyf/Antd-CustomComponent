@@ -133,7 +133,7 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
           ? dataAddAllItem(dataSource).map((dic: any) => (
               <OptGroup label={dic[textKey]} key={dic[valueKey]}>
                 {dic.children.map((subItem: any) => (
-                  <Option value={String(subItem[valueKey])} key={subItem[valueKey]}>
+                  <Option value={String(subItem[valueKey])} key={subItem[valueKey]} disabled={dic.disabled || false}>
                     {(renderItem && renderItem(subItem)) || subItem[textKey]}
                   </Option>
                 ))}
@@ -146,6 +146,7 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef(
                 title={dic[textKey]}
                 label={dic[textKey]}
                 option={dic}
+                disabled={dic.disabled || false}
               >
                 {(renderItem && renderItem(dic)) || dic[textKey]}
               </Option>
