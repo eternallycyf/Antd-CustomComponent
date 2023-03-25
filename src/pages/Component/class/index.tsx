@@ -166,7 +166,7 @@ class Activity extends BaseComponent<IProps, IState> {
       resizable: true,
       isSummary: true,
       // 虚拟列表配置
-      isVirtual: false,
+      isVirtual: true,
       scroll: { y: 800 },
       fixRowkeys: [1, 2, 3],
       rowEventHandlers: {
