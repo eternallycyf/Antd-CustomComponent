@@ -227,13 +227,14 @@ const VirtualScrollTable = (props: any) => {
     return [selectColumn, ...columns];
   }, [realColumns, rowSelection, selectedRowKeys, realWidth]);
 
+  const [newMergedColumns, setNewMergedColumns] = useState(mergedColumns);
   const notFixColumns: any[] = useMemo(
     () => mergedColumns.filter((item: any) => item.fixed !== 'left' && item.fixed !== 'right'),
-    [mergedColumns],
+    [newMergedColumns],
   );
   const fixLeftColumnList: any[] = useMemo(
     () => mergedColumns.filter((item: any) => item.fixed === 'left'),
-    [mergedColumns],
+    [newMergedColumns],
   );
   const fixLeftColumnTotalWidth = useMemo(
     () => fixLeftColumnList.reduce((accurate, item) => accurate + item.width, 0),
@@ -241,7 +242,7 @@ const VirtualScrollTable = (props: any) => {
   );
   const fixRightColumnList: any[] = useMemo(
     () => mergedColumns.filter((item: any) => item.fixed === 'right'),
-    [mergedColumns],
+    [newMergedColumns],
   );
   const fixRightColumnTotalWidth = useMemo(
     () => fixRightColumnList.reduce((accurate, item) => accurate + item.width, 0),
@@ -251,7 +252,22 @@ const VirtualScrollTable = (props: any) => {
     () => mergedColumns.reduce((accurate: any, item: any) => accurate + item.width, 0),
     [mergedColumns],
   );
-  const totalWidth = Math.max(columnTotalWidth, (tableRef as any)?.current?.clientWidth - 14);
+
+  const [totalWidth, setTotalWidth] = useState(0);
+
+  useEffect(() => {
+    setTotalWidth(Math.max(columnTotalWidth, (tableRef as any)?.current?.clientWidth - 14));
+  }, [tableRef.current]);
+
+  useEffect(() => {
+    const totalResize = (window.onresize = () => {
+      setTotalWidth(Math.max(columnTotalWidth, (tableRef as any)?.current?.clientWidth - 14));
+    });
+    window.addEventListener('resize', totalResize);
+    return () => {
+      window.removeEventListener('resize', totalResize);
+    };
+  }, [totalWidth]);
 
   useEffect(() => {
     if (totalWidth >= columnTotalWidth) {
@@ -260,6 +276,7 @@ const VirtualScrollTable = (props: any) => {
         if (rowSelection && index === 0) setRealWidth(column.realWidth);
       });
     }
+    setNewMergedColumns(mergedColumns);
   }, [columnTotalWidth, totalWidth, tableRef?.current, mergedColumns, rowSelection]);
 
   const totalHeight = useMemo(() => dataSource.length * rowHeight, [dataSource, rowHeight]);
@@ -293,7 +310,7 @@ const VirtualScrollTable = (props: any) => {
       startTransition(() => {
         setShadow(scrollRef.current);
       });
-    }, [dataSource, rowNumber, totalHeight, selectedRowKeys]);
+    }, [dataSource, rowNumber, totalHeight, selectedRowKeys, newMergedColumns]);
 
     // 查询时重置数据
     useEffect(() => {
