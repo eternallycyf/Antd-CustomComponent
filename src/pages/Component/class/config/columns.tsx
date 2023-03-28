@@ -1,11 +1,11 @@
 import { IColumnsType } from '@/typings';
 import Activity from '../index';
 
-const ACTIVE_TYPE: any = {
-  '0': '满折',
-  '1': '满减',
-  '2': '立减',
-};
+const ACTIVE_TYPE = [
+  { text: '满折', value: '0' },
+  { text: '满减', value: '1' },
+  { text: '立减', value: '2' },
+];
 
 export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType => {
   return [
@@ -44,7 +44,8 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType =>
       dataIndex: 'activityType',
       title: '活动类型',
       width: 112,
-      render: (text: string) => ACTIVE_TYPE[text] || '--',
+      dict: ACTIVE_TYPE,
+      // render: (text: string) => ACTIVE_TYPE[text] || '--',
       // sorter: true,
       align: 'center' as 'center',
       fixed: 'left' as 'left',

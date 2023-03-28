@@ -41,7 +41,13 @@ type Column<TRecord = AnyData> =
        * 可传入具体的保留位数
        */
       formatNumber?: boolean | number;
+      dict?: {
+        text: string;
+        value: string | number;
+      }[];
+
       dataIndex?: keyof TRecord;
+      children?: Column<TRecord>[];
       // 仅在editable为true时生效
       editable?: boolean;
       formItemProps?: Search;
