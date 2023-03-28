@@ -203,28 +203,55 @@ http://localhost:8000/
 
 ## 接受参数
 import { withRouter, history} from 'umi'
+import { compose } from 'redux';
 import _ from 'lodash';
 
 componentDidMount(){
+  let hasListen = false;
   this.props.history.listen({ query, pathname }) => {
     const targetPath == query;
     if(targetPath && targetPath === '/当前页面路由' && pathname == '/跳转地址路由'){
-      const { setFieldsValue } = this.searchRef.current.searchFormRef.current.form;
-      const [value, values] = this.searchRef.current?.handleRealParams();
-      const params = {...values, ..._.Omit(query,['targetPath'])},
-      setFieldsValue(_.Omit(query,['targetPath']);
-      this.handleSearch({ ...value, ...params }})
+      const form = this.searchRef.current.searchFormRef.current;
+      if(form){
+        const [value, values] = this.searchRef.current?.handleRealParams();
+        const params = {...values, ..._.Omit(query,['targetPath'])},
+        form.setFieldsValue(_.Omit(query,['targetPath']);
+        // 如果是 select => xxx: { key: 'xxx'}
+        // form.setFieldsValue(
+        // !_.isNil(params,isUploading)
+        //   ? { ..._.Omit(query,['targetPath'], status: { key: params.status } }
+        //   : _.Omit(query,['targetPath'])
+        // )
+        this.handleSearch({ ...value, ...params }})
+        hasListen = true;
+      }
     }
   }
+  const [value, values] = this.searchRef.current?.handleRealParams();
+  !hasListen && this.handleSearch(values)
 }
 
 handleResetCallBack = () => router.push({ pathname: '/跳转地址路由', query: {} })
 
-<CommonSearch handleResetCallBack={this.handleResetCallBack} />
+initRequest: false;
 
-export default withRouterPage(withRouter(connect({ login, global }: ConnectState) => ({
-  token: login.token,
-  accessCollection: login.accessCollection,
-  userInfo: global.userInfo
-}))(Page))
+<CommonSearch
+  handleSearch={(val) => {
+    router.push({ pathname: `/当前路由`, query: {} })
+    this.handleSearch(val)
+  }}
+  handleResetCallBack={this.handleResetCallBack}
+/>
+
+export default compose(
+  withRoutePage,
+  withRouter,
+  connect(({ login, global }: ConnectState) => ({
+    token: login.token,
+    accessCollection: login.accessCollection,
+    userInfo: global.userInfo,
+  }), null, null, {
+    forwardRef: true,
+  }),
+)(Page);
 ```
