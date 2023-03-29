@@ -11,9 +11,20 @@ export interface ITrendProps {
   reverseColor?: boolean;
   children?: React.ReactNode;
   className?: string;
+  upSymbol?: React.ReactNode;
+  downSymbol?: React.ReactNode;
 }
 
-const Trend: FC<ITrendProps> = ({ colorful = true, reverseColor = false, flag, children, className, ...rest }) => {
+const Trend: FC<ITrendProps> = ({
+  colorful = true,
+  reverseColor = false,
+  flag,
+  children,
+  className,
+  upSymbol = null,
+  downSymbol = null,
+  ...rest
+}) => {
   const classString = classNames(
     styles.trendItem,
     {
@@ -22,10 +33,12 @@ const Trend: FC<ITrendProps> = ({ colorful = true, reverseColor = false, flag, c
     },
     className,
   );
+  const up = upSymbol ? upSymbol : <CaretUpOutlined className={styles[flag]} />;
+  const down = downSymbol ? downSymbol : <CaretDownOutlined className={styles[flag]} />;
   return (
     <div {...rest} className={classString} title={typeof children === 'string' ? children : ''}>
       <span className={styles.value}>{children}</span>
-      {flag && <span className={styles[flag]}>{flag === 'up' ? <CaretUpOutlined /> : <CaretDownOutlined />}</span>}
+      {flag && <span className={styles[flag]}>{flag === 'up' ? up : down}</span>}
     </div>
   );
 };
