@@ -41,6 +41,7 @@ type Column<TRecord = AnyData> =
        * 可传入具体的保留位数
        */
       formatNumber?: boolean | number;
+      formatPercent?: boolean;
       dict?: {
         text: string;
         value: string | number;

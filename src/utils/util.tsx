@@ -53,6 +53,12 @@ const formatNumber = (options: any, value: number) => {
   });
 };
 
+const formatPercent = (value: number) => {
+  if (_.isNil(value)) return '--';
+  if (isNaN(Number(value))) return value;
+  return (value * 100)?.toFixed(2) + '%';
+};
+
 const formatTime = (options: any, text: any) => {
   if (_.isNil(text)) return '--';
   if (typeof options.formatTime === 'object') {
@@ -99,6 +105,10 @@ export function formatColumn(data: any[]) {
         item.render = (text: any) => formatTime(options, text);
       }
 
+      if (item.formatPercent) {
+        item.render = formatPercent;
+      }
+
       if (Number.isInteger(item.formatNumber) || item.formatNumber) {
         item.render = (text: number) => formatNumber(item, text);
       }
@@ -124,6 +134,7 @@ export function formatColumn(data: any[]) {
         let newText = text;
         if (item.dict) newText = getDictMap(item.dict)[text];
         if (item.formatTime) newText = formatTime(options, text);
+        if (item.formatPercent) newText = formatPercent(text);
         if (item.formatNumber) newText = formatNumber(item, text);
 
         return options.ellipsisType === 'line' ? (
