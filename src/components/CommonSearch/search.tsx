@@ -2,7 +2,7 @@ import React, { useEffect, useImperativeHandle, useState } from 'react';
 import _ from 'lodash';
 import cx from 'classnames';
 import { ReloadOutlined, SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
-import { Button, Col, Row, Form } from 'antd';
+import { Button, Col, Row, Form, RowProps } from 'antd';
 import { getFieldComp } from '@/core/helpers';
 import { IToolTipTagProps } from './index';
 import styles from './index.less';
@@ -15,10 +15,21 @@ export interface ISearchProps extends IToolTipTagProps {
   children?: any;
   handleTagList?: any;
   handleResetCallback: () => void;
+  rowProps: RowProps;
+  isInline: boolean;
 }
 
 const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
-  const { formList, showSearchBtn = true, showResetBtn = true, columnNumber, children, handleResetCallback } = props;
+  const {
+    formList,
+    showSearchBtn = true,
+    showResetBtn = true,
+    columnNumber,
+    children,
+    handleResetCallback,
+    rowProps = {},
+    isInline = false,
+  } = props;
   const [form] = Form.useForm();
   const [state, setState] = useState({
     expandForm: props.expandForm,
@@ -214,39 +225,70 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
   const isOneLine = formListLength <= (columnNumber as any);
 
   return (
-    <div className={cx('searchWrap', styles.searchWrap)} style={{ border: (isOneLine as any) && undefined }}>
+    <div
+      className={cx('searchWrap', styles.searchWrap, { [styles.inLineForm]: isInline })}
+      style={{ border: (isOneLine as any) && undefined }}
+    >
       <Form onFieldsChange={onFieldsChange} layout="inline" form={form} onFinish={handleSubmit} className={styles.form}>
-        <Row align="middle" gutter={{ md: 4, lg: 12, xl: 24 }} style={{ flex: 1, width: '100%' }}>
-          {formList.map((field, index) => (
-            <Col
-              key={field.name}
-              span={isOneLine ? field.col || span : span}
-              style={{ display: index < (showCount as any) ? 'block' : 'none', width: '100%' }}
-            >
-              <Form.Item
-                labelAlign="right"
-                labelCol={{ style: { maxWidth: '250px', minWidth: '100px' } }}
-                // wrapperCol={{ span: 20 }}
-                label={field.label}
-                {...(field.itemProps as any)}
+        {!isInline && (
+          <Row align="middle" gutter={{ md: 4, lg: 12, xl: 24 }} style={{ flex: 1, width: '100%' }} {...rowProps}>
+            {formList.map((field, index) => (
+              <Col
+                key={field.name}
+                span={isOneLine ? field.col || span : span}
+                style={{ display: index < (showCount as any) ? 'block' : 'none', width: '100%' }}
               >
-                {renderFormItem(field)}
-              </Form.Item>
-            </Col>
-          ))}
-        </Row>
-        <Row style={{ margin: '8px 0 5px 10px' }}>
-          {showSearchBtn && (
-            <Button type="primary" htmlType="submit" size="small" icon={<SearchOutlined />} style={{ marginRight: 10 }}>
-              查询
-            </Button>
-          )}
-          {showResetBtn ? (
-            <Button size="small" htmlType="button" icon={<ReloadOutlined />} onClick={handleReset}>
-              重置
-            </Button>
-          ) : null}
-        </Row>
+                <Form.Item
+                  labelAlign="right"
+                  labelCol={{ style: { maxWidth: '250px', minWidth: '100px' } }}
+                  label={field.label}
+                  {...(field.itemProps as any)}
+                >
+                  {renderFormItem(field)}
+                </Form.Item>
+              </Col>
+            ))}
+          </Row>
+        )}
+
+        {isInline && (
+          <Row gutter={8} justify="end" align="middle" {...rowProps}>
+            {formList.map((field, index) => (
+              <Col key={field.name}>
+                <Form.Item
+                  labelAlign="right"
+                  labelCol={{ style: { maxWidth: '250px', minWidth: '100px' } }}
+                  wrapperCol={{ span: 20 }}
+                  label={field.label}
+                  {...(field.itemProps as any)}
+                >
+                  {renderFormItem(field)}
+                </Form.Item>
+              </Col>
+            ))}
+          </Row>
+        )}
+
+        {showSearchBtn && showResetBtn && (
+          <Row style={{ margin: '8px 0 5px 10px' }}>
+            {showSearchBtn && (
+              <Button
+                type="primary"
+                htmlType="submit"
+                size="small"
+                icon={<SearchOutlined />}
+                style={{ marginRight: 10 }}
+              >
+                查询
+              </Button>
+            )}
+            {showResetBtn ? (
+              <Button size="small" htmlType="button" icon={<ReloadOutlined />} onClick={handleReset}>
+                重置
+              </Button>
+            ) : null}
+          </Row>
+        )}
       </Form>
       {children}
       {!isOneLine ? (

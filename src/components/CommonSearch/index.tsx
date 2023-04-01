@@ -6,6 +6,7 @@ import React, { useImperativeHandle, useRef } from 'react';
 import useSyncState from '@/hook/useSyncState';
 import styles from './index.less';
 import RenderTag from './renderTag';
+import { RowProps } from 'antd';
 
 export interface IToolTipTagProps {
   formList: FormControl[]; // form列表
@@ -19,6 +20,8 @@ export interface IToolTipTagProps {
   handleSearch?: (values: any) => void; // 进行搜索
   handleResetCallback?: () => void; // 重置回调
   handleDeleteTagCallback?: (name: string, itemValue: any) => void; // 删除tag的回调函数
+  rowProps: RowProps;
+  isInline: boolean; // 是否是行内表单
   [propName: string]: any;
 }
 
@@ -41,6 +44,8 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, Omit<IToolTipTagProps,
     showSearchBtn,
     handleResetCallback,
     handleDeleteTagCallback,
+    rowProps = {},
+    isInline = false,
     ...restProps
   } = props;
   const [tagList, setTagList] = useSyncState<any[]>([]);
@@ -165,9 +170,12 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, Omit<IToolTipTagProps,
   return (
     <CommonSearch
       {...restProps}
+      isInline={isInline}
+      rowProps={rowProps}
       ref={searchRef}
       formList={formList}
       showToolTipTag={showToolTipTag}
+      showSearchBtn={showSearchBtn}
       handleTagList={handleTagList}
       handleResetCallback={() => {
         setTagList([]);
