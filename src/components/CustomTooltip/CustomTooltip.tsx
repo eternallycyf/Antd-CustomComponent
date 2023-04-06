@@ -108,7 +108,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) 
   const [hasExpend, setHasExpend] = useState<boolean>(false);
   const contentRef = useCallback((node: HTMLDivElement) => {
     if (node !== null) {
-      if (props!.row!.customShowBtn) {
+      if (props?.row?.customShowBtn) {
         return setHasExpend(props!.row!.customShowBtn());
       }
       const newHeight = node.getBoundingClientRect().height;
