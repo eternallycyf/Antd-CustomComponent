@@ -82,7 +82,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps: any) {
+  componentDidUpdate(nextProps: any) {
     if (!_.isEqual(nextProps.dataSource, this.props.dataSource)) {
       this.setState({ dataSource: nextProps.dataSource });
     }
