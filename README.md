@@ -214,13 +214,13 @@ componentDidMount(){
       const form = this.searchRef.current.searchFormRef.current;
       if(form){
         const [value, values] = this.searchRef.current?.handleRealParams();
-        const params = {...values, ..._.Omit(query,['targetPath'])},
-        form.setFieldsValue(_.Omit(query,['targetPath']);
+        const params = {...values, ..._.omit(query,['targetPath'])},
+        form.setFieldsValue(_.omit(query,['targetPath']);
         // 如果是 select => xxx: { key: 'xxx'}
         // form.setFieldsValue(
-        // !_.isNil(params,isUploading)
-        //   ? { ..._.Omit(query,['targetPath'], status: { key: params.status } }
-        //   : _.Omit(query,['targetPath'])
+        // !_.isNil(params.isUploading)
+        //   ? { ..._.omit(query,['targetPath']), status: { key: params.status } }
+        //   : _.omit(query,['targetPath'])
         // )
         this.handleSearch({ ...value, ...params }})
         hasListen = true;
