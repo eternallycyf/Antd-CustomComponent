@@ -5,9 +5,9 @@ import useBaseComponent from '@/hook/useBaseComponent';
 import { ICommonTable, ModalType } from '@/typings';
 import { ConnectState } from '@/typings/connect';
 import { formatParams } from '@/utils/util';
-import { connect, Provider, withRouter } from '@umijs/max';
+import { connect, Provider } from '@umijs/max';
 import { Col, Form, FormInstance, Input, Row } from 'antd';
-import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { ComponentClass, forwardRef, Ref, useContext, useEffect, useImperativeHandle, useRef } from 'react';
 import { saveActivity } from '../service';
 import { getColumns } from './config/columns';
 import { getFormList } from './config/form';
@@ -18,17 +18,21 @@ import { getFieldComp } from '@/core/helpers';
 import { getOtherFormList } from './config/otherFormList';
 import { withRoutePage } from '@/core/Enhance/withRoutePage';
 const { apiPrefixMock } = projectConfig;
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { compose } from 'redux';
 import _ from 'lodash';
+import { withRouter } from '@/core/Enhance/withRouter';
 
-interface IProps {}
+interface IProps {
+  IndexPageRef: Ref<IHandle>;
+}
 type IHandle = { form: FormInstance };
 type ThemeContextType = 'light' | 'dark';
 const MyContext = React.createContext<ThemeContextType>('light');
 
 const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) => {
+  const { IndexPageRef } = props;
   const theme = useContext<ThemeContextType>(MyContext);
-  console.log(theme);
   const [form] = Form.useForm();
   const OtherFormRef = Form.useForm()[0];
   const self = useBaseComponent({
@@ -45,7 +49,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) 
     self.tableRef.current?.handleRefreshPage();
   }, [self.searchParams]);
 
-  useImperativeHandle(ref, () => ({
+  useImperativeHandle(IndexPageRef, () => ({
     form,
   }));
 
@@ -245,7 +249,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) 
 };
 
 // IndexPage => forwardRef => connect => withRouter => withRoutePage
-export default compose<IHandle>(
+const NewIndexPage = compose<typeof IndexPage>(
   withRoutePage,
   withRouter,
   connect(({ global, login }: ConnectState) => ({ token: login.token }), null, null, {
@@ -254,3 +258,11 @@ export default compose<IHandle>(
   }),
   forwardRef,
 )(IndexPage);
+
+const Content = () => {
+  const ref = useRef<IHandle>(null);
+  useEffect(() => console.log(ref.current?.form), []);
+  return <NewIndexPage IndexPageRef={ref} />;
+};
+
+export default Content;
