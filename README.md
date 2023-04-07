@@ -281,3 +281,20 @@ export default compose(
   }),
 )(Page);
 ```
+
+## custom 表单无法受控
+
+- 需要 noStyle: true
+
+```js
+ {
+      name: 'custom',
+      label: 'custom',
+      type: 'custom',
+      Component: (props) => <Form.Item><Upload /></Form.Item>
+      itemProps:{
+        noStyle: true
+      },
+      layout,
+    },
+```
