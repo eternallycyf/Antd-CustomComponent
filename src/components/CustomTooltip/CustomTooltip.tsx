@@ -2,103 +2,14 @@ import { Col, ColProps, Input, Tooltip, Typography } from 'antd';
 import React, { FC, Fragment, useState, useRef, useCallback } from 'react';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import useForceUpdate from '@/hook/useForceUpdate';
+import { IProps } from './interface';
 import cx from './index.less';
+import CustomTooltipFileName, { IFileName } from './FileName';
+import CustomTooltipParagraph, { IParagraph } from './Paragraph';
 const { Paragraph } = Typography;
 const { TextArea } = Input;
 
-interface IBaseProps {
-  /**
-   * @description 需要格式化的string
-   * @type string | React.ReactNode
-   * @default '''
-   */
-  text: string | any;
-  /**
-   * @description 样式
-   * @type React.CSSProperties
-   * @default {color: 'rgba(0,0,0,0.45)',fontSize: 14,}
-   */
-  style?: React.CSSProperties | any;
-  /**
-   * @description 栅格
-   * @type number
-   * @default 35
-   */
-  col?: number | string;
-  /**
-   * @description 是否可以复制
-   * @type boolean
-   * @default false
-   */
-  copyable?: boolean;
-  colProps?: ColProps;
-  paragraphClassName?: string;
-  tooltipClassName?: string;
-}
-interface ISingleRowProps {
-  /**
-   * @description 最大长度 maxLength和row同时只有一个生效
-   * @type number
-   * @default 35
-   */
-  maxLength?: number;
-}
-interface RowProps {
-  /**
-   * @description 最大行数
-   * @type number | 'autoSize'
-   * @default 1
-   */
-  rows: number | 'autoSize';
-  /**
-   * @description 是否显示省略号 => ...
-   * @type boolean
-   * @default true
-   */
-  EllipsisSymbol?: boolean;
-  /**
-   * @description 是否可展开收起
-   * @type boolean
-   * @default true
-   */
-  expend?: boolean;
-  /**
-   * @description 一行的最大高度 当开启展开收起时 必须传入用于 处理闪烁问题 初次渲染如果超过这个高度自动隐藏
-   * @type number
-   * @default 50
-   */
-  lineMaxHeight?: number;
-  /**
-   * @description 展开收起按钮是否固定在最右边
-   * @type boolean
-   * @default false
-   */
-  isRight?: boolean;
-  /**
-   * @description 自定义是否展示 展开收起按钮
-   * customShowBtn: () => arr.length > 10 ? true : false
-   * @default undefined
-   */
-  customShowBtn?: () => boolean;
-}
-interface IRowProps {
-  /**
-   * @description 行配置 (maxLength和row同时只有一个生效)
-   * @type IRowProps
-   * @default IRowProps
-   */
-  row?: RowProps;
-}
-interface ICustomTooltipProps extends IBaseProps, ISingleRowProps, IRowProps {}
-type ICustomTooltipSimpleProps = IBaseProps & ISingleRowProps;
-type ICustomTooltipRowProps = IBaseProps & IRowProps;
-type Iprops<T extends boolean | unknown> = T extends true
-  ? ICustomTooltipRowProps
-  : T extends false
-  ? ICustomTooltipSimpleProps
-  : ICustomTooltipProps;
-
-const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) => {
+const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) => {
   const forceUpdate = useForceUpdate();
   const [isExpand, setIsExpand] = useState<boolean>(false);
   const [overflowStatus, setOverflowStatus] = useState<'hidden' | 'unset'>('hidden');
@@ -129,6 +40,9 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) 
   /**当组件 无法重新渲染最新效果的时候 给 CustomTooltip 组件加上一个key控制渲染 例如 key={Math.random()} */
   // useLayoutEffect(() => {
   //   if (contentRef.current) {
+  //     if(props.row?.customShowBtn) {
+  //       return setHasExpend(props.row.customShowBtn());
+  //     }
   //     const node = contentRef.current as HTMLDivElement;
   //     console.log(node.firstElementChild!)
   //     const rObserver = new ResizeObserver(entries => {
@@ -162,6 +76,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) 
       lineMaxHeight: 50,
       isRight: false,
       customShowBtn: undefined,
+      btnStyle: 'default',
     },
     col = 24,
     colProps = {},
@@ -202,7 +117,15 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) 
             forceUpdate();
           }}
         >
-          展开 <UpOutlined className={cx['apply-shake']} />
+          {row.btnStyle === 'default' ? (
+            <>
+              展开 <UpOutlined className={cx['apply-shake']} />
+            </>
+          ) : (
+            <span className={cx['expand-btn']}>
+              <UpOutlined className={cx['apply-shake']} />
+            </span>
+          )}
         </a>
       );
     } else {
@@ -215,7 +138,15 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) 
             forceUpdate();
           }}
         >
-          收起 <DownOutlined className={cx['apply-shake']} />
+          {row.btnStyle === 'default' ? (
+            <>
+              收起 <DownOutlined className={cx['apply-shake']} />
+            </>
+          ) : (
+            <span className={cx['expand-btn']}>
+              <DownOutlined className={cx['apply-shake']} />
+            </span>
+          )}
         </a>
       );
     }
@@ -235,7 +166,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) 
     : row.rows;
   // 处理 初始化的闪烁问题 设置最大高度 为一行的高度, 溢出隐藏 当点击时恢复
   const customRowsColStyles = {
-    maxHeight: overflowStatus == 'hidden' ? row.lineMaxHeight : '100%',
+    maxHeight: overflowStatus === 'hidden' ? row.lineMaxHeight : '100%',
     overflow: overflowStatus,
     paddingRight: row.isRight ? 46 : 0,
   };
@@ -318,11 +249,11 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) 
     </Col>
   );
 
-  if (row.rows == 'autoSize' && isTextToObject) {
+  if (row.rows === 'autoSize' && isTextToObject) {
     console.log('当传入的text不是string类型时, 建议使用row={{ rows:1, expend: true }}');
   }
-  if (row.rows == 'autoSize') return AutoSizeParagraph;
-  if (row.rows > 1 && row.expend == true) return CustomRowExpendParagraph;
+  if (row.rows === 'autoSize') return AutoSizeParagraph;
+  if (row.rows > 1 && row.expend === true) return CustomRowExpendParagraph;
   if (row.rows > 1 && !row.expend) return CustomRowNotExpendParagraph;
   if (isTextToObject) {
     console.log('只有当 row.rows >= 2 的时候才可以配置 row.expend');
@@ -338,4 +269,12 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: Iprops<T>) 
   );
 };
 
-export default CustomTooltip;
+export type ICustomTooltipComponent = typeof CustomTooltip & {
+  Paragraph: FC<IParagraph>;
+  FileName: FC<IFileName>;
+};
+
+CustomTooltip.Paragraph = CustomTooltipParagraph;
+CustomTooltip.FileName = CustomTooltipFileName;
+
+export default CustomTooltip as ICustomTooltipComponent;
