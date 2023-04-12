@@ -12,6 +12,17 @@
   }
 }
 
+.expand-btn {
+  display: inline-block;
+  width: 22px;
+  border-radius: 0 4px 4px 0;
+  border-radius: 8px;
+  background: #ebf2ff;
+  background: #ebf2ff;
+  color: #3363d7;
+  text-align: center;
+}
+
 @keyframes shake {
   10% {
     transition: 0.3s;
@@ -28,4 +39,12 @@
 
 .apply-shake {
   animation: shake 0.25s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+:global {
+
+  div.ant-typography-expand,
+  .ant-typography {
+    margin-bottom: 0;
+  }
 }
