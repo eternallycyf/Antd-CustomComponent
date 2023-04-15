@@ -8,69 +8,44 @@ group:
 
 ## CustomTooltip 溢出文字省略
 
-### 1.省略文字组件-可设置自动换行-收起展开-指定最大行数
+### 1.string 类型自动展开收起 需要转换成 Element 类型
 
-```tsx
-import React from 'react';
-import CustomTooltip from './CustomTooltip';
-import { tagS, text } from './constant.tsx';
-export default () => (
-  <CustomTooltip
-    col={24}
-    text={tagS}
-    row={{
-      rows: 1,
-      expend: true,
-      EllipsisSymbol: true,
-      lineMaxHeight: 22,
-    }}
-  />
-);
+```tsx | pure
+<CustomTooltip
+  text={Array.from({ length: 1000 }, (v, i) => (
+    <Fragment key={i}>-</Fragment>
+  ))}
+  row={{
+    rows: 2,
+    expend: true,
+    lineMaxHeight: 66,
+    EllipsisSymbol: true,
+    isRight: true,
+  }}
+/>
 ```
 
-### 2.自动换行
+### 2.Element 类型 自动展开收起
 
-```tsx
-import React from 'react';
-import CustomTooltip from './CustomTooltip';
-import { tagS, tagS2, text } from './constant.tsx';
-export default () => (
-  <CustomTooltip
-    col={24}
-    text={tagS2}
-    row={{
-      rows: 1,
-      expend: true,
-      EllipsisSymbol: true,
-      lineMaxHeight: 22,
-      isRight: false,
-    }}
-  />
-);
+```tsx | pure
+export const tagS = Array.from({ length: 20 }).map((_, i) => (
+  <Tag key={Math.random()} color={COLOR_DICT[~~(Math.random() * 10)]}>
+    {COLOR_DICT[~~(Math.random() * 10)]}
+  </Tag>
+));
+<CustomTooltip
+  text={tagS}
+  row={{
+    rows: 2,
+    expend: true,
+    lineMaxHeight: 45,
+    EllipsisSymbol: true,
+    isRight: true,
+  }}
+/>;
 ```
 
-### 3.收起展开按钮放置右侧
-
-```tsx
-import React from 'react';
-import CustomTooltip from './CustomTooltip';
-import { tagS, tagS2, text } from './constant.tsx';
-export default () => (
-  <CustomTooltip
-    col={24}
-    text={tagS2}
-    row={{
-      rows: 1,
-      expend: true,
-      EllipsisSymbol: false,
-      lineMaxHeight: 22,
-      isRight: true,
-    }}
-  />
-);
-```
-
-### 4.文字处理
+### 3.基本 API 使用
 
 ```tsx
 import React from 'react';
@@ -88,18 +63,36 @@ export default () => (
 );
 ```
 
-<API src="./CustomTooltip.tsx" exports='["IProps"]'></API>
+### 4.CustomTooltip.Paragraph 多行文字溢出显示 ...及 tooltip
 
-<API src="./CustomTooltip.tsx" exports='["IRowProps"]'></API>
+```tsx | pure
+<CustomTooltip.Paragraph
+  text={'xxx'}
+  rows={2}
+  tooltipProps={{}}
+  ellipsisProps={{}}
+  style={{}}
+  copyable={true}
+  className={{}}
+/>
+```
+
+### 5.CustomTooltip.FileName 文件名中间夹断 集成 FileImage
+
+- before: 'xxxxxxx.png';
+- after: 'xxx...xxx.png';
+
+```tsx | pure
+<CustomTooltip.FileName name={'xxx.png'} maxLength={5} />
+```
 
 ## FAQ
 
-### table 列表中使用需要使用 customShowBtn 手动判断长度
+### 1.table 列表中 自动展开收起 不生效
 
-- 根据行判断是否显示隐藏 无关数量
-- 由于样式影响
+- 由于样式影响 需要使用 customShowBtn 手动判断是否展开及隐藏
 
-```ts
+```tsx | pure
 {
   render: text => (
     <CustomTooltip<true>
@@ -115,7 +108,7 @@ export default () => (
 }
 ```
 
-### 当 react 版本小于 18.0 监听 dom 高度失效
+### 2.当 react 版本小于 18.0 监听 dom 高度失效
 
 ```tsx | pure
 /**当 react 版本小于18.0 */

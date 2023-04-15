@@ -13,12 +13,13 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
   const forceUpdate = useForceUpdate();
   const [isExpand, setIsExpand] = useState<boolean>(false);
   const [overflowStatus, setOverflowStatus] = useState<'hidden' | 'unset'>('hidden');
+  const [isString, setIsString] = useState<boolean>(typeof props?.text === 'string');
 
   // 如果没有展开的话 height只会有一个值 如果可以展开 会先输出两个值 (展开前的高度 收起后的高度)
   const heightList = useRef<number[]>([]);
   const [hasExpend, setHasExpend] = useState<boolean>(false);
   const contentRef = useCallback((node: HTMLDivElement) => {
-    if (node !== null) {
+    if (node !== null && !isString) {
       if (props?.row?.customShowBtn) {
         return setHasExpend(props!.row!.customShowBtn());
       }
@@ -117,7 +118,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
             forceUpdate();
           }}
         >
-          {row.btnStyle === 'default' ? (
+          {row.btnStyle !== 'btn' ? (
             <>
               展开 <UpOutlined className={cx['apply-shake']} />
             </>
@@ -138,7 +139,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
             forceUpdate();
           }}
         >
-          {row.btnStyle === 'default' ? (
+          {row.btnStyle !== 'btn' ? (
             <>
               收起 <DownOutlined className={cx['apply-shake']} />
             </>

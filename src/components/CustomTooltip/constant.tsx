@@ -14,7 +14,7 @@ export const COLOR_DICT: any = {
   10: 'purple',
 };
 
-export const tagS = Array.from({ length: 10 }).map((_, i) => (
+export const tagS = Array.from({ length: 20 }).map((_, i) => (
   <Tag key={Math.random()} color={COLOR_DICT[~~(Math.random() * 10)]}>
     {COLOR_DICT[~~(Math.random() * 10)]}
   </Tag>
