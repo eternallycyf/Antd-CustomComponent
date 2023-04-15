@@ -1,4 +1,4 @@
-import styles from './SectionTitle.less';
+import styles from './index.less';
 import { Row, Col } from 'antd';
 import React from 'react';
 
