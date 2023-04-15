@@ -3,6 +3,7 @@ import { FormControl } from '../';
 import { ICustomProps } from '../control/custom';
 import { ISelectProps } from '../control/select';
 import { IDatePickerProps } from '../control/time';
+import { IViewProps } from '../control/view';
 
 // 拓展 FormControl
 export interface IBaseFormControlProps<T> extends ISelectProps, ICustomProps, IDatePickerProps {
@@ -23,7 +24,7 @@ export type Search<TRecord = AnyData> =
   | (Omit<FormControl, 'name'> & {
       name: keyof TRecord;
     } & FormControl)
-  | (Omit<FormControl, 'name'> & IBaseFormControlProps<TRecord> & FormControl & FormItemProps);
+  | (Omit<FormControl, 'name'> & IBaseFormControlProps<TRecord> & FormControl & FormItemProps & IViewProps & {});
 
 type Searches<TRecord = AnyData> = Search<TRecord>[];
 export type IBaseSearchesType<T = AnyData> = Searches<T>;
