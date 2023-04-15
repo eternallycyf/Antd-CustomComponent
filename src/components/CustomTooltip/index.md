@@ -83,7 +83,7 @@ export default () => (
 - after: 'xxx...xxx.png';
 
 ```tsx | pure
-<CustomTooltip.FileName name={'xxx.png'} maxLength={5} />
+<CustomTooltip.FileName name={'xxx.png'} prefixLength={5} />
 ```
 
 ## FAQ

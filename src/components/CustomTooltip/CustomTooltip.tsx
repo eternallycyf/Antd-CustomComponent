@@ -40,7 +40,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
   /** Paragraph 上获取不到ref 就放在外面的col上获取*/
   /**当组件 无法重新渲染最新效果的时候 给 CustomTooltip 组件加上一个key控制渲染 例如 key={Math.random()} */
   // useLayoutEffect(() => {
-  //   if (contentRef.current) {
+  //   if (contentRef.current && !isString) {
   //     if(props.row?.customShowBtn) {
   //       return setHasExpend(props.row.customShowBtn());
   //     }
