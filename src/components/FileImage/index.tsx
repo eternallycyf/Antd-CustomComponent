@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 export const imageInfo = {
-  pdf: require('@/assets/icon/pdf.png'),
-  pdg: require('@/assets/icon/pdf.png'),
-  jpg: require('@/assets/icon/jpg.png'),
-  rar: require('@/assets/icon/rar.png'),
-  zip: require('@/assets/icon/zip.png'),
-  docx: require('@/assets/icon/docx.png'),
-  doc: require('@/assets/icon/docx.png'),
-  xlsx: require('@/assets/icon/xlsx.png'),
-  xls: require('@/assets/icon/xlsx.png'),
-  other: require('@/assets/icon/other.png'),
+  // pdf: require('@/assets/icon/pdf.png'),
+  // pdg: require('@/assets/icon/pdf.png'),
+  // jpg: require('@/assets/icon/jpg.png'),
+  // rar: require('@/assets/icon/rar.png'),
+  // zip: require('@/assets/icon/zip.png'),
+  // docx: require('@/assets/icon/docx.png'),
+  // doc: require('@/assets/icon/docx.png'),
+  // xlsx: require('@/assets/icon/xlsx.png'),
+  // xls: require('@/assets/icon/xlsx.png'),
+  // other: require('@/assets/icon/other.png'),
 };
 
 interface IFileImageProps {

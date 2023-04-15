@@ -16,7 +16,7 @@ export interface IBaseFormControlProps<T> extends ISelectProps, ICustomProps, ID
 
 //#region
 type AnyData = Record<string, unknown>;
-type Search<TRecord = AnyData> =
+export type Search<TRecord = AnyData> =
   | (Omit<FormControl, 'name'> & {
       name: keyof TRecord;
     })
