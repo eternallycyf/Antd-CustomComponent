@@ -6,6 +6,7 @@ import { IProps } from './interface';
 import cx from './index.less';
 import CustomTooltipFileName, { IFileName } from './FileName';
 import CustomTooltipParagraph, { IParagraph } from './Paragraph';
+import _ from 'lodash';
 const { Paragraph } = Typography;
 const { TextArea } = Input;
 
@@ -85,6 +86,8 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
     paragraphClassName = '',
     tooltipClassName = '',
   } = props;
+
+  if (_.isNil(text)) return <span style={{ color: '#8E96A4' }}>--</span>;
 
   const isTextToObject = typeof text === 'object';
   const isShowEllipsisSymbol = row.EllipsisSymbol ? '...' : '';

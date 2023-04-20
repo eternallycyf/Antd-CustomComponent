@@ -3,19 +3,11 @@ import { FormInstance } from 'antd';
 import _ from 'lodash';
 import CustomTooltip from '@/components/CustomTooltip/CustomTooltip';
 import styles from '../index.less';
+import { IFileName } from '@/components/CustomTooltip/FileName';
 
 type IViewHandle = {};
 
-// TODO: 文件预览
-export interface IViewProps {
-  form: FormInstance;
-  disabled?: boolean;
-  label?: string;
-  name?: string;
-  record?: any;
-  initialValue?: any;
-  style?: React.CSSProperties;
-  className?: string;
+export type IBaseViewProps = {
   /**
    * @description 是否可复制 没有 render 时生效
    */
@@ -25,6 +17,8 @@ export interface IViewProps {
    */
   maxLength?: number;
   rows?: number;
+  hasPreview?: boolean;
+  previewProps?: IFileName;
   /**
    * @description
    * 只参与展示 不参与最终结果
@@ -32,6 +26,18 @@ export interface IViewProps {
    */
   parser?: (value: any, record: any, values: any) => any;
   render?: (value: any, record: any, values: any) => React.ReactNode;
+};
+
+// TODO: 文件预览
+export interface IViewProps extends IBaseViewProps {
+  form: FormInstance;
+  disabled?: boolean;
+  label?: string;
+  name?: string;
+  record?: any;
+  initialValue?: any;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 const View: React.ForwardRefRenderFunction<IViewHandle, IViewProps> = (props, ref) => {
@@ -44,11 +50,13 @@ const View: React.ForwardRefRenderFunction<IViewHandle, IViewProps> = (props, re
     rows = 1,
     maxLength = 20,
     initialValue = '',
-    copyable = false,
     style = {},
-    render,
     className,
+    copyable = false,
+    render,
     parser,
+    hasPreview,
+    previewProps = {},
     ...restProps
   } = props;
 
@@ -57,6 +65,10 @@ const View: React.ForwardRefRenderFunction<IViewHandle, IViewProps> = (props, re
   const values = form?.getFieldsValue() || {};
   if (parser) {
     value = parser(value, record, values);
+  }
+
+  if (hasPreview) {
+    return <CustomTooltip.FileName name={value} prefixLength={maxLength} hasPreview={hasPreview} {...previewProps} />;
   }
 
   if (!render && rows === 1) {

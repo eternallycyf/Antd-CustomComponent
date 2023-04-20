@@ -1,3 +1,4 @@
+import { IBaseViewProps } from '@/components/CustomForm/FormItem/view';
 import {
   AutoCompleteProps,
   CascaderProps,
@@ -44,7 +45,8 @@ export type IBaseControlProps = (InputProps & SearchProps) &
   MentionProps &
   TransferProps<any> &
   TreeSelectProps &
-  UploadProps;
+  UploadProps &
+  IBaseViewProps;
 
 // 自己使用的时候，可以这样使用 controlProps: {} as IControlType<'input'>
 //#region
@@ -90,5 +92,7 @@ export type IControlType<T extends IBaseFormControlType> = T extends 'input'
   ? BraftEditorProps
   : T extends 'custom'
   ? any
+  : T extends 'view'
+  ? IBaseViewProps
   : any;
 //#endregion

@@ -1,7 +1,10 @@
 import React, { FC } from 'react';
 import CustomTooltip from './CustomTooltip';
 import FileImage from '@/components/FileImage';
+import _ from 'lodash';
+import FileView from '../FileViewer/FileView';
 
+// TODO: 文件预览
 export interface IFileName {
   name: string;
   /**
@@ -18,18 +21,47 @@ export interface IFileName {
    * @default 2
    */
   suffixLength?: number;
+  hasPreview?: boolean;
+  previewLinkType?: 'flow' | 'default';
+  fileId?: string;
 }
 
+let getPreviewLink = (type = 'default'): string => {
+  switch (type) {
+    case 'flow':
+      getPreviewLink = () => '/flow/download';
+      break;
+    case 'default':
+      getPreviewLink = () => '/download';
+      break;
+    default:
+      getPreviewLink = () => '';
+      break;
+  }
+  return getPreviewLink();
+};
+
 const CustomTooltipFileName: FC<IFileName> = (props) => {
-  const { name, prefixLength = 10, suffixLength = 2 } = props;
+  const {
+    name,
+    prefixLength = 10,
+    suffixLength = 2,
+    hasPreview = false,
+    previewLinkType = 'default',
+    fileId = '',
+  } = props;
+
+  if (_.isNil(name)) return <span style={{ color: '#8E96A4' }}>--</span>;
+
   const fileType = name?.lastIndexOf('.') !== -1 ? name?.slice(name?.lastIndexOf('.') + 1) : undefined;
   const fileName = name.slice(0, name.lastIndexOf('.'));
 
-  if (!fileType) return <span>--</span>;
+  if (!fileType) return <span style={{ color: '#8E96A4' }}>--</span>;
 
   const lastText =
     String(fileName).length > prefixLength ? String(fileName).slice(prefixLength).slice(-suffixLength) : '';
-  return (
+
+  const FileNameContent = (
     <a style={{ color: '#3363D7' }}>
       <FileImage fileName={fileName ?? '--'} style={{ marginRight: 8 }} />
       {fileName.length > prefixLength + suffixLength ? (
@@ -43,6 +75,23 @@ const CustomTooltipFileName: FC<IFileName> = (props) => {
       {fileType ? `.${fileType}` : ''}
     </a>
   );
+
+  if (hasPreview) {
+    return (
+      <>
+        <FileView
+          style={{ display: 'inline-block' }}
+          fileInfo={{
+            fileName: name,
+            fileId,
+          }}
+          downLoadUrl={`${getPreviewLink(previewLinkType)}?fileId=${fileId}`}
+        />
+      </>
+    );
+  }
+
+  return FileNameContent;
 };
 
 export default CustomTooltipFileName;

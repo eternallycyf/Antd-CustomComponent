@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { ParagraphProps } from 'antd/lib/typography/Paragraph';
 const { Paragraph } = Typography;
 import styles from './index.less';
+import _ from 'lodash';
 
 export interface IParagraph {
   text: string;
@@ -25,6 +26,8 @@ const CustomTooltipParagraph: FC<IParagraph> = (props) => {
     className = '',
     ...restProps
   } = props;
+  if (_.isNil(text)) return <span style={{ color: '#8E96A4' }}>--</span>;
+
   const restEllipsisProps = typeof ellipsisProps === 'object' ? ellipsisProps : {};
   return (
     <Tooltip title={text ?? '--'} {...tooltipProps}>
