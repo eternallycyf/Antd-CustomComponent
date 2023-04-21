@@ -47,11 +47,21 @@ type Column<TRecord = AnyData> =
         value: string | number;
       }[];
 
+      ellipsis?:
+        | boolean
+        | {
+            ellipsisType?: 'line' | undefined;
+            lines?: number;
+            number?: number;
+          };
+
       dataIndex?: keyof TRecord;
       children?: Column<TRecord>[];
       // 仅在editable为true时生效
       editable?: boolean;
       formItemProps?: Search;
+      // 权限控制
+      acpCode?: string;
     };
 // & FormControl
 // 传入泛型 Columns<{ code: string }> 指定dataIndex及render的record类型

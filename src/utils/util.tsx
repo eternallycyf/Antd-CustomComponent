@@ -81,79 +81,84 @@ export function formatColumn(data: any[]) {
     number: 100,
   };
 
-  return data.map((item, index) => {
-    const options = {
-      ...defaultOptions,
-      ...item,
-    };
+  const deepData = _.cloneDeep(data);
+  const accessCollection = JSON.parse(sessionStorage.getItem('accessCollection') || '[]');
 
-    if (!item.render) {
-      item.render = (newText: any) => {
-        let text = newText;
-        return _.isNil(text) ? '--' : text;
+  return deepData
+    .filter(({ acpCode }) => (acpCode ? accessCollection.includes(acpCode) : true))
+    .map((item, index) => {
+      const options = {
+        ...defaultOptions,
+        ...item,
       };
 
-      if (item.dict) {
+      if (!item.render) {
         item.render = (newText: any) => {
           let text = newText;
-          text = getDictMap(item.dict)[text];
           return _.isNil(text) ? '--' : text;
         };
+
+        if (item.dict) {
+          item.render = (newText: any) => {
+            let text = newText;
+            text = getDictMap(item.dict)[text];
+            return _.isNil(text) ? '--' : text;
+          };
+        }
+
+        if (item.formatTime) {
+          item.render = (text: any) => formatTime(options, text);
+        }
+
+        if (item.formatPercent) {
+          item.render = formatPercent;
+        }
+
+        if (Number.isInteger(item.formatNumber) || item.formatNumber) {
+          item.render = (text: number) => formatNumber(item, text);
+        }
+
+        if (item.ellipsis) {
+          item.render = (text: any) => {
+            if (_.isNil(text)) return '--';
+            let newText = text;
+            if (item.dict) newText = getDictMap(item.dict)[text];
+            if (item.formatTime) newText = formatTime(options, text);
+            if (item.formatPercent) newText = formatPercent(text);
+            if (item.formatNumber) newText = formatNumber(item, text);
+
+            return options.ellipsisType === 'line' ? (
+              <Ellipsis tooltip={true} lines={options.lines}>
+                {newText}
+              </Ellipsis>
+            ) : (
+              <Ellipsis tooltip={true} length={options.number}>
+                {newText}
+              </Ellipsis>
+            );
+          };
+          item.ellipsis = {
+            showTitle: false,
+          };
+        }
       }
 
-      if (item.formatTime) {
-        item.render = (text: any) => formatTime(options, text);
+      if (item.tooltip) {
+        const { title } = item;
+        if (typeof item.tooltip === 'string') {
+          item.title = () => renderTooltip(title, item.tooltip);
+        } else if (typeof item.tooltip === 'function') {
+          item.title = () => renderTooltip(title, item.tooltip());
+        } else {
+          const text = typeof item.tooltip.text === 'function' ? item.tooltip.text() || '' : item.tooltip.text || '';
+          const extraText =
+            item.tooltip.extraText === 'function' ? item.tooltip.extraText() || '' : item.tooltip.extraText || '';
+          item.title = () => renderTooltip(title, text, extraText);
+        }
       }
-
-      if (item.formatPercent) {
-        item.render = formatPercent;
-      }
-
-      if (Number.isInteger(item.formatNumber) || item.formatNumber) {
-        item.render = (text: number) => formatNumber(item, text);
-      }
-    }
-
-    if (item.tooltip) {
-      const { title } = item;
-      if (typeof item.tooltip === 'string') {
-        item.title = () => renderTooltip(title, item.tooltip);
-      } else if (typeof item.tooltip === 'function') {
-        item.title = () => renderTooltip(title, item.tooltip());
-      } else {
-        const text = typeof item.tooltip.text === 'function' ? item.tooltip.text() || '' : item.tooltip.text || '';
-        const extraText =
-          item.tooltip.extraText === 'function' ? item.tooltip.extraText() || '' : item.tooltip.extraText || '';
-        item.title = () => renderTooltip(title, text, extraText);
-      }
-    }
-
-    if (item.ellipsis) {
-      item.render = (text: any) => {
-        if (_.isNil(text)) return '--';
-        let newText = text;
-        if (item.dict) newText = getDictMap(item.dict)[text];
-        if (item.formatTime) newText = formatTime(options, text);
-        if (item.formatPercent) newText = formatPercent(text);
-        if (item.formatNumber) newText = formatNumber(item, text);
-
-        return options.ellipsisType === 'line' ? (
-          <Ellipsis tooltip={true} lines={options.lines}>
-            {newText}
-          </Ellipsis>
-        ) : (
-          <Ellipsis tooltip={true} length={options.number}>
-            {newText}
-          </Ellipsis>
-        );
-      };
-      item.ellipsis = {
-        showTitle: false,
-      };
-    }
-
-    return item;
-  });
+      item.children = formatColumn(item.children || []);
+      return item;
+    });
 }
 
 /**
