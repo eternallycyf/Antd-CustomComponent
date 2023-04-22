@@ -13,7 +13,7 @@
 - ~~UI 自动化测试 puppeteer~~
 - threejs 着色器
 - ~~leaflet~~
-- ts 加强
+- ~~ts 加强~~
 
 ## 1.安装依赖
 
