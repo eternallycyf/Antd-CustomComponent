@@ -4,6 +4,8 @@ import { History } from 'history';
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { RouteComponentProps } from '@umijs/renderer-react';
+import { withRoutePage } from './withRoutePage';
+import { compose } from 'redux';
 
 interface IProps extends RouteComponentProps<any> {
   token: string;
@@ -31,7 +33,11 @@ const Authorized: React.FC<IProps> = (props) => {
   return <Outlet />;
 };
 
-export default connect(({ login, global }: ConnectState) => ({
-  token: login.token,
-  userInfo: global.userInfo,
-}))(withRouter<IProps>(Authorized));
+export default compose<IProps>(
+  withRoutePage,
+  withRouter,
+  connect(({ global, login }: ConnectState) => ({
+    token: login.token,
+    userInfo: global.userInfo,
+  })),
+)(Authorized);

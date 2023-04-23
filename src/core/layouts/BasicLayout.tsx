@@ -5,7 +5,7 @@ import GlobalHeader from '@/core/base/GlobalHeader';
 import TagsNav from '@/core/base/TagsNav';
 import { ConnectState } from '@/typings/connect';
 import { connect, Dispatch, getDvaApp, Helmet, History, Outlet, withRouter } from '@umijs/max';
-import { RouteComponentProps } from '@umijs/renderer-react';
+import { RouteComponentProps, useAppData, useLocation } from '@umijs/renderer-react';
 import { ConfigProvider, Layout, Spin, theme as antdTheme, TourProps, Tour, FloatButton } from 'antd';
 import _ from 'lodash';
 import { BellOutlined } from '@ant-design/icons';
@@ -15,6 +15,8 @@ import { FC, Fragment, useEffect, useState, useRef } from 'react';
 import ColorPicker from '../base/GlobalHeader/ColorPicker';
 import styles from './index.less';
 import IndexPage from './IndexPage';
+import { KeepAlive, KeepAliveTransfer } from '../base/KeepAlive';
+
 const { Sider, Content, Header } = Layout;
 const { title } = config;
 
@@ -34,6 +36,7 @@ export interface IRgba {
 }
 
 const BasicLayout: FC<IBasicLayout> = (props) => {
+  const { routes } = useAppData();
   const [isDark, setIsDark] = useState<boolean>(false);
   const [color, setColor] = useState<IRgba>({
     r: '25',
@@ -48,6 +51,9 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
   const ref3 = useRef<HTMLDivElement>(null!);
   const { menuList, breadcrumbNameMap, children, theme, collapsed, location, sliderMenuState, dispatch, userInfo } =
     props;
+  const currentRoutesObj = Object.values(routes).filter((item) => item?.path == location.pathname)?.[0];
+  // TODO: routes 添加keepAlive配置
+  // const hasKeepAlive = currentRoutesObj?.keepAlive;
 
   const steps: TourProps['steps'] = [
     {
@@ -161,7 +167,9 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
                 <Sider theme={theme} style={{ background: 'transparent', display: collapsed ? 'none' : '' }}>
                   <SiderMenu {...siderMenuProps} ref0={ref0} />
                 </Sider>
-                <Content>{location.pathname !== '/' ? <Outlet /> : <IndexPage />}</Content>
+                <Content>
+                  <KeepAlive>{location.pathname !== '/' ? <Outlet /> : <IndexPage />}</KeepAlive>
+                </Content>
               </Layout>
             </WaterMark>
           </Layout>

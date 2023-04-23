@@ -9,6 +9,7 @@
 - ~~docker 部署方案~~
 - ~~封装虚拟列表，集成到 antd table 中~~
   - 使用哈希重构数据格式 增加查询速度
+- 自己实现一个 keep-alive
 - 单元 测试
 - ~~UI 自动化测试 puppeteer~~
 - threejs 着色器
@@ -297,4 +298,19 @@ export default compose(
       },
       layout,
     },
+```
+
+## keepAlive
+
+```tsx | pure
+import { KeepAlive } from '@/core/base/KeepAlive';
+
+<KeepAlive></KeepAlive>;
+
+export default compose<typeof Activity>(
+  withRoutePage,
+  withRouter,
+  connect(({ global, login }: ConnectState) => ({ token: login.token })),
+  KeepAliveTransfer,
+)(Activity);
 ```

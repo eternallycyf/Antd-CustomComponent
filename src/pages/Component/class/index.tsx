@@ -19,6 +19,7 @@ import { getFieldComp } from '@/core/helpers';
 import { withRoutePage } from '@/core/Enhance/withRoutePage';
 import { compose } from 'redux';
 import { ConnectState } from '@/typings/connect';
+import { KeepAliveTransfer } from '@/core/base/KeepAlive';
 const { apiPrefixMock } = projectConfig;
 
 interface IProps {}
@@ -253,4 +254,5 @@ export default compose<typeof Activity>(
   withRoutePage,
   withRouter,
   connect(({ global, login }: ConnectState) => ({ token: login.token })),
+  KeepAliveTransfer,
 )(Activity);
