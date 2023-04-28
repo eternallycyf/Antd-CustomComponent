@@ -165,9 +165,9 @@ class Activity extends BaseComponent<IProps, IState> {
       totalPath: 'data.total',
       draggable: true,
       resizable: true,
-      isSummary: true,
+      isSummary: false,
       // 虚拟列表配置
-      isVirtual: true,
+      isVirtual: false,
       scroll: { y: 800 },
       fixRowkeys: [1, 2, 3],
       rowEventHandlers: {
@@ -181,7 +181,7 @@ class Activity extends BaseComponent<IProps, IState> {
           formList={getSearches(this)}
           handleSearch={this.handleSearch}
           ref={this.searchRef}
-          columnNumber={4}
+          columnNumber={3}
         />
         <CommonTable {...tableParams} ref={this.tableRef} />
         <CustomForm

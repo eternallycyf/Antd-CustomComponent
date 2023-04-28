@@ -70,6 +70,14 @@ type Column<TRecord = AnyData> =
        * @description 点击分页功能 是否刷新 用于前端自己排序
        */
       isRefresh?: boolean;
+      /**
+       * @description 初始化是否显示
+       */
+      initChecked?: boolean;
+      /**
+       * @description 初始化checkbox是否禁用
+       */
+      initCheckedDisabled?: boolean;
     };
 // & FormControl
 // 传入泛型 Columns<{ code: string }> 指定dataIndex及render的record类型

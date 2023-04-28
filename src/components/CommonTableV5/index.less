@@ -86,3 +86,23 @@
   display: flex;
   justify-content: space-between;
 }
+
+
+.operateShowList {
+  .operateShowListTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .operateShowListContent {
+    display: flex;
+    flex-direction: column;
+
+    :global {
+      .ant-checkbox-wrapper.ant-checkbox-wrapper {
+        margin-inline-start: 8px;
+      }
+    }
+  }
+}

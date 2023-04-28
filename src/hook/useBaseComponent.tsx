@@ -13,6 +13,8 @@ type IBaseTableInstance = InstanceType<typeof BaseTable> & {
   getOpenWidth: any;
   handleColumns: any;
   renderSummary: any;
+  handleSetDefaultChecked: any;
+  renderOperateTitle: any;
 };
 
 interface IProps {

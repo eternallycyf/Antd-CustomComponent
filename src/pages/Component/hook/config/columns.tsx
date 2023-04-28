@@ -19,6 +19,7 @@ export const getColumns = (self: ReturnType<typeof useBaseComponent>): IColumnsT
       align: 'center' as 'center',
       fixed: 'left' as 'left',
       ellipsis: true,
+      initCheckedDisabled: true,
     },
     {
       dataIndex: 'activityStartTime',
@@ -29,6 +30,7 @@ export const getColumns = (self: ReturnType<typeof useBaseComponent>): IColumnsT
       align: 'center' as 'center',
       fixed: 'left' as 'left',
       // ellipsis: true,
+      initChecked: false,
     },
     {
       dataIndex: 'activityPrice',

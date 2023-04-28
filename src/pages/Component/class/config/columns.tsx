@@ -19,6 +19,7 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType =>
       align: 'center' as 'center',
       fixed: 'left' as 'left',
       ellipsis: true,
+      initCheckedDisabled: true,
     },
     {
       dataIndex: 'activityStartTime',
@@ -28,6 +29,7 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType =>
       formatTime: true,
       align: 'center' as 'center',
       fixed: 'left' as 'left',
+      initChecked: false,
       // ellipsis: true,
     },
     {

@@ -1,17 +1,19 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
-import { DownOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Popconfirm, Table as AntdTable, Empty } from 'antd';
+import { DownOutlined, SettingFilled, SettingOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Popconfirm, Table as AntdTable, Empty, Popover, Checkbox } from 'antd';
 import Table from './components/EnhancedTable';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { IButtonProps, ICommonTable } from '@/typings';
+import { IButtonProps, IColumnsType, ICommonTable } from '@/typings';
 import { formatColumn as formatColumnUtil } from '@/utils/util';
 import BaseTable, { IBaseTableState } from './components/BaseTable';
 import TableBtn from '@/components/CommonTableV5/components/widgets/TableBtn';
 import AccessBtn from '@/components/AccessBtn';
 import styles from './index.less';
 import { getUUID } from '@/utils/random';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 
 class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
   static defaultProps = {
@@ -52,6 +54,10 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       dev: false,
       dataSource: [],
       requestCount: 0,
+      indeterminate: false,
+      checkAll: true,
+      checkedOptions: [],
+      checkedList: [],
     };
 
     this.cls = cx('common-table', props.className, {
@@ -76,143 +82,249 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     return width;
   };
 
+  handleSetDefaultChecked = (cb?: (columnList: any[]) => void) => {
+    const { checkAll = true, indeterminate = false } = this.props;
+    let columnList: any = this.handleBasicColumns(this.props);
+    const list: any[] = (columnList || [])
+      .filter((item: any) => item?.title !== '操作' && item?.key !== 'operate')
+      ?.map((item: any) => ({
+        label: typeof item?.title == 'function' ? item.title() : item?.title,
+        value: item.dataIndex,
+        disabled: item?.initCheckedDisabled ?? false,
+        initChecked: item?.initChecked ?? true,
+      }));
+
+    const checkList = list.filter((item) => item.initChecked).map((item) => item.value);
+
+    this.setState(
+      {
+        checkAll: checkAll,
+        indeterminate: indeterminate,
+        checkedOptions: list,
+        checkedList: checkAll ? checkList : [],
+      },
+      () => {
+        if (cb) cb(columnList);
+      },
+    );
+  };
+
   // 处理列表columns
   handleColumns = () => {
     const { itemButton, buttonLen, expandedRowRender, isFixed, openFixed, itemButtonWidth }: any = this.props;
-    let columnList: any = this.handleBasicColumns(this.props);
-    // 显示行操作项
-    if (itemButton && itemButton.length) {
-      const width =
-        itemButton.length > buttonLen
-          ? buttonLen == 1
-            ? buttonLen * 90
-            : buttonLen * 70
-          : this.getOpenWidth(itemButton) || itemButtonWidth;
+    const handleSetColumns = (columnList: any) => {
+      // 显示行操作项
+      if (itemButton && itemButton.length) {
+        const width =
+          itemButton.length > buttonLen
+            ? buttonLen == 1
+              ? buttonLen * 90
+              : buttonLen * 70
+            : this.getOpenWidth(itemButton) || itemButtonWidth;
 
-      const column: any = [
-        {
-          width,
-          key: 'operate',
-          title: '操作',
-          fixed: openFixed ? openFixed : expandedRowRender || isFixed ? false : 'right',
-          render: (text: any, record: any) => {
-            const button = itemButton.map((item: any) => {
-              const flag =
-                !item.visible || (item.visible && typeof item.visible === 'function' && item.visible(record));
-              if (!flag) {
-                return {
-                  text: '-',
-                  type: 'primary',
-                };
-              } else {
-                return item;
-              }
-            });
-
-            const [mainBtn, otherBtn] = button.reduce(
-              (prev: any, curr: any, index: number) => {
-                if (index <= buttonLen - 1) {
-                  prev[0].push(curr);
+        const column: any = [
+          {
+            width,
+            key: 'operate',
+            align: 'center',
+            title: () => this.renderOperateTitle(columnList),
+            fixed: openFixed ? openFixed : expandedRowRender || isFixed ? false : 'right',
+            render: (text: any, record: any) => {
+              const button = itemButton.map((item: any) => {
+                const flag =
+                  !item.visible || (item.visible && typeof item.visible === 'function' && item.visible(record));
+                if (!flag) {
+                  return {
+                    text: '-',
+                    type: 'primary',
+                  };
                 } else {
-                  prev[1].push(curr);
+                  return item;
                 }
-                return prev;
-              },
-              [[], []],
-            );
+              });
 
-            const menu = (otherBtn || []).map((item: any, index: any) => {
-              const { text, onClick, code, buttonType, ...otherProps } = item;
-              return [
-                {
-                  key: index,
-                  children: (
-                    <AccessBtn>
-                      {buttonType === 'delete' ? (
+              const [mainBtn, otherBtn] = button.reduce(
+                (prev: any, curr: any, index: number) => {
+                  if (index <= buttonLen - 1) {
+                    prev[0].push(curr);
+                  } else {
+                    prev[1].push(curr);
+                  }
+                  return prev;
+                },
+                [[], []],
+              );
+
+              const menu = (otherBtn || []).map((item: any, index: any) => {
+                const { text, onClick, code, buttonType, ...otherProps } = item;
+                return [
+                  {
+                    key: index,
+                    children: (
+                      <AccessBtn>
+                        {buttonType === 'delete' ? (
+                          <Popconfirm
+                            placement="rightTop"
+                            title="确认删除该记录?"
+                            data-code={code}
+                            onConfirm={(e: any) => {
+                              e.stopPropagation();
+                              if (onClick) onClick(record);
+                            }}
+                          >
+                            <span onClick={(e: any) => e.stopPropagation()} {...otherProps}>
+                              {text}
+                            </span>
+                          </Popconfirm>
+                        ) : (
+                          <span {...otherProps} data-code={code} onClick={(e: any) => onClick && onClick(record, e)}>
+                            {text}
+                          </span>
+                        )}
+                      </AccessBtn>
+                    ),
+                  },
+                ];
+              });
+
+              return (
+                <div className={styles.itemButtonRow}>
+                  {mainBtn.map((item: any, index: number) => {
+                    const { text, buttonType, code, onClick, visible, ...otherProps } = item;
+                    const button = (
+                      <Button
+                        {...otherProps}
+                        size="small"
+                        onClick={(e: any) => e.stopPropagation()}
+                        type="link"
+                        danger={buttonType === 'delete'}
+                      >
+                        {text}
+                      </Button>
+                    );
+
+                    return buttonType === 'delete' ? (
+                      <AccessBtn key={index}>
                         <Popconfirm
-                          placement="rightTop"
-                          title="确认删除该记录?"
+                          title="确认删除该记录？"
                           data-code={code}
                           onConfirm={(e: any) => {
                             e.stopPropagation();
-                            if (onClick) onClick(record);
+                            if (onClick) onClick(record, e);
                           }}
                         >
-                          <span onClick={(e: any) => e.stopPropagation()} {...otherProps}>
-                            {text}
-                          </span>
+                          {button}
                         </Popconfirm>
-                      ) : (
-                        <span {...otherProps} data-code={code} onClick={(e: any) => onClick && onClick(record, e)}>
-                          {text}
-                        </span>
-                      )}
-                    </AccessBtn>
-                  ),
-                },
-              ];
-            });
-
-            return (
-              <div className={styles.itemButtonRow}>
-                {mainBtn.map((item: any, index: number) => {
-                  const { text, buttonType, code, onClick, visible, ...otherProps } = item;
-                  const button = (
-                    <Button
-                      {...otherProps}
-                      size="small"
-                      onClick={(e: any) => e.stopPropagation()}
-                      type="link"
-                      danger={buttonType === 'delete'}
-                    >
-                      {text}
-                    </Button>
-                  );
-
-                  return buttonType === 'delete' ? (
-                    <AccessBtn key={index}>
-                      <Popconfirm
-                        title="确认删除该记录？"
-                        data-code={code}
-                        onConfirm={(e: any) => {
-                          e.stopPropagation();
-                          if (onClick) onClick(record, e);
-                        }}
-                      >
-                        {button}
-                      </Popconfirm>
-                    </AccessBtn>
-                  ) : text !== '-' ? (
-                    <AccessBtn key={index}>
-                      {React.cloneElement(button, {
-                        'data-code': code,
-                        onClick: (e: any) => onClick && onClick(record, e),
-                      })}
-                    </AccessBtn>
-                  ) : (
-                    '-'
-                  );
-                })}
-                {otherBtn.length ? (
-                  <Dropdown menu={menu} overlayClassName={styles.dropdown}>
-                    <Button size="small" className={styles.more} onClick={(e: any) => e.stopPropagation()}>
-                      <DownOutlined onClick={(e: any) => e.stopPropagation()} />
-                    </Button>
-                  </Dropdown>
-                ) : null}
-              </div>
-            );
+                      </AccessBtn>
+                    ) : text !== '-' ? (
+                      <AccessBtn key={index}>
+                        {React.cloneElement(button, {
+                          'data-code': code,
+                          onClick: (e: any) => onClick && onClick(record, e),
+                        })}
+                      </AccessBtn>
+                    ) : (
+                      '-'
+                    );
+                  })}
+                  {otherBtn.length ? (
+                    <Dropdown menu={menu} overlayClassName={styles.dropdown}>
+                      <Button size="small" className={styles.more} onClick={(e: any) => e.stopPropagation()}>
+                        <DownOutlined onClick={(e: any) => e.stopPropagation()} />
+                      </Button>
+                    </Dropdown>
+                  ) : null}
+                </div>
+              );
+            },
           },
-        },
-      ];
+        ];
 
-      columnList = expandedRowRender && !openFixed ? [].concat(column, columnList) : [].concat(columnList, column);
-    }
-    let columns = formatColumnUtil(columnList);
-    if (this.props?.formatColumn) {
-      columns = this.props?.formatColumn(columns);
-    }
-    this.setState({ columns });
+        columnList = expandedRowRender && !openFixed ? [].concat(column, columnList) : [].concat(columnList, column);
+      }
+      let columns = formatColumnUtil(columnList);
+      if (this.props?.formatColumn) {
+        columns = this.props?.formatColumn(columns);
+      }
+
+      this.setState({
+        columns: columns.filter((item: any) => (item?.initChecked === undefined ? true : item?.initChecked)),
+      });
+    };
+    this.handleSetDefaultChecked(handleSetColumns);
+  };
+
+  renderOperateTitle = (columnList: any[] = []) => {
+    const { formatColumn } = this.props;
+    const { indeterminate, checkAll, checkedList, checkedOptions } = this.state;
+    const checkDefaultValues = checkedOptions.map((item) => item.value);
+
+    const _formatColumns = (list: any[]) => (formatColumn ? formatColumn(list) : formatColumnUtil(list));
+
+    const getCurrentColumnsList = (isCheckAll: boolean) => {
+      let columns = [];
+      if (isCheckAll) {
+        columns = columnList;
+      } else {
+        columns = columnList.filter(
+          (item: any) =>
+            !checkDefaultValues.includes(item?.dataIndex) || item?.key === 'operate' || item?.initCheckedDisabled,
+        );
+      }
+      return _formatColumns(columns);
+    };
+
+    const onCheckAllChange = (e: CheckboxChangeEvent) => {
+      const checkAll = e.target.checked;
+      const columns = getCurrentColumnsList(checkAll);
+
+      this.setState({
+        checkedList: checkAll ? checkDefaultValues : [],
+        indeterminate: false,
+        checkAll: checkAll,
+        columns,
+      });
+    };
+
+    const onChange = (list: CheckboxValueType[]) => {
+      const newColumnList = columnList.filter((item: any) => list.includes(item.dataIndex) || item?.key === 'operate');
+      this.setState({
+        checkedList: list,
+        indeterminate: !!list.length && list.length < checkDefaultValues.length,
+        checkAll: list.length === checkDefaultValues.length,
+        columns: _formatColumns(newColumnList),
+      });
+    };
+
+    const onReset = () => this.handleColumns();
+
+    const content = (
+      <div className={styles.operateShowList}>
+        <div className={styles.operateShowListTitle}>
+          <div>
+            <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
+              列展示
+            </Checkbox>
+          </div>
+          <Button type="link" onClick={onReset}>
+            重置
+          </Button>
+        </div>
+        <Checkbox.Group
+          value={checkedList}
+          options={checkedOptions}
+          className={styles.operateShowListContent}
+          onChange={onChange}
+        />
+      </div>
+    );
+
+    return (
+      <Popover trigger="click" content={content}>
+        操作 &nbsp;
+        <SettingOutlined />
+      </Popover>
+    );
   };
 
   renderSummary = (currentData: any[], columns: any[]) => {

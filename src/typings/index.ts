@@ -145,6 +145,8 @@ export interface ICommonTable<T> extends TableProps<T> {
   isSummary?: boolean;
   /**@description [汇总行位置] = top */
   summaryPosition?: 'top' | 'bottom';
+  /**@description 操作栏是否固定 */
+  openFixed?: boolean;
   /**@description 网络请求后data的路径 */
   dataPath?: string;
   /**@description 渲染前最后处理一次column */

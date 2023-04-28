@@ -22,6 +22,8 @@ type IBaseTableInstance = InstanceType<typeof BaseTable> & {
   getOpenWidth: any;
   handleColumns: any;
   renderSummary: any;
+  handleSetDefaultChecked: any;
+  renderOperateTitle: any;
 };
 
 class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {

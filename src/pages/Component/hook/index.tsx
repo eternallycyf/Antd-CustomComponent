@@ -165,9 +165,9 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) 
     totalPath: 'data.total',
     draggable: true,
     resizable: true,
-    isSummary: true,
+    isSummary: false,
     // 虚拟列表配置
-    isVirtual: true,
+    isVirtual: false,
     scroll: { y: 800 },
     fixRowkeys: [1, 2, 3],
     rowEventHandlers: {
@@ -181,7 +181,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) 
         formList={getSearches(self)}
         handleSearch={self.setSearchParams}
         ref={self.searchRef}
-        columnNumber={4}
+        columnNumber={3}
       />
       <CommonTable {...tableParams} ref={self.tableRef} />
       <CustomForm

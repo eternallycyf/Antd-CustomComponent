@@ -23,6 +23,10 @@ export interface IBaseTableState {
   selectedRowkeys: any[];
   selectedRows: any[];
   dev: boolean;
+  indeterminate: boolean;
+  checkAll: boolean;
+  checkedList: any[] | [];
+  checkedOptions: any[];
 }
 
 const DEFAULT_OBSERVE_PARAMS = {
