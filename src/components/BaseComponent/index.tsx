@@ -71,12 +71,21 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
 
   handleExport = (title: string) => {
     if (this.tableRef.current) {
+      const { columns } = this.tableRef.current.props;
+
+      const getItem = (item: any) => (columns || [])?.find((ele) => ele?.dataIndex === item?.dataIndex);
+
       downloadExcel({
         filename: title,
         sheets: [
           {
             sheetName: title,
-            columns: this.tableRef.current.state.columns.filter((item: any) => item.dataIndex !== 'operate'),
+            columns: this.tableRef.current.state.columns
+              .filter((item: any) => item.dataIndex !== 'operate' && item.key !== 'operate')
+              .map((item) => ({
+                ...item,
+                title: typeof item.title === 'string' ? item.title : getItem(item)?.title ?? item?.dataIndex,
+              })),
             dataSource: this.tableRef.current?.getTableData(),
             header: title,
           },
