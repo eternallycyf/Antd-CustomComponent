@@ -277,11 +277,14 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     const onCheckAllChange = (e: CheckboxChangeEvent) => {
       const checkAll = e.target.checked;
       const columns = getCurrentColumnsList(checkAll);
+      const checkedList = checkAll
+        ? checkDefaultValues
+        : checkedOptions.filter((item) => item.disabled).map((item) => item.value);
 
       this.setState({
-        checkedList: checkAll ? checkDefaultValues : [],
+        checkedList,
         indeterminate: false,
-        checkAll: checkAll,
+        checkAll,
         columns,
       });
     };
