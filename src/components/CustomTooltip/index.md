@@ -77,7 +77,21 @@ export default () => (
 />
 ```
 
-### 5.CustomTooltip.FileName 文件名中间夹断 集成 FileImage
+### 5.CustomTooltip.Paragraph 多行元素类型换行展示 溢出显示 ...及 tooltip
+
+```tsx | pure
+<CustomTooltip.Paragraph
+  text={['xxx','xxxx','xxx].map(item => <div key={item}>{item}</div>)}
+  rows={2}
+  tooltipProps={{}}
+  ellipsisProps={{}}
+  style={{}}
+  copyable={true}
+  className={{}}
+/>
+```
+
+### 6.CustomTooltip.FileName 文件名中间夹断 集成 FileImage
 
 - before: 'xxxxxxx.png';
 - after: 'xxx...xxx.png';
