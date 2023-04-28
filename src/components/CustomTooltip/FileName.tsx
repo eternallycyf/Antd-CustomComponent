@@ -51,7 +51,8 @@ const CustomTooltipFileName: FC<IFileName> = (props) => {
     fileId = '',
   } = props;
 
-  if (_.isNil(name)) return <span style={{ color: '#8E96A4' }}>--</span>;
+  if (_.isNil(name) || (typeof name === 'string' && name.length === 0))
+    return <span style={{ color: '#8E96A4' }}>--</span>;
 
   const fileType = name?.lastIndexOf('.') !== -1 ? name?.slice(name?.lastIndexOf('.') + 1) : undefined;
   const fileName = name.slice(0, name.lastIndexOf('.'));

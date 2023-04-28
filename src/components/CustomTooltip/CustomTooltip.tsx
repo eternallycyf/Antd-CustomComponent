@@ -87,7 +87,8 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
     tooltipClassName = '',
   } = props;
 
-  if (_.isNil(text)) return <span style={{ color: '#8E96A4' }}>--</span>;
+  if (_.isNil(text) || (typeof text === 'string' && text.length === 0))
+    return <span style={{ color: '#8E96A4' }}>--</span>;
 
   const isTextToObject = typeof text === 'object';
   const isShowEllipsisSymbol = row.EllipsisSymbol ? '...' : '';
