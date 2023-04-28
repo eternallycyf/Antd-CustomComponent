@@ -5,8 +5,15 @@ const { Paragraph } = Typography;
 import styles from './index.less';
 import _ from 'lodash';
 
+/**
+ * 多行文字展示 tooltip 及省略
+ * @desc 只显示两行 多余字...展示 && tooltip
+ * @example render: text => <CustomTooltipParagraph text={text??'--} rows={2} />
+ * @desc 传入node格式 只显示两行 多余字...展示 && tooltip && 可复制
+ * @example render: text => <CustomTooltipParagraph text={['xxx','xxx','xxx'].map(item => <div key={item}>{item}</div>)} />
+ */
 export interface IParagraph {
-  text: string;
+  text: string | React.ReactNode;
   rows?: number;
   copyable?: boolean;
   className?: string;
