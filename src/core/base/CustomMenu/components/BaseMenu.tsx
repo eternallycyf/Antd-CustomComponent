@@ -7,6 +7,7 @@ import MenuItem from './MenuItem';
 import SubMenu from './SubMenu';
 import { IBaseMenuProps } from '../../SliderMenu/BaseMenu';
 import { getImage, getMenuItemPath } from '@/core/helpers/utils';
+import { getDvaApp } from '@umijs/max';
 
 const modifyClassForElement = (selectors: string = '', curClass = '', method = 'add') => {
   const dom = document.querySelector(selectors)!;
@@ -56,14 +57,17 @@ const hideContentMask = (e: React.MouseEvent<HTMLDivElement>) => {
 };
 
 const getSelectedClass = (curPath: any = '', selectedPaths: string[] = []): string => {
+  const { theme } = getDvaApp()._store.getState().global;
+  const unselectedStyles = theme === 'light' ? styles.unselected : '';
+  const selectedStyles = theme === 'light' ? styles.selected : '';
   const [firstPath] = selectedPaths;
   if (!curPath === !firstPath) {
-    return styles.selected;
+    return selectedStyles;
   }
 
   if (curPath instanceof Array) {
     const flag = selectedPaths.some((path) => curPath.some((otherPath) => path === otherPath.path));
-    return flag ? styles.selected : styles.unselected;
+    return flag ? selectedStyles : unselectedStyles;
   }
   return '';
 };
@@ -100,6 +104,9 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
 
   // 获取 subMenu || menuItem
   const getSubMenu = (infos: MenuItemProps) => {
+    const { theme } = getDvaApp()._store.getState().global;
+    const unselectedStyles = theme === 'light' ? styles.unselected : '';
+    const selectedStyles = theme === 'light' ? styles.selected : '';
     const { children } = infos;
     let flMenuClass = ''; // 一级菜单样式
 
@@ -110,8 +117,8 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
             {/* 三级菜单 */}
             {item?.children?.map((itemChild) => {
               const subMenuClass = getSelectedClass(itemChild?.path, selectedKeys);
-              if (!subMenuClass.includes(styles.selected)) {
-                flMenuClass = styles.unselected;
+              if (!subMenuClass.includes(selectedStyles)) {
+                flMenuClass = unselectedStyles;
               }
               return (
                 <MenuItem
@@ -155,7 +162,7 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
         getPopupContainer={() => document.getElementsByClassName('core-base-tags-nav-index-tabs')[0] as HTMLElement}
         content={contentWrapper}
       >
-        {getListItem(infos, styles.unselected)}
+        {getListItem(infos, unselectedStyles)}
       </Popover>
     );
     return subMenu;
