@@ -37,20 +37,23 @@ export interface IRgba {
 
 const BasicLayout: FC<IBasicLayout> = (props) => {
   const { routes } = useAppData();
-  const [isDark, setIsDark] = useState<boolean>(false);
-  const [color, setColor] = useState<IRgba>({
-    r: '25',
-    g: '141',
-    b: '241',
-    a: '100',
-  });
   const [open, setOpen] = useState<'1' | '0'>(localStore.get('hasTour') || '1');
   const ref0 = useRef<HTMLDivElement>(null!);
   const ref1 = useRef<HTMLDivElement>(null!);
   const ref2 = useRef<HTMLDivElement>(null!);
   const ref3 = useRef<HTMLDivElement>(null!);
-  const { menuList, breadcrumbNameMap, children, theme, collapsed, location, sliderMenuState, dispatch, userInfo } =
-    props;
+  const {
+    menuList,
+    color,
+    breadcrumbNameMap,
+    children,
+    collapsed,
+    location,
+    sliderMenuState,
+    dispatch,
+    userInfo,
+    theme,
+  } = props;
   const currentRoutesObj = Object.values(routes).filter((item) => item?.path == location.pathname)?.[0];
   // TODO: routes 添加keepAlive配置
   // const hasKeepAlive = currentRoutesObj?.keepAlive;
@@ -61,7 +64,9 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
       description: (
         <div>
           <div>鼠标悬浮时展开-而不是点击下拉图标-更加清晰-更易使用</div>
-          <div style={{ color: 'blue' }}>可以鼠标悬浮一下 权限管理</div>
+          <div style={{ color: `rgba(${color?.r}, ${color?.g}, ${color?.b}, ${color?.a})` }}>
+            可以鼠标悬浮一下 权限管理
+          </div>
           <div>公众组件路由：home-class</div>
         </div>
       ),
@@ -110,6 +115,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
     collapsed,
     sliderMenuState,
     dispatch,
+    color,
   };
 
   const TagsNavProps = {
@@ -118,7 +124,8 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
     location,
   };
 
-  const algorithmObj = isDark ? { algorithm: antdTheme.darkAlgorithm } : { algorithm: antdTheme.defaultAlgorithm };
+  const algorithmObj =
+    theme == 'dark' ? { algorithm: antdTheme.darkAlgorithm } : { algorithm: antdTheme.defaultAlgorithm };
 
   return (
     <Fragment>
@@ -151,9 +158,9 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
                 ref1={ref1}
                 ref2={ref2}
                 ref3={ref3}
-                isDark={isDark}
-                setIsDark={setIsDark}
-                ColorPicker={<ColorPicker color={color} setColor={setColor} />}
+                dispatch={dispatch}
+                theme={theme}
+                ColorPicker={<ColorPicker dispatch={dispatch} color={color} />}
               >
                 <div>
                   {!_.isEmpty(breadcrumbNameMap) && !_.isEmpty(userInfo) ? (

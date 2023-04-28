@@ -133,7 +133,7 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
 
   const handleSwitch = (switchKey: string) => {
     const targetTab = _.find(tabs, { key: switchKey });
-    routeTo(targetTab);
+    routeTo(targetTab!);
   };
 
   // 关闭当前
@@ -154,7 +154,7 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
     localStore.set('tabs', filteredTabs);
 
     const targetTab = _.find(tabs, { key: nextTabKey });
-    routeTo(targetTab);
+    routeTo(targetTab!);
   };
 
   const handleRemoveAll = () => {

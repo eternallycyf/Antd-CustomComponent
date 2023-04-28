@@ -3,18 +3,19 @@ import { Layout, Row, Col, Input, Switch } from 'antd';
 import RightContent from './RightContent';
 import styles from './index.less';
 import FullScreen from '../FullScreen';
+import { Dispatch } from '@umijs/max';
 const { Header } = Layout;
 interface IProps {
   ColorPicker: React.ReactNode;
   children: React.ReactNode;
-  isDark: boolean;
-  setIsDark: React.Dispatch<React.SetStateAction<boolean>>;
+  theme: 'light' | 'dark';
+  dispatch: Dispatch;
   ref1: React.RefObject<HTMLDivElement>;
   ref2: React.RefObject<HTMLDivElement>;
   ref3: React.RefObject<HTMLDivElement>;
 }
 const GlobalHeader: FC<IProps> = (props) => {
-  const { children, ColorPicker, isDark, setIsDark, ref1, ref2, ref3 } = props;
+  const { children, ColorPicker, dispatch, theme, ref1, ref2, ref3 } = props;
   return (
     <Header
       style={{
@@ -58,14 +59,19 @@ const GlobalHeader: FC<IProps> = (props) => {
                     ></path>
                   </svg>
                 }
-                checked={isDark}
-                onChange={() => setIsDark(!isDark)}
+                checked={theme === 'dark' ? true : false}
+                onChange={(checked) => {
+                  dispatch({
+                    type: 'global/changeTheme',
+                    theme: checked ? 'dark' : 'light',
+                  });
+                }}
               />
             </Col>
             <Col span={1}>
               <FullScreen />
             </Col>
-            <Col span={2}>
+            <Col span={2} style={{ display: 'grid' }}>
               <RightContent />
             </Col>
           </Row>

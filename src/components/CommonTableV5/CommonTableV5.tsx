@@ -14,7 +14,8 @@ import styles from './index.less';
 import { getUUID } from '@/utils/random';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-
+import { getDvaApp } from '@umijs/max';
+const { theme } = getDvaApp()._store.getState().global;
 class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
   static defaultProps = {
     wrapClassStr: '.tabs-tabPane-active',
@@ -61,7 +62,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     };
 
     this.cls = cx('common-table', props.className, {
-      'table-row-alternate-color': props.alternateColor,
+      [theme === 'light' ? 'table-row-alternate-color-light' : 'table-row-alternate-color-dark']: props.alternateColor,
     });
   }
 

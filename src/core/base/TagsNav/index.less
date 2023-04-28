@@ -24,7 +24,7 @@
   :global {
     .ant-tabs-nav-list {
       .ant-tabs-tab:nth-child(1) {
-        > div {
+        >div {
           width: 10px;
         }
 
@@ -33,14 +33,19 @@
           padding-left: 10px;
         }
       }
+
+      .ant-tabs-tab {
+        border: 1px solid #d9d9d9 !important;
+      }
+
     }
 
     .ant-tabs-tab-prev,
     .ant-tabs-tab-next {
       margin: 6px 0;
       height: 18px;
-      background-color: @nav-bg-color;
-      color: @nav-text-color;
+      // background-color: @nav-bg-color;
+      // color: @nav-text-color;
     }
 
     .ant-tabs-nav {
@@ -56,7 +61,7 @@
     }
 
     .ant-tabs-nav-wrap {
-      background-color: @nav-bg-color;
+      // background-color: @nav-bg-color;
     }
 
     // content
@@ -70,7 +75,7 @@
     .ant-tabs-content {
       height: 100%;
 
-      > .ant-tabs-tabpane-inactive {
+      >.ant-tabs-tabpane-inactive {
         display: none;
       }
     }
@@ -112,7 +117,7 @@
 
     .ant-tabs-tab-remove {
       position: absolute;
-      top: 9px;
+      top: 7px;
       right: 4px;
 
       .anticon-close {

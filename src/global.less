@@ -18,7 +18,7 @@ body {
 button,
 [type='button'],
 [type='submit'] {
-  background-color: cornflowerblue;
+  // background-color: cornflowerblue;
 }
 
 .ant-pro-global-header-layout-mix {
@@ -52,7 +52,7 @@ button,
 }
 
 .ant-pro-sider-light .ant-pro-sider-logo h1 {
-  color: hotpink;
+  // color: hotpink;
 }
 
 // 隐藏多页签最右边的 < > svg
@@ -65,6 +65,7 @@ button,
 }
 
 .common-table {
+
   .ant-spin-nested-loading,
   .ant-spin-container,
   .ant-table,
@@ -74,7 +75,7 @@ button,
     height: 100%;
   }
 
-  &.table-row-alternate-color {
+  &.table-row-alternate-color-light {
     width: 100%;
     background: #fff;
 
@@ -87,18 +88,30 @@ button,
     }
   }
 
-  .ant-table-small > .ant-table-content > .ant-table-body {
+  &.table-row-alternate-color-dark {
+    width: 100%;
+
+    tr:nth-child(odd) {
+      background: #fff;
+    }
+
+    tr:nth-child(even) {
+      background: #fcfcfc;
+    }
+  }
+
+  .ant-table-small>.ant-table-content>.ant-table-body {
     margin: 0;
   }
 
-  .ant-table-thead > tr > th,
-  .ant-table-tbody > tr > td {
+  .ant-table-thead>tr>th,
+  .ant-table-tbody>tr>td {
     padding-right: 10px !important;
     padding-left: 10px !important;
   }
 
-  .ant-table-thead > tr > th {
-    background-color: @color-main !important;
+  .ant-table-thead>tr>th {
+    // background-color: @color-main !important;
     color: #333;
     font-size: normal;
   }
@@ -115,6 +128,6 @@ button,
   z-index: 100;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.02);
+  // background-color: rgba(0, 0, 0, 0.02);
   pointer-events: none;
 }

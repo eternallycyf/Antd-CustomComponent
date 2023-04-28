@@ -9,6 +9,7 @@ import OldBaseMenu from '@/core/base/SliderMenu/BaseMenu';
 import styles from './index.less';
 import { MenuItem } from '@/typings';
 import { History } from 'history';
+import { IRgba } from '@/core/layouts/BasicLayout';
 const { Sider } = Layout;
 
 export interface IBaseMenuProps {
@@ -20,6 +21,7 @@ export interface IBaseMenuProps {
   location: History['location'];
   dispatch: Dispatch;
   ref0: React.RefObject<HTMLDivElement>;
+  color: IRgba;
 }
 
 const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
@@ -31,6 +33,7 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
     sliderMenuState,
     dispatch,
     ref0,
+    color,
   } = props;
 
   const [openKeys, setOpenKeys] = useState<string[]>(getSubMenus(pathname, menuList));
@@ -61,7 +64,6 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
     <div ref={ref0}>
       <Sider
         theme={theme}
-        style={{ background: '#fff' }}
         trigger={null}
         collapsible
         collapsed={collapsed}
@@ -93,6 +95,7 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
 
         <div
           className={styles.swap}
+          style={{ background: `rgba(${color.r},${color.g},${color.b},${color.a})` }}
           onClick={() => {
             dispatch({
               type: 'global/changeSliderMenuState',

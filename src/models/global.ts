@@ -3,6 +3,7 @@ import { MenuItem, UserInfo } from '@/typings';
 import { Effect } from 'dva';
 import * as service from '@/services';
 import { menuList as MENU_LIST, breadcrumbNameMap as BREAD_CRUMB_NAEMMAP } from './constant';
+import { IRgba } from '@/core/layouts/BasicLayout';
 
 export interface IGlobalModelState {
   theme: 'dark' | 'light';
@@ -15,6 +16,7 @@ export interface IGlobalModelState {
   breadcrumbNameMap: any;
   menuList: MenuItem[];
   accessCollection: string[];
+  color: IRgba;
 }
 
 export interface IGlobalModel {
@@ -22,6 +24,8 @@ export interface IGlobalModel {
   state: IGlobalModelState;
   reducers: {
     changeCollapsed: Reducer<any>;
+    changeColor: Reducer<any>;
+    changeTheme: Reducer<any>;
     changeSliderMenuState: Reducer<any>;
     updateState: Reducer<any>;
   };
@@ -49,10 +53,17 @@ const GlobalModel: IGlobalModel = {
     breadcrumbNameMap: {},
     menuList: [],
     accessCollection: (sessionStorage.getItem('accessCollection') as any as any[]) || [],
+    color: { r: '25', g: '141', b: '241', a: '100' },
   },
   reducers: {
     changeCollapsed(state, { collapsed }) {
       return { ...state, collapsed };
+    },
+    changeColor(state, { color }) {
+      return { ...state, color };
+    },
+    changeTheme(state, { theme }) {
+      return { ...state, theme };
     },
     changeSliderMenuState(state, { sliderMenuState }) {
       localStorage.setItem('sliderMenuState', sliderMenuState);
