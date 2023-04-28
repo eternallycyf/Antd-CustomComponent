@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import CustomTooltip from './CustomTooltip';
 import FileImage from '@/components/FileImage';
 import _ from 'lodash';
-import FileView from '../FileViewer/FileView';
+import FileView from '@/components/Widget/FileViewer';
 
 // TODO: 文件预览
 export interface IFileName {
@@ -81,11 +81,11 @@ const CustomTooltipFileName: FC<IFileName> = (props) => {
     return (
       <>
         <FileView
-          style={{ display: 'inline-block' }}
           fileInfo={{
             fileName: name,
             fileId,
           }}
+          wrapper={FileNameContent}
           downLoadUrl={`${getPreviewLink(previewLinkType)}?fileId=${fileId}`}
         />
       </>

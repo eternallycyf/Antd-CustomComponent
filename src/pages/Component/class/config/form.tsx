@@ -4,8 +4,10 @@ import projectConfig from '@/config/projectConfig';
 import { ISearchesType } from '@/typings';
 import dayjs from 'dayjs';
 import { PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, Tag } from 'antd';
 import { add } from 'lodash';
+import { CustomTooltip } from '@/components';
+import { Fragment } from 'react';
 const { apiPrefix } = projectConfig;
 
 const layout = {
@@ -21,6 +23,79 @@ const ITEM_PROPS = {
 
 export const getFormList = (self: InstanceType<typeof Activity>): ISearchesType => {
   return [
+    {
+      name: 'custom',
+      label: '自定义',
+      type: 'custom',
+      Component: () => {
+        const COLOR_DICT: any = {
+          1: 'magenta',
+          2: 'red',
+          3: 'volcano',
+          4: 'orange',
+          5: 'gold',
+          6: 'lime',
+          7: 'green',
+          8: 'cyan',
+          9: 'blue',
+          10: 'purple',
+        };
+        const tagS = Array.from({ length: 40 }).map((_, i) => (
+          <Tag key={Math.random()} color={COLOR_DICT[~~(Math.random() * 10)]}>
+            {COLOR_DICT[~~(Math.random() * 10)]}
+          </Tag>
+        ));
+        return (
+          <>
+            <CustomTooltip.FileName
+              name={'xxasdasdasdx.png'}
+              prefixLength={5}
+              hasPreview={true}
+              previewLinkType="default"
+              fileId="11xxx"
+            />
+            <CustomTooltip
+              text={Array.from({ length: 300 }, (v, i) => (
+                <span>==</span>
+              ))}
+              row={{
+                rows: 2,
+                expend: true,
+                lineMaxHeight: 54,
+                EllipsisSymbol: false,
+                isRight: true,
+              }}
+            />
+            <CustomTooltip
+              text={tagS}
+              row={{
+                rows: 2,
+                expend: true,
+                lineMaxHeight: 45,
+                EllipsisSymbol: true,
+                isRight: true,
+              }}
+            />
+            <CustomTooltip.Paragraph text={Array.from({ length: 300 }, (v, i) => '--')} rows={2} />
+            <CustomTooltip.Paragraph
+              text={Array.from({ length: 10 }, (v, i) => (
+                <div key={i}>asdasds</div>
+              ))}
+              rows={2}
+            />
+            <CustomTooltip<true>
+              text={tagS}
+              row={{
+                rows: 2,
+                expend: true,
+                EllipsisSymbol: true,
+                customShowBtn: () => (tagS.length > 2 ? true : false),
+              }}
+            />
+          </>
+        );
+      },
+    },
     {
       name: 'activityCode',
       label: '活动编码',

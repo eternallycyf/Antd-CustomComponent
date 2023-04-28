@@ -13,13 +13,13 @@ group:
 ```tsx | pure
 <CustomTooltip
   text={Array.from({ length: 1000 }, (v, i) => (
-    <Fragment key={i}>-</Fragment>
+    <Fragment key={i}>==</Fragment>
   ))}
   row={{
     rows: 2,
     expend: true,
-    lineMaxHeight: 66,
-    EllipsisSymbol: true,
+    lineMaxHeight: 64,
+    EllipsisSymbol: false,
     isRight: true,
   }}
 />

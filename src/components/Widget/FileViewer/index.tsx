@@ -38,7 +38,7 @@ export default class FileViewer extends PureComponent<IProps, any> {
     const defaultUrl = `${apiPrefix}/file/download?fileId=${fileId}`;
     const url = `${apiPrefix}${downLoadUrl || defaultUrl}`;
     const fileTypes = ['docs', 'doc', 'xlsx', 'png', 'jpg', 'pdf'];
-    const fileType = fileName.split((fileName.lastIndexOf('.') + 1) as any)[1];
+    const fileType = fileName?.split('.')?.[1];
     if (!fileTypes.includes(fileType)) {
       return message.error('暂不支持该文件类型');
     }

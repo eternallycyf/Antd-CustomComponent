@@ -179,7 +179,7 @@ class FileView extends PureComponent<IProps, any> {
       return <Image src={src} />;
     }
 
-    if (txtFileTypes.includes(fileType)) {
+    if (txtFileTypes?.includes(fileType)) {
       const newText = `
 ~~~${fileType}
 ${text}
