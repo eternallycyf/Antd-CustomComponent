@@ -272,7 +272,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
     const { field, column: { sorterFn = null, isRefresh = true } = {} } = sorter;
     const { current, pageSize } = pagination;
     const order = (sorter.order === 'ascend' && 'asc') || 'desc';
-    const sort =
+    let sort =
       field && sorter.order
         ? field
             .split('.')
@@ -280,6 +280,11 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
             .replace(/\B([A-Z])/g, '_$1')
             .toLowerCase()
         : null;
+
+    // 如果排序索引和显示字段不一致，采用排序索引
+    if (sorter.column && sorter.column.sorter === true && sorter.column.sorterIndex) {
+      sort = sorter.column.sorterIndex;
+    }
 
     this.setState(
       {

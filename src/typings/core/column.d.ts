@@ -62,6 +62,14 @@ type Column<TRecord = AnyData> =
       formItemProps?: Search;
       // 权限控制
       acpCode?: string;
+
+      // 自定义排序发给后端的字段
+      sorterIndex?: string;
+
+      /**
+       * @description 点击分页功能 是否刷新 用于前端自己排序
+       */
+      isRefresh?: boolean;
     };
 // & FormControl
 // 传入泛型 Columns<{ code: string }> 指定dataIndex及render的record类型
