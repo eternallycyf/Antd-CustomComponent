@@ -40,7 +40,7 @@ async function CommentTableAddTest(page, callback) {
         .then((data) => {
           const resCode = Number(data.code);
           const apiUrl = response.url();
-          const checkApiPass = apiUrl === `${domain}//updateActivityList`;
+          const checkApiPass = apiUrl === `${domain}/updateActivityList`;
           if (resCode !== 200) {
             console.error({
               msg: data.msg,
