@@ -16,10 +16,12 @@ async function CommentTableAddTest(page, callback) {
       ],
     });
     // 等待列表接口请求完成
-    await page.waitForRequest(`${domain}/getActivityList?page=1&limit=29&aaaaaa=1&my=121213`);
-    const testBtn = await page.$('.ant-table-tbody .ant-table-row td:last-child >div >button');
-    await Promise.all([testBtn.click(), page.waitForNavigation()]);
-    await page.waitFor(5000);
+    await page.waitForRequest(`${domain}/getActivityList?page=1&limit=30&aaaaaa=1&my=121213`);
+    const EditBtnElement = '.ant-table-tbody .ant-table-row td:last-child >div >button';
+    const SubmitBtn = '.ant-modal-content > div.ant-modal-footer > button.ant-btn.ant-btn-primary';
+    const SelectElements = '.ant-modal-content .ant-select';
+
+    await utils.click(page, EditBtnElement);
 
     const otherFormItemInput = await page.waitForSelector('#otherFormItem', {
       timeout: 2000,
@@ -27,10 +29,11 @@ async function CommentTableAddTest(page, callback) {
     const keywords = '测试';
     await otherFormItemInput.type(keywords, { delay: 100 });
 
+    const typeSelect = await page.$$(SelectElements);
+    await typeSelect[0].click();
     await handleDropdownSelect(page, 1);
 
-    const submitBtn = await page.$('.ant-modal-content > div.ant-modal-footer > button.ant-btn.ant-btn-primary');
-    submitBtn.click();
+    await utils.click(page, SubmitBtn);
     page.on('response', (response) => {
       response
         .json()
@@ -38,7 +41,7 @@ async function CommentTableAddTest(page, callback) {
           const resCode = Number(data.code);
           const apiUrl = response.url();
           const checkApiPass = apiUrl === `${domain}//updateActivityList`;
-          if (resCode !== 0) {
+          if (resCode !== 200) {
             console.error({
               msg: data.msg,
               code: data.code,
@@ -87,7 +90,7 @@ async function CommentTableAddTest(page, callback) {
 
 async function handleDropdownSelect(page, selectedIndex) {
   const allDownList = await page.$$('.ant-select-dropdown');
-  const optionsList = await allDownList[allDownList.length - 1].$$('.ant-select-dropdown-menu-item');
+  const optionsList = await allDownList[allDownList.length - 1].$$('.ant-select-item');
   const selectedItem = optionsList[selectedIndex];
   await selectedItem.click();
 }

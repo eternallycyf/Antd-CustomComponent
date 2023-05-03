@@ -28,7 +28,24 @@ async function goto(page, link) {
   }, link);
 }
 
+async function click(page, selector, timeout = 30000) {
+  await page.waitForSelector(selector, { visible: true, timeout });
+  let error;
+  while (timeout > 0) {
+    try {
+      await page.click(selector);
+      return;
+    } catch (e) {
+      await page.waitFor(100);
+      timeout -= 100;
+      error = e;
+    }
+  }
+  throw err;
+}
+
 module.exports = {
   removeDir,
   goto,
+  click,
 };

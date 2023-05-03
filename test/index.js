@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const path = require('path');
 const testConfig = require('./testConfig');
 const CommentTable = require('./commonTable/class');
 const utils = require('./utils');
@@ -32,7 +33,11 @@ const utils = require('./utils');
   const submitBtn = await page.waitForSelector('.ant-tour-close');
   await submitBtn.click();
 
-  // await utils.removeDir('./test/screenshots');
+  page.on('pageerror', (err) => {
+    console.error(err);
+  });
+
+  // await utils.removeDir(path.join(__dirname, '/screenshot'));
 
   let testResList = [];
   let isLastTest = false;
@@ -73,6 +78,6 @@ const utils = require('./utils');
   // 非最后的测试用例  handleLastTest(false)  最后的测试用例 handleLastTest(true)
   await CommentTable.CommentTableAddTest(page, handleLastTest(true));
 
-  // await page.close();
-  // await browser.close();
+  await page.close();
+  await browser.close();
 })();

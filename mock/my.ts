@@ -64,7 +64,7 @@ export default {
         success: true,
         unSuccess: true,
       });
-    }, 500);
+    }, 0);
   },
   'POST /updateActivityList': (req, res) => {
     res.send({
