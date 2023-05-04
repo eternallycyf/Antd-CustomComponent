@@ -204,6 +204,8 @@ export interface FormControl {
   // /**@description 控件类型 */
   type?: IBaseFormControlType;
   width?: number;
+  placeholder?: string;
+  style?: React.CSSProperties;
   /**@description 控件初始值 */
   initialValue?: IBaseInitialValue;
   /**@description 格式化 */
@@ -222,7 +224,7 @@ export interface FormControl {
    * @description 表单配置 尽量使用itemProps 传递form.Item的属性
    * formFieldProps 一般用于传递 rules 如果包含嵌套情况 可能无法传递属性到form.Item
    */
-  formFieldProps?: { rules?: FormItemProps['rules'] };
+  formFieldProps?: { rules?: FormItemProps['rules']; style?: React.CSSProperties };
   /**@description 控件属性配置 */
   controlProps?: IControlProps & IBaseControlProps;
 

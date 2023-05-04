@@ -100,7 +100,7 @@ export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType 
     },
     {
       name: 'startDate,endDate',
-      label: 'startDate,endDate',
+      label: 'date',
       // format 仅对dateRange类型生效
       type: 'dateRange',
       placeholder: '',
@@ -136,6 +136,58 @@ export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType 
       type: 'month',
       format: 'YYYYMM',
       initialValue: dayjs(),
+    },
+    {
+      name: 'month',
+      label: '起止月份',
+      type: 'input',
+      // itemProps: {
+      //   labelCol: { span: 4 },
+      //   wrapperCol: { span: 20 },
+      // },
+      children: [
+        {
+          name: 'beginMonth',
+          type: 'month',
+          format: 'YYYYMM',
+          placeholder: '开始月份',
+          formFieldProps: {
+            style: {
+              width: '40%',
+              display: 'inline-block',
+            },
+          },
+        },
+        {
+          name: 'aa',
+          type: 'input',
+          initialValue: '至',
+          controlProps: {
+            bordered: false,
+            allowClear: false,
+            readOnly: true,
+          },
+          formFieldProps: {
+            style: {
+              width: '20%',
+              padding: '0 2.5%',
+              display: 'inline-block',
+            },
+          },
+        },
+        {
+          name: 'endMonth',
+          type: 'month',
+          format: 'YYYYMM',
+          placeholder: '结束月份',
+          formFieldProps: {
+            style: {
+              width: '40%',
+              display: 'inline-block',
+            },
+          },
+        },
+      ],
     },
     // {
     //   name: 'editor',
