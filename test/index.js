@@ -78,6 +78,6 @@ const utils = require('./utils');
   // 非最后的测试用例  handleLastTest(false)  最后的测试用例 handleLastTest(true)
   await CommentTable.CommentTableAddTest(page, handleLastTest(true));
 
-  await page.close();
-  await browser.close();
+  // await page.close();
+  // await browser.close();
 })();

@@ -51,7 +51,7 @@ async function CommentTableAddTest(page, callback) {
             page.screenshot({
               path: `./test/screenshot/${moduleName}${imgId}.png`,
             });
-          } else if (resCode === 0) {
+          } else if (resCode === 200) {
             if (checkApiPass) passCount++;
           }
           if (checkApiPass) {
