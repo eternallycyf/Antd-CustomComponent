@@ -54,13 +54,17 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
    */
 
   const formatSubmitValues = (values: any) => {
-    const formDict = _.keyBy(formList, 'name');
-
+    const _formList: any[] = [];
+    formList.forEach((item) => {
+      _formList.push(item);
+      item.children && _formList.push(...item.children);
+    });
+    const formDict = _.keyBy(_formList, 'name');
     const data: any = {};
 
     Object.keys(values).forEach((key) => {
       const sourceItem = formDict[key] as any;
-      const { format } = sourceItem;
+      const format = sourceItem?.format;
       const value = values[key];
 
       if (!value && !_.isBoolean(value) && !_.isNumber(value)) return;
@@ -236,7 +240,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
               <Col
                 key={field.name}
                 span={isOneLine ? field.col || span : span}
-                style={{ display: index < (showCount as any) ? 'block' : 'none', width: '100%' }}
+                style={{ display: index < (showCount as any) ? 'block' : 'none' }}
               >
                 <Form.Item
                   labelAlign="right"
@@ -244,7 +248,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
                   label={field.label}
                   {...(field.itemProps as any)}
                 >
-                  {renderFormItem(field)}
+                  {field.children ? field.children.map(renderFormItem) : renderFormItem(field)}
                 </Form.Item>
               </Col>
             ))}
@@ -260,9 +264,10 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
                   labelCol={{ style: { maxWidth: '250px', minWidth: '100px' } }}
                   wrapperCol={{ span: 20 }}
                   label={field.label}
+                  style={{ width: '100%' }}
                   {...(field.itemProps as any)}
                 >
-                  {renderFormItem(field)}
+                  {field.children ? field.children.map(renderFormItem) : renderFormItem(field)}
                 </Form.Item>
               </Col>
             ))}
