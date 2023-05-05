@@ -274,6 +274,17 @@ export const menuList = [
   },
   {
     children: null,
+    code: 'Rxjs',
+    component: null,
+    icon: null,
+    id: 'water_mark',
+    name: 'Rxjs',
+    path: '/Rxjs',
+    upperId: '1',
+    url: null,
+  },
+  {
+    children: null,
     code: '404',
     component: null,
     icon: null,
