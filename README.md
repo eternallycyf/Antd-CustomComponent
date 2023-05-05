@@ -15,6 +15,7 @@
 - threejs 着色器
 - ~~leaflet~~
 - ~~ts 加强~~
+- rxjs
 
 ## 1.安装依赖
 
