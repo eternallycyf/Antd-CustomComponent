@@ -262,7 +262,7 @@ export interface IControlProps {
   arrayProps?: ArrayProps;
   dictConfig?: { textKey: string; valueKey: string };
   Component?: any;
-  dict?: Array<{
+  dict?: ReadonlyArray<{
     text: string;
     value: string;
     disabled?: boolean;
