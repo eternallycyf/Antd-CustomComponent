@@ -122,7 +122,10 @@ export function formatColumn(data: any[]) {
           item.render = (text: any) => {
             if (_.isNil(text)) return '--';
             let newText = text;
-            if (item.dict) newText = getDictMap(item.dict)[text];
+            if (item.dict) {
+              const dictText = getDictMap(item.dict)[text];
+              newText = _.isNil(dictText) ? '--' : dictText;
+            }
             if (item.formatTime) newText = formatTime(options, text);
             if (item.formatPercent) newText = formatPercent(text);
             if (item.formatNumber) newText = formatNumber(item, text);
