@@ -57,7 +57,7 @@ interface RowProps {
    */
   expend?: boolean;
   /**
-   * @description 一行的最大高度 当开启展开收起时 必须传入用于 处理闪烁问题 初次渲染如果超过这个高度自动隐藏
+   * @description 一行的最大高度 当开启展开收起时 传入用于 处理闪烁问题 初次渲染如果超过这个高度自动隐藏
    * @type number
    * @default 50
    */
@@ -75,6 +75,11 @@ interface RowProps {
    */
   btnStyle?: 'default' | 'btn';
   customShowBtn?: () => boolean;
+  /**
+   * @description 是否是标签
+   * @default false
+   */
+  isTag?: boolean;
 }
 interface IRowProps {
   /**

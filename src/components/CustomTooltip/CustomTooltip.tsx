@@ -24,14 +24,14 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
       if (props?.row?.customShowBtn) {
         return setHasExpend(props!.row!.customShowBtn());
       }
-      const newHeight = node.getBoundingClientRect().height;
-      const list = [...new Set([...heightList.current, newHeight])];
-      heightList.current = [...list];
-      if (heightList.current.length <= 1) {
-        setHasExpend(false);
-      } else {
-        setHasExpend(true);
-      }
+      // const newHeight = node.getBoundingClientRect().height;
+      // const list = [...new Set([...heightList.current, newHeight])];
+      // heightList.current = [...list];
+      // if (heightList.current.length <= 1) {
+      //   setHasExpend(false);
+      // } else {
+      //   setHasExpend(true);
+      // }
     }
     return node;
   }, []);
@@ -79,6 +79,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
       isRight: false,
       customShowBtn: undefined,
       btnStyle: 'default',
+      isTag: false,
     },
     col = 24,
     colProps = {},
@@ -90,7 +91,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
   if (_.isNil(text) || (typeof text === 'string' && text.length === 0))
     return <span style={{ color: '#8E96A4' }}>--</span>;
 
-  const isTextToObject = typeof text === 'object';
+  const isTextToObject = typeof text !== 'string' && typeof text !== 'number';
   const isShowEllipsisSymbol = row.EllipsisSymbol ? '...' : '';
   const copyableProps = copyable ? { copyable: { text, tooltips: ['点击复制', '复制成功'] } } : {};
   const ellipsisClassName = row.EllipsisSymbol ? cx.ellipsis : '';
@@ -161,14 +162,16 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
     style: styles,
     ...copyableProps,
   };
-  // 如果是元素 Paragraph 组件设置row为1时候 只显示... 需要手动设置为 rows >= 2
+
+  // 如果是富文本类型 && columns 则需要+1
   const customRows = isTextToObject
-    ? typeof row.rows === 'number'
-      ? typeof props.row?.customShowBtn === 'function'
-        ? row.rows
-        : row.rows + 1
-      : 2
+    ? typeof row.rows === 'number' && typeof row?.customShowBtn !== 'function' && row.isTag
+      ? row.rows + 1
+      : row.rows
     : row.rows;
+
+  console.log(customRows);
+
   // 处理 初始化的闪烁问题 设置最大高度 为一行的高度, 溢出隐藏 当点击时恢复
   const customRowsColStyles = {
     maxHeight: overflowStatus === 'hidden' ? row.lineMaxHeight : '100%',
@@ -186,6 +189,10 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
           tooltip: isTextToObject ? '' : text,
           onExpand: () => {
             setIsExpand(true);
+            forceUpdate();
+          },
+          onEllipsis: (isEllipsis: boolean) => {
+            row?.expend ? setHasExpend(isEllipsis) : setHasExpend(false);
             forceUpdate();
           },
         },
@@ -268,7 +275,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
   return (
     <Col span={col} style={{ display: 'inline-block' }} {...colProps}>
       <Paragraph style={styles} className={`${ellipsisClassName} ${paragraphClassName}`}>
-        {text && text.length > maxLength ? SingleOverflowParagraph : SingleParagraph}
+        {text && String(text).length > maxLength ? SingleOverflowParagraph : SingleParagraph}
       </Paragraph>
     </Col>
   );

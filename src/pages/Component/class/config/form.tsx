@@ -40,7 +40,7 @@ export const getFormList = (self: InstanceType<typeof Activity>): ISearchesType 
           9: 'blue',
           10: 'purple',
         };
-        const tagS = Array.from({ length: 40 }).map((_, i) => (
+        const tagS = Array.from({ length: 20 }).map((_, i) => (
           <Tag key={Math.random()} color={COLOR_DICT[~~(Math.random() * 10)]}>
             {COLOR_DICT[~~(Math.random() * 10)]}
           </Tag>
@@ -59,9 +59,8 @@ export const getFormList = (self: InstanceType<typeof Activity>): ISearchesType 
                 <span>==</span>
               ))}
               row={{
-                rows: 2,
+                rows: 1,
                 expend: true,
-                lineMaxHeight: 54,
                 EllipsisSymbol: false,
                 isRight: true,
               }}
@@ -69,11 +68,11 @@ export const getFormList = (self: InstanceType<typeof Activity>): ISearchesType 
             <CustomTooltip
               text={tagS}
               row={{
-                rows: 2,
+                rows: 1,
                 expend: true,
-                lineMaxHeight: 45,
                 EllipsisSymbol: true,
                 isRight: true,
+                isTag: true,
               }}
             />
             <CustomTooltip.Paragraph text={Array.from({ length: 300 }, (v, i) => '--')} rows={2} />
@@ -86,10 +85,10 @@ export const getFormList = (self: InstanceType<typeof Activity>): ISearchesType 
             <CustomTooltip<true>
               text={tagS}
               row={{
-                rows: 2,
+                rows: 1,
                 expend: true,
                 EllipsisSymbol: true,
-                customShowBtn: () => (tagS.length > 2 ? true : false),
+                isTag: true,
               }}
             />
           </>

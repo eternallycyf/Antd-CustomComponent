@@ -1,24 +1,23 @@
----
-order: 2
-group:
-  path: /my-components
-  title: 封装的业务组件
-  order: 2
----
-
 ## CustomTooltip 溢出文字省略
+
+## TypeScript 泛型
+
+```tsx | pure
+<CustomTooltip<T = unknown />
+- 如果 CustomTooltip<true /> 则 只能使用 row
+- 如果 CustomTooltip<false /> 则 只能使用 maxLength
+```
 
 ### 1.string 类型自动展开收起 需要转换成 Element 类型
 
 ```tsx | pure
 <CustomTooltip
   text={Array.from({ length: 1000 }, (v, i) => (
-    <Fragment key={i}>==</Fragment>
+    <Fragment key={i}>string</Fragment>
   ))}
   row={{
     rows: 2,
     expend: true,
-    lineMaxHeight: 64,
     EllipsisSymbol: false,
     isRight: true,
   }}
@@ -38,14 +37,38 @@ export const tagS = Array.from({ length: 20 }).map((_, i) => (
   row={{
     rows: 2,
     expend: true,
-    lineMaxHeight: 45,
     EllipsisSymbol: true,
     isRight: true,
   }}
 />;
 ```
 
-### 3.基本 API 使用
+### 3. table columns 使用
+
+```tsx | pure
+render: (text) => {
+  const arr = Array.from({ length: 5 });
+  const tagS = arr.map((_, i) => (
+    <Tag key={Math.random()} color="blue">
+      客户标签
+    </Tag>
+  ));
+  return (
+    <CustomTooltip
+      text={tagS}
+      row={{
+        rows: 2,
+        expend: true,
+        EllipsisSymbol: false,
+        isRight: true,
+        btnStyle: 'btn',
+      }}
+    />
+  );
+};
+```
+
+### 4.基本 API 使用
 
 ```tsx
 import React from 'react';
@@ -63,21 +86,13 @@ export default () => (
 );
 ```
 
-### 4.CustomTooltip.Paragraph 多行文字溢出显示 ...及 tooltip
+### 5.CustomTooltip.Paragraph 多行文字溢出显示 ...及 tooltip
 
 ```tsx | pure
-<CustomTooltip.Paragraph
-  text={'xxx'}
-  rows={2}
-  tooltipProps={{}}
-  ellipsisProps={{}}
-  style={{}}
-  copyable={true}
-  className={{}}
-/>
+<CustomTooltip.Paragraph text={'xxx'} rows={2} tooltipProps={{}} ellipsisProps={{}} style={{}} copyable={true} />
 ```
 
-### 5.CustomTooltip.Paragraph 多行元素类型换行展示 溢出显示 ...及 tooltip
+### 6.CustomTooltip.Paragraph 多行元素类型换行展示 溢出显示 ...及 tooltip
 
 ```tsx | pure
 <CustomTooltip.Paragraph
@@ -87,11 +102,10 @@ export default () => (
   ellipsisProps={{}}
   style={{}}
   copyable={true}
-  className={{}}
 />
 ```
 
-### 6.CustomTooltip.FileName 文件名中间夹断 集成 FileImage
+### 7.CustomTooltip.FileName 文件名中间夹断 集成 FileImage
 
 - before: 'xxxxxxx.png';
 - after: 'xxx...xxx.png';
@@ -102,9 +116,9 @@ export default () => (
 
 ## FAQ
 
-### 1.table 列表中 自动展开收起 不生效
+### 1. 自动展开收起 不生效
 
-- 由于样式影响 需要使用 customShowBtn 手动判断是否展开及隐藏
+- 由于样式影响 可以使用 customShowBtn 手动判断是否展开及隐藏
 
 ```tsx | pure
 {
@@ -122,7 +136,30 @@ export default () => (
 }
 ```
 
-### 2.当 react 版本小于 18.0 监听 dom 高度失效
+### 2. 依赖于 antd 4.2.0 以上版本
+
+- 如果 antd > 4 && antd < 4.2.0
+
+```tsx | pure
+const contentRef = useCallback((node: HTMLDivElement) => {
+  if (node !== null && !isString) {
+    if (props?.row?.customShowBtn) {
+      return setHasExpend(props!.row!.customShowBtn());
+    }
+    const newHeight = node.getBoundingClientRect().height;
+    const list = [...new Set([...heightList.current, newHeight])];
+    heightList.current = [...list];
+    if (heightList.current.length <= 1) {
+      setHasExpend(false);
+    } else {
+      setHasExpend(true);
+    }
+  }
+  return node;
+}, []);
+```
+
+- 当 react 版本小于 18.0 监听 dom 高度失效
 
 ```tsx | pure
 /**当 react 版本小于18.0 */
