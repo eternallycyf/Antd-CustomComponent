@@ -22,7 +22,6 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { compose } from 'redux';
 import _ from 'lodash';
 import { withRouter } from '@/core/Enhance/withRouter';
-import { KeepAliveTransfer } from '@/core/base/KeepAlive';
 
 interface IProps {
   IndexPageRef: Ref<IHandle>;
@@ -258,7 +257,6 @@ const NewIndexPage = compose<typeof IndexPage>(
     pure: undefined,
   }),
   forwardRef,
-  KeepAliveTransfer,
 )(IndexPage);
 
 const Content = () => {
