@@ -35,7 +35,7 @@ type Column<TRecord = AnyData> =
        * 针对特殊格式 可传入人对象 dayjs(text, type).format(format)
        */
       format?: string;
-      formatTime?: boolean | { type?: string; format: string } | string;
+      formatTime?: boolean | { type?: string; format: string };
       /**
        * @description 格式化金融数据 增加千分号
        * 可传入具体的保留位数
