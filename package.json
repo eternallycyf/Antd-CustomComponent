@@ -13,7 +13,7 @@
     "lint:script": "eslint . --ext .js,.jsx,.ts,.tsx --cache",
     "prepare": "husky install",
     "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
-    "start": "rm -rf ./src/pages/.DS_Store && cross-env NODE_ENV=development max dev"
+    "start": "rm -rf ./src/pages/.DS_Store && yarn biz-init && cross-env NODE_ENV=development max dev"
   },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
