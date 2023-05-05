@@ -170,8 +170,6 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
       : row.rows
     : row.rows;
 
-  console.log(customRows);
-
   // 处理 初始化的闪烁问题 设置最大高度 为一行的高度, 溢出隐藏 当点击时恢复
   const customRowsColStyles = {
     maxHeight: overflowStatus === 'hidden' ? row.lineMaxHeight : '100%',
