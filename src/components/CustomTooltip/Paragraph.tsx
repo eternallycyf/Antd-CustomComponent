@@ -41,7 +41,7 @@ const CustomTooltipParagraph: FC<IParagraph> = (props) => {
     <Tooltip title={text ?? '--'} {...tooltipProps}>
       <Paragraph
         style={{ marginBottom: 0, ...style }}
-        className={`${styles.desc} ${className}`}
+        className={`${styles.desc} ${className} ${rows === 1 ? styles['single-line'] : ''}`}
         copyable={copyable}
         ellipsis={{ rows, expandable: false, tooltip: text ?? '--', ...restEllipsisProps }}
         {...restProps}

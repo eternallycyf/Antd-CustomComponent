@@ -4,7 +4,6 @@ import FileImage from '@/components/FileImage';
 import _ from 'lodash';
 import FileView from '@/components/Widget/FileViewer';
 
-// TODO: 文件预览
 export interface IFileName {
   name: string;
   /**

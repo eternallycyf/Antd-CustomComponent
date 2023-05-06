@@ -1,76 +1,16 @@
 ## CustomTooltip 溢出文字省略
 
-## TypeScript 泛型
+## 1.TypeScript 泛型
+
+- `<CustomTooltip<T = unknown />`
+- 如果 `CustomTooltip<true />` 则 只能使用 row
+- 如果 `CustomTooltip<false />` 则 只能使用 maxLength
+
+## 2.CustomTooltip
+
+### 2.1 基本 API 使用
 
 ```tsx | pure
-<CustomTooltip<T = unknown />
-- 如果 CustomTooltip<true /> 则 只能使用 row
-- 如果 CustomTooltip<false /> 则 只能使用 maxLength
-```
-
-### 1.string 类型自动展开收起 需要转换成 Element 类型
-
-```tsx | pure
-<CustomTooltip
-  text={Array.from({ length: 1000 }, (v, i) => (
-    <Fragment key={i}>string</Fragment>
-  ))}
-  row={{
-    rows: 2,
-    expend: true,
-    EllipsisSymbol: false,
-    isRight: true,
-  }}
-/>
-```
-
-### 2.Element 类型 自动展开收起
-
-```tsx | pure
-export const tagS = Array.from({ length: 20 }).map((_, i) => (
-  <Tag key={Math.random()} color={COLOR_DICT[~~(Math.random() * 10)]}>
-    {COLOR_DICT[~~(Math.random() * 10)]}
-  </Tag>
-));
-<CustomTooltip
-  text={tagS}
-  row={{
-    rows: 2,
-    expend: true,
-    EllipsisSymbol: true,
-    isRight: true,
-  }}
-/>;
-```
-
-### 3. table columns 使用
-
-```tsx | pure
-render: (text) => {
-  const arr = Array.from({ length: 5 });
-  const tagS = arr.map((_, i) => (
-    <Tag key={Math.random()} color="blue">
-      客户标签
-    </Tag>
-  ));
-  return (
-    <CustomTooltip
-      text={tagS}
-      row={{
-        rows: 2,
-        expend: true,
-        EllipsisSymbol: false,
-        isRight: true,
-        btnStyle: 'btn',
-      }}
-    />
-  );
-};
-```
-
-### 4.基本 API 使用
-
-```tsx
 import React from 'react';
 import { Row, Col } from 'antd';
 import CustomTooltip from './CustomTooltip';
@@ -86,26 +26,108 @@ export default () => (
 );
 ```
 
-### 5.CustomTooltip.Paragraph 多行文字溢出显示 ...及 tooltip
+### 2.2 string 类型自动展开收起 需要转换成 Element 类型
 
 ```tsx | pure
-<CustomTooltip.Paragraph text={'xxx'} rows={2} tooltipProps={{}} ellipsisProps={{}} style={{}} copyable={true} />
-```
-
-### 6.CustomTooltip.Paragraph 多行元素类型换行展示 溢出显示 ...及 tooltip
-
-```tsx | pure
-<CustomTooltip.Paragraph
-  text={['xxx','xxxx','xxx].map(item => <div key={item}>{item}</div>)}
-  rows={2}
-  tooltipProps={{}}
-  ellipsisProps={{}}
-  style={{}}
-  copyable={true}
+<CustomTooltip
+  text={Array.from({ length: 1000 }, (v, i) => (
+    <Fragment key={i}>string</Fragment>
+  ))}
+  row={{
+    rows: 2,
+    expend: true,
+    EllipsisSymbol: false,
+    isRight: true,
+    btnStyle: 'btn',
+  }}
 />
 ```
 
-### 7.CustomTooltip.FileName 文件名中间夹断 集成 FileImage
+### 2.3 单行 string
+
+```tsx
+const rows = 2;
+const arr = Array.from({ length: 3 }, (v, i) => <div key={i}>string</div>);
+<CustomTooltip
+  text={arr}
+  row={{
+    rows,
+    isTag: true,
+    lineMaxHeight: 20 * rows,
+    expend: true,
+    EllipsisSymbol: true,
+    isRight: true,
+    btnStyle: 'btn',
+    customShowBtn: () => arr?.length > rows,
+  }}
+/>;
+```
+
+### 2.4 Tag 自动展开收起
+
+```tsx | pure
+const arr = Array.from({ length: 60 });
+const tagS = arr.map((_, i) => (
+  <Tag key={Math.random()} color="blue">
+    这是一个tag
+  </Tag>
+));
+
+// columns 中使用
+<CustomTooltip
+  text={tagS}
+  row={{
+    rows: 1,
+    expend: true,
+    EllipsisSymbol: true,
+    isRight: true,
+    btnStyle: 'btn',
+  }}
+/>
+
+// 不在 columns 中使用 , 需要加上 isTag: true
+<CustomTooltip
+  text={tagS}
+  row={{
+    rows: 1,
+    expend: true,
+    EllipsisSymbol: true,
+    isRight: true,
+    btnStyle: 'btn',
+    isTag: true,
+  }}
+/>
+```
+
+### 3.CustomTooltip.Paragraph 多行文字溢出显示 ...及 tooltip
+
+```tsx | pure
+// 1. string 类型
+<CustomTooltip.Paragraph text={'2'.repeat(1000)} rows={1} />
+
+// 2. 独占一行的 strng
+<CustomTooltip.Paragraph
+ text={['xx','xxx','xxxx'].map(item => <div key={item}>{item}</div> )}
+/>
+
+// 2.1 独占一行的 string 如果 rows == 1 需要手动添加 style
+<CustomTooltip.Paragraph
+  rows={1}
+  text={['xx','xxx','xxxx'].map(item => <div key={item}>{item}</div> )}
+  style={{ display: "-webkit-box","-webkit-box-orient": "vertical" } as React.CSSProperties}
+/>
+
+// 3. 使用 Antd-Tag
+const arr = Array.from({ length: 60 });
+const tagS = arr.map((_, i) => (
+  <Tag key={Math.random()} color="blue">
+    这是一个tag
+  </Tag>
+));
+<CustomTooltip.Paragraph text={tagS} rows={1} />
+```
+
+### 4.CustomTooltip.FileName 文件名中间夹断 集成 FileImage
 
 - before: 'xxxxxxx.png';
 - after: 'xxx...xxx.png';
@@ -114,30 +136,9 @@ export default () => (
 <CustomTooltip.FileName name={'xxx.png'} prefixLength={5} />
 ```
 
-## FAQ
+### FAQ
 
-### 1. 自动展开收起 不生效
-
-- 由于样式影响 可以使用 customShowBtn 手动判断是否展开及隐藏
-
-```tsx | pure
-{
-  render: text => (
-    <CustomTooltip<true>
-      text={text.map(item => (<Tag key={index}>{item}</Tag>))}
-      row={{
-        rows: 2,
-        expend: true,
-        EllipsisSymbol: true,
-        customShowBtn: () => arr.length > 2 ? true : false;
-      }}
-    />
-  )
-}
-```
-
-### 2. 依赖于 antd 4.2.0 以上版本
-
+- 代码依赖于 antd 4.2.0 以上版本
 - 如果 antd > 4 && antd < 4.2.0
 
 ```tsx | pure
