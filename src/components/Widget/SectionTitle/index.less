@@ -1,6 +1,16 @@
 .SectionTitle {
   padding-left: 0.8rem;
-  border-left: 0.4rem solid #1890ff;
+
+
+  &::before {
+    position: absolute;
+    left: 0;
+    display: inline-block;
+    height: 20px;
+    border-left: 0.4rem solid #1890ff;
+    content: ' ';
+  }
+
 
   .SectionTitle-title {
     font-weight: 700;
