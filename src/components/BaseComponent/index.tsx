@@ -16,7 +16,7 @@ export interface IBaseState {
   expandedKey?: string;
 }
 
-type IBaseTableInstance = InstanceType<typeof BaseTable> & {
+export interface IBaseTableRefFun {
   cls: any;
   componentWilMount: any;
   getOpenWidth: any;
@@ -24,7 +24,10 @@ type IBaseTableInstance = InstanceType<typeof BaseTable> & {
   renderSummary: any;
   handleSetDefaultChecked: any;
   renderOperateTitle: any;
-};
+  getOnRow: (restProps: any[]) => void;
+}
+
+type IBaseTableInstance = InstanceType<typeof BaseTable> & IBaseTableRefFun;
 
 class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
   public tableRef = React.createRef<IBaseTableInstance>();

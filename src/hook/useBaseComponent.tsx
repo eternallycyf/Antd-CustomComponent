@@ -1,3 +1,4 @@
+import { IBaseState, IBaseTableRefFun } from '@/components/BaseComponent';
 import CommonSearch from '@/components/CommonSearch';
 import BaseTable from '@/components/CommonTableV5/components/BaseTable';
 import CustomForm from '@/components/CustomForm';
@@ -7,25 +8,9 @@ import { message, Modal, TableProps } from 'antd';
 import { TableRowSelection } from 'antd/lib/table/interface';
 import React, { useEffect, useRef, useState } from 'react';
 
-type IBaseTableInstance = InstanceType<typeof BaseTable> & {
-  cls: any;
-  componentWilMount: any;
-  getOpenWidth: any;
-  handleColumns: any;
-  renderSummary: any;
-  handleSetDefaultChecked: any;
-  renderOperateTitle: any;
-};
+type IBaseTableInstance = InstanceType<typeof BaseTable> & IBaseTableRefFun;
 
-interface IProps {
-  searchParams?: any;
-  expandedKey?: string;
-  selectedRows?: any[];
-  selectedRowKeys?: any[];
-  expandedRowKeys?: any[];
-}
-
-const useBaseComponent = (props: IProps) => {
+const useBaseComponent = (props: IBaseState) => {
   const tableRef = useRef<IBaseTableInstance>(null!);
   const searchRef = useRef<React.ElementRef<typeof CommonSearch>>(null!);
   const formRef = useRef<React.ElementRef<typeof CustomForm>>(null!);
