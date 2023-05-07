@@ -421,11 +421,29 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     };
 
     if (draggable) {
-      restProps.onRow = (_: any, index: number) =>
-        ({
+      const defaultOnRow = restProps.onRow ? restProps.onRow : null;
+      const fixRowkeys = restProps?.fixRowkeys || [];
+      const _data = (data?.length > 0 ? data : dataSource) || [];
+      restProps.onRow = (record: any, index: number) => {
+        const defaultRowProps = defaultOnRow ? defaultOnRow(record, index) : {};
+        const dataHasFixedKeys =
+          fixRowkeys.filter((key: any) => _data.some((ele: any) => ele[rowKey as any] == key)) || [];
+        const currentRowKey = record?.[rowKey as any];
+        const fixedStyle = {};
+
+        if (dataHasFixedKeys.includes(currentRowKey)) {
+          fixedStyle['position'] = 'sticky';
+          fixedStyle['top'] = 45 * dataHasFixedKeys.findIndex((item: any) => item == currentRowKey);
+          fixedStyle['zIndex'] = 999;
+        }
+
+        return {
           index,
           moveRow: this.moveRow,
-        } as React.HTMLAttributes<any>);
+          style: fixedStyle,
+          ...defaultRowProps,
+        } as React.HTMLAttributes<any>;
+      };
     }
 
     const BaseTable = (
