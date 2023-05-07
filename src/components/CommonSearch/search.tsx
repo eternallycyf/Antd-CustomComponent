@@ -14,9 +14,10 @@ const quarterFormat = 'YYYY-Q';
 export interface ISearchProps extends IToolTipTagProps {
   children?: any;
   handleTagList?: any;
-  handleResetCallback: () => void;
-  rowProps: RowProps;
-  isInline: boolean;
+  handleResetCallback?: () => void;
+  rowProps?: RowProps;
+  isInline?: boolean;
+  className?: string;
 }
 
 const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
@@ -230,7 +231,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
 
   return (
     <div
-      className={cx('searchWrap', styles.searchWrap, { [styles.inLineForm]: isInline })}
+      className={`${cx('searchWrap', styles.searchWrap, { [styles.inLineForm]: isInline })} ${props?.className}`}
       style={{ border: (isOneLine as any) && undefined }}
     >
       <Form onFieldsChange={onFieldsChange} layout="inline" form={form} onFinish={handleSubmit} className={styles.form}>
@@ -244,7 +245,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
               >
                 <Form.Item
                   labelAlign="right"
-                  labelCol={{ style: { maxWidth: '250px', minWidth: '100px' } }}
+                  labelCol={{ style: { maxWidth: '250px', minWidth: '80px' } }}
                   label={field.label}
                   {...(field.itemProps as any)}
                 >
@@ -261,8 +262,8 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
               <Col key={field.name}>
                 <Form.Item
                   labelAlign="right"
-                  labelCol={{ style: { maxWidth: '250px', minWidth: '100px' } }}
-                  wrapperCol={{ span: 20 }}
+                  // labelCol={{ style: { maxWidth: '250px', minWidth: '70px' } }}
+                  // wrapperCol={{ span: 17 }}
                   label={field.label}
                   style={{ width: '100%' }}
                   {...(field.itemProps as any)}

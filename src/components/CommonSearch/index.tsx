@@ -20,8 +20,9 @@ export interface IToolTipTagProps {
   handleSearch?: (values: any) => void; // 进行搜索
   handleResetCallback?: () => void; // 重置回调
   handleDeleteTagCallback?: (name: string, itemValue: any) => void; // 删除tag的回调函数
-  rowProps: RowProps;
-  isInline: boolean; // 是否是行内表单
+  rowProps?: RowProps;
+  isInline?: boolean; // 是否是行内表单
+  className?: string;
   [propName: string]: any;
 }
 

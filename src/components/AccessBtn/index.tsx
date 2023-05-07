@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from '@umijs/max';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 import { ConnectState } from '@/typings/connect';
 import { IButtonProps } from '@/typings';
 import { getUUID } from '@/utils/random';
@@ -60,7 +60,7 @@ const AccessBtn: React.FC<IProps> = (props) => {
     return [...btnEleList, ...childrenList].filter((item) => item);
   };
 
-  return type === 'ButtonGroup' ? <Button.Group>{button}</Button.Group> : <Fragment>{button}</Fragment>;
+  return type === 'ButtonGroup' ? <Button.Group>{button}</Button.Group> : <Space>{button}</Space>;
 };
 
 export default React.memo(
