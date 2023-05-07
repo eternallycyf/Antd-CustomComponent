@@ -8,6 +8,7 @@ import { IFileName } from '@/components/CustomTooltip/FileName';
 type IViewHandle = {};
 
 export type IBaseViewProps = {
+  record?: any;
   /**
    * @description 是否可复制 没有 render 时生效
    */
@@ -45,7 +46,7 @@ const View: React.ForwardRefRenderFunction<IViewHandle, IViewProps> = (props, re
     form,
     disabled,
     label,
-    name,
+    name = '',
     record,
     rows = 1,
     maxLength = 20,
@@ -61,7 +62,8 @@ const View: React.ForwardRefRenderFunction<IViewHandle, IViewProps> = (props, re
   } = props;
 
   useImperativeHandle(ref, () => ({}));
-  let value = initialValue;
+
+  let value = record?.[name] === undefined ? '' : record?.[name];
   const values = form?.getFieldsValue() || {};
   if (parser) {
     value = parser(value, record, values);
@@ -83,7 +85,7 @@ const View: React.ForwardRefRenderFunction<IViewHandle, IViewProps> = (props, re
     );
   }
 
-  if (rows) {
+  if (!render && rows !== 1) {
     return (
       <CustomTooltip.Paragraph
         className={className}
