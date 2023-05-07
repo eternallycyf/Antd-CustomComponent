@@ -359,6 +359,34 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     );
   };
 
+  getOnRow = (restProps: any) => {
+    const { draggable, data, rowKey } = this.props;
+    const { dataSource } = this.state;
+    const defaultOnRow = restProps.onRow ? restProps.onRow : null;
+    const fixRowkeys = restProps?.fixRowkeys || [];
+    const _data = (data?.length > 0 ? data : dataSource) || [];
+    restProps.onRow = (record: any, index: number) => {
+      const defaultRowProps = defaultOnRow ? defaultOnRow(record, index) : {};
+      const dataHasFixedKeys =
+        fixRowkeys.filter((key: any) => _data.some((ele: any) => ele[rowKey as any] == key)) || [];
+      const currentRowKey = record?.[rowKey as any];
+      const fixedStyle = {};
+
+      if (dataHasFixedKeys.includes(currentRowKey)) {
+        fixedStyle['position'] = 'sticky';
+        fixedStyle['top'] = 45 * dataHasFixedKeys.findIndex((item: any) => item == currentRowKey);
+        fixedStyle['zIndex'] = 999;
+      }
+
+      return {
+        index,
+        moveRow: draggable ? this.moveRow : null,
+        style: fixedStyle,
+        ...defaultRowProps,
+      } as React.HTMLAttributes<any>;
+    };
+  };
+
   render(): any {
     const {
       form,
@@ -420,31 +448,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       y: originScroll.y || '100%',
     };
 
-    if (draggable) {
-      const defaultOnRow = restProps.onRow ? restProps.onRow : null;
-      const fixRowkeys = restProps?.fixRowkeys || [];
-      const _data = (data?.length > 0 ? data : dataSource) || [];
-      restProps.onRow = (record: any, index: number) => {
-        const defaultRowProps = defaultOnRow ? defaultOnRow(record, index) : {};
-        const dataHasFixedKeys =
-          fixRowkeys.filter((key: any) => _data.some((ele: any) => ele[rowKey as any] == key)) || [];
-        const currentRowKey = record?.[rowKey as any];
-        const fixedStyle = {};
-
-        if (dataHasFixedKeys.includes(currentRowKey)) {
-          fixedStyle['position'] = 'sticky';
-          fixedStyle['top'] = 45 * dataHasFixedKeys.findIndex((item: any) => item == currentRowKey);
-          fixedStyle['zIndex'] = 999;
-        }
-
-        return {
-          index,
-          moveRow: this.moveRow,
-          style: fixedStyle,
-          ...defaultRowProps,
-        } as React.HTMLAttributes<any>;
-      };
-    }
+    this.getOnRow(restProps);
 
     const BaseTable = (
       <Table
