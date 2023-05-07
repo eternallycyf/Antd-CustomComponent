@@ -23,6 +23,7 @@ export interface IToolTipTagProps {
   rowProps?: RowProps;
   isInline?: boolean; // 是否是行内表单
   className?: string;
+  preChildren?: React.ReactNode;
   [propName: string]: any;
 }
 

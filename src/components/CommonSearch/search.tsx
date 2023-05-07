@@ -18,6 +18,7 @@ export interface ISearchProps extends IToolTipTagProps {
   rowProps?: RowProps;
   isInline?: boolean;
   className?: string;
+  preChildren?: React.ReactNode;
 }
 
 const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
@@ -26,6 +27,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
     showSearchBtn = true,
     showResetBtn = true,
     columnNumber,
+    preChildren,
     children,
     handleResetCallback,
     rowProps = {},
@@ -234,6 +236,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
       className={`${cx('searchWrap', styles.searchWrap, { [styles.inLineForm]: isInline })} ${props?.className}`}
       style={{ border: (isOneLine as any) && undefined }}
     >
+      {preChildren}
       <Form onFieldsChange={onFieldsChange} layout="inline" form={form} onFinish={handleSubmit} className={styles.form}>
         {!isInline && (
           <Row align="middle" gutter={{ md: 4, lg: 12, xl: 24 }} style={{ flex: 1, width: '100%' }} {...rowProps}>
