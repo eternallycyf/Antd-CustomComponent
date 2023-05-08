@@ -22,7 +22,7 @@ export interface IToolTipTagProps {
   handleDeleteTagCallback?: (name: string, itemValue: any) => void; // 删除tag的回调函数
   rowProps?: RowProps;
   isInline?: boolean; // 是否是行内表单
-  className?: string;
+  wrapperClassName?: string;
   preChildren?: React.ReactNode;
   [propName: string]: any;
 }
