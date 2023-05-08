@@ -168,7 +168,7 @@ class Activity extends BaseComponent<IProps, IState> {
       // 虚拟列表配置
       isVirtual: false,
       scroll: { y: 800 },
-      fixRowkeys: [1, 2, 3],
+      fixRowKeys: [1, 2, 3],
       rowEventHandlers: {
         onClick: (record, index, event) => {},
       },

@@ -363,12 +363,12 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     const { draggable, data, rowKey } = this.props;
     const { dataSource } = this.state;
     const defaultOnRow = restProps.onRow ? restProps.onRow : null;
-    const fixRowkeys = restProps?.fixRowkeys || [];
+    const fixRowKeys = restProps?.fixRowKeys || [];
     const _data = (data?.length > 0 ? data : dataSource) || [];
     restProps.onRow = (record: any, index: number) => {
       const defaultRowProps = defaultOnRow ? defaultOnRow(record, index) : {};
       const dataHasFixedKeys =
-        fixRowkeys.filter((key: any) => _data.some((ele: any) => ele[rowKey as any] == key)) || [];
+        fixRowKeys.filter((key: any) => _data.some((ele: any) => ele[rowKey as any] == key)) || [];
       const currentRowKey = record?.[rowKey as any];
       const fixedStyle = {};
 
