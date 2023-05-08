@@ -360,10 +360,22 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
   };
 
   getOnRow = (restProps: any) => {
-    const { draggable, data, rowKey } = this.props;
+    const { draggable, data, rowKey, isVirtual = false } = this.props;
     const { dataSource } = this.state;
     const defaultOnRow = restProps.onRow ? restProps.onRow : null;
     const fixRowKeys = restProps?.fixRowKeys || [];
+    if (!fixRowKeys || isVirtual) {
+      if (draggable) {
+        return (restProps.onRow = (record: any, index: number) => {
+          const defaultRowProps = defaultOnRow ? defaultOnRow(record, index) : {};
+          return {
+            index,
+            moveRow: this.moveRow,
+            ...defaultRowProps,
+          } as React.HTMLAttributes<any>;
+        });
+      }
+    }
     const _data = (data?.length > 0 ? data : dataSource) || [];
     restProps.onRow = (record: any, index: number) => {
       const defaultRowProps = defaultOnRow ? defaultOnRow(record, index) : {};

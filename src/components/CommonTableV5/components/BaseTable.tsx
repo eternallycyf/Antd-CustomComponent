@@ -126,7 +126,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
   // 请求数据
   loadData = async (isReset: boolean = false) => {
     const { loading, sorter, filters, current, pageSize, requestCount = 0 } = this.state;
-    const { extraParams } = this.props;
+    const { extraParams, fixRowKeys = [], isVirtual = false } = this.props;
     const { urls, recordKey, fetchMethod, searchParams, dataHandler, rowKey, isSummary, dataPath, totalPath }: any =
       this.props;
 
@@ -158,9 +158,21 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
       }));
       dataSource = dataHandler ? dataHandler(dataSource, data) : dataSource;
 
+      const getFixedData = (dataSource: any[]) => {
+        let newDataSource: any[] = [];
+        let fixRowData =
+          fixRowKeys?.map((item) => dataSource.find((ele: any) => ele.rowKey == item)).filter(Boolean) || [];
+        if (!fixRowData.length) return dataSource;
+        newDataSource = dataSource.filter((item: any) => !fixRowKeys?.includes(item.rowKey));
+        newDataSource = [...fixRowData, ...newDataSource];
+        return newDataSource;
+      };
+
+      const newData = isVirtual || !fixRowKeys?.length ? dataSource : getFixedData(dataSource);
+
       this.setState({
         loading: false,
-        dataSource,
+        dataSource: newData,
         current: currentPage,
         total,
         requestCount: requestCount + 1,
