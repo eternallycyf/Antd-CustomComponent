@@ -524,6 +524,7 @@ const VirtualScrollTable = (props: any) => {
         justifyContent: column.align === 'right' ? 'flex-end' : column.align === 'center' ? 'center' : 'flex-start',
         opacity: rowSpan == 0 ? 0 : 1,
         background: showHover || showActive ? '#dfe8f8' : '',
+        align: column.align || 'center',
       };
 
       const isLastColumn =

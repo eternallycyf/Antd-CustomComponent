@@ -125,11 +125,22 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
 
   // 请求数据
   loadData = async (isReset: boolean = false) => {
-    const { loading, sorter, filters, current, pageSize, requestCount = 0 } = this.state;
+    const { loading, sorter, filters, current, pageSize: currentPageSize, requestCount = 0 } = this.state;
     const { extraParams, fixRowKeys = [], isVirtual = false } = this.props;
-    const { urls, recordKey, fetchMethod, searchParams, dataHandler, rowKey, isSummary, dataPath, totalPath }: any =
-      this.props;
+    const {
+      urls,
+      recordKey,
+      fetchMethod,
+      searchParams,
+      dataHandler,
+      rowKey,
+      isSummary,
+      dataPath,
+      totalPath,
+      pagination,
+    }: any = this.props;
 
+    const pageSize = pagination === false ? 10000 : currentPageSize || 30;
     if (!(urls && urls.listUrl)) return;
     if (loading) return;
 
