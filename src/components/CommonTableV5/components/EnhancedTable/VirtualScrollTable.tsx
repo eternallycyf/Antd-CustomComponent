@@ -89,6 +89,7 @@ const VirtualScrollTable = (props: any) => {
     selectedRowKeys = [],
     selectedRows = [],
     rowClassName,
+    onSearchOrReset,
   } = props;
   const tableRef = useRef(null);
   const dataSource1 = useDeferredValue(dataSourceN);
@@ -316,7 +317,9 @@ const VirtualScrollTable = (props: any) => {
     useEffect(() => {
       setTop(0);
       setLeft(0);
-      if (scrollRef?.current) {
+      if (onSearchOrReset) {
+        onSearchOrReset(scrollRef, left, top);
+      } else {
         scrollRef.current.scrollLeft = 0;
         scrollRef.current.scrollTop = 0;
       }

@@ -99,10 +99,14 @@ export interface ICommonTable<T> extends TableProps<T> {
   defaultPageSize?: number;
   /**@description 处理data 第一个参数多了index和rowKey */
   dataHandler?: (data: { index: number; rowKey: string; [props: string]: any }[], dataSource: any[]) => any;
+
   /**@description 是否使用虚拟列表*/
   isVirtual?: boolean;
   /**@description 虚拟列表固定行 */
   fixRowKeys?: (number | string)[];
+  /**@description 用于处理虚拟列表 点击排序 保留滚动位置 */
+  handleScroll?: () => void;
+
   /**@description 虚拟列表-点击事件 */
   rowEventHandlers?: {
     onClick: (rowKey: string | number, rowData: any, rowIndex: number) => void;
@@ -153,6 +157,7 @@ export interface ICommonTable<T> extends TableProps<T> {
   formatColumn?: (column: any[]) => any[];
   children?: React.ReactNode;
   columns: IColumnsType<T>;
+
   [propName: string]: any;
 }
 

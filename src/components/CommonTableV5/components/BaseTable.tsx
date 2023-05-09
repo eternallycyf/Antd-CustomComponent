@@ -181,6 +181,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
       console.log(e);
       this.setState({ loading: false });
     }
+    this.props.handleScroll && this.props.handleScroll();
   };
 
   handleBasicColumns = (props: any) => {

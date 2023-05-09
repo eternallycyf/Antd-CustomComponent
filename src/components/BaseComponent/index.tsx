@@ -24,7 +24,8 @@ export interface IBaseTableRefFun {
   renderSummary: any;
   handleSetDefaultChecked: any;
   renderOperateTitle: any;
-  getOnRow: (restProps: any[]) => void;
+  getOnRow: (restProps: any[]) => any;
+  handleScroll: () => void;
 }
 
 type IBaseTableInstance = InstanceType<typeof BaseTable> & IBaseTableRefFun;
@@ -33,6 +34,7 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
   public tableRef = React.createRef<IBaseTableInstance>();
   public searchRef = React.createRef<React.ElementRef<typeof CommonSearch>>();
   public formRef = React.createRef<React.ElementRef<typeof CustomForm>>();
+  public scrollRef = React.createRef<HTMLDivElement>();
 
   componentDidMount() {
     this.handleRefreshPage();
@@ -56,6 +58,12 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
     );
   };
 
+  handleScroll = () => {
+    if (this.scrollRef.current) {
+      this.scrollRef.current.dispatchEvent(new CustomEvent('scroll'));
+    }
+  };
+
   handleSearch = (values: any) => {
     const { handleFirstPage } = this.tableRef.current || {};
     this.setState({ searchParams: values }, async () => {
@@ -65,6 +73,10 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
       });
       this.handleSelect([], []);
     });
+    if (this.scrollRef.current) {
+      this.scrollRef.current.scrollLeft = 0;
+      this.scrollRef.current.scrollTop = 0;
+    }
   };
 
   handleDynamicParam = (values: any) => {
