@@ -3,6 +3,7 @@ import { Button, Form, Input, Select, Checkbox, Row, Col, Modal, ModalProps, For
 import { useMap } from 'react-use';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import styles from './index.less';
+import _ from 'lodash';
 
 interface ICheckboxList {
   label: string;
@@ -39,14 +40,13 @@ const RenderCheckbox = (props: IRenderCheckBox) => {
   return (
     <Form.Item label={label}>
       <Checkbox.Group
-        options={options}
         onChange={handleCheckBoxOnChange}
         value={(value || [])?.map((item) => item.value)}
-        style={{ width: '100%' }}
+        style={{ width: '100%', display: 'inline-block' }}
       >
         <Row>
           {options.map((item) => (
-            <Col span={8} key={item.value}>
+            <Col span={6}>
               <Checkbox value={item.value}>{item.label ?? '--'}</Checkbox>
             </Col>
           ))}
@@ -119,8 +119,8 @@ const CheckModal: React.FC<ICheckboxListProps> = (props) => {
 
     return (
       <>
-        {newList &&
-          Object.entries(newList).map(([label, value]) => {
+        {_.omit(newList, 'value') &&
+          Object.entries(_.omit(newList, 'value')).map(([label, value]) => {
             return (
               <Form.Item label={label} key={label}>
                 <Row gutter={[4, 4]}>
@@ -145,7 +145,7 @@ const CheckModal: React.FC<ICheckboxListProps> = (props) => {
   };
 
   return (
-    <Form.Item className={styles['checkModal']}>
+    <Form.Item className={styles['checkModal']} style={{ marginBottom: 0 }}>
       <Button onClick={handleSelect} className={styles['parmary-btn']} size="small" type="default">
         选择
       </Button>
@@ -163,10 +163,10 @@ const CheckModal: React.FC<ICheckboxListProps> = (props) => {
         maskClosable
         getContainer={false}
         className={styles['modal']}
+        width={630}
         {...modalProps}
       >
-        <Divider style={{ margin: 12 }} />
-        {Object.entries(list).map(([label, value]) =>
+        {Object.entries(_.omit(list, 'value')).map(([label, value]) =>
           RenderCheckbox({ label, value, options: options[label], onChange: handleCheckBoxOnChange }),
         )}
       </Modal>

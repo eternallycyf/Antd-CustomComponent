@@ -11,6 +11,8 @@
   }
 
   .parmary-tag {
+    display: flex;
+    align-items: center;
     height: 24px;
     border: none;
     border-radius: 1px;
@@ -27,7 +29,7 @@
   }
 
   .expandContent {
-    padding: 18px 12px;
+    padding: 6px 12px;
     background: #FAFAFB;
 
     :global {
@@ -46,12 +48,7 @@
 
   .modal {
     :global {
-      .ant-checkbox-group {
-        display: flex;
-        align-items: flex-start;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-      }
+      .ant-checkbox-group {}
 
       .ant-checkbox-wrapper+.ant-checkbox-wrapper {
         margin-inline-start: 0 !important;
@@ -67,6 +64,11 @@
 
     .ant-form-item {
       margin-bottom: 0;
+    }
+
+    .ant-checkbox-checked .ant-checkbox-inner {
+      border-color: transparent;
+      background-color: #3363D7;
     }
   }
 }

@@ -20,6 +20,7 @@ const App: React.FC = () => {
             账号: [{ label: 'x', value: 'x' }],
             姓名: [{ label: '张三', value: '3' }],
           }}
+          style={{ marginBottom: 0 }}
         >
           <CheckModal
             form={form}
