@@ -1,7 +1,7 @@
 ```tsx
 import React from 'react';
 import { Button, Form } from 'antd';
-import CheckModal from './CheckModal';
+import { CheckModal } from './CheckModal';
 
 const App: React.FC = () => {
   const [form] = Form.useForm();
@@ -17,6 +17,10 @@ const App: React.FC = () => {
           label="账户权限"
           rules={[{ validator: (cruVal: any, allVal: any) => Promise.resolve() }]}
           initialValue={{
+            value: {
+              账号: [{ label: 'x', value: 'x' }],
+              姓名: [{ label: '张三', value: '3' }],
+            },
             账号: [{ label: 'x', value: 'x' }],
             姓名: [{ label: '张三', value: '3' }],
           }}
@@ -36,13 +40,13 @@ const App: React.FC = () => {
                 { label: '张三', value: '3' },
                 { label: '李四', value: '4' },
                 { label: '王五', value: '5' },
-                { label: 'x', value: 'x' },
-                { label: 'xx', value: 'xx' },
-                { label: 'xxx', value: 'xxx' },
-                { label: 'xxxx', value: '7' },
-                { label: 'xxxxx', value: '8' },
-                { label: 'xxxxxx', value: '9' },
-                { label: 'xxxxxx', value: '10' },
+                { label: 'x', value: '6' },
+                { label: 'xx', value: '7' },
+                { label: 'xxx', value: '8' },
+                { label: 'xxxx', value: '9' },
+                { label: 'xxxxx', value: '10' },
+                { label: 'xxxxxx', value: '11' },
+                { label: 'xxxxxx', value: '12' },
               ],
             }}
           />

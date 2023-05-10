@@ -38,15 +38,15 @@ const RenderCheckbox = (props: IRenderCheckBox) => {
   };
 
   return (
-    <Form.Item label={label}>
+    <Form.Item label={label} key={label} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
       <Checkbox.Group
         onChange={handleCheckBoxOnChange}
-        value={(value || [])?.map((item) => item.value)}
+        value={Object.keys(value)?.length != 0 ? (value || [])?.map((item) => item.value) : []}
         style={{ width: '100%', display: 'inline-block' }}
       >
         <Row>
           {options.map((item) => (
-            <Col span={6}>
+            <Col span={6} key={item.value}>
               <Checkbox value={item.value}>{item.label ?? '--'}</Checkbox>
             </Col>
           ))}
@@ -71,7 +71,7 @@ const CheckModal: React.FC<ICheckboxListProps> = (props) => {
     const newList = { ...list };
     newList[label] = arr || [];
     setAll(newList);
-    triggerChange({ [label]: arr, value: newList });
+    triggerChange({ [label]: arr, value: _.omit(newList, 'value') });
   };
 
   const handleOnOkModal = () => {
@@ -97,9 +97,11 @@ const CheckModal: React.FC<ICheckboxListProps> = (props) => {
     const newList = { ...list };
     const arr = (list[label] || []).filter((item: ICheckboxList) => item.label !== itemLabel);
     newList[label] = arr || [];
+    newList.value = _.omit(newList, 'value');
     setAll(newList);
     setCacheList(newList);
-    triggerChange({ [label]: arr, value: newList });
+    triggerChange({ [label]: arr, value: _.omit(newList, 'value') });
+    console.log(label, newList, arr, list);
   };
 
   const renderContent = () => {
@@ -122,16 +124,11 @@ const CheckModal: React.FC<ICheckboxListProps> = (props) => {
         {_.omit(newList, 'value') &&
           Object.entries(_.omit(newList, 'value')).map(([label, value]) => {
             return (
-              <Form.Item label={label} key={label}>
+              <Form.Item label={label} key={Math.random()} className={styles['expandContent']}>
                 <Row gutter={[4, 4]}>
-                  {value?.map((item) => (
+                  {(value || [])?.map((item) => (
                     <Col key={item.value}>
-                      <Tag
-                        className={styles['parmary-tag']}
-                        closable
-                        onClose={() => handelOnClose(label, item.label)}
-                        key={item.value}
-                      >
+                      <Tag className={styles['parmary-tag']} closable onClose={() => handelOnClose(label, item.label)}>
                         {item.label}
                       </Tag>
                     </Col>
@@ -149,7 +146,7 @@ const CheckModal: React.FC<ICheckboxListProps> = (props) => {
       <Button onClick={handleSelect} className={styles['parmary-btn']} size="small" type="default">
         选择
       </Button>
-      <div className={styles['expandContent']}>{renderContent()}</div>
+      {renderContent()}
       <Modal
         confirmLoading={false}
         title="标签权限"
@@ -166,9 +163,14 @@ const CheckModal: React.FC<ICheckboxListProps> = (props) => {
         width={630}
         {...modalProps}
       >
-        {Object.entries(_.omit(list, 'value')).map(([label, value]) =>
-          RenderCheckbox({ label, value, options: options[label], onChange: handleCheckBoxOnChange }),
-        )}
+        {Object.entries(_.omit(options, 'value')).map(([label, val]) => {
+          return RenderCheckbox({
+            label,
+            value: list?.[label] || {},
+            options: options[label],
+            onChange: handleCheckBoxOnChange,
+          });
+        })}
       </Modal>
     </Form.Item>
   );
