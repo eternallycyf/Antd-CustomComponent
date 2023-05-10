@@ -70,8 +70,9 @@ const CheckModal: React.FC<ICheckboxListProps> = (props) => {
   const handleCheckBoxOnChange: IRenderCheckBox['onChange'] = (label, arr, options) => {
     const newList = { ...list };
     newList[label] = arr || [];
+    newList.value = _.omit(newList, 'value');
     setAll(newList);
-    triggerChange({ [label]: arr, value: _.omit(newList, 'value') });
+    triggerChange({ ...newList, value: _.omit(newList, 'value') });
   };
 
   const handleOnOkModal = () => {
@@ -100,8 +101,7 @@ const CheckModal: React.FC<ICheckboxListProps> = (props) => {
     newList.value = _.omit(newList, 'value');
     setAll(newList);
     setCacheList(newList);
-    triggerChange({ [label]: arr, value: _.omit(newList, 'value') });
-    console.log(label, newList, arr, list);
+    triggerChange({ ...newList, value: _.omit(newList, 'value') });
   };
 
   const renderContent = () => {
