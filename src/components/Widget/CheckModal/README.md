@@ -1,12 +1,78 @@
 ```tsx
 import React from 'react';
 import { Button, Form } from 'antd';
-import { CheckModal } from './CheckModal';
+import { CheckModal } from '@/components/Widget';
 
 const App: React.FC = () => {
   const [form] = Form.useForm();
+  const CheckModalRef = React.useRef<React.ElementRef<typeof CheckModal>>(null!);
+
   const onFinish = (values: any) => {
-    console.log('Received values from form: ', values);
+    const { modal } = values;
+
+    const newModal = CheckModalRef.current.mapKeysDeep(modal, (value, key) => {
+      if (key === '账号') return 'account';
+      if (key === '姓名') return 'name';
+      if (key === 'label') return 'text';
+      if (key === 'value' && typeof value === 'string') return 'key';
+
+      return key;
+    });
+
+    const initData = {
+      value: {
+        account: {
+          '0': {
+            text: 'x',
+            key: 'x',
+          },
+          '1': {
+            text: 'xx',
+            key: 'xx',
+          },
+        },
+        name: {
+          '0': {
+            text: '张三',
+            key: '3',
+          },
+          '1': {
+            text: 'xxx',
+            key: '8',
+          },
+        },
+      },
+      account: {
+        '0': {
+          text: 'x',
+          key: 'x',
+        },
+        '1': {
+          text: 'xx',
+          key: 'xx',
+        },
+      },
+      name: {
+        '0': {
+          text: '张三',
+          key: '3',
+        },
+        '1': {
+          text: 'xxx',
+          key: '8',
+        },
+      },
+    };
+
+    const initModal = CheckModalRef.current.mapKeysDeep(initData, (value, key) => {
+      if (key === 'account') return '账号';
+      if (key === 'name') return '姓名';
+      if (key === 'text') return 'label';
+      if (key === 'key') return 'value';
+      return key;
+    });
+
+    console.log(newModal, initModal);
   };
 
   return (
@@ -27,6 +93,7 @@ const App: React.FC = () => {
           style={{ marginBottom: 0 }}
         >
           <CheckModal
+            CheckModalRef={CheckModalRef}
             form={form}
             name="modal"
             onOk={(val) => console.log(val)}

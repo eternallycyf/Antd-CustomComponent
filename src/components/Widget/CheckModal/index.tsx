@@ -1,9 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, Select, Checkbox, Row, Col, Modal, ModalProps, FormInstance, Tag, Divider } from 'antd';
-import { useMap } from 'react-use';
+import { Button, Checkbox, Col, Form, FormInstance, Modal, ModalProps, Row, Tag } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-import styles from './index.less';
 import _ from 'lodash';
+import React, { useImperativeHandle, useState } from 'react';
+import { useMap } from 'react-use';
+import styles from './index.less';
+
+/**
+ * @example
+ * @from sortBy({a:['姓名', [{label:'zs',value:'zs'}]], b:['账号', [{label:'zs',value:'zs'}]] }, ['账号', '姓名'])
+ * @to {a:['账号', [{label:'zs',value:'zs'}]], b:['姓名', [{label:'zs',value:'zs'}]] }
+ */
+function sortBy<T extends any[]>(data: T, idOrder: Array<string | number>): T {
+  const orderMap = Object.fromEntries(idOrder.map((id, i) => [id, i])) as any as T;
+  return data.sort((a, b) => orderMap[a[0]] - orderMap[b[0]]);
+}
+
+// customKeys={(value, key) => {
+//   if (key === '账号') return 'account';
+//   if (key === '姓名') return 'name';
+//   return key;
+// }}
+const mapKeysDeep = (obj: Record<string, any>, cb: (value: any, key: string) => string): Record<string, any> =>
+  _.mapValues(_.mapKeys(obj, cb), (val) => (_.isObject(val) ? mapKeysDeep(val, cb) : val));
 
 interface ICheckboxList {
   label: string;
@@ -12,6 +30,7 @@ interface ICheckboxList {
 }
 
 interface ICheckboxListProps {
+  CheckModalRef?: React.Ref<IHandle>;
   form: FormInstance;
   name: string;
   options: Record<string, ICheckboxList[]>;
@@ -28,6 +47,11 @@ interface IRenderCheckBox {
   options: ICheckboxList[];
   onChange: (label: string, list: ICheckboxList[], options: IRenderCheckBox['options']) => void;
 }
+
+type IHandle = {
+  sortBy: typeof sortBy;
+  mapKeysDeep: typeof mapKeysDeep;
+};
 
 const RenderCheckbox = (props: IRenderCheckBox) => {
   const { label, value, options, onChange } = props;
@@ -56,13 +80,18 @@ const RenderCheckbox = (props: IRenderCheckBox) => {
   );
 };
 
-const CheckModal: React.FC<ICheckboxListProps> = (props) => {
-  const { form, name, value = {}, onChange, options, onOk, onCancel, modalProps } = props;
+const CheckModal: React.ForwardRefRenderFunction<IHandle, ICheckboxListProps> = (props) => {
+  const { form, name, value = {}, onChange, options, onOk, onCancel, modalProps, CheckModalRef } = props;
   const [list, { set: setList, setAll, remove, reset }] = useMap(value);
   const [visible, setVisible] = useState<boolean>(false);
   const [cacheList, setCacheList] = useState<Record<string, ICheckboxList[]>>(value);
 
-  const triggerChange = (changedValue: ICheckboxListProps['value']) => {
+  useImperativeHandle(CheckModalRef, () => ({
+    sortBy,
+    mapKeysDeep,
+  }));
+
+  const triggerChange = (changedValue: any) => {
     form.setFieldsValue({ [name]: changedValue?.value });
     onChange?.(changedValue);
   };
@@ -122,7 +151,7 @@ const CheckModal: React.FC<ICheckboxListProps> = (props) => {
     return (
       <>
         {_.omit(newList, 'value') &&
-          Object.entries(_.omit(newList, 'value')).map(([label, value]) => {
+          sortBy(Object.entries(_.omit(newList, 'value')), Object.keys(options)).map(([label, value]) => {
             return (
               <Form.Item label={label} key={Math.random()} className={styles['expandContent']}>
                 <Row gutter={[4, 4]}>
@@ -176,4 +205,4 @@ const CheckModal: React.FC<ICheckboxListProps> = (props) => {
   );
 };
 
-export default CheckModal;
+export default React.forwardRef(CheckModal);
