@@ -218,7 +218,7 @@ export interface FormControl {
   /**@description  表单布局配置*/
   col?: IBaseCol;
   layout?: IBaseLayout;
-  children?: FormControl[];
+  children?: ISearchesType;
 
   /**@description 远程请求配置 */
   fetchConfig?: IFetchConfig;
@@ -253,6 +253,7 @@ export interface FormControl {
       action: 'disabled' | 'show' | 'hide';
     },
   ];
+  acpCode?: string;
 
   /**description 多余的按钮 */
   otherType?: 'button';
