@@ -6,6 +6,7 @@ import { Button, Col, Row, Form, RowProps } from 'antd';
 import { getFieldComp } from '@/core/helpers';
 import { IToolTipTagProps } from './index';
 import styles from './index.less';
+import { ISearchesType } from '@/typings';
 const dateFormat = 'YYYYMMDD';
 const monthFormat = 'YYYYMM';
 const yearFormat = 'YYYY';
@@ -21,9 +22,26 @@ export interface ISearchProps extends IToolTipTagProps {
   preChildren?: React.ReactNode;
 }
 
+const formatByAcpCode = (defaultFormList: ISearchesType): ISearchesType => {
+  const accessCollection = JSON.parse(sessionStorage.getItem('accessCollection') || '[]');
+  const formList = defaultFormList
+    .filter(({ acpCode }) => (acpCode ? accessCollection.includes(acpCode) : true))
+    ?.map((item) => {
+      if (item?.children) {
+        return {
+          ...item,
+          children: item.children && formatByAcpCode(item.children || []),
+        };
+      } else {
+        return item;
+      }
+    });
+  return formList;
+};
+
 const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
   const {
-    formList,
+    formList: defaultFormLIst,
     showSearchBtn = true,
     showResetBtn = true,
     columnNumber,
@@ -38,6 +56,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
     expandForm: props.expandForm,
     searchParams: {},
   });
+  const formList = formatByAcpCode(defaultFormLIst);
 
   useEffect(() => {
     const { form, record } = props;
@@ -242,7 +261,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
           <Row align="middle" gutter={{ md: 4, lg: 12, xl: 24 }} style={{ flex: 1, width: '100%' }} {...rowProps}>
             {formList.map((field, index) => (
               <Col
-                key={field.name}
+                key={field.name as string}
                 span={isOneLine ? field.col || span : span}
                 style={{ display: index < (showCount as any) ? 'block' : 'none' }}
               >
@@ -262,7 +281,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
         {isInline && (
           <Row gutter={8} justify="end" align="middle" {...rowProps}>
             {formList.map((field, index) => (
-              <Col key={field.name}>
+              <Col key={field.name as string}>
                 <Form.Item
                   labelAlign="right"
                   // labelCol={{ style: { maxWidth: '250px', minWidth: '70px' } }}
