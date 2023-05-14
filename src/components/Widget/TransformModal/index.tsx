@@ -41,6 +41,7 @@ type IModalOnChange = (value: IModalOnChangeValues) => void;
 
 export interface ICheckboxListProps {
   title?: [string, string];
+  type?: 'check' | 'view';
   CheckModalRef?: React.Ref<IHandle>;
   children?: React.ReactNode | ((value: ICheckboxContext) => React.ReactNode);
   options: ICheckBoxRecord[];
@@ -82,7 +83,9 @@ const CheckModal: ICheckModal = (props) => {
     modalProps,
     CheckModalRef,
     title = ['', ''],
+    type = 'check',
   } = props;
+  const isView = type == 'view';
 
   const CheckboxContext = React.createContext<ICheckboxContext>({});
   const [visible, setVisible] = useState<boolean>(false);
@@ -198,6 +201,7 @@ const CheckModal: ICheckModal = (props) => {
               <Col>
                 <TransformItem
                   title={title?.[0]}
+                  isView={isView}
                   options={options}
                   values={leftValues}
                   onChange={(_value) => handleCheckBoxOnChange(_value, 'left')}
@@ -207,7 +211,7 @@ const CheckModal: ICheckModal = (props) => {
                 <Row gutter={[20, 20]} justify="center" align="middle" style={{ flexDirection: 'column' }}>
                   <Col>
                     <Button
-                      disabled={leftValues.filter((item) => item.isChecked).length == 0}
+                      disabled={isView ? true : leftValues.filter((item) => item.isChecked).length == 0}
                       onClick={() => handleSelectOrRemoveKeys('select')}
                       size="small"
                       icon={<RightOutlined />}
@@ -215,7 +219,7 @@ const CheckModal: ICheckModal = (props) => {
                   </Col>
                   <Col>
                     <Button
-                      disabled={rightValues.filter((item) => item.isChecked).length == 0}
+                      disabled={isView ? true : rightValues.filter((item) => item.isChecked).length == 0}
                       onClick={() => handleSelectOrRemoveKeys('remove')}
                       size="small"
                       icon={<LeftOutlined />}
@@ -226,6 +230,7 @@ const CheckModal: ICheckModal = (props) => {
               <Col>
                 <TransformItem
                   title={title?.[1]}
+                  isView={isView}
                   options={options}
                   values={rightValues}
                   onChange={(_value) => handleCheckBoxOnChange(_value, 'right')}

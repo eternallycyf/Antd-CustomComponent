@@ -14,7 +14,13 @@
 
   .modal {
     :global {
-      .ant-checkbox-group {}
+      .ant-checkbox-group {
+        width: 100%;
+
+        .ant-row {
+          width: 100%;
+        }
+      }
 
       .ant-checkbox-wrapper+.ant-checkbox-wrapper {
         margin-inline-start: 0 !important;
@@ -123,8 +129,16 @@
     max-height: 84%;
   }
 
+  .view {
+    margin-left: 15%;
+    color: #2A303B;
+    font-weight: 400;
+    font-size: 12px;
+  }
+
   :global {
     .ant-collapse-header-text {
+      font-weight: 500;
       font-size: 12px;
       line-height: 21px;
     }

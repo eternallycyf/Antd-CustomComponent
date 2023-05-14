@@ -12,10 +12,11 @@ export interface ICheckModalItem extends Pick<ICheckboxListProps, 'options'> {
   title?: string;
   onChange: (value: ICheckBoxRecord[]) => void;
   values: ICheckBoxRecord[];
+  isView: boolean;
 }
 
 const TransformItem = (props: ICheckModalItem) => {
-  const { title = '', options, values, onChange } = props;
+  const { title = '', options, values, onChange, isView = false } = props;
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [activeKey, setActiveKey] = React.useState<string[]>();
 
@@ -70,13 +71,15 @@ const TransformItem = (props: ICheckModalItem) => {
       <div className={styles.TransformItem}>
         <div className={styles.checkAll}>
           <div className={styles.checkAllLeft}>
-            <Checkbox
-              indeterminate={indeterminate}
-              onChange={handelCheckAll}
-              checked={
-                values?.filter((item) => item.isChecked || false).length === values?.length && values?.length != 0
-              }
-            />
+            {!isView && (
+              <Checkbox
+                indeterminate={indeterminate}
+                onChange={handelCheckAll}
+                checked={
+                  values?.filter((item) => item.isChecked || false).length === values?.length && values?.length != 0
+                }
+              />
+            )}
             <span className={styles.title}>{title}</span>
           </div>
           <div className={styles.checkAllRight}>
@@ -112,7 +115,11 @@ const TransformItem = (props: ICheckModalItem) => {
                     <Row>
                       {list.map((item) => (
                         <Col span={24} key={item.value as React.Key}>
-                          <Checkbox value={item.value}>{item.label ?? '--'}</Checkbox>
+                          {isView ? (
+                            <span className={styles.view}>{item.label ?? '--'}</span>
+                          ) : (
+                            <Checkbox value={item.value}>{item.label ?? '--'}</Checkbox>
+                          )}
                         </Col>
                       ))}
                     </Row>
