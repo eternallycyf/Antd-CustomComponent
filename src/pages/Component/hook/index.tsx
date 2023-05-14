@@ -230,11 +230,12 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) 
                 <Col span={item['span'] || 24} key={item.name}>
                   <Form.Item
                     labelAlign="right"
-                    labelCol={item.layout.labelCol}
                     label={item.label}
                     name={item.name}
                     rules={item?.rules || []}
                     initialValue={item.initialValue}
+                    {...item.layout}
+                    {...item.itemProps}
                   >
                     {renderFormItem(item)}
                   </Form.Item>
