@@ -1,15 +1,15 @@
 import CommonSearch from '@/components/CommonSearch/search';
-import { FormControl } from '@/typings';
+import { FormControl, ISearchesType } from '@/typings';
 import type { FormInstance } from 'antd/es/form';
 import _ from 'lodash';
-import React, { useImperativeHandle, useRef } from 'react';
+import React, { FC, useImperativeHandle, useRef } from 'react';
 import useSyncState from '@/hook/useSyncState';
 import styles from './index.less';
 import RenderTag from './renderTag';
 import { RowProps } from 'antd';
 
 export interface IToolTipTagProps {
-  formList: FormControl[]; // form列表
+  formList: ISearchesType;
   record?: any; // 值会映射到表单
   expandForm?: boolean; // 是否可展开
   columnNumber?: number; // 一行放几个 formItem
@@ -37,7 +37,7 @@ interface ISearchRef {
   formatSubmitValues: (values: any) => void;
 }
 
-const TooltipTag: React.ForwardRefRenderFunction<IHandle, Omit<IToolTipTagProps, 'form'>> = (props, ref) => {
+const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (props, ref) => {
   const {
     showToolTipTag = true,
     formList,
@@ -154,7 +154,7 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, Omit<IToolTipTagProps,
   // 删除tag
   const handleDeleteTag = ({ name, itemValue }: { name: string; itemValue: string }, index: string | number) => {
     if (checkBoxStatus) {
-      return handleDeleteTagCallback(name, itemValue);
+      return handleDeleteTagCallback && handleDeleteTagCallback(name, itemValue);
     }
     const { form } = searchRef.current!;
     const deleteTag: any = tagList().find((item: any) => item.name === name);
@@ -202,4 +202,4 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, Omit<IToolTipTagProps,
   );
 };
 
-export default React.memo(React.forwardRef(TooltipTag));
+export default React.forwardRef(TooltipTag) as React.ForwardRefRenderFunction<IHandle, IToolTipTagProps>;
