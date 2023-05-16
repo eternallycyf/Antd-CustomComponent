@@ -7,3 +7,4 @@ export { default as Select } from './Select';
 export { default as Trend } from './Trend';
 export { default as XScroll } from './XScroll';
 export { default as TransformModal } from './TransformModal';
+export { default as CustomModal } from './CustomModal';
