@@ -110,7 +110,7 @@ export function getFieldComp({
 
   if (form) {
     return (
-      <Form.Item name={name} label={formProps?.label ?? ''} {...formFieldProps}>
+      <Form.Item name={name} {...formFieldProps}>
         <FieldComp {...formProps} />
       </Form.Item>
     );

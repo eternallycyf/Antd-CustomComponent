@@ -6,6 +6,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 interface IPage {
   loading?: boolean;
   style?: React.CSSProperties;
+  className?: string;
   children?: React.ReactNode;
   spinProps?: SpinProps;
   CardProps?: CardProps;
@@ -13,7 +14,7 @@ interface IPage {
 }
 
 const Page: React.FC<IPage> = (props) => {
-  const { loading, children, hasBreadcrumb, style } = props;
+  const { loading, className, children, hasBreadcrumb, style } = props;
 
   const cardProps = {
     id: 'container',
@@ -21,9 +22,6 @@ const Page: React.FC<IPage> = (props) => {
     style: { marginLeft: 12 },
     bodyStyle: {
       margin: '24px 24px 24px 32px',
-      height: '100%',
-      minHeight: 'calc(100vh - 120px)',
-      maxHeight: 'calc(100vh - 120px)',
       overflow: 'auto',
       ...style,
     },
@@ -31,13 +29,17 @@ const Page: React.FC<IPage> = (props) => {
 
   if (hasBreadcrumb) {
     return (
-      <PageContainer>
+      <PageContainer className={className}>
         <Card {...cardProps}>{children}</Card>
       </PageContainer>
     );
   }
 
-  return <Card {...cardProps}>{children}</Card>;
+  return (
+    <Card className={className} {...cardProps}>
+      {children}
+    </Card>
+  );
 };
 
 Page.defaultProps = {
