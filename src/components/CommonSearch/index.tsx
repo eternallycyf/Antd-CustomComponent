@@ -202,4 +202,4 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
   );
 };
 
-export default React.forwardRef(TooltipTag) as React.ForwardRefRenderFunction<IHandle, IToolTipTagProps>;
+export default React.forwardRef(TooltipTag as React.ForwardRefRenderFunction<IHandle, IToolTipTagProps>);
