@@ -1,7 +1,6 @@
 import styles from './index.less';
 import React from 'react';
-import { Card, SpinProps, CardProps } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
+import { SpinProps, CardProps, Spin } from 'antd';
 
 interface IPage {
   loading?: boolean;
@@ -10,41 +9,27 @@ interface IPage {
   children?: React.ReactNode;
   spinProps?: SpinProps;
   CardProps?: CardProps;
-  hasBreadcrumb?: boolean;
+  title?: React.ReactNode;
 }
 
 const Page: React.FC<IPage> = (props) => {
-  const { loading, className, children, hasBreadcrumb, style } = props;
-
-  const cardProps = {
-    id: 'container',
-    loading,
-    style: { marginLeft: 12 },
-    bodyStyle: {
-      margin: '24px 24px 24px 32px',
-      overflow: 'auto',
-      ...style,
-    },
-  };
-
-  if (hasBreadcrumb) {
-    return (
-      <PageContainer className={className}>
-        <Card {...cardProps}>{children}</Card>
-      </PageContainer>
-    );
-  }
+  const { loading, className, children, title, ...restProps } = props;
 
   return (
-    <Card className={className} {...cardProps}>
-      {children}
-    </Card>
+    <div id="container" className={`${styles.container} ${className}`} {...restProps}>
+      {loading ? (
+        <div className={styles.loading}>
+          <Spin tip="加载中..." />
+        </div>
+      ) : (
+        <div className={styles.content}>{children}</div>
+      )}
+    </div>
   );
 };
 
 Page.defaultProps = {
   loading: false,
-  hasBreadcrumb: false,
 };
 
 export default React.memo(Page);
