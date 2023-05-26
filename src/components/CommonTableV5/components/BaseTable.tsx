@@ -125,8 +125,8 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
 
   // 请求数据
   loadData = async (isReset: boolean = false) => {
-    const { loading, sorter, filters, current, pageSize: currentPageSize, requestCount = 0 } = this.state;
-    const { extraParams, fixRowKeys = [], isVirtual = false } = this.props;
+    const { loading, sorter, filters, current, pageSize: currentPageSize, requestCount = 0, extraParams } = this.state;
+    const { fixRowKeys = [], isVirtual = false } = this.props;
     const {
       urls,
       recordKey,

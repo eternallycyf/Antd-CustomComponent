@@ -4,6 +4,8 @@ import { Button, Space } from 'antd';
 import { ConnectState } from '@/typings/connect';
 import { IButtonProps } from '@/typings';
 import { getUUID } from '@/utils/random';
+import styles from './index.less';
+import ButtonGroup from './ButtonGroup';
 
 interface IProps {
   className?: string;
@@ -26,9 +28,20 @@ const AccessBtn: React.FC<IProps> = (props) => {
     const accessCodeList = accessCollection.map((item) => item);
 
     const btnEleList = (btnList || []).map((btn, index) => {
-      const { code, text, size, onClick, ...restProps } = btn;
+      const { code, text, size, onClick, buttonType, groupDict = [], onChange, ...restProps } = btn;
 
       if (code && accessCodeList.indexOf(code) === -1) return null;
+
+      if (buttonType === 'group') {
+        return (
+          <ButtonGroup
+            key={`access-${code || index}${getUUID()}`}
+            data={groupDict}
+            getCurrentValue={onChange}
+            {...restProps}
+          />
+        );
+      }
       return (
         <Button
           key={`access-${code || index}${getUUID()}`}

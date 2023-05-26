@@ -11,6 +11,7 @@ import { TableRowSelection } from 'antd/lib/table/interface';
 import type { IBaseColumnsType } from './core/column';
 import { IBaseSearchesType } from './core/form';
 import { IBaseControlProps } from './core/control';
+import { IButtonGroupDefaultProps } from '@/components/AccessBtn/ButtonGroup';
 type boolFunc = (config: { form: FormInstance; formData: any; record: any }) => boolean;
 
 export type IColumnsType<T = any> = IBaseColumnsType<T>;
@@ -59,13 +60,18 @@ export interface UserInfo<T> {
   [otherField: string]: any;
 }
 
-export interface IButtonProps extends Omit<ButtonProps, 'onClick'> {
+export interface IButtonGroupProps {
+  onChange?: (value: string) => void;
+  groupDict?: IButtonGroupDefaultProps['data'];
+}
+
+export interface IButtonProps extends Omit<ButtonProps, 'onClick' | 'onChange'>, IButtonGroupProps {
   text: string | ReactNode;
   code?: string;
   visible?: boolean | boolFunc | ((field: FormListFieldData, e: Event, index: number) => void);
   /**@description 暂时只有Button支持 */
   element?: ReactNode;
-  buttonType?: 'delete';
+  buttonType?: 'delete' | 'group';
   onClick?: (record: any, index: number) => void | ((field: FormListFieldData, e: Event, index: number) => void);
 }
 
@@ -119,6 +125,8 @@ export interface ICommonTable<T> extends TableProps<T> {
   editable?: boolean;
   /**@description table上的按钮 */
   button?: IButtonProps[];
+  /**@description table左上的按钮 */
+  buttonLeft?: IButtonProps[];
   /**@description 操作栏item */
   itemButton?: IButtonProps[];
   /**@description 用于计算操作栏的宽度 默认不需要修改*/

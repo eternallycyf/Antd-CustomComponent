@@ -12,6 +12,7 @@ const utils = require('./utils');
     slowMo: 100,
     devtools: true,
     args: ['--window-size=1480,960', '--unlimited-storage'],
+    debuggerPort: 9992,
   });
 
   const startTime = new Date().getTime();

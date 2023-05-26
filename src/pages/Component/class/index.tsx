@@ -33,6 +33,7 @@ interface IState {
   expandedKey: string;
   expandedRowKeys: React.Key[];
   radioValue: '0' | '1' | '2';
+  dictType: '' | '1' | '2';
 }
 
 class Activity extends BaseComponent<IProps, IState> {
@@ -48,6 +49,7 @@ class Activity extends BaseComponent<IProps, IState> {
       expandedKey: 'index',
       expandedRowKeys: [],
       radioValue: '0',
+      dictType: '',
     };
   }
 
@@ -89,7 +91,7 @@ class Activity extends BaseComponent<IProps, IState> {
   };
 
   render() {
-    const { searchParams, selectedRowKeys, selectedRows, expandedRowKeys } = this.state;
+    const { searchParams, selectedRowKeys, selectedRows, expandedRowKeys, dictType } = this.state;
     const tableParams: ICommonTable<any> = {
       columns: getColumns(this),
       searchParams: formatParams(searchParams),
@@ -97,6 +99,7 @@ class Activity extends BaseComponent<IProps, IState> {
       fetchMethod: 'get',
       extraParams: {
         my: '121213',
+        dictType,
       },
       alternateColor: true,
       // defaultPageSize: 10,
@@ -106,6 +109,31 @@ class Activity extends BaseComponent<IProps, IState> {
       dataHandler: (dataSource, data) => {
         return dataSource;
       },
+      buttonLeft: [
+        {
+          text: '新增',
+          onClick: this.handleAdd,
+          buttonType: 'group',
+          onChange: (e) => {
+            const extraParams = this.tableRef.current?.state.extraParams;
+            this.handleDynamicParam({ ...extraParams, dictType: e as any });
+          },
+          groupDict: [
+            {
+              name: '全部',
+              value: '',
+            },
+            {
+              name: '满折',
+              value: '1',
+            },
+            {
+              name: '满减',
+              value: '2',
+            },
+          ],
+        },
+      ],
       button: [
         {
           text: '新增',

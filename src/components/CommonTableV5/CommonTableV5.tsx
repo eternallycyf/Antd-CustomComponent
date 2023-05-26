@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
 import { DownOutlined, SettingFilled, SettingOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Popconfirm, Table as AntdTable, Empty, Popover, Checkbox } from 'antd';
+import { Button, Dropdown, Popconfirm, Table as AntdTable, Empty, Popover, Checkbox, Row, Col } from 'antd';
 import Table from './components/EnhancedTable';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -411,7 +411,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       defaultPageSize,
       footer,
       button,
-      buttonOther,
+      buttonLeft,
       draggable,
       resizable,
       calcHeight,
@@ -506,10 +506,14 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
 
     const table = (
       <Fragment>
-        <div className={buttonOther ? styles.tableButton : ''}>
-          <TableBtn button={button as IButtonProps[]} />
-          <TableBtn button={buttonOther} />
-        </div>
+        <Row justify="space-between" align="middle">
+          <Col>
+            <TableBtn button={buttonLeft as IButtonProps[]} />
+          </Col>
+          <Col>
+            <TableBtn button={button as IButtonProps[]} />
+          </Col>
+        </Row>
         <div className={styles.tableWrap}>
           {this.props.children}
           {BaseTable}
