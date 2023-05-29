@@ -7,7 +7,7 @@ const _getHeight = ({ height, searchType, setHeight }: _IGetHeight) => {
   const ele = document.querySelector(`.${styles.page} .ant-table-header+.ant-table-body`);
   if ((!height || searchType) && ele) {
     const top = ele?.getBoundingClientRect()?.top;
-    setHeight(document.documentElement.clientHeight - 80);
+    // setHeight(document.documentElement.clientHeight - 80);
   }
 };
 
@@ -48,7 +48,7 @@ const PageHeader = React.forwardRef<IHandle, IBasePageHeaderProps>((props, ref) 
   const { children, className, PageHeaderRef } = props;
 
   useEffect(() => {
-    getHeight(false);
+    // getHeight(false);
   }, []);
 
   useImperativeHandle(PageHeaderRef, () => ({
@@ -56,7 +56,11 @@ const PageHeader = React.forwardRef<IHandle, IBasePageHeaderProps>((props, ref) 
   }));
 
   return (
-    <Page className={`${styles.page} ${className}`} style={{ height: `${height}px` }}>
+    <Page
+      className={`${styles.page} ${className}`}
+      style={{ paddingBottom: 0 }}
+      // style={{ height: `${height}px` }}
+    >
       {children}
     </Page>
   );

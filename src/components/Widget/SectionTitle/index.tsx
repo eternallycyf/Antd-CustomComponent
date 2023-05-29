@@ -3,7 +3,7 @@ import { Row, Col } from 'antd';
 import React, { FC } from 'react';
 
 interface ISectionTitle {
-  title: string;
+  title: React.ReactNode;
   extraContent?: React.ReactNode;
   rowStyle?: React.CSSProperties;
 }
