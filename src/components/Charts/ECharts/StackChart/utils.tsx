@@ -34,8 +34,9 @@ export const BASE_CONFIG = {
   // x轴时间格式化
   XAXIS_FORMATE_TIME: 'YYYY-MM月',
   // tooltip 时间格式化
-  TOOLTIP_TIME_FORMAT: 'YYYY-MM月',
+  TOOLTIP_TIME_FORMAT: 'YYYY年MM月',
   HAS_TOP_LABEL: false,
+  DYNAMICS_BAR_TOTAL: true,
 
   // 是否展示区域缩放滑块
   HAS_DATA_ZOOM: false,
@@ -53,6 +54,7 @@ export const BASE_CONFIG = {
   DATA_ZOOM_START_AND_END_OBJ: false,
   DATA_ZOOM_START: '',
   DATA_ZOOM_END: '',
+  DATAZOOM_SLIDER_CONFIG: {},
 
   TOOLTIP_WIDTH: 320,
   TOOLTIP_HEIGHT: 350,
@@ -81,6 +83,7 @@ export const BASE_CONFIG = {
     formatter: (value: number) => Number(value).toFixed(2) + '%',
   },
   LINE_AYXIS: {},
+  LEGEND_CONFIG: {},
   BAR_SERIES: {
     type: 'bar',
     stack: 'sum',

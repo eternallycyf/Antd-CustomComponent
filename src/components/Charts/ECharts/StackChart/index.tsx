@@ -1,6 +1,5 @@
-import Charts from '@/components/Charts/ECharts/index';
 import { Empty } from 'antd';
-import { Fragment, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { getOptions } from './chart';
 import { IGetOptions } from './interface';
 import { BASE_CONFIG } from './utils';
@@ -58,25 +57,25 @@ const StackChart = (props: IGetOptions) => {
         return { ...item, [topKey]: total ? (+total?.toFixed(2)).toLocaleString() : 0 };
       });
 
-      let newOptions = getOptions({
-        data: newData,
-        baseConfig,
-        chartConfig,
-      });
+      let newOptions = _.cloneDeep(
+        getOptions({
+          data: newData,
+          baseConfig,
+          chartConfig,
+        }),
+      );
 
       const index = newOptions?.series?.findIndex((item: any) => item.isTopFlag);
 
-      console.log(newOptions);
-
-      if (newOptions?.series?.[index]) {
-        // newOptions?.series?.[index]?.label?.formatter = (item) => {
-        //   const newObj = newData.find((ele: any) => ele[TIME] === item?.data?.[TIME]);
-        //   return newObj?.[topKey] || '';
-        // };
+      if (newOptions?.series?.[index]?.series) {
+        // @ts-ignore
+        newOptions.series[index].series.label.formatter = (item) => {
+          const newObj = newData.find((ele: any) => ele[TIME] === item?.data?.[TIME]);
+          return newObj?.[topKey] || '';
+        };
+        setOptions(newOptions);
+        EchartsRef?.current?.getEchartsInstance()?.setOption(newOptions);
       }
-
-      // setOptions(newOptions);
-      // EchartsRef?.current?.getEchartsInstance()?.setOption(newOptions);
     },
     [data],
   );

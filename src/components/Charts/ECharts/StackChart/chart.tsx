@@ -42,6 +42,7 @@ export const getOptions = (config: IGetOptions) => {
       bottom: 0,
       itemGap: 30,
       data: CHART_CONFIG.filter((item) => item.isLegend).map((item) => BASE_CONFIG.GET_LEGEND_FN(item, DATA)),
+      ...BASE_CONFIG.LEGEND_CONFIG,
     },
     grid: {
       top: '10%',
@@ -81,7 +82,7 @@ export const getOptions = (config: IGetOptions) => {
         },
         axisLine: {
           lineStyle: {
-            // color: 'transparent',
+            color: '#B3B8C2',
           },
         },
       },
@@ -114,7 +115,7 @@ export const getOptions = (config: IGetOptions) => {
         },
         axisLine: {
           lineStyle: {
-            // color: 'transparent',
+            color: '#B3B8C2',
           },
         },
       },
@@ -255,6 +256,7 @@ export const getOptions = (config: IGetOptions) => {
                 borderColor: '#8Fb0F7',
               },
             },
+            ...BASE_CONFIG.DATAZOOM_SLIDER_CONFIG,
           },
         ]
       : false,
@@ -303,7 +305,9 @@ export const getOptions = (config: IGetOptions) => {
               height: BASE_CONFIG.TOOLTIP_HEIGHT,
             };
           })
-          .filter((item) => nameList.includes(item.name + (item.legendSuffix ?? '')));
+          .filter((item) =>
+            BASE_CONFIG.DYNAMICS_BAR_TOTAL ? nameList.includes(item.name + (item.legendSuffix ?? '')) : true,
+          );
         return renderTooltip(newArr);
       },
     },
