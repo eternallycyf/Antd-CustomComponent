@@ -216,7 +216,7 @@ export const getOptions = (config: IGetOptions) => {
       confine: true,
       formatter: (params: any) => {
         const arr = params.sort((a: any, b: any) => a.seriesIndex - b.seriesIndex);
-        const time = dayjs(arr[0].data[BASE_CONFIG.TIME]).format(BASE_CONFIG.TOOLTIP_FORMATE_TIME);
+        const time = dayjs(arr[0].data[BASE_CONFIG.TIME]).format(BASE_CONFIG.TOOLTIP_TIME_FORMAT);
         const total = arr[0]?.data[BASE_CONFIG.TOTAL];
         const defaultDataObj = arr[0].data;
         const defaultConfig = {

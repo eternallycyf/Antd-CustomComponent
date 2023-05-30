@@ -33,7 +33,7 @@ export const BASE_CONFIG = {
   // x轴时间格式化
   XAXIS_FORMATE_TIME: 'YYYY-MM月',
   // tooltip 时间格式化
-  TOOLTIP_FORMATE_TIME: 'YYYY-MM月',
+  TOOLTIP_TIME_FORMAT: 'YYYY-MM月',
   TOOLTIP_WIDTH: 320,
   TOOLTIP_HEIGHT: 350,
   // tooltip 数值格式化颜色

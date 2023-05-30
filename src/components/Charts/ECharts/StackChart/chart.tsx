@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { cloneDeep } from 'lodash';
 import { IGetOptions, IChartConfig } from './interface';
 import { defaultFormatColor, renderTooltip, BASE_CONFIG as BASECONFIG, formatNumber } from './utils';
 
@@ -6,7 +7,21 @@ export const getOptions = (config: IGetOptions) => {
   const { data: DATA, baseConfig = {}, chartConfig = {} } = config;
   const BASE_CONFIG = { ...BASECONFIG, ...baseConfig };
   const CHART_CONFIG: IChartConfig[] = [...chartConfig];
-  console.log(BASE_CONFIG.HAS_DATA_ZOOM);
+
+  const dataZoomStartAndEndValueObj = BASE_CONFIG.DATA_ZOOM_START_AND_END_VALUE_OBJ
+    ? {
+        startValue: BASE_CONFIG.DATA_ZOOM_START_VALUE,
+        endValue: BASE_CONFIG.DATA_ZOOM_END_VALUE,
+      }
+    : {};
+
+  const dataZoomStartAndEndObj = BASE_CONFIG.DATA_ZOOM_START_AND_END_OBJ
+    ? {
+        start: BASE_CONFIG.DATA_ZOOM_START,
+        end: BASE_CONFIG.DATA_ZOOM_END,
+      }
+    : {};
+
   return {
     axisPointer: {
       type: 'cross',
@@ -55,7 +70,7 @@ export const getOptions = (config: IGetOptions) => {
             fontSize: 12,
             fontWeight: 400,
           },
-          formatter: (value: number) => Number(value).toFixed(2) + '%',
+          ...BASE_CONFIG.LINE_YAXIS_LABEL,
         },
         splitLine: {
           show: true,
@@ -117,6 +132,7 @@ export const getOptions = (config: IGetOptions) => {
         padding: [30, 5, 0, 0],
         color: '#B3B8C2',
       },
+      nameGap: 0,
       boundaryGap: true,
       alignWithLabel: true,
       axisLine: {
@@ -164,58 +180,25 @@ export const getOptions = (config: IGetOptions) => {
       },
       axisTick: {
         alignWithLabel: true,
+        show: true,
       },
       data: DATA.map((item: any) => {
         return dayjs(item[BASE_CONFIG.TIME]).format(BASE_CONFIG.XAXIS_FORMATE_TIME);
       }),
     },
-    series: CHART_CONFIG.filter((item) => Boolean(item.isLegend || item.isTopFlag)).map((item) => {
-      const name = `${item.name}${item?.legendSuffix ?? ''}`;
-      const customProps = item.type === 'line' ? BASE_CONFIG.LINE_SERIES : BASE_CONFIG.BAR_SERIES;
-      return {
-        ...item,
-        ...customProps,
-        name,
-        yAxisIndex: item.type === 'line' ? '0' : '1',
-        lineStyle: { color: item.shapeColor },
-        itemStyle: { color: item.shapeColor },
-        textStyle: {
-          color: 'transparent',
-          fontSize: 12,
-          fontWeight: 400,
-        },
-        symbol: 'none',
-        label: {
-          show: false,
-          rotate: 0,
-          position: 'top',
-          distance: -10,
-          textStyle: {
-            color: '#5B6371',
-            fontSize: 12,
-            fontWeight: 400,
-          },
-          formatter: (config: any) => formatNumber(config.data[item.dataKey]) + (item?.unitSymbol ?? ''),
-        },
-        data: DATA.map((ele: any) => ({
-          ...ele,
-          value: ele[item.dataKey],
-          total: ele[BASE_CONFIG.TOTAL],
-          time: ele[BASE_CONFIG.TIME],
-        })),
-        ...(item.series || {}),
-      };
-    }),
     dataZoom: BASE_CONFIG.HAS_DATA_ZOOM
       ? [
           {
             type: 'inside',
             zoomOnMouseWheel: 'shift',
-            startValue: BASE_CONFIG.DATA_ZOOM_START_VALUE,
-            endValue: BASE_CONFIG.DATA_ZOOM_END_VALUE,
+            // 和x轴展示的格式一致
+            // startValue: '2020-01月',
+            // endValue: '2020-12月',
+            ...dataZoomStartAndEndValueObj,
+            ...dataZoomStartAndEndObj,
             top: 50,
             textStyle: {
-              color: '#5B6371',
+              color: 'transparent',
               fontSize: 12,
               fontWeight: 400,
               textShadowOffsetY: 45,
@@ -241,7 +224,7 @@ export const getOptions = (config: IGetOptions) => {
             },
             borderColor: '#B2CFFB',
             textStyle: {
-              color: '#5B6371',
+              color: 'transparent',
               fontSize: 12,
               fontWeight: 400,
               textShadowOffsetY: 45,
@@ -285,32 +268,92 @@ export const getOptions = (config: IGetOptions) => {
           opacity: 0.2,
         },
       },
-      backgroundColor: '#transparent',
+      backgroundColor: 'transparent',
       borderColor: 'transparent',
       confine: true,
       formatter: (params: any) => {
         const arr = params.sort((a: any, b: any) => a.seriesIndex - b.seriesIndex);
-        const time = dayjs(arr[0].data[BASE_CONFIG.TIME]).format(BASE_CONFIG.TOOLTIP_FORMATE_TIME);
-        const total = arr[0]?.data[BASE_CONFIG.TOTAL];
+
+        const time = dayjs(arr[0].data[BASE_CONFIG.TIME]).format(BASE_CONFIG.TOOLTIP_TIME_FORMAT);
+        let nameList = (params || []).map((ele: any) => ele.seriesName) || [];
+        let hasTotal = CHART_CONFIG.some((item) => item.name == BASE_CONFIG.TOTAL_NAME);
+        const barList = (params || []).filter((item: any) => item.seriesType === 'bar') || [];
+
+        if (hasTotal && barList.length != 0) {
+          nameList = [...nameList, BASE_CONFIG.TOTAL_NAME];
+        }
+
+        const total = barList.reduce((pre: number, cru: any) => pre + (Number(cru?.value) || 0), 0);
         const defaultDataObj = arr[0].data;
         const defaultConfig = {
           time,
           total,
         };
-        const newArr = CHART_CONFIG.filter((item) => Boolean(!item.isTopFlag)).map((item) => {
-          let value = defaultDataObj[item.dataKey];
-          value = value ?? (item.type === 'line' ? 0.0 : undefined);
-          return {
-            ...item,
-            ...defaultConfig,
-            valueColor: defaultFormatColor({ ...item, value, BASE_CONFIG }),
-            value,
-            width: BASE_CONFIG.TOOLTIP_WIDTH,
-            height: BASE_CONFIG.TOOLTIP_HEIGHT,
-          };
-        });
+
+        const newArr = CHART_CONFIG.filter((item) => Boolean(!item.isTopFlag))
+          .map((item) => {
+            let value = defaultDataObj[item.dataKey];
+            value = value ?? (item.type === 'line' ? 0.0 : undefined);
+            return {
+              ...item,
+              ...defaultConfig,
+              valueColor: defaultFormatColor({ ...item, value, BASE_CONFIG }),
+              value: item.name == BASE_CONFIG.TOTAL_NAME ? total : value,
+              width: BASE_CONFIG.TOOLTIP_WIDTH,
+              height: BASE_CONFIG.TOOLTIP_HEIGHT,
+            };
+          })
+          .filter((item) => nameList.includes(item.name + (item.legendSuffix ?? '')));
         return renderTooltip(newArr);
       },
     },
+    series: CHART_CONFIG.filter((item) => Boolean(item.isLegend || item.isTopFlag)).map((item) => {
+      const name = `${item.name}${item?.legendSuffix ?? ''}`;
+      const customProps = item.type === 'line' ? BASE_CONFIG.LINE_SERIES : BASE_CONFIG.BAR_SERIES;
+      const data = DATA.map((ele: any) => ({
+        ...ele,
+        value: ele[item.dataKey],
+        total: ele[BASE_CONFIG.TOTAL],
+        time: ele[BASE_CONFIG.TIME],
+      }));
+      if (item.type === 'line') {
+        cloneDeep(data)
+          .reverse()
+          .some((item) => {
+            if (!item.value) {
+              data.pop();
+            }
+            return item.value;
+          });
+      }
+      return {
+        ...item,
+        ...customProps,
+        name,
+        yAxisIndex: item.type === 'line' ? '0' : '1',
+        lineStyle: { color: item.shapeColor },
+        itemStyle: { color: item.shapeColor },
+        textStyle: {
+          color: 'transparent',
+          fontSize: 12,
+          fontWeight: 400,
+        },
+        symbol: 'none',
+        label: {
+          show: false,
+          rotate: 0,
+          position: 'top',
+          distance: -10,
+          textStyle: {
+            color: '#5B6371',
+            fontSize: 12,
+            fontWeight: 400,
+          },
+          formatter: (config: any) => formatNumber(config.data[item.dataKey]) + (item?.unitSymbol ?? ''),
+        },
+        data,
+        ...(item.series || {}),
+      };
+    }),
   };
 };
