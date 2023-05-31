@@ -28,10 +28,23 @@
 
   .hr {
     margin: 17px 0;
-    border-bottom: 1px solid#EFF1F4;
+    border-bottom: 1px solid #EFF1F4;
+  }
+
+  .contrastContentCard {
+    display: flex;
+    align-items: start;
+    justify-content: space-around;
+
+    gap: 20px;
   }
 
   .contrastContent {
+    .box {
+      padding-right: 20px;
+      border-right: 1px solid #EFF1F4;
+    }
+
     .title {
       margin: 16px 0;
       color: #2a303b;
@@ -96,8 +109,7 @@
         }
       }
 
-      .text {
-      }
+      .text {}
     }
 
     .right {
@@ -114,4 +126,5 @@
       font-weight: 600;
     }
   }
+
 }

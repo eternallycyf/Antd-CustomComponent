@@ -110,6 +110,14 @@ export const renderTooltip = (
   })[],
 ) => {
   const { total, time, width, height } = data[0];
+  let groupKeysList: any[] = [...new Set(data.map((item) => item?.tootipType))].filter(Boolean) || [];
+  let newData =
+    groupKeysList?.length > 0
+      ? groupKeysList?.map((item) => {
+          return data.filter((ele) => ele?.tootipType === item);
+        })
+      : [data];
+
   return `
   <div class="${styles.tooltipBox}" style=\"--width:${width};--height:${height};marginLeft: 100px\">
         <div class="${styles.timeContent}">
@@ -117,9 +125,13 @@ export const renderTooltip = (
           <span class="${styles.time}">${time}</span>
         </div>
         <div class="${styles.hr}"></div>
-        <div>
+        <div class="${styles.contrastContentCard}">
+        ${newData
+          .map((ele, index, arr) => {
+            return `
           <div class="${styles.contrastContent}">
-            ${data
+            <div class="${index + 1 != arr?.length && styles.box}">
+            ${ele
               .map((item) => {
                 const left = item.shape
                   ? `<div class="${styles[item.shape]}" style=\"--color:${item.shapeColor}\"></div>`
@@ -142,6 +154,12 @@ export const renderTooltip = (
               `;
               })
               .join('')}
-          </div>
+              </div>
+            </div>
+          `;
+          })
+          .join('')}
+        </div>
+  </div>
   `;
 };

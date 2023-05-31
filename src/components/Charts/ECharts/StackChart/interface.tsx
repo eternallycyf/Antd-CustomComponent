@@ -86,4 +86,5 @@ export interface IChartConfig {
    * @default false
    */
   isOnly?: boolean;
+  tootipType?: string | number;
 }

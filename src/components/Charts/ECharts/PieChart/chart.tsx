@@ -32,7 +32,8 @@ export const getOptions = (config: IGetOptions) => {
         type: 'pie',
         itemStyle: {
           borderRadius: 10,
-          borderWidth: 2,
+          borderWidth: 0,
+          borderColor: '#fff',
         },
         textStyle: {
           color: 'transparent',
