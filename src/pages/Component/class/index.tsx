@@ -34,6 +34,7 @@ interface IState {
   expandedRowKeys: React.Key[];
   radioValue: '0' | '1' | '2';
   dictType: '' | '1' | '2';
+  groupValue: '1' | '2';
 }
 
 class Activity extends BaseComponent<IProps, IState> {
@@ -50,6 +51,7 @@ class Activity extends BaseComponent<IProps, IState> {
       expandedRowKeys: [],
       radioValue: '0',
       dictType: '',
+      groupValue: '1',
     };
   }
 
@@ -90,8 +92,13 @@ class Activity extends BaseComponent<IProps, IState> {
     return getFieldComp(fieldProps);
   };
 
+  handleOnReset = () => {
+    const extraParams = this.tableRef.current?.state.extraParams;
+    this.setState({ groupValue: '1' }, () => this.handleDynamicParam({ ...extraParams, groupValue: '1' }));
+  };
+
   render() {
-    const { searchParams, selectedRowKeys, selectedRows, expandedRowKeys, dictType } = this.state;
+    const { searchParams, selectedRowKeys, selectedRows, expandedRowKeys, dictType, groupValue } = this.state;
     const tableParams: ICommonTable<any> = {
       columns: getColumns(this),
       searchParams: formatParams(searchParams),
@@ -100,6 +107,7 @@ class Activity extends BaseComponent<IProps, IState> {
       extraParams: {
         my: '121213',
         dictType,
+        groupValue,
       },
       alternateColor: true,
       // defaultPageSize: 10,
@@ -114,9 +122,10 @@ class Activity extends BaseComponent<IProps, IState> {
           text: '新增',
           onClick: this.handleAdd,
           buttonType: 'group',
+          groupValue,
           onChange: (e) => {
             const extraParams = this.tableRef.current?.state.extraParams;
-            this.handleDynamicParam({ ...extraParams, dictType: e as any });
+            this.setState({ groupValue }, () => this.handleDynamicParam({ ...extraParams, groupValue: e as any }));
           },
           groupDict: [
             {
@@ -232,6 +241,7 @@ class Activity extends BaseComponent<IProps, IState> {
           handleSearch={this.handleSearch}
           ref={this.searchRef}
           columnNumber={4}
+          handleResetCallback={this.handleOnReset}
         />
         <CommonTable {...tableParams} ref={this.tableRef} />
         <CustomForm

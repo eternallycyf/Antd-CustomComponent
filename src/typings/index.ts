@@ -61,6 +61,7 @@ export interface UserInfo<T> {
 }
 
 export interface IButtonGroupProps {
+  groupValue?: string | number;
   onChange?: (value: string) => void;
   groupDict?: IButtonGroupDefaultProps['data'];
 }

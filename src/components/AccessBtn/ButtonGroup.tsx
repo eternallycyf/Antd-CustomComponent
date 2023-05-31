@@ -4,6 +4,7 @@ import { useEffect, useImperativeHandle, useState } from 'react';
 import styles from './index.less';
 
 export interface IButtonGroupDefaultProps {
+  value: string | number | undefined;
   data: { value: string; name: string }[];
   style?: React.CSSProperties;
   className?: string;
@@ -15,13 +16,8 @@ type IHandle = {
 };
 
 const ButtonGroup: React.ForwardRefRenderFunction<IHandle, IButtonGroupDefaultProps> = (props, ref) => {
-  const { data, style, className, getCurrentValue } = props;
-
-  useImperativeHandle(ref, () => ({
-    type,
-  }));
-
-  const [type, setType] = useState(data[0]?.value || '');
+  const { data, style, className, getCurrentValue, value } = props;
+  const [type, setType] = useState(value);
 
   const handleOnChange = (value: string) => {
     setType(value);

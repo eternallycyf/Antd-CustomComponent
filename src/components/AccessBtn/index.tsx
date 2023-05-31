@@ -29,7 +29,18 @@ const AccessBtn: React.FC<IProps> = (props) => {
     const accessCodeList = accessCollection.map((item) => item);
 
     const btnEleList = (btnList || []).map((btn, index) => {
-      const { code, text, size, onClick, buttonType, groupDict = [], formItemProps, onChange, ...restProps } = btn;
+      const {
+        code,
+        text,
+        size,
+        onClick,
+        buttonType,
+        groupDict = [],
+        groupValue,
+        formItemProps,
+        onChange,
+        ...restProps
+      } = btn;
 
       if (code && accessCodeList.indexOf(code) === -1) return null;
 
@@ -53,6 +64,7 @@ const AccessBtn: React.FC<IProps> = (props) => {
       if (buttonType === 'group') {
         return (
           <ButtonGroup
+            value={groupValue as any}
             key={`access-${code || index}${getUUID()}`}
             data={groupDict}
             getCurrentValue={onChange}
