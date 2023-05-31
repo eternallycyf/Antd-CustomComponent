@@ -71,7 +71,8 @@ export interface IButtonProps extends Omit<ButtonProps, 'onClick' | 'onChange'>,
   visible?: boolean | boolFunc | ((field: FormListFieldData, e: Event, index: number) => void);
   /**@description 暂时只有Button支持 */
   element?: ReactNode;
-  buttonType?: 'delete' | 'group';
+  buttonType?: 'delete' | 'group' | 'formItem' | 'custom';
+  formItemProps?: ISearchesType extends Array<infer U> ? U : any;
   onClick?: (record: any, index: number) => void | ((field: FormListFieldData, e: Event, index: number) => void);
 }
 

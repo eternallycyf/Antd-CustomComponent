@@ -1,11 +1,12 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from '@umijs/max';
-import { Button, Space } from 'antd';
+import { Button, Space, Form } from 'antd';
 import { ConnectState } from '@/typings/connect';
 import { IButtonProps } from '@/typings';
 import { getUUID } from '@/utils/random';
 import styles from './index.less';
 import ButtonGroup from './ButtonGroup';
+import { getFieldComp } from '@/core/helpers';
 
 interface IProps {
   className?: string;
@@ -28,9 +29,26 @@ const AccessBtn: React.FC<IProps> = (props) => {
     const accessCodeList = accessCollection.map((item) => item);
 
     const btnEleList = (btnList || []).map((btn, index) => {
-      const { code, text, size, onClick, buttonType, groupDict = [], onChange, ...restProps } = btn;
+      const { code, text, size, onClick, buttonType, groupDict = [], formItemProps, onChange, ...restProps } = btn;
 
       if (code && accessCodeList.indexOf(code) === -1) return null;
+
+      if (buttonType === 'custom') {
+        return text;
+      }
+
+      if (buttonType === 'formItem') {
+        return (
+          <Form.Item
+            name={formItemProps?.name as string}
+            label={formItemProps?.label as string}
+            {...formItemProps?.itemProps}
+            style={{ marginBottom: 0, minWidth: 150, ...formItemProps?.itemProps?.style }}
+          >
+            {getFieldComp(formItemProps as any)}
+          </Form.Item>
+        );
+      }
 
       if (buttonType === 'group') {
         return (

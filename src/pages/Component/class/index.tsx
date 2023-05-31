@@ -4,7 +4,7 @@ import { formatValuesType } from '@/components/CustomForm';
 import projectConfig from '@/config/projectConfig';
 import { ICommonTable, ModalType } from '@/typings';
 import { formatParams } from '@/utils/util';
-import { Col, Form, Input, Row, Table } from 'antd';
+import { Col, Form, Input, Row, Select, Table } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
 import React, { Component, forwardRef } from 'react';
 import { getColumns } from './config/columns';
@@ -133,6 +133,14 @@ class Activity extends BaseComponent<IProps, IState> {
             },
           ],
         },
+        {
+          buttonType: 'custom',
+          text: (
+            <Form.Item style={{ marginBottom: 0, width: 200 }}>
+              <Select options={[{ label: '万元', value: '1' }]} />
+            </Form.Item>
+          ),
+        },
       ],
       button: [
         {
@@ -151,6 +159,21 @@ class Activity extends BaseComponent<IProps, IState> {
         {
           text: '导出',
           onClick: () => this.handleExport('增删改查组件'),
+        },
+        {
+          buttonType: 'formItem',
+          text: '',
+          formItemProps: {
+            name: 'money',
+            label: '万元',
+            type: 'select',
+            dict: [
+              {
+                text: '万元',
+                value: '1',
+              },
+            ],
+          },
         },
       ],
       itemButton: [
