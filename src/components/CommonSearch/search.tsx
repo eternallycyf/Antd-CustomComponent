@@ -47,6 +47,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
     columnNumber,
     preChildren,
     children,
+    handleResetPreCallback,
     handleResetCallback,
     rowProps = {},
     isInline = false,
@@ -179,8 +180,17 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
    */
   const handleReset = () => {
     form.resetFields();
-    const formData = form.getFieldsValue();
-    triggerSearch(formatSubmitValues(formData));
+    const fn = () => {
+      const formData = form.getFieldsValue();
+      triggerSearch(formatSubmitValues(formData));
+    };
+
+    if (handleResetPreCallback) {
+      handleResetPreCallback(fn);
+    } else {
+      fn();
+    }
+
     if (handleResetCallback) {
       handleResetCallback();
     }

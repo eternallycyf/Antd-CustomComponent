@@ -18,6 +18,7 @@ export interface IToolTipTagProps {
   showToolTipTag?: boolean; // 是否展示toolTip tag
   checkBoxStatus?: boolean; // checkbox的状态
   handleSearch?: (values: any) => void; // 进行搜索
+  handleResetPreCallback?: (fn: () => void) => void; // 重置前的回调
   handleResetCallback?: () => void; // 重置回调
   handleDeleteTagCallback?: (name: string, itemValue: any) => void; // 删除tag的回调函数
   rowProps?: RowProps;

@@ -92,9 +92,11 @@ class Activity extends BaseComponent<IProps, IState> {
     return getFieldComp(fieldProps);
   };
 
-  handleOnReset = () => {
+  handleOnReset = (fn: any) => {
+    const defaultGroupValue = '1';
     const extraParams = this.tableRef.current?.state.extraParams;
-    this.setState({ groupValue: '1' }, () => this.handleDynamicParam({ ...extraParams, groupValue: '1' }));
+    this.setState({ groupValue: defaultGroupValue });
+    this.tableRef.current?.setState({ extraParams: { ...extraParams, groupValue: defaultGroupValue } }, () => fn());
   };
 
   render() {
@@ -241,7 +243,7 @@ class Activity extends BaseComponent<IProps, IState> {
           handleSearch={this.handleSearch}
           ref={this.searchRef}
           columnNumber={4}
-          handleResetCallback={this.handleOnReset}
+          handleResetPreCallback={this.handleOnReset}
         />
         <CommonTable {...tableParams} ref={this.tableRef} />
         <CustomForm
