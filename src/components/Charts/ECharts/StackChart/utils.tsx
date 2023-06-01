@@ -133,9 +133,7 @@ export const renderTooltip = (
             <div class="${index + 1 != arr?.length && styles.box}">
             ${ele
               .map((item) => {
-                const left = item.shape
-                  ? `<div class="${styles[item.shape]}" style=\"--color:${item.shapeColor}\"></div>`
-                  : '';
+                const left = item.shape ? `<div class="${styles[item.shape]}" style=\"--color:${item.shapeColor}\"></div>` : '';
                 const currentValue = item?.format ? item.format(item.value) : item.value;
                 const isBold = item?.isBold ? styles.blod : undefined;
                 const isOnly = item?.isOnly ? styles.contentCenter : styles.content;

@@ -70,7 +70,7 @@ const PageHeaderCard: IBasePageHeaderCard = (props) => {
   const { isHeader = false, col = 24, children, ...restProps } = props;
   const bodyStyle: React.CSSProperties = {
     background: '#fff',
-    padding: isHeader ? '16px 16px 0 16px' : '0 16px',
+    padding: isHeader ? '16px 16px 0 16px' : '16px 16px',
   };
 
   return (

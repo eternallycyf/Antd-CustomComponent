@@ -212,8 +212,7 @@ export const getOptions = (config: IGetOptions) => {
             y: '90%',
             top: '80%',
             brushSelect: false,
-            handleIcon:
-              'path://M-9.35,34.56V42m0-40V9.5m-2,0h4a2,2,0,0,1,2,2v21a2,2,0,0,1-2,2h-4a2,2,0,0,1-2-2v-21A2,2,0,0,1-11.35,9.5Z',
+            handleIcon: 'path://M-9.35,34.56V42m0-40V9.5m-2,0h4a2,2,0,0,1,2,2v21a2,2,0,0,1-2,2h-4a2,2,0,0,1-2-2v-21A2,2,0,0,1-11.35,9.5Z',
             dataBackground: {
               lineStyle: {
                 color: '#C7DEFF',
@@ -305,9 +304,7 @@ export const getOptions = (config: IGetOptions) => {
               height: BASE_CONFIG.TOOLTIP_HEIGHT,
             };
           })
-          .filter((item) =>
-            BASE_CONFIG.DYNAMICS_BAR_TOTAL ? nameList.includes(item.name + (item.legendSuffix ?? '')) : true,
-          );
+          .filter((item) => (BASE_CONFIG.DYNAMICS_BAR_TOTAL ? nameList.includes(item.name + (item.legendSuffix ?? '')) : true));
         return renderTooltip(newArr);
       },
     },

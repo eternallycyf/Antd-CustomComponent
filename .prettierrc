@@ -1,5 +1,5 @@
 {
-  "printWidth": 120,
+  "printWidth": 150,
   "singleQuote": true,
   "trailingComma": "all",
   "proseWrap": "preserve",
@@ -12,5 +12,8 @@
       }
     }
   ],
-  "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-packagejson"]
+  "plugins": [
+    "prettier-plugin-organize-imports",
+    "prettier-plugin-packagejson"
+  ]
 }
