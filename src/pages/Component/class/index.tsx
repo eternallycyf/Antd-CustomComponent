@@ -19,6 +19,7 @@ import { getFieldComp } from '@/core/helpers';
 import { withRoutePage } from '@/core/Enhance/withRoutePage';
 import { compose } from 'redux';
 import { ConnectState } from '@/typings/connect';
+import { ACTIVE_TYPE } from './config/constant';
 const { apiPrefixMock } = projectConfig;
 
 interface IProps {}
@@ -32,9 +33,9 @@ interface IState {
   selectedRowKeys: React.Key[];
   expandedKey: string;
   expandedRowKeys: React.Key[];
-  radioValue: '0' | '1' | '2';
-  dictType: '' | '1' | '2';
-  groupValue: '1' | '2';
+  radioValue: (typeof ACTIVE_TYPE)[number]['value'];
+  dictType: (typeof ACTIVE_TYPE)[number]['value'];
+  groupValue: (typeof ACTIVE_TYPE)[number]['value'];
 }
 
 class Activity extends BaseComponent<IProps, IState> {
@@ -50,7 +51,7 @@ class Activity extends BaseComponent<IProps, IState> {
       expandedKey: 'index',
       expandedRowKeys: [],
       radioValue: '0',
-      dictType: '',
+      dictType: '1',
       groupValue: '1',
     };
   }
@@ -281,11 +282,7 @@ class Activity extends BaseComponent<IProps, IState> {
           otherRender={() => (
             <Form ref={this.OtherFormRef}>
               <Form.Item label="以下都是使用getFieldComp方法构造的form"></Form.Item>
-              <Form.Item
-                label="otherFormItem"
-                name="otherFormItem"
-                rules={[{ required: true, message: '请输入otherFormItem' }]}
-              >
+              <Form.Item label="otherFormItem" name="otherFormItem" rules={[{ required: true, message: '请输入otherFormItem' }]}>
                 <Input />
               </Form.Item>
               <Row>

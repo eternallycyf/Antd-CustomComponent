@@ -7,12 +7,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 import Activity from '../index';
 import styles from '../index.less';
-
-export const STATUS_DICT = [
-  { text: '满折', value: '0' },
-  { text: '满减', value: '1' },
-  { text: '立减', value: '2' },
-];
+import { STATUS_DICT } from './constant';
 
 export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType => {
   return [
@@ -36,7 +31,6 @@ export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType 
         },
       },
     },
-
     {
       name: 'activityName',
       label: '电话',

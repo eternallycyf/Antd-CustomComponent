@@ -1,11 +1,6 @@
 import { IColumnsType } from '@/typings';
 import Activity from '../index';
-
-const ACTIVE_TYPE = [
-  { text: '满折', value: '0' },
-  { text: '满减', value: '1' },
-  { text: '立减', value: '2' },
-];
+import { ACTIVE_TYPE } from './constant';
 
 export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType => {
   return [
