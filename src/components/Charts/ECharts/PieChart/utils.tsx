@@ -56,16 +56,13 @@ export const renderTooltip = (
     height: number;
   })[],
 ) => {
-  console.log(data);
   return `
   <div class="${styles.tooltipBox}" style=\"marginLeft: 100px\">
         <div>
           <div class="${styles.contrastContent}">
             ${data
               .map((item) => {
-                const left = item.shape
-                  ? `<div class="${styles[item.shape]}" style=\"--color:${item.shapeColor}\"></div>`
-                  : '';
+                const left = item.shape ? `<div class="${styles[item.shape]}" style=\"--color:${item.shapeColor}\"></div>` : '';
                 const currentValue = item?.format ? item.format(item.value) : item.value;
                 const isBold = item?.isBold ? styles.isBold : undefined;
                 const isOnly = item?.isOnly ? styles.contentCenter : styles.content;

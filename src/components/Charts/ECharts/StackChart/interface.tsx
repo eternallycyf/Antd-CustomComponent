@@ -17,10 +17,18 @@ export type IGetOptions = {
 export interface IChartConfig {
   name: string;
   /**
+   * 当showName和name不一致时，showName会显示在tooltip中
+   */
+  showName?: string;
+  /**
    * @description 数据key
    * @required
    */
   dataKey: string;
+  /**
+   * @description 百分比字段 添加了就会出现在tooltip中
+   */
+  percentKey?: string;
   /**
    * @description 是否显示在图例中
    * @required

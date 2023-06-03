@@ -56,6 +56,8 @@ export const BASE_CONFIG = {
   DATA_ZOOM_END: '',
   DATAZOOM_SLIDER_CONFIG: {},
 
+  // 开启后 tooltip会开启滚动样式 TOOLTIP_WIDTH TOOLTIP_HEIGHT 会生效
+  HAS_SCROLL_TOOLTIP: false,
   TOOLTIP_WIDTH: 320,
   TOOLTIP_HEIGHT: 350,
   XAXIS_NAME: '',
@@ -79,10 +81,19 @@ export const BASE_CONFIG = {
       },
     },
   },
+  // 是否是面积图
+  IS_AREA: false,
+  XASIS_LABEL_FORMAT: (v: string) => {
+    const values = v?.split('-');
+    if (!Array.isArray(values)) return '--';
+    if (values?.length === 0) return '--';
+    return [`{a|${values[1]}}`, `{b|${values[0]}}`].join('\n');
+  },
   LINE_YAXIS_LABEL: {
     formatter: (value: number) => Number(value).toFixed(2) + '%',
   },
-  LINE_AYXIS: {},
+  LINE_YAXIS: {},
+  BAR_YAXIS: {},
   LEGEND_CONFIG: {},
   BAR_SERIES: {
     type: 'bar',
@@ -107,9 +118,14 @@ export const renderTooltip = (
     valueColor: string;
     width: number;
     height: number;
+    percent?: any;
   })[],
+  BASE_CONFIG: any,
 ) => {
   const { total, time, width, height } = data[0];
+  const hasCustomHeightAndWidth = BASE_CONFIG.HAS_SCROLL_TOOLTIP;
+  const newWidth = hasCustomHeightAndWidth ? width + 'px' : width;
+  const newHeight = hasCustomHeightAndWidth ? height + 'px' : height;
   let groupKeysList: any[] = [...new Set(data.map((item) => item?.tootipType))].filter(Boolean) || [];
   let newData =
     groupKeysList?.length > 0
@@ -119,7 +135,7 @@ export const renderTooltip = (
       : [data];
 
   return `
-  <div class="${styles.tooltipBox}" style=\"--width:${width};--height:${height};marginLeft: 100px\">
+  <div class="${styles.tooltipBox}" style=\"--width:${newWidth};--height:${newHeight};marginLeft: 100px\">
         <div class="${styles.timeContent}">
           <svg viewBox="64 64 896 896" focusable="false" data-icon="calendar" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"></path></svg>
           <span class="${styles.time}">${time}</span>
@@ -138,6 +154,7 @@ export const renderTooltip = (
                 const isBold = item?.isBold ? styles.blod : undefined;
                 const isOnly = item?.isOnly ? styles.contentCenter : styles.content;
                 const Hr = item.hasHr ? `<div class="${styles.hr}"></div>` : '';
+
                 return `
                 <div class="${isOnly}">
                   <div class="${styles.left} ${isBold}">
@@ -145,8 +162,9 @@ export const renderTooltip = (
                   <div class="${styles.text} ${isBold} ${item?.leftClassName}">${item.name}</div>
                   </div>
                   <div class="${styles.right} ${isBold} ${item?.rightClassName}" style=\"--color:${item?.valueColor};\">
-                    ${currentValue} ${item?.unitSymbol ?? ''}
-                    </div>
+                    <span>${currentValue} ${item?.unitSymbol ?? ''}</span>
+                    <span>${item?.percent != undefined ? item.percent + '%' : ''} </span>
+                  </div>
                 </div>
                 ${Hr}
               `;

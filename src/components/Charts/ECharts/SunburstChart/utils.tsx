@@ -34,7 +34,6 @@ export const renderTooltip = (
     isBlod?: boolean;
   }[],
 ) => {
-  console.log(data);
   return `
   <div class="${styles.tooltipBox}" style=\"marginLeft: 100px\">
         <div>

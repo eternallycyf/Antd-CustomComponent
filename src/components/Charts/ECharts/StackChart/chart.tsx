@@ -40,6 +40,8 @@ export const getOptions = (config: IGetOptions) => {
       orient: 'horizontal',
       show: true,
       bottom: 0,
+      itemWidth: 16,
+      itemHeight: 8,
       itemGap: 30,
       data: CHART_CONFIG.filter((item) => item.isLegend).map((item) => BASE_CONFIG.GET_LEGEND_FN(item, DATA)),
       ...BASE_CONFIG.LEGEND_CONFIG,
@@ -64,7 +66,7 @@ export const getOptions = (config: IGetOptions) => {
         },
         position: 'right',
         show: true,
-        offset: 35,
+        offset: 3,
         axisLabel: {
           textStyle: {
             color: '#5B6371 ',
@@ -85,6 +87,7 @@ export const getOptions = (config: IGetOptions) => {
             color: '#B3B8C2',
           },
         },
+        ...BASE_CONFIG.LINE_YAXIS,
       },
       {
         type: 'value',
@@ -108,7 +111,6 @@ export const getOptions = (config: IGetOptions) => {
         splitLine: {
           show: true,
           lineStyle: {
-            type: 'dashed', //默认实线，dashed虚线
             width: 1,
             color: 'rgba(239,241,244,1)',
           },
@@ -119,6 +121,7 @@ export const getOptions = (config: IGetOptions) => {
           },
         },
       },
+      ...BASE_CONFIG.BAR_YAXIS,
     ],
     xAxis: {
       type: 'category',
@@ -148,12 +151,7 @@ export const getOptions = (config: IGetOptions) => {
           fontWeight: 400,
         },
         interval: 0,
-        formatter: (v: string) => {
-          const values = v?.split('-');
-          if (!Array.isArray(values)) return '--';
-          if (values?.length === 0) return '--';
-          return [`{a|${values[1]}}`, `{b|${values[0]}}`].join('\n');
-        },
+        formatter: BASE_CONFIG.XASIS_LABEL_FORMAT,
         rich: {
           a: {
             fontSize: 12,
@@ -262,6 +260,7 @@ export const getOptions = (config: IGetOptions) => {
     tooltip: {
       trigger: 'axis',
       renderMode: 'html',
+      enterable: BASE_CONFIG.HAS_SCROLL_TOOLTIP,
       axisPointer: {
         type: 'shadow',
         shadowStyle: {
@@ -294,10 +293,13 @@ export const getOptions = (config: IGetOptions) => {
         const newArr = CHART_CONFIG.filter((item) => Boolean(!item.isTopFlag))
           .map((item) => {
             let value = defaultDataObj[item.dataKey];
+            const percentObj = item.percentKey ? { percent: formatNumber(defaultDataObj[item.percentKey], true) } : {};
             value = value ?? (item.type === 'line' ? 0.0 : undefined);
             return {
               ...item,
               ...defaultConfig,
+              ...percentObj,
+              name: item?.showName ?? item.name,
               valueColor: defaultFormatColor({ ...item, value, BASE_CONFIG }),
               value: item.name == BASE_CONFIG.TOTAL_NAME ? total : value,
               width: BASE_CONFIG.TOOLTIP_WIDTH,
@@ -305,7 +307,8 @@ export const getOptions = (config: IGetOptions) => {
             };
           })
           .filter((item) => (BASE_CONFIG.DYNAMICS_BAR_TOTAL ? nameList.includes(item.name + (item.legendSuffix ?? '')) : true));
-        return renderTooltip(newArr);
+
+        return renderTooltip(newArr, BASE_CONFIG);
       },
     },
     series: CHART_CONFIG.filter((item) => Boolean(item.isLegend || item.isTopFlag)).map((item) => {
@@ -327,6 +330,13 @@ export const getOptions = (config: IGetOptions) => {
             return item.value;
           });
       }
+      const areaStyle = BASE_CONFIG.IS_AREA
+        ? {
+            areaStyle: {
+              color: item.shapeColor,
+            },
+          }
+        : {};
       return {
         ...item,
         ...customProps,
@@ -339,6 +349,8 @@ export const getOptions = (config: IGetOptions) => {
           fontSize: 12,
           fontWeight: 400,
         },
+        ...areaStyle,
+        smooth: BASE_CONFIG.IS_AREA,
         symbol: 'none',
         label: {
           show: false,
