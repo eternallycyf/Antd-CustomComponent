@@ -97,6 +97,9 @@ export interface ICommonTable<T> extends TableProps<T> {
     // addUrl?: string;
     // editUrl?: string;
   };
+  urlAlls?: {
+    listUrl?: string;
+  };
   /**@description 后端接口返回的table数据关键key */
   recordKey?: string;
   /**@description 额外的table请求固定参数 */
@@ -110,8 +113,6 @@ export interface ICommonTable<T> extends TableProps<T> {
 
   /**@description 是否使用虚拟列表*/
   isVirtual?: boolean;
-  /**@description 虚拟列表固定行 */
-  fixRowKeys?: (number | string)[];
   /**@description 用于处理虚拟列表 点击排序 保留滚动位置 */
   handleScroll?: () => void;
 
@@ -141,6 +142,8 @@ export interface ICommonTable<T> extends TableProps<T> {
   showIndex?: boolean;
   /**@description 是否计算列表高度 */
   calcHeight?: boolean;
+  /**@description 其他的高度 */
+  otherHeight?: number;
   /**@description 手动指定数据源 当长度大于1时生效 */
   dataSource?: any[];
   /**@description 分页相关配置 */
@@ -155,11 +158,33 @@ export interface ICommonTable<T> extends TableProps<T> {
   /**@description 选择时候触发 */
   onSelect?: (selectRowKeys: React.Key[], selectedRows: any[]) => void;
   expandable?: TableProps<T>['expandable'];
-  /**@description  是否显示汇总行 发送给后端的 limit为29*/
+
+  /**
+   * @description 固定行方式1. 传入 rowkey 固定在最上方
+   * @description 内部将包含rowkey 的数据 unshift 到数据最前面)
+   * 使用条件:
+   * 1. 后端一次返回了所有的数据 (如果没有返回所有的 没有返回时当然没法固定啦)
+   * 2. 需要手动传入单元格的高度 (fixRowHeight)
+   */
+  fixRowKeys?: (number | string)[];
+  /**@default [fixRowHeight=45] */
+  fixRowHeight?: number;
+  /**
+   * @description 固定行方式2. 通过调用后端接口 后端有一个和列表一样的接口
+   * @description 通过 antd.summary(新建了一个table) 来实现固定化
+   * 使用条件:
+   * 1. 需要后端接口 或者自己mock数据支持 (后端接口是 urlAlls(多传了一个isAmounted) ,自己可以传入summaryDataSource:any[])
+   * 2. 自定义固定单元格的内容 columns.userSummary(content: string, data: any[]) 方法自定义
+   * 3. removeSummary 需要排除的合计项 (直接显示'--'了)
+   */
   isSummary?: boolean;
+  summaryDataSource?: any[];
   /**@description [汇总行位置] = top */
   summaryPosition?: 'top' | 'bottom';
+  /**@description 需要排除的合计项  */
+  removeSummary?: string[];
   /**@description 操作栏是否固定 */
+
   openFixed?: boolean;
   /**@description 网络请求后data的路径 */
   dataPath?: string;

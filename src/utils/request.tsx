@@ -45,8 +45,7 @@ const cancelPending = (config: any, url?: string) => {
       const {
         options: { params, url },
       } = item;
-      const isHasKw =
-        getUrl(url) === getUrl(config.url) && (params?.hasOwnProperty('kw') || getUrlParams(url).hasOwnProperty('kw'));
+      const isHasKw = getUrl(url) === getUrl(config.url) && (params?.hasOwnProperty('kw') || getUrlParams(url).hasOwnProperty('kw'));
       if (JSON.stringify(item.options) === JSON.stringify(config) || isHasKw) {
         item.cancel();
         pending.splice(index, 1);

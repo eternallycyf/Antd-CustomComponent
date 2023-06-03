@@ -25,7 +25,7 @@ button,
   color: @primary-color;
 }
 
-.ant-layout .ant-layout-sider .ant-menu > .ant-menu-item.ant-menu-item-selected a {
+.ant-layout .ant-layout-sider .ant-menu>.ant-menu-item.ant-menu-item-selected a {
   color: @primary-color;
 }
 
@@ -73,6 +73,7 @@ button,
 }
 
 .common-table {
+
   .ant-spin-nested-loading,
   .ant-spin-container,
   .ant-table,
@@ -107,17 +108,18 @@ button,
     }
   }
 
-  .ant-table-small > .ant-table-content > .ant-table-body {
+  .ant-table-small>.ant-table-content>.ant-table-body {
     margin: 0;
   }
 
-  .ant-table-thead > tr > th,
-  .ant-table-tbody > tr > td {
+  .ant-table-thead>tr>th,
+  .ant-table-tbody>tr>td,
+  .ant-table-summary>tr>td {
     padding-right: 10px !important;
     padding-left: 10px !important;
   }
 
-  .ant-table-thead > tr > th {
+  .ant-table-thead>tr>th {
     // background-color: @color-main !important;
     color: #333;
     font-size: normal;

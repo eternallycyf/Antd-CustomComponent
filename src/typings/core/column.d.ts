@@ -79,6 +79,7 @@ type Column<TRecord = AnyData> =
        * @description 初始化checkbox是否禁用
        */
       initCheckedDisabled?: boolean;
+      useSummary?: (content: React.ReactNode, data: any[]) => React.ReactNode;
     };
 // & FormControl
 // 传入泛型 Columns<{ code: string }> 指定dataIndex及render的record类型

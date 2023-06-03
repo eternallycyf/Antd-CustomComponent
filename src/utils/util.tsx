@@ -43,7 +43,7 @@ const renderTooltip = (title: string = '', tooltip: string = '', extraText = '')
   );
 };
 
-const formatNumber = (options: any, value: number) => {
+export const formatNumber = (options: any, value: number) => {
   const fractionDigits = typeof options.formatNumber === 'number' ? options.formatNumber : 2;
   if (_.isNil(value)) return '--';
   if (isNaN(Number(value))) return value;
@@ -53,7 +53,7 @@ const formatNumber = (options: any, value: number) => {
   });
 };
 
-const formatPercent = (value: number) => {
+export const formatPercent = (value: number) => {
   if (_.isNil(value)) return '--';
   if (isNaN(Number(value))) return value;
   return (value * 100)?.toFixed(2) + '%';
@@ -72,7 +72,7 @@ const formatTime = (options: any, text: any) => {
  * 格式化表格 columns
  * @param data
  */
-export function formatColumn(data: any[]) {
+export function formatColumn(columns: any[]) {
   const defaultOptions = {
     format: 'YYYY-MM-DD',
     ellipsis: false,
@@ -81,7 +81,7 @@ export function formatColumn(data: any[]) {
     number: 100,
   };
 
-  const deepData = _.cloneDeep(data);
+  const deepData = _.cloneDeep(columns);
   const accessCollection = JSON.parse(sessionStorage.getItem('accessCollection') || '[]');
 
   return deepData
@@ -154,8 +154,7 @@ export function formatColumn(data: any[]) {
           item.title = () => renderTooltip(title, item.tooltip());
         } else {
           const text = typeof item.tooltip.text === 'function' ? item.tooltip.text() || '' : item.tooltip.text || '';
-          const extraText =
-            item.tooltip.extraText === 'function' ? item.tooltip.extraText() || '' : item.tooltip.extraText || '';
+          const extraText = item.tooltip.extraText === 'function' ? item.tooltip.extraText() || '' : item.tooltip.extraText || '';
           item.title = () => renderTooltip(title, text, extraText);
         }
       }

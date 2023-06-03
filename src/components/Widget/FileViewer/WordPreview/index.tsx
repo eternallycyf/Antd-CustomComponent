@@ -7,6 +7,7 @@ const { apiPrefix } = projectConfig;
 
 export type WordPreviewYHandle = {
   render: (fileId: string) => void;
+  renderByUrl: (downlodaUrl: string) => void;
 };
 
 type WordPreviewProps = {
@@ -17,6 +18,21 @@ const WordPreview: React.ForwardRefRenderFunction<WordPreviewYHandle, WordPrevie
   const { wordRef } = props;
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const handleRender = (blob: Blob) => {
+    renderAsync(blob, document.getElementById('file-preview-modal') as HTMLDivElement, null as unknown as HTMLDivElement, {
+      className: 'docx',
+      inWrapper: true,
+      ignoreWidth: false,
+      ignoreHeight: false,
+      ignoreFonts: false,
+      breakPages: true,
+      ignoreLastRenderedPageBreak: true,
+      experimental: false,
+      trimXmlDeclaration: true,
+      debug: false,
+    });
+  };
 
   React.useImperativeHandle(wordRef, () => ({
     render: async (fileId: string) => {
@@ -29,23 +45,28 @@ const WordPreview: React.ForwardRefRenderFunction<WordPreviewYHandle, WordPrevie
         responseType: 'blob',
       });
       if (!(blob instanceof Blob)) return false;
-      renderAsync(
-        blob,
-        document.getElementById('file-preview-modal') as HTMLDivElement,
-        null as unknown as HTMLDivElement,
-        {
-          className: 'docx',
-          inWrapper: true,
-          ignoreWidth: false,
-          ignoreHeight: false,
-          ignoreFonts: false,
-          breakPages: true,
-          ignoreLastRenderedPageBreak: true,
-          experimental: false,
-          trimXmlDeclaration: true,
-          debug: false,
-        },
-      );
+      renderAsync(blob, document.getElementById('file-preview-modal') as HTMLDivElement, null as unknown as HTMLDivElement, {
+        className: 'docx',
+        inWrapper: true,
+        ignoreWidth: false,
+        ignoreHeight: false,
+        ignoreFonts: false,
+        breakPages: true,
+        ignoreLastRenderedPageBreak: true,
+        experimental: false,
+        trimXmlDeclaration: true,
+        debug: false,
+      });
+      setLoading(false);
+    },
+    renderByUrl: async (downlodaUrl: string) => {
+      setVisible(true);
+      setLoading(true);
+      const blob = await request.get(downlodaUrl, {
+        responseType: 'blob',
+      });
+      if (!(blob instanceof Blob)) return false;
+      handleRender(blob);
       setLoading(false);
     },
   }));

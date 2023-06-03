@@ -66,6 +66,42 @@ export default {
       });
     }, 0);
   },
+  'GET /getActivityListTotal': (req, res) => {
+    setTimeout(() => {
+      res.send({
+        code: 200,
+        data: {
+          ...mockjs.mock({
+            'list|3': [
+              {
+                name: '@city',
+                'value|1-100': 50,
+                'type|0-2': 1,
+                'activeStatus|0-2': 1,
+                activityCode: '@guid',
+                activityName: '合计',
+                type: req.query?.activityType,
+                [`activityType|${MockSearchKey(req, 'activityType', '0-2')}`]: 1,
+                activityStartTime: '@datetime',
+                activityEndTime: '@datetime',
+                'activityStatus|0-2': 1,
+                activityDesc: '@cparagraph',
+                activityRule: '@cparagraph',
+                activityRuleDesc: '@cparagraph',
+                activityPrice: '@float(100, 10000, 2, 2)',
+              },
+            ],
+          }),
+          page: req.query.page,
+          pageSize: 3,
+          total: 3,
+        },
+        message: 'string',
+        success: true,
+        unSuccess: true,
+      });
+    }, 0);
+  },
   'POST /updateActivityList': (req, res) => {
     res.send({
       code: 200,

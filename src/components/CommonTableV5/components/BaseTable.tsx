@@ -27,6 +27,7 @@ export interface IBaseTableState {
   checkAll: boolean;
   checkedList: any[] | [];
   checkedOptions: any[];
+  summaryDataSource?: any[];
 }
 
 const DEFAULT_OBSERVE_PARAMS = {
@@ -100,10 +101,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
       this.setState({ loading: nextProps.loading });
     }
 
-    if (
-      nextProps.selectedRowkeys !== this.props.selectedRowkeys &&
-      nextProps.selectedRows !== this.props.selectedRows
-    ) {
+    if (nextProps.selectedRowkeys !== this.props.selectedRowkeys && nextProps.selectedRows !== this.props.selectedRows) {
       this.setState({
         selectedRowkeys: nextProps.selectedRowkeys,
         selectedRows: nextProps.selectedRows,
@@ -126,19 +124,8 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
   // 请求数据
   loadData = async (isReset: boolean = false) => {
     const { loading, sorter, filters, current, pageSize: currentPageSize, requestCount = 0, extraParams } = this.state;
-    const { fixRowKeys = [], isVirtual = false } = this.props;
-    const {
-      urls,
-      recordKey,
-      fetchMethod,
-      searchParams,
-      dataHandler,
-      rowKey,
-      isSummary,
-      dataPath,
-      totalPath,
-      pagination,
-    }: any = this.props;
+    const { fixRowKeys = [], isVirtual = false, urlAlls } = this.props;
+    const { urls, recordKey, fetchMethod, searchParams, dataHandler, rowKey, isSummary, dataPath, totalPath, pagination }: any = this.props;
 
     const pageSize = pagination === false ? 10000 : currentPageSize || 30;
     if (!(urls && urls.listUrl)) return;
@@ -148,7 +135,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
     try {
       const action = (fetchMethod && fetchMethod.toLocaleLowerCase()) === 'get' ? getAction : postAction;
       const currentPage = isReset ? 1 : current;
-      const result = await action(urls.listUrl, {
+      const resultAction = action(urls.listUrl, {
         page: currentPage,
         limit: isSummary ? pageSize - 1 : pageSize,
         // limit: pageSize,
@@ -156,37 +143,54 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
         ...extraParams,
         ...sorter,
       });
-      const data = dataPath ? _.get(result, dataPath) : result.data;
-      const rows = Array.isArray(data) ? data : data[recordKey];
-      const total = totalPath ? _.get(result, totalPath) : data.totalCount || data.total || rows.length;
-      // dataSource 数据处理
-      let dataSource = (rows || []).map((item: any, index: number) => ({
-        ...item,
-        index: (currentPage - 1) * pageSize + (index + 1) || index + 1,
-        rowKey:
-          (typeof rowKey === 'function' ? rowKey(item, index) : item[rowKey]) ||
-          (currentPage - 1) * pageSize + (index + 1),
-      }));
-      dataSource = dataHandler ? dataHandler(dataSource, data) : dataSource;
 
-      const getFixedData = (dataSource: any[]) => {
-        let newDataSource: any[] = [];
-        let fixRowData =
-          fixRowKeys?.map((item) => dataSource.find((ele: any) => ele.rowKey == item)).filter(Boolean) || [];
-        if (!fixRowData.length) return dataSource;
-        newDataSource = dataSource.filter((item: any) => !fixRowKeys?.includes(item.rowKey));
-        newDataSource = [...fixRowData, ...newDataSource];
-        return newDataSource;
-      };
+      // 合计行数据处理
+      let resultAllAction;
+      let newDataSource = [];
+      if (urlAlls && urlAlls.listUrl) {
+        resultAllAction = action(urlAlls.listUrl, {
+          ...searchParams,
+          ...extraParams,
+          ...sorter,
+          page: 1,
+          limit: 1,
+          isAmounted: 1,
+        });
+      }
 
-      const newData = isVirtual || !fixRowKeys?.length ? dataSource : getFixedData(dataSource);
+      Promise.all([resultAction, resultAllAction]).then(([result, resultAll]) => {
+        const data = dataPath ? _.get(result, dataPath) : result.data;
+        const rows = Array.isArray(data) ? data : data[recordKey];
+        const total = totalPath ? _.get(result, totalPath) : data.totalCount || data.total || rows.length;
+        // dataSource 数据处理
+        let dataSource = (rows || []).map((item: any, index: number) => ({
+          ...item,
+          index: (currentPage - 1) * pageSize + (index + 1) || index + 1,
+          rowKey: (typeof rowKey === 'function' ? rowKey(item, index) : item[rowKey]) || (currentPage - 1) * pageSize + (index + 1),
+        }));
+        dataSource = dataHandler ? dataHandler(dataSource, data) : dataSource;
 
-      this.setState({
-        loading: false,
-        dataSource: newData,
-        current: currentPage,
-        total,
-        requestCount: requestCount + 1,
+        const getFixedData = (dataSource: any[]) => {
+          let newDataSource: any[] = [];
+          let fixRowData = fixRowKeys?.map((item) => dataSource.find((ele: any) => ele.rowKey == item)).filter(Boolean) || [];
+          if (!fixRowData.length) return dataSource;
+          newDataSource = dataSource.filter((item: any) => !fixRowKeys?.includes(item.rowKey));
+          newDataSource = [...fixRowData, ...newDataSource];
+          return newDataSource;
+        };
+
+        const newData = isVirtual || !fixRowKeys?.length ? dataSource : getFixedData(dataSource);
+
+        newDataSource = resultAll?.data?.list ? resultAll.data.list : [];
+
+        this.setState({
+          loading: false,
+          dataSource: newData,
+          current: currentPage,
+          total,
+          requestCount: requestCount + 1,
+          summaryDataSource: newDataSource,
+        });
       });
     } catch (e) {
       console.log(e);
@@ -249,11 +253,12 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
 
   //处理列表高度
   handleTableHeight = () => {
+    const { otherHeight = 0 } = this.props;
     const { container, height } = this.heightParams;
     const searchWrap = container?.querySelector('. searchWrap');
     if (searchWrap) {
       this.observer = new MutationObserver((mutations, observer) => {
-        const tableHeight: number = height - searchWrap.clientHeight;
+        const tableHeight: number = height - searchWrap.clientHeight - otherHeight;
         if (this.state.height == tableHeight || tableHeight === height) return;
         if (this.props.isVirtual) {
           // 虚拟滚动表格的高度，需要通过props动态设置
@@ -265,13 +270,14 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
       });
       this.observer.observe(searchWrap, DEFAULT_OBSERVE_PARAMS);
     } else {
-      this.setState({ height });
-      this.setTableBody(height);
+      const tableHeight: number = height - otherHeight;
+      this.setState({ height: tableHeight });
+      this.setTableBody(tableHeight);
     }
   };
 
   setTableBody(height: number) {
-    const tableBodyNodeList = document.querySelectorAll('.ant-table-body'); // 多个标签页多个表格有多个dom
+    const tableBodyNodeList = document.querySelectorAll('.tabs-tabpane-active .ant-table-body'); // 多个标签页多个表格有多个dom
     if (tableBodyNodeList.length) {
       [...tableBodyNodeList].forEach((tableBodyDOM) => {
         (tableBodyDOM as any).style.height = height + 'px';
@@ -345,9 +351,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
     let resultRows = [];
     if (selectedRowkeys.length > selectedRows.length) {
       const partialSelectedRowKeys = selectedRows.map((row) => row.rowKey);
-      const leftRows = stateRows.filter(
-        (row) => selectedRowkeys.indexOf(row.rowKey) >= 0 && partialSelectedRowKeys.indexOf(row.rowKey) < 0,
-      );
+      const leftRows = stateRows.filter((row) => selectedRowkeys.indexOf(row.rowKey) >= 0 && partialSelectedRowKeys.indexOf(row.rowKey) < 0);
       resultRows = leftRows.concat(selectedRows);
     } else {
       resultRows = selectedRows;

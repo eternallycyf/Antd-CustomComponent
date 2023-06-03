@@ -6,7 +6,7 @@ import Table from './components/EnhancedTable';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { IButtonProps, IColumnsType, ICommonTable } from '@/typings';
-import { formatColumn as formatColumnUtil } from '@/utils/util';
+import { formatColumn, formatColumn as formatColumnUtil, formatNumber, formatPercent } from '@/utils/util';
 import BaseTable, { IBaseTableState } from './components/BaseTable';
 import TableBtn from '@/components/CommonTableV5/components/widgets/TableBtn';
 import AccessBtn from '@/components/AccessBtn';
@@ -15,6 +15,8 @@ import { getUUID } from '@/utils/random';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { getDvaApp } from '@umijs/max';
+import _ from 'lodash';
+import { ColumnsType } from 'antd/lib/table';
 const { theme } = getDvaApp()._store.getState().global;
 class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
   static defaultProps = {
@@ -34,8 +36,11 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     showIndex: true,
     calcHeight: true,
     initRequest: true,
+
+    fixRowHeight: 45,
     isSummary: false,
     summaryPosition: 'top',
+    removeSummary: [], // 移除的合计项
   };
   cls: string = '';
   constructor(props: any) {
@@ -117,11 +122,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       // 显示行操作项
       if (itemButton && itemButton.length) {
         const width =
-          itemButton.length > buttonLen
-            ? buttonLen == 1
-              ? buttonLen * 90
-              : buttonLen * 70
-            : this.getOpenWidth(itemButton) || itemButtonWidth;
+          itemButton.length > buttonLen ? (buttonLen == 1 ? buttonLen * 90 : buttonLen * 70) : this.getOpenWidth(itemButton) || itemButtonWidth;
 
         const column: any = [
           {
@@ -132,8 +133,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
             fixed: openFixed ? openFixed : expandedRowRender || isFixed ? false : 'right',
             render: (text: any, record: any) => {
               const button = itemButton.map((item: any) => {
-                const flag =
-                  !item.visible || (item.visible && typeof item.visible === 'function' && item.visible(record));
+                const flag = !item.visible || (item.visible && typeof item.visible === 'function' && item.visible(record));
                 if (!flag) {
                   return {
                     text: '-',
@@ -193,13 +193,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
                   {mainBtn.map((item: any, index: number) => {
                     const { text, buttonType, code, onClick, visible, ...otherProps } = item;
                     const button = (
-                      <Button
-                        {...otherProps}
-                        size="small"
-                        onClick={(e: any) => e.stopPropagation()}
-                        type="link"
-                        danger={buttonType === 'delete'}
-                      >
+                      <Button {...otherProps} size="small" onClick={(e: any) => e.stopPropagation()} type="link" danger={buttonType === 'delete'}>
                         {text}
                       </Button>
                     );
@@ -268,8 +262,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
         columns = columnList;
       } else {
         columns = columnList.filter(
-          (item: any) =>
-            !checkDefaultValues.includes(item?.dataIndex) || item?.key === 'operate' || item?.initCheckedDisabled,
+          (item: any) => !checkDefaultValues.includes(item?.dataIndex) || item?.key === 'operate' || item?.initCheckedDisabled,
         );
       }
       return _formatColumns(columns);
@@ -278,9 +271,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     const onCheckAllChange = (e: CheckboxChangeEvent) => {
       const checkAll = e.target.checked;
       const columns = getCurrentColumnsList(checkAll);
-      const checkedList = checkAll
-        ? checkDefaultValues
-        : checkedOptions.filter((item) => item.disabled).map((item) => item.value);
+      const checkedList = checkAll ? checkDefaultValues : checkedOptions.filter((item) => item.disabled).map((item) => item.value);
 
       this.setState({
         checkedList,
@@ -314,12 +305,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
             重置
           </Button>
         </div>
-        <Checkbox.Group
-          value={checkedList}
-          options={checkedOptions}
-          className={styles.operateShowListContent}
-          onChange={onChange}
-        />
+        <Checkbox.Group value={checkedList} options={checkedOptions} className={styles.operateShowListContent} onChange={onChange} />
       </div>
     );
 
@@ -331,36 +317,8 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     );
   };
 
-  renderSummary = (currentData: any[], columns: any[]) => {
-    const hasSelect = typeof this.props.onSelect === 'function';
-    const hasIndex = this.props.showIndex === true;
-    const summaryColumns = hasIndex ? columns.slice(1) : columns;
-    summaryColumns.pop();
-    const summaryData = currentData?.[0];
-    const renderCell = (title = '', index: number, item: any = {}) => {
-      return (
-        <AntdTable.Summary.Cell key={getUUID()} index={index} align="center" {...item}>
-          {title}
-        </AntdTable.Summary.Cell>
-      );
-    };
-    return (
-      <AntdTable.Summary fixed={this.props.summaryPosition}>
-        <AntdTable.Summary.Row>
-          <AntdTable.Summary.Cell index={0}>0</AntdTable.Summary.Cell>
-          {hasSelect ? renderCell('-', 0) : renderCell('合计', 1)}
-          {hasSelect ? renderCell('合计', 1) : null}
-          {summaryColumns.map(({ dataIndex, ...item }, index) => {
-            return renderCell(summaryData?.[dataIndex], index + 2, item);
-          })}
-          {renderCell('-', 999)}
-        </AntdTable.Summary.Row>
-      </AntdTable.Summary>
-    );
-  };
-
   getOnRow = (restProps: any) => {
-    const { draggable, data, rowKey, isVirtual = false } = this.props;
+    const { draggable, data, rowKey, isVirtual = false, fixRowHeight } = this.props;
     const { dataSource } = this.state;
     const defaultOnRow = restProps.onRow ? restProps.onRow : null;
     const fixRowKeys = restProps?.fixRowKeys || [];
@@ -379,14 +337,13 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     const _data = (data?.length > 0 ? data : dataSource) || [];
     restProps.onRow = (record: any, index: number) => {
       const defaultRowProps = defaultOnRow ? defaultOnRow(record, index) : {};
-      const dataHasFixedKeys =
-        fixRowKeys.filter((key: any) => _data.some((ele: any) => ele[rowKey as any] == key)) || [];
+      const dataHasFixedKeys = fixRowKeys.filter((key: any) => _data.some((ele: any) => ele[rowKey as any] == key)) || [];
       const currentRowKey = record?.[rowKey as any];
       const fixedStyle = {};
 
       if (dataHasFixedKeys.includes(currentRowKey)) {
         fixedStyle['position'] = 'sticky';
-        fixedStyle['top'] = 45 * dataHasFixedKeys.findIndex((item: any) => item == currentRowKey);
+        fixedStyle['top'] = fixRowHeight * dataHasFixedKeys.findIndex((item: any) => item == currentRowKey);
         fixedStyle['zIndex'] = 999;
       }
 
@@ -397,6 +354,54 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
         ...defaultRowProps,
       } as React.HTMLAttributes<any>;
     };
+  };
+
+  renderSummary = (currentData: any[], columns: any[]) => {
+    const { onSelect, showIndex, removeSummary, summaryPosition, expandable, expandedRowRender } = this.props;
+    type IColumnsItemType = IColumnsType extends (infer U)[] ? U : any[];
+    let newColumns = formatColumn(_.flattenDeep(columns)) as IColumnsType;
+    let defaultIndex = 0;
+    if (expandedRowRender || expandable?.expandedRowRender) {
+      newColumns.unshift({} as any);
+      defaultIndex++;
+    }
+    if (onSelect) {
+      newColumns.unshift({} as any);
+      defaultIndex++;
+    }
+    if (showIndex) defaultIndex++;
+
+    const renderCell = (item: IColumnsItemType, index: number, currentItemData: any) => {
+      const textAlign = item.align ? item.align : 'center';
+
+      const _renderSummaryCell = (index: number, content: React.ReactNode, align: 'left' | 'right' | 'center' = 'left') => {
+        return (
+          <AntdTable.Summary.Cell key={index} index={index}>
+            <div style={{ textAlign: align }}>{content}</div>
+          </AntdTable.Summary.Cell>
+        );
+      };
+      if (index == defaultIndex) {
+        const content = item.useSummary ? item.useSummary('合计', currentItemData) : '合计';
+        return _renderSummaryCell(defaultIndex, content, 'center');
+      }
+      if (removeSummary && removeSummary?.length != 0 && removeSummary?.includes(item?.dataIndex as string)) {
+        return _renderSummaryCell(index, '--', textAlign);
+      }
+      const text = currentItemData?.[item?.dataIndex!];
+      let content = text != '合计' ? (item.render ? item?.render(text, currentItemData, index) : text) : '';
+      if (item.useSummary) content = item.useSummary(content, currentItemData);
+
+      return _renderSummaryCell(index, content ?? '--', textAlign);
+    };
+
+    return (
+      <AntdTable.Summary fixed={summaryPosition}>
+        {(currentData || []).map((ele, index) => (
+          <AntdTable.Summary.Row>{newColumns.map((item, index) => renderCell(item, index, ele))}</AntdTable.Summary.Row>
+        ))}
+      </AntdTable.Summary>
+    );
   };
 
   render(): any {
@@ -421,10 +426,12 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       onTableChange,
       initRequest,
       requestCount,
+      isSummary,
+      summaryDataSource: newSummaryDataSource = [],
       ...extraProps
     } = this.props;
     let restProps: any = { ...extraProps };
-    const { loading, height, total, current, pageSize, columns, dataSource, selectedRowkeys } = this.state;
+    const { loading, height, total, current, pageSize, columns, dataSource, selectedRowkeys, summaryDataSource = [] } = this.state;
 
     const paging =
       typeof pagination !== 'boolean'
@@ -489,7 +496,11 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
         }}
         size="small"
         initRequest={initRequest}
-        summary={(currentData: any[]) => (this.props.isSummary ? this.renderSummary(currentData, columns) : null)}
+        summary={(currentData: any[]) =>
+          isSummary && (newSummaryDataSource || summaryDataSource)
+            ? this.renderSummary(newSummaryDataSource?.length != 0 ? newSummaryDataSource : summaryDataSource, columns)
+            : null
+        }
         locale={{
           emptyText: (
             <Empty

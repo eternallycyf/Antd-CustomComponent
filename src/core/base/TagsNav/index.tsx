@@ -153,7 +153,7 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
     setTabChildren(_.omit(tabChildren, removeKey));
     localStore.set('tabs', filteredTabs);
 
-    const targetTab = _.find(tabs, { key: nextTabKey });
+    const targetTab = _.find(filteredTabs, { key: nextTabKey });
     routeTo(targetTab!);
   };
 

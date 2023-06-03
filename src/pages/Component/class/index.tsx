@@ -213,6 +213,9 @@ class Activity extends BaseComponent<IProps, IState> {
       urls: {
         listUrl: `/getActivityList`,
       },
+      urlAlls: {
+        listUrl: `/getActivityListTotal`,
+      },
       selectType: 'checkbox',
       selectedRowKeys,
       selectedRows,
@@ -227,7 +230,7 @@ class Activity extends BaseComponent<IProps, IState> {
       totalPath: 'data.total',
       draggable: true,
       resizable: true,
-      isSummary: false,
+      isSummary: true,
       // 虚拟列表配置
       isVirtual: false,
       scroll: { y: 800 },
@@ -235,6 +238,9 @@ class Activity extends BaseComponent<IProps, IState> {
       rowEventHandlers: {
         onClick: (record, index, event) => {},
       },
+      calcHeight: true,
+      showIndex: true,
+      removeSummary: ['activityType'],
     };
 
     return (

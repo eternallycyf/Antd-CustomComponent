@@ -52,7 +52,11 @@ export default class FileViewer extends PureComponent<IProps, any> {
     }
 
     if (fileType === 'doc' || fileType === 'docx') {
-      return this.wordRef.current?.render(fileId);
+      if (fileId) {
+        return this.wordRef.current?.render(fileId);
+      } else {
+        return this.wordRef.current?.renderByUrl(fileId);
+      }
     }
 
     if (fileType === 'pdf') {
@@ -97,15 +101,7 @@ export default class FileViewer extends PureComponent<IProps, any> {
             {text}
           </Button>
         )}
-        <Modal
-          className={styles.modal}
-          title={modalTitle}
-          open={visible}
-          width={800}
-          footer={null}
-          destroyOnClose
-          onCancel={this.handleCancel}
-        >
+        <Modal className={styles.modal} title={modalTitle} open={visible} width={800} footer={null} destroyOnClose onCancel={this.handleCancel}>
           <ReactFileViewer fileType={fileType} filePath={filePath} />
         </Modal>
         <PDFPreview ref={this.pdfRef} />
