@@ -318,7 +318,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
   };
 
   getOnRow = (restProps: any) => {
-    const { draggable, data, rowKey, isVirtual = false, fixRowHeight } = this.props;
+    const { draggable, data, rowKey, isVirtual = false, fixRowHeight = 45 } = this.props;
     const { dataSource } = this.state;
     const defaultOnRow = restProps.onRow ? restProps.onRow : null;
     const fixRowKeys = restProps?.fixRowKeys || [];
@@ -361,11 +361,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     type IColumnsItemType = IColumnsType extends (infer U)[] ? U : any[];
     let newColumns = formatColumn(_.flattenDeep(columns)) as IColumnsType;
     let defaultIndex = 0;
-    if (expandedRowRender || expandable?.expandedRowRender) {
-      newColumns.unshift({} as any);
-      defaultIndex++;
-    }
-    if (onSelect) {
+    if (expandedRowRender || expandable?.expandedRowRender || onSelect || expandable?.onExpand) {
       newColumns.unshift({} as any);
       defaultIndex++;
     }
