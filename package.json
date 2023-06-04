@@ -53,7 +53,6 @@
     "pizzip": "^3.1.1",
     "prismjs": "^1.29.0",
     "puppeteer": "^19.7.3",
-    "react-color": "^2.19.3",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-excel-renderer": "^1.1.0",

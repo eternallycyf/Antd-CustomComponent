@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Popover } from 'antd';
-import { SketchPicker } from 'react-color';
+import { ColorPicker, ColorPickerProps } from 'antd';
 import styles from './index.less';
+import type { Color } from 'antd/es/color-picker';
 import { IRgba } from '@/core/layouts/BasicLayout';
 import { Dispatch } from '@umijs/max';
 
@@ -13,11 +13,11 @@ interface IProps {
   dispatch: Dispatch;
 }
 
-const ColorPicker: FC<IProps> = (props) => {
+const ThemeColorPicker: FC<IProps> = (props) => {
   const { value, style, color, onChange, dispatch } = props;
 
-  const handleColorOnChange = (hexColor: { rgb: IRgba }) => {
-    const color = hexColor.rgb;
+  const handleColorOnChange: ColorPickerProps['onChange'] = (colorValues) => {
+    const color = colorValues.toRgb() as any as IRgba;
     dispatch({
       type: 'global/changeColor',
       color: color,
@@ -27,26 +27,7 @@ const ColorPicker: FC<IProps> = (props) => {
     }
   };
 
-  return (
-    <Popover
-      overlayClassName={styles.popover}
-      content={
-        <>
-          <span style={{ fontWeight: 700 }}>切换主题色</span>
-          <SketchPicker color={color} onChange={handleColorOnChange} />
-        </>
-      }
-      trigger="click"
-    >
-      <div
-        className={styles.swatch}
-        style={{
-          ...style,
-          background: `rgba(${color?.r}, ${color?.g}, ${color?.b}, ${color?.a})`,
-        }}
-      ></div>
-    </Popover>
-  );
+  return <ColorPicker format="rgb" value={color as any as Color} onChange={handleColorOnChange} />;
 };
 
-export default ColorPicker;
+export default ThemeColorPicker;
