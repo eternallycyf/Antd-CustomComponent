@@ -361,7 +361,12 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     type IColumnsItemType = IColumnsType extends (infer U)[] ? U : any[];
     let newColumns = formatColumn(_.flattenDeep(columns)) as IColumnsType;
     let defaultIndex = 0;
-    if (expandedRowRender || expandable?.expandedRowRender || onSelect || expandable?.onExpand) {
+
+    if (expandedRowRender || expandable?.expandedRowRender) {
+      newColumns.unshift({} as any);
+      defaultIndex++;
+    }
+    if (onSelect || expandable?.onExpand) {
       newColumns.unshift({} as any);
       defaultIndex++;
     }
