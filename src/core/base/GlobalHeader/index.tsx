@@ -23,6 +23,8 @@ const GlobalHeader: FC<IProps> = (props) => {
         paddingInline: 0,
         position: 'relative',
         zIndex: 99,
+        backgroundColor: theme == 'dark' ? 'black' : '#fff',
+        marginBottom: 10,
       }}
       className="core-base-tags-nav-index-tabs"
     >
