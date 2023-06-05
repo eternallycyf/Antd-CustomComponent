@@ -151,7 +151,7 @@ export const renderTooltip = (
               .map((item) => {
                 const left = item.shape ? `<div class="${styles[item.shape]}" style=\"--color:${item.shapeColor}\"></div>` : '';
                 const currentValue = item?.format ? item.format(item.value) : item.value;
-                const isBold = item?.isBold ? styles.blod : undefined;
+                const isBold = item?.isBold ? styles.bold : undefined;
                 const isOnly = item?.isOnly ? styles.contentCenter : styles.content;
                 const Hr = item.hasHr ? `<div class="${styles.hr}"></div>` : '';
 
