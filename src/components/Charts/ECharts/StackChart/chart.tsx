@@ -4,7 +4,7 @@ import { IGetOptions, IChartConfig } from './interface';
 import { defaultFormatColor, renderTooltip, BASE_CONFIG as BASECONFIG, formatNumber } from './utils';
 
 export const getOptions = (config: IGetOptions) => {
-  const { data: DATA, baseConfig = {}, chartConfig = {} } = config;
+  const { data: DATA = [], baseConfig = {}, chartConfig = {} } = config;
   const BASE_CONFIG = { ...BASECONFIG, ...baseConfig };
   const CHART_CONFIG: IChartConfig[] = [...chartConfig];
 
@@ -43,7 +43,7 @@ export const getOptions = (config: IGetOptions) => {
       itemWidth: 16,
       itemHeight: 8,
       itemGap: 30,
-      data: CHART_CONFIG.filter((item) => item.isLegend).map((item) => BASE_CONFIG.GET_LEGEND_FN(item, DATA)),
+      data: CHART_CONFIG.filter((item) => Boolean(item.isLegend)).map((item) => BASE_CONFIG.GET_LEGEND_FN(item, DATA)),
       ...BASE_CONFIG.LEGEND_CONFIG,
     },
     grid: {
@@ -121,7 +121,7 @@ export const getOptions = (config: IGetOptions) => {
           },
         },
       },
-      ...BASE_CONFIG.BAR_YAXIS,
+      ...(BASE_CONFIG.BAR_YAXIS as any),
     ],
     xAxis: {
       type: 'category',
