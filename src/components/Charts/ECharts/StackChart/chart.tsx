@@ -350,7 +350,7 @@ export const getOptions = (config: IGetOptions) => {
           fontWeight: 400,
         },
         ...areaStyle,
-        smooth: BASE_CONFIG.IS_AREA,
+        smooth: false,
         symbol: 'none',
         label: {
           show: false,

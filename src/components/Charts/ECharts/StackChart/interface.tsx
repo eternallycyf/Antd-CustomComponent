@@ -50,6 +50,7 @@ export interface IChartConfig {
    * @default ''
    */
   unitSymbol?: string;
+  percentSymbol?: string;
   /**
    * @description tooltip 及 legend 图标显示的形状
    * @default ''
@@ -73,7 +74,8 @@ export interface IChartConfig {
   /**
    * @description 格式化数据
    */
-  format: (value: number) => number | string;
+  format: (value: number, record: any) => number | string;
+  formatPercent: (value: number, record: any) => number | string;
   /**
    * @description 自定义格式化 tooltip 数字颜色 如果大于0 显示红色，小于0显示绿色...
    * @default (val) => val === 0 ? '#2A303B' : (val > 0 ? '#E62C3B' : '#0FBE3F') : '#2A3038'

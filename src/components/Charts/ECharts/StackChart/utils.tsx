@@ -150,10 +150,11 @@ export const renderTooltip = (
             ${ele
               .map((item) => {
                 const left = item.shape ? `<div class="${styles[item.shape]}" style=\"--color:${item.shapeColor}\"></div>` : '';
-                const currentValue = item?.format ? item.format(item.value) : item.value;
+                const currentValue = item?.format ? item.format(item.value, item) : item.value;
                 const isBold = item?.isBold ? styles.bold : undefined;
                 const isOnly = item?.isOnly ? styles.contentCenter : styles.content;
                 const Hr = item.hasHr ? `<div class="${styles.hr}"></div>` : '';
+                const percent = item.formatPercent ? item.formatPercent(item.percent, item) : item.percent;
 
                 return `
                 <div class="${isOnly}">
@@ -163,7 +164,7 @@ export const renderTooltip = (
                   </div>
                   <div class="${styles.right} ${isBold} ${item?.rightClassName}" style=\"--color:${item?.valueColor};\">
                     <span>${currentValue} ${item?.unitSymbol ?? ''}</span>
-                    <span>${item?.percent != undefined ? item.percent + '%' : ''} </span>
+                    <span>${item?.percentKey != undefined ? `${percent}${item.percentSymbol ?? ''}` : ''} </span>
                   </div>
                 </div>
                 ${Hr}
