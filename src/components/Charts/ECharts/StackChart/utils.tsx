@@ -93,7 +93,6 @@ export const BASE_CONFIG = {
     formatter: (value: number) => Number(value).toFixed(2) + '%',
   },
   LINE_YAXIS: {},
-  BAR_YAXIS: {},
   LEGEND_CONFIG: {},
   BAR_SERIES: {
     type: 'bar',

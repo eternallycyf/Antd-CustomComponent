@@ -147,7 +147,6 @@ export const getOptions = (config: IGetOptions) => {
           },
         },
       },
-      ...(BASE_CONFIG.BAR_YAXIS as any),
     ],
     xAxis: {
       type: 'category',
