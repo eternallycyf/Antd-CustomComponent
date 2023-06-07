@@ -22,6 +22,32 @@ export const getOptions = (config: IGetOptions) => {
       }
     : {};
 
+  const areaTooltipStyles = BASE_CONFIG.IS_AREA
+    ? {
+        axisPointer: {
+          type: 'line',
+          shadowStyle: {
+            color: '#98CEFD',
+            opacity: 0.2,
+          },
+          backgroundColor: 'transparent',
+          borderColor: 'transparent',
+          confine: true,
+        },
+      }
+    : {};
+
+  const getAreaSeriesStyles = BASE_CONFIG.IS_AREA
+    ? (color: any) => ({
+        showSymbol: false,
+        symbol: 'circle',
+        symbolSize: 4,
+        areaStyle: {
+          color,
+        },
+      })
+    : () => ({});
+
   return {
     axisPointer: {
       type: 'cross',
@@ -271,6 +297,8 @@ export const getOptions = (config: IGetOptions) => {
       backgroundColor: 'transparent',
       borderColor: 'transparent',
       confine: true,
+      extraCssText: 'z-index: 99',
+      ...areaTooltipStyles,
       formatter: (params: any) => {
         const arr = params.sort((a: any, b: any) => a.seriesIndex - b.seriesIndex);
 
@@ -330,13 +358,7 @@ export const getOptions = (config: IGetOptions) => {
             return item.value;
           });
       }
-      const areaStyle = BASE_CONFIG.IS_AREA
-        ? {
-            areaStyle: {
-              color: item.shapeColor,
-            },
-          }
-        : {};
+
       return {
         ...item,
         ...customProps,
@@ -349,7 +371,6 @@ export const getOptions = (config: IGetOptions) => {
           fontSize: 12,
           fontWeight: 400,
         },
-        ...areaStyle,
         smooth: false,
         symbol: 'none',
         label: {
@@ -364,6 +385,7 @@ export const getOptions = (config: IGetOptions) => {
           },
           formatter: (config: any) => formatNumber(config.data[item.dataKey]) + (item?.unitSymbol ?? ''),
         },
+        ...getAreaSeriesStyles(item.shapeColor),
         data,
         ...(item.series || {}),
       };

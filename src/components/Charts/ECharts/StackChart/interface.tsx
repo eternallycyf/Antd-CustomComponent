@@ -33,7 +33,7 @@ export interface IChartConfig {
    * @description 是否显示在图例中
    * @required
    */
-  isLegend: boolean;
+  isLegend?: boolean;
   /**
    * @description 图例name额外后缀
    * @default ''
@@ -44,7 +44,7 @@ export interface IChartConfig {
    * @deprecated
    * @todo 暂时根据 isLegend 判断 只有 isLegend 为 true 时才显示在 series 中
    */
-  isSeries: boolean;
+  isSeries?: boolean;
   /**
    * @description tooltip 显示的单位
    * @default ''
@@ -74,8 +74,8 @@ export interface IChartConfig {
   /**
    * @description 格式化数据
    */
-  format: (value: number, record: any) => number | string;
-  formatPercent: (value: number, record: any) => number | string;
+  format?: (value: number, record: any) => number | string;
+  formatPercent?: (value: number, record: any) => number | string;
   /**
    * @description 自定义格式化 tooltip 数字颜色 如果大于0 显示红色，小于0显示绿色...
    * @default (val) => val === 0 ? '#2A303B' : (val > 0 ? '#E62C3B' : '#0FBE3F') : '#2A3038'

@@ -122,7 +122,7 @@ export const renderTooltip = (
   })[],
   BASE_CONFIG: any,
 ) => {
-  const { total, time, width, height } = data[0];
+  const { time, width, height } = data[0];
   const hasCustomHeightAndWidth = BASE_CONFIG.HAS_SCROLL_TOOLTIP;
   const newWidth = hasCustomHeightAndWidth ? width + 'px' : width;
   const newHeight = hasCustomHeightAndWidth ? height + 'px' : height;

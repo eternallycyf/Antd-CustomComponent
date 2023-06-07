@@ -23,6 +23,12 @@ export const getOptions = (config: IGetOptions) => {
         nodeClick: false,
         center: ['50%', '50%'],
         sort: 'null',
+        label: {
+          route: 'tangential',
+          color: '#fff',
+          fontSize: 14,
+          minAngle: 30,
+        },
         textStyle: {
           color: 'transparent',
           fontSize: 12,

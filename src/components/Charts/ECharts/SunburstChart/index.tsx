@@ -14,7 +14,7 @@ const SunburstChart = (props: IGetOptions) => {
       {isEmpty ? (
         <Empty
           style={{
-            height: 300,
+            height: style?.height ?? 300,
             display: 'flex',
             justifyContent: 'center',
             alignContent: 'center',

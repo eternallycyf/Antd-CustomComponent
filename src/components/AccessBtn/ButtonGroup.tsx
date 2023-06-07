@@ -5,10 +5,10 @@ import styles from './index.less';
 
 export interface IButtonGroupDefaultProps {
   value: string | number | undefined;
-  data: { value: string; name: string }[];
+  data: { value: string | number; name: string }[];
   style?: React.CSSProperties;
   className?: string;
-  getCurrentValue?: (value: string) => void;
+  getCurrentValue?: (value: string | number) => void;
 }
 
 type IHandle = {
@@ -19,7 +19,7 @@ const ButtonGroup: React.ForwardRefRenderFunction<IHandle, IButtonGroupDefaultPr
   const { data, style, className, getCurrentValue, value } = props;
   const [type, setType] = useState(value);
 
-  const handleOnChange = (value: string) => {
+  const handleOnChange = (value: string | number) => {
     setType(value);
     getCurrentValue && getCurrentValue(value);
   };
