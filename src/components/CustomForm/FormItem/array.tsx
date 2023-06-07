@@ -6,9 +6,10 @@ import { getFieldComp } from '@/core/helpers';
 
 let uuid = 0;
 
-const ArrayControl: React.FC<IControlProps> = React.forwardRef(({ form, name, arrayProps }: any, ref) => {
+const ArrayControl: React.FC<IControlProps> = React.forwardRef((props, ref) => {
+  const { form, name, arrayProps } = props;
   const { getFieldValue } = form;
-  const { columns, rowKey = 'id' } = arrayProps;
+  const { columns, rowKey = 'id' } = arrayProps!;
   const dataSource = getFieldValue(name); // [{ name: '1', age: '11' }]
 
   useImperativeHandle(ref, () => ({}));
@@ -46,7 +47,7 @@ const ArrayControl: React.FC<IControlProps> = React.forwardRef(({ form, name, ar
           {Object.keys(row)
             .filter((row) => [rowKey, 'type'].indexOf(row) === -1)
             .map((field) => {
-              const column = columns.find((column: any) => column.name === field);
+              const column = columns.find((column: any) => column.name === field) as any;
               const formProps = {
                 form,
                 name: `${name}_${field}_${index}`,
@@ -62,9 +63,7 @@ const ArrayControl: React.FC<IControlProps> = React.forwardRef(({ form, name, ar
               );
             })}
           <Col span={1}>
-            {dataSource.length > 0 ? (
-              <MinusCircleOutlined className="dynamic-delete-button" onClick={() => handleRemove(row[rowKey])} />
-            ) : null}
+            {dataSource.length > 0 ? <MinusCircleOutlined className="dynamic-delete-button" onClick={() => handleRemove(row[rowKey])} /> : null}
           </Col>
         </Row>
       ))}

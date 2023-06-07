@@ -2,8 +2,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Tooltip } from 'antd';
 import { CloseOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import styles from './index.less';
+import { IToolTipTagProps } from './index';
 
-export default function RenderTag({ item, index, handleDeleteTag, checkBoxStatus }: any) {
+interface IRenderTag extends Pick<IToolTipTagProps, 'handleDeleteTag' | 'checkBoxStatus'> {
+  index: number;
+  item: any;
+}
+
+export default function RenderTag(props: IRenderTag) {
+  const { item, index, handleDeleteTag, checkBoxStatus } = props;
   // 当formItem的 isShowCheckAllTag 判断是否有全选的checkbox
   let { isShowCheckAllTag = false } = item;
   const [toggle, setToggle] = useState(false);
@@ -44,10 +51,7 @@ export default function RenderTag({ item, index, handleDeleteTag, checkBoxStatus
       <Tooltip placement="top" title={item.label} key={`${item.name}_${info}`}>
         <div className={styles.tagItem}>
           <span className={styles.tagItemText}>{info}</span>
-          <CloseOutlined
-            onClick={handleDeleteTag.bind(null, { ...item, itemValue: info }, index)}
-            className={styles.tagItemIcon}
-          />
+          <CloseOutlined onClick={handleDeleteTag.bind(null, { ...item, itemValue: info }, index)} className={styles.tagItemIcon} />
         </div>
       </Tooltip>
     ));
@@ -56,10 +60,7 @@ export default function RenderTag({ item, index, handleDeleteTag, checkBoxStatus
       <Tooltip placement="top" title={item.label} key={`${item.name}_${info}`}>
         <div className={styles.tagItem}>
           <span className={styles.tagItemText}>全选</span>
-          <CloseOutlined
-            onClick={handleDeleteTag.bind(null, { ...item, itemValue: info }, index, checkBoxStatus)}
-            className={styles.tagItemIcon}
-          />
+          <CloseOutlined onClick={handleDeleteTag.bind(null, { ...item, itemValue: info }, index, checkBoxStatus)} className={styles.tagItemIcon} />
         </div>
       </Tooltip>
     ))[0];

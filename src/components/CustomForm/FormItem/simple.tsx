@@ -16,115 +16,115 @@ interface ISimpleControlProps extends IControlProps {
   defaultVal?: any;
 }
 
-const SimpleControl: React.FC<ISimpleControlProps> = React.forwardRef(
-  ({ name, form, type, dict, defaultVal, Component: CustomComponent, ...newControlProps }: any, ref) => {
-    let Component: any;
-    let controlProps = { ...newControlProps } || {};
+const SimpleControl: React.FC<ISimpleControlProps> = React.forwardRef((props, ref) => {
+  const { name, form, type, dict, defaultVal, Component: CustomComponent, ...newControlProps } = props;
 
-    useImperativeHandle(ref, () => ({}));
+  let Component: any;
+  let controlProps = { ...newControlProps } || {};
 
-    switch (type) {
-      case 'date':
-      case 'year':
-        Component = DatePicker;
-        break;
-      case 'quarter':
-        Component = QuarterPicker;
-        break;
-      case 'dateRange':
-        Component = RangePicker;
-        break;
-      case 'month':
-        Component = MonthPicker;
-        break;
-      case 'time':
-        Component = TimePicker;
-        break;
-      case 'input':
-        Component = Input;
-        break;
-      case 'password':
-        Component = Password;
-        break;
-      case 'textarea':
-        Component = TextArea;
-        break;
-      case 'search':
-        Component = Input;
-        break;
-      case 'rate':
-        Component = Rate;
-        break;
-      case 'switch':
-        Component = Switch;
-        break;
-      case 'inputNumber':
-        Component = InputNumber;
-        break;
-      case 'slider':
-        Component = Slider;
-        break;
-      case 'custom':
-        Component = CustomComponent;
+  useImperativeHandle(ref, () => ({}));
+
+  switch (type) {
+    case 'date':
+    case 'year':
+      Component = DatePicker;
+      break;
+    case 'quarter':
+      Component = QuarterPicker;
+      break;
+    case 'dateRange':
+      Component = RangePicker;
+      break;
+    case 'month':
+      Component = MonthPicker;
+      break;
+    case 'time':
+      Component = TimePicker;
+      break;
+    case 'input':
+      Component = Input;
+      break;
+    case 'password':
+      Component = Password;
+      break;
+    case 'textarea':
+      Component = TextArea;
+      break;
+    case 'search':
+      Component = Input;
+      break;
+    case 'rate':
+      Component = Rate;
+      break;
+    case 'switch':
+      Component = Switch;
+      break;
+    case 'inputNumber':
+      Component = InputNumber;
+      break;
+    case 'slider':
+      Component = Slider;
+      break;
+    case 'custom':
+      Component = CustomComponent;
+  }
+
+  const formProps = { form, name, type };
+  controlProps = {
+    ...defaultVal[type],
+    ...controlProps,
+  };
+
+  if (type === 'autoComplete') {
+    return (
+      <AutoComplete {...controlProps}>
+        {dict?.map((dic: any) => (
+          <AutoComplete.Option {...dic} key={dic.value} value={dic.value}>
+            {(controlProps.renderItem && controlProps.renderItem(dic)) || dic.text}{' '}
+          </AutoComplete.Option>
+        ))}
+      </AutoComplete>
+    );
+  } else if (type === 'checkbox') {
+    return (
+      <CheckboxGroup {...controlProps}>
+        {dict?.map((dic: any) => (
+          <Checkbox {...dic} key={dic.value} value={dic.value}>
+            {dic.text}
+          </Checkbox>
+        ))}
+      </CheckboxGroup>
+    );
+  } else if (type === 'radio') {
+    let RadioComp: any = Radio;
+    if (controlProps.buttonStyle === 'solid') {
+      RadioComp = Radio.Button;
     }
+    return (
+      <RadioGroup {...controlProps}>
+        {dict?.map((dic: any) => (
+          <RadioComp {...dic} key={dic.value} value={dic.value} title={dic.text}>
+            {dic.text}
+          </RadioComp>
+        ))}
+      </RadioGroup>
+    );
+  } else {
+    const { transform, inputNumber, ...restControlProps } = controlProps;
+    const restSwitchProps = type === 'switch' ? { transform: transform + '' } : {};
+    const inputnumberProps = { inputnumber: inputNumber };
 
-    const formProps = { form, name, type };
-    controlProps = {
-      ...defaultVal[type],
-      ...controlProps,
-    };
-
-    if (type === 'autoComplete') {
-      return (
-        <AutoComplete {...controlProps}>
-          {dict.map((dic: any) => (
-            <AutoComplete.Option {...dic} key={dic.value} value={dic.value}>
-              {(controlProps.renderItem && controlProps.renderItem(dic)) || dic.text}{' '}
-            </AutoComplete.Option>
-          ))}
-        </AutoComplete>
-      );
-    } else if (type === 'checkbox') {
-      return (
-        <CheckboxGroup {...controlProps}>
-          {dict.map((dic: any) => (
-            <Checkbox {...dic} key={dic.value} value={dic.value}>
-              {dic.text}
-            </Checkbox>
-          ))}
-        </CheckboxGroup>
-      );
-    } else if (type === 'radio') {
-      let RadioComp: any = Radio;
-      if (controlProps.buttonStyle === 'solid') {
-        RadioComp = Radio.Button;
-      }
-      return (
-        <RadioGroup {...controlProps}>
-          {dict.map((dic: any) => (
-            <RadioComp {...dic} key={dic.value} value={dic.value} title={dic.text}>
-              {dic.text}
-            </RadioComp>
-          ))}
-        </RadioGroup>
-      );
-    } else {
-      const { transform, inputNumber, ...restControlProps } = controlProps;
-      const restSwitchProps = type === 'switch' ? { transform: transform + '' } : {};
-      const inputnumberProps = { inputnumber: inputNumber };
-
-      return (
-        <Component
-          prefix={type === 'search' ? <SearchOutlined /> : ''}
-          {...restSwitchProps}
-          {...inputnumberProps}
-          {...restControlProps}
-          {...formProps}
-        />
-      );
-    }
-  },
-);
+    return (
+      <Component
+        prefix={type === 'search' ? <SearchOutlined /> : ''}
+        {...restSwitchProps}
+        {...inputnumberProps}
+        {...restControlProps}
+        {...formProps}
+      />
+    );
+  }
+});
 
 SimpleControl.defaultProps = {
   defaultVal: {

@@ -188,13 +188,7 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
       {showToolTipTag && tagList ? (
         <div ref={divRef} className={styles.tagRow}>
           {tagList().map((item, index) => (
-            <RenderTag
-              key={index}
-              item={item}
-              index={index}
-              handleDeleteTag={handleDeleteTag}
-              checkBoxStatus={checkBoxStatus}
-            />
+            <RenderTag key={index} item={item} index={index} handleDeleteTag={handleDeleteTag} checkBoxStatus={checkBoxStatus} />
           ))}
         </div>
       ) : null}
@@ -203,4 +197,4 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
   );
 };
 
-export default React.forwardRef(TooltipTag as React.ForwardRefRenderFunction<IHandle, IToolTipTagProps>);
+export default React.memo(React.forwardRef(TooltipTag));

@@ -2,27 +2,26 @@ import React, { useState, useImperativeHandle } from 'react';
 import { Cascader } from 'antd';
 import { IControlProps } from '@/typings';
 
-const CascadeControl: React.FC<IControlProps> = React.forwardRef(
-  ({ name, form, onChange, fetchConfig, ...controlProps }: any, ref) => {
-    const { dict } = controlProps;
-    const { apiUrl, params, method } = fetchConfig;
-    const [options, setoptions] = useState(dict);
+const CascadeControl: React.FC<IControlProps> = React.forwardRef((props, ref) => {
+  const { name, form, onChange, fetchConfig, ...controlProps } = props;
+  const { dict } = controlProps;
+  const { apiUrl, params, method } = fetchConfig!;
+  const [options, setoptions] = useState(dict);
 
-    useImperativeHandle(ref, () => ({}));
+  useImperativeHandle(ref, () => ({}));
 
-    // 加载远程数据
-    const loadRemoteData = (selectedOptions: any) => {
-      const targetOption = selectedOptions[selectedOptions.length - 1];
-      targetOption.loading = true;
-    };
+  // 加载远程数据
+  const loadRemoteData = (selectedOptions: any) => {
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    targetOption.loading = true;
+  };
 
-    if (apiUrl) {
-      controlProps.loadData = loadRemoteData;
-    }
+  if (apiUrl) {
+    controlProps.loadData = loadRemoteData;
+  }
 
-    return <Cascader {...controlProps} />;
-  },
-);
+  return <Cascader {...(controlProps as any as any)} />;
+});
 
 CascadeControl.defaultProps = {
   // @ts-ignore

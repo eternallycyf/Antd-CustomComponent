@@ -32,7 +32,7 @@ type IHandle = {
   ref: any;
 };
 
-export const EditableContext = React.createContext<ICommonTable<any>>({});
+export const EditableContext = React.createContext<ICommonTable<any>>({} as ICommonTable<any>);
 
 const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (props, ref: any) => {
   //#region
@@ -73,9 +73,7 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (props
     if (type === 'dateRange') {
       const startTime = text?.[0];
       const endTime = text?.[1];
-      return startTime && endTime
-        ? `${dayjs(startTime).format('YYYY-MM-DD')} ~ ${dayjs(endTime).format('YYYY-MM-DD')}`
-        : '--';
+      return startTime && endTime ? `${dayjs(startTime).format('YYYY-MM-DD')} ~ ${dayjs(endTime).format('YYYY-MM-DD')}` : '--';
     }
     return text ?? '--';
   };
@@ -300,7 +298,7 @@ const EditRow: React.ForwardRefRenderFunction<IHandle, IEditTableProps> = (props
   return (
     <Row className={styles['edit-table']}>
       <Col span={col}>
-        <EditableContext.Provider value={{ editingKey, rowKey }}>
+        <EditableContext.Provider value={{ editingKey, rowKey } as {} as ICommonTable<any>}>
           <CommonTable {...tableParams} ref={tableRef} />
         </EditableContext.Provider>
       </Col>

@@ -9,77 +9,68 @@ export interface ISelectTree extends IControlProps {
   treeList: any[];
 }
 
-const treeSelectControl: React.FC<ISelectTree> = React.forwardRef(
-  (
-    {
-      form,
-      name,
-      style,
-      record,
-      treeList,
-      fetchConfig = {},
-      formatRootId,
-      treeDataSimpleMode, // Array<{ id: string, pId: string, rootPId: string }>
-      ...controlProps
-    }: any,
-    ref,
-  ) => {
-    const { apiUrl, method = 'post', params, searchKey = 'search', dataPath = 'data', initDictFn } = fetchConfig;
+const treeSelectControl: React.FC<ISelectTree> = React.forwardRef((props, ref) => {
+  const {
+    form,
+    name,
+    style,
+    record,
+    treeList,
+    fetchConfig,
+    formatRootId,
+    treeDataSimpleMode, // Array<{ id: string, pId: string, rootPId: string }>
+    ...controlProps
+  } = props;
+  const { apiUrl, method = 'post', params, searchKey = 'search', dataPath = 'data', initDictFn } = fetchConfig!;
 
-    const [treeData, setTreeData] = useState(treeList);
+  const [treeData, setTreeData] = useState(treeList);
 
-    useImperativeHandle(ref, () => ({}));
+  useImperativeHandle(ref, () => ({}));
 
-    const fetchData = _.debounce(async (value = '') => {
-      const field = method.toLowerCase() === 'get' ? 'params' : 'data';
-      const searchParams = { ...params };
-      if (searchKey) {
-        searchParams[searchKey] = value;
-      }
-
-      const res = await request(apiUrl, {
-        method,
-        [field]: searchParams,
-      });
-
-      try {
-        if (treeDataSimpleMode) setTreeData(_.get(res, dataPath) || []);
-        if (!treeDataSimpleMode) {
-          const dataSource = _.get(res, dataPath) || [];
-          const treeData = !formatRootId ? dataSource : arrayToTree(dataSource, formatRootId) || [];
-          setTreeData(treeData);
-        }
-      } catch (e) {
-        setTreeData([]);
-      }
-    }, 300);
-
-    useEffect(() => {
-      if (apiUrl && !initDictFn) fetchData();
-    }, []);
-
-    useEffect(() => {
-      if (initDictFn) {
-        const initDict = initDictFn(record);
-        setTreeData(initDict);
-      }
-    }, [initDictFn, record]);
-
-    if (apiUrl) {
-      controlProps.showSearch = true;
-      controlProps.onSearch = fetchData;
+  const fetchData = _.debounce(async (value = '') => {
+    const field = method.toLowerCase() === 'get' ? 'params' : 'data';
+    const searchParams = { ...params };
+    if (searchKey) {
+      searchParams[searchKey] = value;
     }
 
-    return (
-      <TreeSelect
-        treeData={treeData}
-        style={{ ...style, width: '100%' }}
-        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-        {...controlProps}
-      />
-    );
-  },
-);
+    const res = await request(apiUrl, {
+      method,
+      [field]: searchParams,
+    });
+
+    try {
+      if (treeDataSimpleMode) setTreeData(_.get(res, dataPath) || []);
+      if (!treeDataSimpleMode) {
+        const dataSource = _.get(res, dataPath) || [];
+        const treeData = !formatRootId ? dataSource : arrayToTree(dataSource, formatRootId) || [];
+        setTreeData(treeData);
+      }
+    } catch (e) {
+      setTreeData([]);
+    }
+  }, 300);
+
+  useEffect(() => {
+    if (apiUrl && !initDictFn) fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (initDictFn) {
+      const initDict = initDictFn(record);
+      setTreeData(initDict);
+    }
+  }, [initDictFn, record]);
+
+  if (apiUrl) {
+    controlProps.showSearch = true;
+    controlProps.onSearch = fetchData;
+  }
+
+  return (
+    <TreeSelect treeData={treeData} style={{ ...style, width: '100%' }} dropdownStyle={{ maxHeight: 400, overflow: 'auto' }} {...controlProps} />
+  );
+});
 
 treeSelectControl.defaultProps = {
   showLine: true,

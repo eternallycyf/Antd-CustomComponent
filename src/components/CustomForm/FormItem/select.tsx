@@ -5,156 +5,144 @@ import request from '@/utils/request';
 import { IControlProps } from '@/typings';
 const { OptGroup, Option } = Select;
 
-const SelectControl: React.FC<IControlProps> = React.forwardRef(
-  (
-    {
-      form,
-      name,
-      record,
-      dict = [],
-      dictConfig,
-      fetchConfig = {},
-      renderItem,
-      onChange,
-      isSearch, //支持输入
-      editValue,
-      isNeedAll,
-      ...controlProps
-    }: any,
-    ref,
-  ) => {
-    const { group } = controlProps;
-    const {
-      apiUrl,
-      method = 'post',
-      params,
-      searchKey = 'search',
-      dataPath = 'data',
-      initDictFn,
-      firstFetch = true,
-    } = fetchConfig;
+const SelectControl: React.FC<IControlProps> = React.forwardRef((defaultProps, ref) => {
+  const {
+    form,
+    name,
+    record,
+    dict = [],
+    dictConfig,
+    fetchConfig,
+    renderItem,
+    onChange,
+    isSearch, //支持输入
+    editValue,
+    isNeedAll,
+    ...controlProps
+  } = defaultProps;
+  const { group } = controlProps;
+  const { apiUrl, method = 'post', params, searchKey = 'search', dataPath = 'data', initDictFn, firstFetch = true } = fetchConfig!;
 
-    const { textKey, valueKey } = dictConfig;
-    const [fetching, setFetching] = useState(false);
-    const [dataSource, setDataSource]: any[] = useState(dict);
-    const [extraParams, setExtraParams]: any = useState(null);
+  const { textKey, valueKey } = dictConfig!;
+  const [fetching, setFetching] = useState(false);
+  const [dataSource, setDataSource]: any[] = useState(dict);
+  const [extraParams, setExtraParams]: any = useState(null);
 
-    useEffect(() => {
-      const value = record ? record[editValue] || '' : '';
-      if (apiUrl && !initDictFn) {
-        if (!params) {
-          if (firstFetch) {
-            fetchData(value);
-          }
-        }
-        if (params && !_.isEqual(params, extraParams)) {
-          setExtraParams(params);
+  useEffect(() => {
+    const value = record ? record[editValue] || '' : '';
+    if (apiUrl && !initDictFn) {
+      if (!params) {
+        if (firstFetch) {
           fetchData(value);
         }
       }
-    }, [params]);
-
-    useEffect(() => {
-      if (initDictFn) {
-        const initDict = initDictFn(record);
-        setDataSource(initDict);
+      if (params && !_.isEqual(params, extraParams)) {
+        setExtraParams(params);
+        fetchData(value);
       }
-    }, [record]);
+    }
+  }, [params]);
 
-    useEffect(() => {
-      if (!apiUrl && !initDictFn && !_.isEqual(dict, dataSource)) setDataSource(dict);
-    }, [dict]);
+  useEffect(() => {
+    if (initDictFn) {
+      const initDict = initDictFn(record);
+      setDataSource(initDict);
+    }
+  }, [record]);
 
-    useImperativeHandle(ref, () => ({}));
+  useEffect(() => {
+    if (!apiUrl && !initDictFn && !_.isEqual(dict, dataSource)) setDataSource(dict);
+  }, [dict]);
 
-    const fetchData = _.debounce(async (value = '') => {
-      setFetching(true);
+  useImperativeHandle(ref, () => ({}));
 
-      const field = method.toLowerCase() === 'get' ? 'params' : 'data';
-      const searchParams = { ...params };
+  const fetchData = _.debounce(async (value = '') => {
+    setFetching(true);
 
-      if (searchKey) {
-        searchParams[searchKey] = value;
-      }
+    const field = method.toLowerCase() === 'get' ? 'params' : 'data';
+    const searchParams = { ...params };
 
-      const res = await request(apiUrl, {
-        method,
-        [field]: searchParams,
-      });
-
-      const list = _.get(res, dataPath);
-      setFetching(false);
-
-      try {
-        setDataSource(_.get(res, dataPath) || []);
-      } catch (e) {
-        setDataSource([]);
-      }
-
-      if (isSearch) {
-        if (!list || list.length < 1) {
-          setDataSource([{ name: value }]); // 设置默认值
-        }
-      }
-    }, 300);
-
-    const handleChange = (value: any, event: any) => {
-      const valItem = dataSource.find((item: any) => String(item[valueKey]) === String(value));
-      if (onChange) onChange(value, event, valItem);
-    };
-
-    const props: any = {
-      filterOption: false, // 是否根据输入项进行筛选
-      ...controlProps,
-    };
-
-    if (apiUrl) {
-      props.showSearch = true;
-      props.onSearch = fetchData;
-      props.notFoundContent = fetching ? <Spin size="small" /> : undefined;
+    if (searchKey) {
+      searchParams[searchKey] = value;
     }
 
-    const handleClick = () => {
-      if (!params && !firstFetch) {
-        if (dataSource.length === 0) {
-          const value = record ? record[editValue] || '' : '';
-          fetchData(value);
-        }
-      }
-    };
+    const res = await request(apiUrl, {
+      method,
+      [field]: searchParams,
+    });
 
-    function dataAddAllItem(data: any) {
-      return isNeedAll ? [{ [textKey]: '全部', [valueKey]: '' }, ...data] : data;
+    const list = _.get(res, dataPath);
+    setFetching(false);
+
+    try {
+      setDataSource(_.get(res, dataPath) || []);
+    } catch (e) {
+      setDataSource([]);
     }
 
-    return (
-      <Select style={{ width: '100%' }} {...props} onChange={handleChange} onClick={handleClick}>
-        {group
-          ? dataAddAllItem(dataSource).map((dic: any) => (
-              <OptGroup label={dic[textKey]} key={dic[valueKey]}>
-                {dic.children.map((subItem: any) => (
-                  <Option value={String(subItem[valueKey])} key={subItem[valueKey]} disabled={dic.disabled || false}>
-                    {(renderItem && renderItem(subItem)) || subItem[textKey]}
-                  </Option>
-                ))}
-              </OptGroup>
-            ))
-          : dataAddAllItem(dataSource).map((dic: any) => (
-              <Option
-                key={String(dic[valueKey])}
-                value={String(dic[valueKey])}
-                title={dic[textKey]}
-                label={dic[textKey]}
-                option={dic}
-                disabled={dic.disabled || false}
-              >
-                {(renderItem && renderItem(dic)) || dic[textKey]}
-              </Option>
-            ))}
-      </Select>
-    );
-  },
-);
+    if (isSearch) {
+      if (!list || list.length < 1) {
+        setDataSource([{ name: value }]); // 设置默认值
+      }
+    }
+  }, 300);
+
+  const handleChange = (value: any, event: any) => {
+    const valItem = dataSource.find((item: any) => String(item[valueKey]) === String(value));
+    if (onChange) onChange(value, event, valItem);
+  };
+
+  const props: any = {
+    filterOption: false, // 是否根据输入项进行筛选
+    ...controlProps,
+  };
+
+  if (apiUrl) {
+    props.showSearch = true;
+    props.onSearch = fetchData;
+    props.notFoundContent = fetching ? <Spin size="small" /> : undefined;
+  }
+
+  const handleClick = () => {
+    if (!params && !firstFetch) {
+      if (dataSource.length === 0) {
+        const value = record ? record[editValue] || '' : '';
+        fetchData(value);
+      }
+    }
+  };
+
+  function dataAddAllItem(data: any) {
+    return isNeedAll ? [{ [textKey]: '全部', [valueKey]: '' }, ...data] : data;
+  }
+
+  return (
+    <Select style={{ width: '100%' }} {...props} onChange={handleChange} onClick={handleClick}>
+      {group
+        ? dataAddAllItem(dataSource).map((dic: any) => (
+            <OptGroup label={dic[textKey]} key={dic[valueKey]}>
+              {dic.children.map((subItem: any) => (
+                <Option value={String(subItem[valueKey])} key={subItem[valueKey]} disabled={dic.disabled || false}>
+                  {(renderItem && renderItem(subItem)) || subItem[textKey]}
+                </Option>
+              ))}
+            </OptGroup>
+          ))
+        : dataAddAllItem(dataSource).map((dic: any) => (
+            <Option
+              key={String(dic[valueKey])}
+              value={String(dic[valueKey])}
+              title={dic[textKey]}
+              label={dic[textKey]}
+              option={dic}
+              disabled={dic.disabled || false}
+            >
+              {(renderItem && renderItem(dic)) || dic[textKey]}
+            </Option>
+          ))}
+    </Select>
+  );
+});
 
 SelectControl.defaultProps = {
   placeholder: '请选择',

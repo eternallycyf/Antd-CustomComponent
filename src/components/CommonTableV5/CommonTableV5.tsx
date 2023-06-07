@@ -1,23 +1,22 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
-import { DownOutlined, SettingFilled, SettingOutlined } from '@ant-design/icons';
+import { DownOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Popconfirm, Table as AntdTable, Empty, Popover, Checkbox, Row, Col } from 'antd';
 import Table from './components/EnhancedTable';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { IButtonProps, IColumnsType, ICommonTable } from '@/typings';
-import { formatColumn, formatColumn as formatColumnUtil, formatNumber, formatPercent } from '@/utils/util';
+import { formatColumn, formatColumn as formatColumnUtil } from '@/utils/util';
 import BaseTable, { IBaseTableState } from './components/BaseTable';
 import TableBtn from '@/components/CommonTableV5/components/widgets/TableBtn';
 import AccessBtn from '@/components/AccessBtn';
 import styles from './index.less';
-import { getUUID } from '@/utils/random';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { getDvaApp } from '@umijs/max';
 import _ from 'lodash';
-import { ColumnsType } from 'antd/lib/table';
 const { theme } = getDvaApp()._store.getState().global;
+
 class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
   static defaultProps = {
     wrapClassStr: '.tabs-tabPane-active',
@@ -43,11 +42,11 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     removeSummary: [], // 移除的合计项
   };
   cls: string = '';
-  constructor(props: any) {
+  constructor(props: ICommonTable<T>) {
     super(props);
     this.state = {
-      loading: props.loading,
-      height: props.scroll && props.scroll.y ? props.scroll.y : 0,
+      loading: props.loading || false,
+      height: (props.scroll && props.scroll.y ? props.scroll.y : 0) as number,
       total: 0,
       filters: {},
       sorter: {},

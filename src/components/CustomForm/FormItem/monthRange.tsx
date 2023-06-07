@@ -1,10 +1,11 @@
 import React, { useImperativeHandle } from 'react';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
+import { IControlProps } from '@/typings';
 const format = 'YYYYMM';
 const { RangePicker } = DatePicker;
 
-export default React.forwardRef((props: any, ref) => {
+export default React.forwardRef((props: IControlProps, ref) => {
   useImperativeHandle(ref, () => ({}));
 
   const value = (props.value || []).map((v: any) => {
