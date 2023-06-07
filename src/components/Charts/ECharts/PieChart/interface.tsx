@@ -17,10 +17,16 @@ export type IGetOptions = {
 export interface IChartConfig {
   name: string;
   /**
+   * @description tooltipName
+   * @required
+   */
+  extraName?: string;
+  /**
    * @description 数据key
    * @required
    */
   dataKey: string;
+  percentKey?: string;
   /**
    * @description 是否显示在图例中
    * @required
@@ -65,13 +71,13 @@ export interface IChartConfig {
   /**
    * @description 格式化数据
    */
-  format: (value: number) => number | string;
+  format?: (value: number) => number | string;
+  formatPercent?: (value: number) => number | string;
   /**
    * @description 自定义格式化 tooltip 数字颜色 如果大于0 显示红色，小于0显示绿色...
    * @default (val) => val === 0 ? '#2A303B' : (val > 0 ? '#E62C3B' : '#0FBE3F') : '#2A3038'
    */
   formatColor?: (val: number) => CSSProperties['color'];
-  hasHr?: boolean;
   /**
    * @description 一行是否只有一个 Name 没有value 则居中显示
    * @default false

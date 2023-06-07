@@ -59,11 +59,12 @@ export const getOptions = (config: IGetOptions) => {
           ...ele,
           name: ele.name,
           value: DATA[ele.dataKey],
+          percent: DATA[ele.percentKey],
         })),
       },
     ],
     tooltip: {
-      show: false,
+      show: BASE_CONFIG.HAS_TOOLTIP,
       trigger: 'item',
       axisPointer: {
         type: 'shadow',
@@ -80,7 +81,7 @@ export const getOptions = (config: IGetOptions) => {
       confine: true,
       formatter: (params: any) => {
         const defaultDataObj = params.data;
-        const value = defaultDataObj?.data?.value ?? 0.0;
+        const value = defaultDataObj?.value ?? 0.0;
         const valueColor = defaultFormatColor({ ...defaultDataObj, value, BASE_CONFIG });
 
         const newObj = {

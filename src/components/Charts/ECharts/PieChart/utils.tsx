@@ -29,7 +29,7 @@ export const defaultFormatColor = ({ formatColor, value, BASE_CONFIG }: any) => 
 export const BASE_CONFIG = {
   TOOLTIP_WIDTH: 320,
   TOOLTIP_HEIGHT: 350,
-
+  HAS_TOOLTIP: false,
   // tooltip 数值格式化颜色
   BLACK: '#2A303B',
   RED: '#E62C3B',
@@ -51,6 +51,7 @@ export const BASE_CONFIG = {
 export const renderTooltip = (
   data: (IChartConfig & {
     value: number;
+    percent: number;
     valueColor: string;
     width: number;
     height: number;
@@ -64,20 +65,34 @@ export const renderTooltip = (
               .map((item) => {
                 const left = item.shape ? `<div class="${styles[item.shape]}" style=\"--color:${item.shapeColor}\"></div>` : '';
                 const currentValue = item?.format ? item.format(item.value) : item.value;
-                const isBold = item?.isBold ? styles.isBold : undefined;
+                const isBold = item?.isBold ? styles.bold : undefined;
                 const isOnly = item?.isOnly ? styles.contentCenter : styles.content;
-                const Hr = item.hasHr ? `<div class="${styles.hr}"></div>` : '';
+                // const Hr = item.hasHr ? `<div class="${styles.hr}"></div>` : '';
+                const currentPercent = item?.formatPercent ? item.formatPercent(item.percent) : item.percent;
+
                 return `
                 <div class="${isOnly}">
                   <div class="${styles.left}">
                   ${left}
-                  <div class="${styles.text} ${isBold} ${item?.leftClassName}">${item.name}</div>
+                  <div class="${styles.text} ${styles.bold} ${item?.leftClassName}">${item.name}</div>
+                  </div>
+                </div>
+                <div class="${isOnly}">
+                  <div class="${styles.left}">
+                  <div class="${styles.text} ${isBold} ${item?.leftClassName}">${item?.extraName ?? ''}</div>
                   </div>
                   <div class="${styles.right} ${isBold} ${item?.rightClassName}" style=\"--color:${item?.valueColor};\">
                     ${currentValue} ${item?.unitSymbol ?? ''}
                     </div>
                 </div>
-                ${Hr}
+                  <div class="${isOnly}">
+                  <div class="${styles.left}">
+                  <div class="${styles.text} ${isBold} ${item?.leftClassName}">占比</div>
+                  </div>
+                  <div class="${styles.right} ${isBold} ${item?.rightClassName}" style=\"--color:${item?.valueColor};\">
+                    ${item.percentKey ? currentPercent + '%' : ''}
+                    </div>
+                </div>
               `;
               })
               .join('')}
