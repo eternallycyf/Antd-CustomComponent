@@ -42,18 +42,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
   const ref1 = useRef<HTMLDivElement>(null!);
   const ref2 = useRef<HTMLDivElement>(null!);
   const ref3 = useRef<HTMLDivElement>(null!);
-  const {
-    menuList,
-    color,
-    breadcrumbNameMap,
-    children,
-    collapsed,
-    location,
-    sliderMenuState,
-    dispatch,
-    userInfo,
-    theme,
-  } = props;
+  const { menuList, color, breadcrumbNameMap, children, collapsed, location, sliderMenuState, dispatch, userInfo, theme } = props;
   const currentRoutesObj = Object.values(routes).filter((item) => item?.path == location.pathname)?.[0];
   // TODO: routes 添加keepAlive配置
   // const hasKeepAlive = currentRoutesObj?.keepAlive;
@@ -64,9 +53,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
       description: (
         <div>
           <div>鼠标悬浮时展开-而不是点击下拉图标-更加清晰-更易使用</div>
-          <div style={{ color: `rgba(${color?.r}, ${color?.g}, ${color?.b}, ${color?.a})` }}>
-            可以鼠标悬浮一下 权限管理
-          </div>
+          <div style={{ color: `rgba(${color?.r}, ${color?.g}, ${color?.b}, ${color?.a})` }}>可以鼠标悬浮一下 权限管理</div>
           <div>公众组件路由：home-class</div>
         </div>
       ),
@@ -105,8 +92,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
     handleRouterChange();
   }, [dispatch]);
 
-  const { breadcrumbNameMap: localBreadcrumbNameMap = {}, menuList: localMenuList = [] } =
-    getDvaApp()._store.getState().global;
+  const { breadcrumbNameMap: localBreadcrumbNameMap = {}, menuList: localMenuList = [] } = getDvaApp()._store.getState().global;
 
   const siderMenuProps = {
     theme,
@@ -124,8 +110,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
     location,
   };
 
-  const algorithmObj =
-    theme == 'dark' ? { algorithm: antdTheme.darkAlgorithm } : { algorithm: antdTheme.defaultAlgorithm };
+  const algorithmObj = theme == 'dark' ? { algorithm: antdTheme.darkAlgorithm } : { algorithm: antdTheme.defaultAlgorithm };
 
   return (
     <Fragment>
@@ -133,7 +118,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
         theme={{
           ...algorithmObj,
           token: {
-            colorPrimary: color ? `rgba(${color?.r}, ${color?.g}, ${color?.b}, ${color?.a})` : 'cornflowerblue',
+            colorPrimary: color ? `rgba(${color?.r}, ${color?.g}, ${color?.b}, ${color?.a})` : 'rgba(51,9,215)',
           },
         }}
       >

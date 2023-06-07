@@ -53,7 +53,7 @@ const GlobalModel: IGlobalModel = {
     breadcrumbNameMap: {},
     menuList: [],
     accessCollection: (sessionStorage.getItem('accessCollection') as any as any[]) || [],
-    color: { r: '25', g: '141', b: '241', a: '100' },
+    color: { r: '51', g: '99', b: '215', a: '1' },
   },
   reducers: {
     changeCollapsed(state, { collapsed }) {

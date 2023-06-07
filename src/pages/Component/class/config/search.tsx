@@ -68,7 +68,11 @@ export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType 
       type: 'select',
       placeholder: '请选择状态',
       dict: STATUS_DICT,
+      initialValue: STATUS_DICT.map((item) => item.value),
       allowClear: true,
+      controlProps: {
+        mode: 'multiple' as any,
+      },
     },
     {
       name: '带请求的select',
