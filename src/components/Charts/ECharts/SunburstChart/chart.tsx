@@ -40,7 +40,7 @@ export const getOptions = (config: IGetOptions) => {
           // 设置第一层为环形
           {
             r0: '0%',
-            r: '40%',
+            r: '55%',
             itemStyle: {
               borderRadius: 10,
               borderWidth: 2,
@@ -51,8 +51,8 @@ export const getOptions = (config: IGetOptions) => {
             },
           },
           {
-            r0: '40%',
-            r: '70%',
+            r0: '55%',
+            r: '80%',
             itemStyle: {
               borderRadius: 10,
               borderWidth: 2,
