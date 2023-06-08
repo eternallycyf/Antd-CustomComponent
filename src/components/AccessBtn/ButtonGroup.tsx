@@ -27,7 +27,7 @@ const ButtonGroup: React.ForwardRefRenderFunction<IHandle, IButtonGroupDefaultPr
   return (
     <Button.Group size="small" style={style} className={`${styles.btnGroup} ${className}`}>
       {(data || [])?.map((item) => (
-        <Button type={item.value === type ? 'primary' : 'default'} onClick={() => handleOnChange(item.value)}>
+        <Button key={item.value} type={item.value === type ? 'primary' : 'default'} onClick={() => handleOnChange(item.value)}>
           {item.name}
         </Button>
       ))}

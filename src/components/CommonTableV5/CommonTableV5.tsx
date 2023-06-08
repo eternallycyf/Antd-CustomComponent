@@ -194,7 +194,14 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
                   {mainBtn.map((item: any, index: number) => {
                     const { text, buttonType, code, onClick, visible, ...otherProps } = item;
                     const button = (
-                      <Button {...otherProps} size="small" onClick={(e: any) => e.stopPropagation()} type="link" danger={buttonType === 'delete'}>
+                      <Button
+                        key={item?.text}
+                        {...otherProps}
+                        size="small"
+                        onClick={(e: any) => e.stopPropagation()}
+                        type="link"
+                        danger={buttonType === 'delete'}
+                      >
                         {text}
                       </Button>
                     );
@@ -400,7 +407,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     return (
       <AntdTable.Summary fixed={summaryPosition}>
         {(currentData || []).map((ele, index) => (
-          <AntdTable.Summary.Row>{newColumns.map((item, index) => renderCell(item, index, ele))}</AntdTable.Summary.Row>
+          <AntdTable.Summary.Row key={index}>{newColumns.map((item, index) => renderCell(item, index, ele))}</AntdTable.Summary.Row>
         ))}
       </AntdTable.Summary>
     );
