@@ -9,6 +9,7 @@ import _ from 'lodash';
 
 const StackChart = (props: IGetOptions) => {
   const [options, setOptions] = useState({});
+  const [currentSelectedLegend, setCurrentSelectedLegend] = useState<string[]>([]);
   const EchartsRef = useRef<any>(null);
 
   const { data, baseConfig: newBaseConfig, chartConfig = {}, style } = props;
@@ -33,6 +34,19 @@ const StackChart = (props: IGetOptions) => {
 
   const hanleChangeLegend = useCallback(
     (obj: any) => {
+      const selectedKeys = obj?.selected
+        ? Object.entries(obj?.selected)
+            .filter(([key, val]) => val)
+            .map((item) => item?.[0])
+        : [];
+      setCurrentSelectedLegend(selectedKeys);
+      const options = getOptions({
+        data,
+        baseConfig,
+        chartConfig,
+      });
+      setOptions(options);
+
       if (!HAS_TOP_LABEL) return;
       const { selected } = obj;
       const barList = chartConfig.filter((item: any) => item.type === 'bar');

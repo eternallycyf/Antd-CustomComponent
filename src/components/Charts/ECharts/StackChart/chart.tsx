@@ -4,7 +4,7 @@ import { IGetOptions, IChartConfig } from './interface';
 import { defaultFormatColor, renderTooltip, BASE_CONFIG as BASECONFIG, formatNumber } from './utils';
 
 export const getOptions = (config: IGetOptions) => {
-  const { data: DATA = [], baseConfig = {}, chartConfig = {} } = config;
+  const { data: DATA = [], baseConfig = {}, chartConfig = {}, currentSelectedLegend = [] } = config;
   const BASE_CONFIG = { ...BASECONFIG, ...baseConfig };
   const CHART_CONFIG: IChartConfig[] = [...chartConfig];
 
@@ -176,7 +176,9 @@ export const getOptions = (config: IGetOptions) => {
           fontWeight: 400,
         },
         interval: 0,
-        formatter: BASE_CONFIG.XASIS_LABEL_FORMAT,
+        formatter: (v: string, currentSelectedLegend: string[]) => {
+          return BASE_CONFIG.XASIS_LABEL_FORMAT(v, currentSelectedLegend);
+        },
         rich: {
           a: {
             fontSize: 12,
@@ -383,6 +385,24 @@ export const getOptions = (config: IGetOptions) => {
             fontWeight: 400,
           },
           formatter: (config: any) => formatNumber(config.data[item.dataKey]) + (item?.unitSymbol ?? ''),
+        },
+        markLine: {
+          animation: false,
+          lineStyle: {
+            type: 'solid',
+            width: 1,
+            color: '#CACED7',
+          },
+          label: {
+            show: false,
+          },
+          symbol: ['none', 'none'],
+          silent: true,
+          data: [
+            {
+              yAxis: 0,
+            },
+          ],
         },
         ...getAreaSeriesStyles(item.shapeColor),
         data,

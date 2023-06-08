@@ -12,6 +12,7 @@ export type IGetOptions = {
    */
   chartConfig?: any;
   style?: CSSProperties;
+  currentSelectedLegend?: string[];
 };
 
 export interface IChartConfig {

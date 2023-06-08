@@ -83,7 +83,7 @@ export const BASE_CONFIG = {
   },
   // 是否是面积图
   IS_AREA: false,
-  XASIS_LABEL_FORMAT: (v: string) => {
+  XASIS_LABEL_FORMAT: (v: string, currentSelectedLegend: string[]) => {
     const values = v?.split('-');
     if (!Array.isArray(values)) return '--';
     if (values?.length === 0) return '--';
