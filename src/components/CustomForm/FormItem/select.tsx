@@ -12,7 +12,7 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef((defaultProps, r
     record,
     dict = [],
     dictConfig,
-    fetchConfig,
+    fetchConfig = {} as IControlProps['fetchConfig'],
     renderItem,
     onChange,
     isSearch, //支持输入

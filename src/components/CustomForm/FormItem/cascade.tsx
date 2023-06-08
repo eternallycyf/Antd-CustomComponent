@@ -3,7 +3,7 @@ import { Cascader } from 'antd';
 import { IControlProps } from '@/typings';
 
 const CascadeControl: React.FC<IControlProps> = React.forwardRef((props, ref) => {
-  const { name, form, onChange, fetchConfig, ...controlProps } = props;
+  const { name, form, onChange, fetchConfig = {} as IControlProps['fetchConfig'], ...controlProps } = props;
   const { dict } = controlProps;
   const { apiUrl, params, method } = fetchConfig!;
   const [options, setoptions] = useState(dict);

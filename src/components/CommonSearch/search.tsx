@@ -310,13 +310,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
         {showSearchBtn && showResetBtn && (
           <Row style={{ margin: '8px 0 5px 10px' }}>
             {showSearchBtn && (
-              <Button
-                type="primary"
-                htmlType="submit"
-                size="small"
-                icon={<SearchOutlined />}
-                style={{ marginRight: 10 }}
-              >
+              <Button type="primary" htmlType="submit" size="small" icon={<SearchOutlined />} style={{ marginRight: 10 }}>
                 查询
               </Button>
             )}

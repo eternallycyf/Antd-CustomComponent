@@ -77,6 +77,10 @@ export interface IButtonProps extends Omit<ButtonProps, 'onClick' | 'onChange'>,
   onClick?: (record: any, index: number) => void | ((field: FormListFieldData, e: Event, index: number) => void);
 }
 
+export interface ICommonTableContext {
+  loading: boolean;
+}
+
 //表格
 //表格
 /**
@@ -192,6 +196,8 @@ export interface ICommonTable<T> extends TableProps<T> {
   formatColumn?: (column: any[]) => any[];
   children?: React.ReactNode;
   columns: IColumnsType<T>;
+
+  preChildren?: (value: ICommonTableContext) => React.ReactNode | null;
 
   [propName: string]: any;
 }

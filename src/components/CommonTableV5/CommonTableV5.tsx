@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
 import { DownOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Popconfirm, Table as AntdTable, Empty, Popover, Checkbox, Row, Col } from 'antd';
+import { Button, Dropdown, Popconfirm, Table as AntdTable, Empty, Popover, Checkbox, Row, Col, Spin } from 'antd';
 import Table from './components/EnhancedTable';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { IButtonProps, IColumnsType, ICommonTable } from '@/typings';
+import { IButtonProps, IColumnsType, ICommonTable, ICommonTableContext } from '@/typings';
 import { formatColumn, formatColumn as formatColumnUtil } from '@/utils/util';
 import BaseTable, { IBaseTableState } from './components/BaseTable';
 import TableBtn from '@/components/CommonTableV5/components/widgets/TableBtn';
@@ -16,6 +16,8 @@ import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { getDvaApp } from '@umijs/max';
 import _ from 'lodash';
 const { theme } = getDvaApp()._store.getState().global;
+
+const CommonTableContext = React.createContext<ICommonTableContext>({ loading: false });
 
 class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
   static defaultProps = {
@@ -428,6 +430,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       requestCount,
       isSummary,
       summaryDataSource: newSummaryDataSource = [],
+      preChildren,
       ...extraProps
     } = this.props;
     let restProps: any = { ...extraProps };
@@ -479,7 +482,6 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
         height={height}
         rowKey={rowKey}
         scroll={scroll}
-        loading={loading}
         pagination={paging}
         columns={columns}
         dataSource={data?.length > 0 ? data : dataSource}
@@ -517,22 +519,31 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
 
     const table = (
       <Fragment>
-        <Row justify="space-between" align="middle">
-          <Col>
-            <TableBtn button={buttonLeft as IButtonProps[]} />
-          </Col>
-          <Col>
-            <TableBtn button={button as IButtonProps[]} />
-          </Col>
-        </Row>
-        <div className={styles.tableWrap}>
-          {this.props.children}
-          {BaseTable}
-        </div>
+        <Spin spinning={loading}>
+          <Row justify="space-between" align="middle">
+            <Col>
+              <TableBtn button={buttonLeft as IButtonProps[]} />
+            </Col>
+            <Col>
+              <TableBtn button={button as IButtonProps[]} />
+            </Col>
+          </Row>
+          <div className={styles.tableWrap}>
+            {this.props.children}
+            {BaseTable}
+          </div>
+        </Spin>
       </Fragment>
     );
 
-    return draggable ? <DndProvider backend={HTML5Backend}>{table}</DndProvider> : table;
+    return (
+      <Fragment>
+        <CommonTableContext.Provider value={{ loading }}>
+          {preChildren && typeof preChildren === 'function' ? (preChildren({ loading }) as any) : null}
+        </CommonTableContext.Provider>
+        {draggable ? <DndProvider backend={HTML5Backend}>{table}</DndProvider> : table}
+      </Fragment>
+    );
   }
 }
 

@@ -27,7 +27,7 @@ export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType 
         onChange: (value: any) => {
           const [_, values] = self.searchRef.current?.handleRealParams();
           self.setState({ radioValue: value.target.value });
-          self.handleSearch({ ...values, status: value.target.value });
+          self.handleSearch({ ...values, xxxxxStatus: value.target.value });
         },
       },
     },
@@ -68,10 +68,11 @@ export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType 
       type: 'select',
       placeholder: '请选择状态',
       dict: STATUS_DICT,
-      initialValue: STATUS_DICT.map((item) => item.value),
+      initialValue: STATUS_DICT,
       allowClear: true,
       controlProps: {
         mode: 'multiple' as any,
+        labelInValue: true,
       },
     },
     {

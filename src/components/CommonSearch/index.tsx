@@ -2,7 +2,7 @@ import CommonSearch from '@/components/CommonSearch/search';
 import { FormControl, ISearchesType } from '@/typings';
 import type { FormInstance } from 'antd/es/form';
 import _ from 'lodash';
-import React, { FC, useImperativeHandle, useRef } from 'react';
+import React, { FC, useEffect, useImperativeHandle, useRef } from 'react';
 import useSyncState from '@/hook/useSyncState';
 import styles from './index.less';
 import RenderTag from './renderTag';
@@ -11,7 +11,7 @@ import { RowProps } from 'antd';
 export interface IToolTipTagProps {
   formList: ISearchesType;
   record?: any; // 值会映射到表单
-  expandForm?: boolean; // 是否可展开
+  expandForm?: boolean; // 是否展开
   columnNumber?: number; // 一行放几个 formItem
   showSearchBtn?: boolean; // 是否展示搜索按钮
   showResetBtn?: boolean; // 是否展示重置按钮
@@ -55,6 +55,10 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
   const searchRef: React.RefObject<ISearchRef> = useRef(null!);
   const divRef: React.RefObject<any> = useRef(null);
 
+  useEffect(() => {
+    handleTagList(searchRef.current?.form.getFieldsValue());
+  }, []);
+
   useImperativeHandle(ref, () => ({
     handleRealParams,
     searchFormRef: searchRef,
@@ -70,12 +74,19 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
   // 处理tagList
   const handleTagList = (changedValues: any) => {
     if (_.isEmpty(changedValues)) return;
+    const tagFormList = _.flattenDeep(
+      formList.map((item) => {
+        let children = item.children || [];
+        children = children.filter((ele) => ele?.initialValue != '至');
+        return children?.length != 0 ? children : item;
+      }),
+    );
 
     const changedFields = Object.keys(changedValues)
       .map((item) => {
-        const index = formList.findIndex((form: any) => form.name === item);
+        const index = tagFormList.findIndex((form: any) => form.name === item);
         if (index !== -1) {
-          return formList[index];
+          return tagFormList[index];
         }
         return undefined;
       })
@@ -116,7 +127,7 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
         case 'select':
         case 'treeSelect':
           if (Array.isArray(value)) {
-            value = value.map((item) => item.label).join(',');
+            value = value.map((item) => item.label || item.text).join(',');
           } else {
             value = value && value.label;
           }
@@ -159,15 +170,15 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
     }
     const { form } = searchRef.current!;
     const deleteTag: any = tagList().find((item: any) => item.name === name);
-    setTagList(tagList().filter((item: any) => item.name !== name));
     const { controlProps = {}, mode, value } = deleteTag;
     const isMultiple = mode === 'multiple' || controlProps?.mode === 'multiple';
     let newValue = [];
     if (isMultiple) {
       const value = form.getFieldValue(name);
-      newValue = value.filter((item: any) => item.label !== itemValue);
+      newValue = value.filter((item: any) => item.label || item.text !== itemValue);
     }
     form.setFieldsValue({ [name]: isMultiple ? newValue : undefined });
+    handleTagList(form.getFieldsValue());
   };
 
   return (

@@ -16,7 +16,7 @@ const treeSelectControl: React.FC<ISelectTree> = React.forwardRef((props, ref) =
     style,
     record,
     treeList,
-    fetchConfig,
+    fetchConfig = {} as IControlProps['fetchConfig'],
     formatRootId,
     treeDataSimpleMode, // Array<{ id: string, pId: string, rootPId: string }>
     ...controlProps

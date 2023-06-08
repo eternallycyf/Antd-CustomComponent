@@ -4,7 +4,7 @@ import { formatValuesType } from '@/components/CustomForm';
 import projectConfig from '@/config/projectConfig';
 import { ICommonTable, ModalType } from '@/typings';
 import { formatParams } from '@/utils/util';
-import { Col, Form, Input, Row, Select, Table } from 'antd';
+import { Col, Form, Input, Row, Select, Spin, Table } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
 import React, { Component, forwardRef } from 'react';
 import { getColumns } from './config/columns';
@@ -245,14 +245,22 @@ class Activity extends BaseComponent<IProps, IState> {
 
     return (
       <Page>
-        <CommonSearch
-          formList={getSearches(this)}
-          handleSearch={this.handleSearch}
-          ref={this.searchRef}
-          columnNumber={4}
-          handleResetPreCallback={this.handleOnReset}
+        <CommonTable
+          {...tableParams}
+          ref={this.tableRef}
+          preChildren={({ loading }) => (
+            <Spin spinning={loading} indicator={<span />}>
+              <CommonSearch
+                formList={getSearches(this)}
+                handleSearch={this.handleSearch}
+                ref={this.searchRef}
+                columnNumber={4}
+                expandForm={false}
+                handleResetPreCallback={this.handleOnReset}
+              />
+            </Spin>
+          )}
         />
-        <CommonTable {...tableParams} ref={this.tableRef} />
         <CustomForm
           title="营销活动"
           // isShowTitlePrefix={false}
