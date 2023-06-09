@@ -1,13 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-  useDeferredValue,
-  Suspense,
-  useTransition,
-} from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback, useDeferredValue, Suspense, useTransition } from 'react';
 import classNames from 'classnames';
 import Table from './MemoTable';
 import styles from './VirtualScrollTable.less';
@@ -52,8 +43,7 @@ const getRangeBuilder = (fn: any, rowOrColumn: any) => {
   return (...args: any) => {
     const [scrollItem, displayColumns] = args;
     const { scrollTop, scrollLeft } = scrollItem;
-    const scrollDirection =
-      scrollTop === prevScrollTop ? 'horizontal' : scrollLeft === prevScrollLeft ? 'vertical' : null; //当前是水平滚动还是垂直滚动
+    const scrollDirection = scrollTop === prevScrollTop ? 'horizontal' : scrollLeft === prevScrollLeft ? 'vertical' : null; //当前是水平滚动还是垂直滚动
     let value;
     if (prevScrollDirection === scrollDirection) {
       if (scrollDirection === 'vertical' && rowOrColumn === 'column') {
@@ -154,6 +144,11 @@ const VirtualScrollTable = (props: any) => {
       }
       if (column.tooltip && columnIndex === i) {
         realWidth = th.clientWidth;
+        break;
+      }
+      if (typeof column.title === 'function') {
+        realWidth = th.clientWidth;
+        break;
       }
     }
     return realWidth;
@@ -214,11 +209,7 @@ const VirtualScrollTable = (props: any) => {
           rowSelection.type === 'radio' ? (
             <Radio key={currentRowKey} checked={currentRowKey === selectedRowKeys[0]} onClick={onRadioClick} />
           ) : (
-            <Checkbox
-              checked={selectedRowKeys.includes(currentRowKey)}
-              onChange={onCheckboxChange}
-              {...checkboxProps}
-            />
+            <Checkbox checked={selectedRowKeys.includes(currentRowKey)} onChange={onCheckboxChange} {...checkboxProps} />
           );
         const renderCell = rowSelection.renderCell;
         if (typeof renderCell === 'function') return renderCell(false, record, index, node);
@@ -233,26 +224,11 @@ const VirtualScrollTable = (props: any) => {
     () => mergedColumns.filter((item: any) => item.fixed !== 'left' && item.fixed !== 'right'),
     [newMergedColumns],
   );
-  const fixLeftColumnList: any[] = useMemo(
-    () => mergedColumns.filter((item: any) => item.fixed === 'left'),
-    [newMergedColumns],
-  );
-  const fixLeftColumnTotalWidth = useMemo(
-    () => fixLeftColumnList.reduce((accurate, item) => accurate + item.width, 0),
-    [fixLeftColumnList],
-  );
-  const fixRightColumnList: any[] = useMemo(
-    () => mergedColumns.filter((item: any) => item.fixed === 'right'),
-    [newMergedColumns],
-  );
-  const fixRightColumnTotalWidth = useMemo(
-    () => fixRightColumnList.reduce((accurate, item) => accurate + item.width, 0),
-    [fixRightColumnList],
-  );
-  const columnTotalWidth = useMemo(
-    () => mergedColumns.reduce((accurate: any, item: any) => accurate + item.width, 0),
-    [mergedColumns],
-  );
+  const fixLeftColumnList: any[] = useMemo(() => mergedColumns.filter((item: any) => item.fixed === 'left'), [newMergedColumns]);
+  const fixLeftColumnTotalWidth = useMemo(() => fixLeftColumnList.reduce((accurate, item) => accurate + item.width, 0), [fixLeftColumnList]);
+  const fixRightColumnList: any[] = useMemo(() => mergedColumns.filter((item: any) => item.fixed === 'right'), [newMergedColumns]);
+  const fixRightColumnTotalWidth = useMemo(() => fixRightColumnList.reduce((accurate, item) => accurate + item.width, 0), [fixRightColumnList]);
+  const columnTotalWidth = useMemo(() => mergedColumns.reduce((accurate: any, item: any) => accurate + item.width, 0), [mergedColumns]);
 
   const [totalWidth, setTotalWidth] = useState(0);
 
@@ -507,14 +483,7 @@ const VirtualScrollTable = (props: any) => {
       return { rowSpan, colSpan };
     };
 
-    const setCellStyle = (
-      column: any,
-      columnIndex: any,
-      columns: any,
-      rowSpan: any,
-      colSpan: any,
-      rowIndex: number,
-    ) => {
+    const setCellStyle = (column: any, columnIndex: any, columns: any, rowSpan: any, colSpan: any, rowIndex: number) => {
       const showHover = rowSpan > 1 && rowIndex < hoverRowIndex && rowIndex + rowSpan > hoverRowIndex;
       const showActive = rowSpan > 1 && rowIndex < activeRowIndex && rowIndex + rowSpan > activeRowIndex;
       const style = {
@@ -528,17 +497,14 @@ const VirtualScrollTable = (props: any) => {
       };
 
       const isLastColumn =
-        columnIndex === columns.length - 1 &&
-        (column.fixed === 'right' || (!fixRightColumnList.length && column.fixed !== 'left'));
+        columnIndex === columns.length - 1 && (column.fixed === 'right' || (!fixRightColumnList.length && column.fixed !== 'left'));
 
       if (isLastColumn) style.width = (column.realWidth || column.width) - 13 + 'px';
       return { ...column.style, ...style };
     };
 
     const setCellContent = (column: any, row: any, rowIndex: number) => {
-      return typeof column.render === 'function'
-        ? column.render(row[column.dataIndex], row, rowIndex)
-        : row[column.dataIndex];
+      return typeof column.render === 'function' ? column.render(row[column.dataIndex], row, rowIndex) : row[column.dataIndex];
     };
 
     const renderCell = (column: any, columnIndex: any, row: any, rowIndex: any, columns: any) => {
@@ -576,12 +542,7 @@ const VirtualScrollTable = (props: any) => {
 
     return (
       <Suspense fallback={<h2>Loading...</h2>}>
-        <div
-          className={styles['scroll-container']}
-          onScroll={_.throttle(_onScroll, 60)}
-          style={{ height: height }}
-          ref={scrollRef}
-        >
+        <div className={styles['scroll-container']} onScroll={_.throttle(_onScroll, 60)} style={{ height: height }} ref={scrollRef}>
           <table
             style={{
               height: totalHeight + 'px',
@@ -611,16 +572,10 @@ const VirtualScrollTable = (props: any) => {
                       onMouseEnter={() => setHoverRowIndex(rowIndex)}
                       onMouseLeave={() => setHoverRowIndex(-1)}
                     >
-                      {fixLeftColumnList.map((column, columnIndex) =>
-                        renderCell(column, columnIndex, row, rowIndex, fixLeftColumnList),
-                      )}
-                      {displayColumns.map((column, columnIndex) =>
-                        renderCell(column, columnIndex, row, rowIndex, displayColumns),
-                      )}
+                      {fixLeftColumnList.map((column, columnIndex) => renderCell(column, columnIndex, row, rowIndex, fixLeftColumnList))}
+                      {displayColumns.map((column, columnIndex) => renderCell(column, columnIndex, row, rowIndex, displayColumns))}
                       {/* 分开写的目的是为了避免闪屏。由于列数不固定，如果一起写会添加删除dom，固定在右边的列会闪屏 */}
-                      {fixRightColumnList.map((column, columnIndex) =>
-                        renderCell(column, columnIndex, row, rowIndex, fixRightColumnList),
-                      )}
+                      {fixRightColumnList.map((column, columnIndex) => renderCell(column, columnIndex, row, rowIndex, fixRightColumnList))}
                     </tr>
                   ))
                 : props?.locale?.emptyText}
