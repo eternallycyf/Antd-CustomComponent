@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback, useDeferredValue, Suspense, useTransition } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import classNames from 'classnames';
 import Table from './MemoTable';
 import styles from './VirtualScrollTable.less';
@@ -70,7 +70,7 @@ const VirtualScrollTable = (props: any) => {
     columns,
     height = 600,
     rowHeight = 40,
-    dataSource: dataSourceN = [],
+    dataSource: dataSource1 = [],
     rowEventHandlers,
     fixRowkeys = [],
     rowKey,
@@ -82,8 +82,6 @@ const VirtualScrollTable = (props: any) => {
     onSearchOrReset,
   } = props;
   const tableRef = useRef(null);
-  const dataSource1 = useDeferredValue(dataSourceN);
-  const [isPending, startTransition] = useTransition();
 
   const dataSource = useMemo(() => {
     return (dataSource1 || []).map((item: any) => {
@@ -104,7 +102,7 @@ const VirtualScrollTable = (props: any) => {
         headCellNodeList[index].style.left = left + 'px';
         left += column.width;
       } else {
-        left += 10;
+        left += 40;
       }
     });
   }, []);
@@ -263,30 +261,19 @@ const VirtualScrollTable = (props: any) => {
   }, [height]);
 
   const RenderVirtualList = (dataSource = [], { scrollbarSize, ref, onScroll, ...a }: any, ...b: any) => {
-    const [queryTop, setTop] = useState(0);
-    const [queryLeft, setLeft] = useState(0);
-    const [queryRows, setRows] = useState([]);
-    const [queryDisplayColumns, setDisplayColumns] = useState([]);
-    const [queryPointerEvents, setPointerEvents] = useState('auto');
-    const [queryActiveRowIndex, setActiveRowIndex] = useState(-1);
-    const [queryHoverRowIndex, setHoverRowIndex] = useState(-1);
-    const [queryTableScrollTop, setTableScrollTop] = useState(0);
+    const [top, setTop] = useState(0);
+    const [left, setLeft] = useState(0);
+    const [rows, setRows] = useState([]);
+    const [displayColumns, setDisplayColumns] = useState([]);
+    const [pointerEvents, setPointerEvents] = useState('auto');
+    const [activeRowIndex, setActiveRowIndex] = useState(-1);
+    const [hoverRowIndex, setHoverRowIndex] = useState(-1);
+    const [tableScrollTop, setTableScrollTop] = useState(0);
     const scrollRef = useRef<any>(null);
-
-    const top = useDeferredValue(queryTop);
-    const left = useDeferredValue(queryLeft);
-    const rows = useDeferredValue(queryRows);
-    const displayColumns = useDeferredValue(queryDisplayColumns);
-    const pointerEvents = useDeferredValue(queryPointerEvents);
-    const activeRowIndex = useDeferredValue(queryActiveRowIndex);
-    const hoverRowIndex = useDeferredValue(queryHoverRowIndex);
-    const tableScrollTop = useDeferredValue(queryTableScrollTop);
 
     useEffect(() => {
       setTableData(scrollRef.current);
-      startTransition(() => {
-        setShadow(scrollRef.current);
-      });
+      setShadow(scrollRef.current);
     }, [dataSource, rowNumber, totalHeight, selectedRowKeys, newMergedColumns]);
 
     // 查询时重置数据
@@ -447,9 +434,7 @@ const VirtualScrollTable = (props: any) => {
         setPointerEvents('none');
       }
       setPointerEventsDebounce();
-      startTransition(() => {
-        setActiveRowIndex(-1); // 重置点击
-      });
+      setActiveRowIndex(-1); // 重置点击
       const scrollItem = e.target;
       onScroll({ scrollLeft: scrollItem.scrollLeft });
       handleScroll(scrollItem);
@@ -458,9 +443,7 @@ const VirtualScrollTable = (props: any) => {
     const onClick = (rowObj: any) => {
       if (typeof rowEventHandlers?.onclick !== 'function') return;
       rowEventHandlers?.onclick(rowObj);
-      startTransition(() => {
-        setActiveRowIndex(rowObj.rowIndex);
-      });
+      setActiveRowIndex(rowObj.rowIndex);
     };
 
     const calcWidth = (colSpan: any, columns: any, columnIndex: number) => {
@@ -541,48 +524,46 @@ const VirtualScrollTable = (props: any) => {
     };
 
     return (
-      <Suspense fallback={<h2>Loading...</h2>}>
-        <div className={styles['scroll-container']} onScroll={_.throttle(_onScroll, 60)} style={{ height: height }} ref={scrollRef}>
-          <table
+      <div className={styles['scroll-container']} onScroll={_onScroll} style={{ height: height }} ref={scrollRef}>
+        <table
+          style={{
+            height: totalHeight + 'px',
+            width: totalWidth + 'px',
+            pointerEvents: pointerEvents as any,
+          }}
+        >
+          <tbody
+            className={styles['table-content-container']}
             style={{
-              height: totalHeight + 'px',
-              width: totalWidth + 'px',
-              pointerEvents: pointerEvents as any,
+              right: rows.length ? 'unset' : 0,
+              top: top + 'px',
+              left: left + 'px',
             }}
           >
-            <tbody
-              className={styles['table-content-container']}
-              style={{
-                right: rows.length ? 'unset' : 0,
-                top: top + 'px',
-                left: left + 'px',
-              }}
-            >
-              {rows.length
-                ? rows.map((row, rowIndex) => (
-                    <tr
-                      className={`
+            {rows.length
+              ? rows.map((row, rowIndex) => (
+                  <tr
+                    className={`
                 ${styles['row']}
                 ${rowIndex === activeRowIndex && styles['row-active']}
                 ${fixRowkeys.includes(row[rowKey]) && styles['fix-row-top']}
                 `}
-                      style={getRowStyle(rowIndex)}
-                      key={rowIndex}
-                      onClick={() => onClick({ rowKey: rowIndex, rowData: row, rowIndex })}
-                      onMouseEnter={() => setHoverRowIndex(rowIndex)}
-                      onMouseLeave={() => setHoverRowIndex(-1)}
-                    >
-                      {fixLeftColumnList.map((column, columnIndex) => renderCell(column, columnIndex, row, rowIndex, fixLeftColumnList))}
-                      {displayColumns.map((column, columnIndex) => renderCell(column, columnIndex, row, rowIndex, displayColumns))}
-                      {/* 分开写的目的是为了避免闪屏。由于列数不固定，如果一起写会添加删除dom，固定在右边的列会闪屏 */}
-                      {fixRightColumnList.map((column, columnIndex) => renderCell(column, columnIndex, row, rowIndex, fixRightColumnList))}
-                    </tr>
-                  ))
-                : props?.locale?.emptyText}
-            </tbody>
-          </table>
-        </div>
-      </Suspense>
+                    style={getRowStyle(rowIndex)}
+                    key={rowIndex}
+                    onClick={() => onClick({ rowKey: rowIndex, rowData: row, rowIndex })}
+                    onMouseEnter={() => setHoverRowIndex(rowIndex)}
+                    onMouseLeave={() => setHoverRowIndex(-1)}
+                  >
+                    {fixLeftColumnList.map((column, columnIndex) => renderCell(column, columnIndex, row, rowIndex, fixLeftColumnList))}
+                    {displayColumns.map((column, columnIndex) => renderCell(column, columnIndex, row, rowIndex, displayColumns))}
+                    {/* 分开写的目的是为了避免闪屏。由于列数不固定，如果一起写会添加删除dom，固定在右边的列会闪屏 */}
+                    {fixRightColumnList.map((column, columnIndex) => renderCell(column, columnIndex, row, rowIndex, fixRightColumnList))}
+                  </tr>
+                ))
+              : props?.locale?.emptyText}
+          </tbody>
+        </table>
+      </div>
     );
   };
 
