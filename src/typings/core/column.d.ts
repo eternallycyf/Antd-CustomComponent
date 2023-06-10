@@ -6,7 +6,7 @@ import { Search } from './form';
 //#region
 type AnyData = Record<string, unknown>;
 type RenderReturn<TRecord = AnyData> = ReturnType<NonNullable<ColumnType<TRecord>['render']>>;
-type Column<TRecord = AnyData> =
+export type Column<TRecord = AnyData> =
   // | (Omit<ColumnGroupType<TRecord>, 'render'> & {
   //     render?: (value: TRecord, record: TRecord, index: number) => RenderReturn<TRecord>;
   //   })
@@ -60,7 +60,7 @@ type Column<TRecord = AnyData> =
       children?: Column<TRecord>[];
       // 仅在editable为true时生效
       editable?: boolean;
-      formItemProps?: Search;
+      formItemProps?: Search<TRecord>;
       // 权限控制
       acpCode?: string;
 
@@ -83,7 +83,7 @@ type Column<TRecord = AnyData> =
     };
 // & FormControl
 // 传入泛型 Columns<{ code: string }> 指定dataIndex及render的record类型
-type Columns<TRecord = AnyData> = Column<TRecord>[];
+type Columns<TRecord = AnyData, Rest = AnyData> = (Column<TRecord> & Rest)[];
 //表单控件
-export type IBaseColumnsType<T = AnyData> = Columns<T>;
+export type IBaseColumnsType<T = AnyData, R = AnyData> = Columns<T, R>;
 //#endregion

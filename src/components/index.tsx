@@ -3,6 +3,7 @@ import BaseComponent from './BaseComponent';
 import * as Widget from './Widget';
 import CommonSearch from './CommonSearch';
 import CommonTable from './CommonTableV5/CommonTableV5';
+import CommonEditTable from './CommonEditTable';
 import CustomForm from './CustomForm';
 import FormBuilder from './CustomForm/FormBuilder';
 import CustomTooltip from './CustomTooltip/CustomTooltip';
@@ -20,6 +21,7 @@ export {
   Widget,
   CommonSearch,
   CommonTable,
+  CommonEditTable,
   CustomForm,
   FormBuilder,
   Charts,

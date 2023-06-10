@@ -14,8 +14,8 @@ import { IBaseControlProps } from './core/control';
 import { IButtonGroupDefaultProps } from '@/components/AccessBtn/ButtonGroup';
 type boolFunc = (config: { form: FormInstance; formData: any; record: any }) => boolean;
 
-export type IColumnsType<T = any> = IBaseColumnsType<T>;
-export type ISearchesType<T = any> = IBaseSearchesType<T>;
+export type IColumnsType<T = Record<string, unknown>, R = Record<string, unknown>> = IBaseColumnsType<T, R>;
+export type ISearchesType<T = Record<string, unknown>> = IBaseSearchesType<T>;
 
 //弹窗类型
 export enum ModalType {
@@ -66,15 +66,19 @@ export interface IButtonGroupProps {
   groupDict?: IButtonGroupDefaultProps['data'];
 }
 
-export interface IButtonProps extends Omit<ButtonProps, 'onClick' | 'onChange'>, IButtonGroupProps {
+export interface IButtonDeleteProps {
+  deleteText?: string;
+}
+
+export interface IButtonProps<T = any> extends Omit<ButtonProps, 'onClick' | 'onChange'>, IButtonGroupProps, IButtonDeleteProps {
   text: string | ReactNode;
   code?: string;
   visible?: boolean | boolFunc | ((field: FormListFieldData, e: Event, index: number) => void);
   /**@description 暂时只有Button支持 */
   element?: ReactNode;
-  buttonType?: 'delete' | 'group' | 'formItem' | 'custom';
+  buttonType?: 'default' | 'link' | 'delete' | 'group' | 'formItem' | 'custom';
   formItemProps?: ISearchesType extends Array<infer U> ? U : any;
-  onClick?: (record: any, index: number) => void | ((field: FormListFieldData, e: Event, index: number) => void);
+  onClick?: T;
 }
 
 export interface ICommonTableContext {

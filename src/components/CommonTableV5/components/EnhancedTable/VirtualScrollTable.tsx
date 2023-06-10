@@ -576,7 +576,6 @@ const VirtualScrollTable = (props: any) => {
       components={{
         body: RenderVirtualList,
       }}
-      scroll={{ ...props.scroll, scrollToFirstRowOnChange: false }}
     />
   );
 };

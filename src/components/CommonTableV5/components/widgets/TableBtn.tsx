@@ -33,12 +33,17 @@ export const renderBtn = (button: any) => {
 };
 interface ITableBtnProps {
   button: IButtonProps[];
+  style?: React.CSSProperties;
 }
 
 class TableBtn extends React.PureComponent<ITableBtnProps, any> {
   render() {
-    const { button } = this.props;
-    return button && button.length > 0 ? <div className={cx(styles.buttonRow)}>{renderBtn(button)}</div> : null;
+    const { button, style } = this.props;
+    return button && button.length > 0 ? (
+      <div style={style} className={cx(styles.buttonRow)}>
+        {renderBtn(button)}
+      </div>
+    ) : null;
   }
 }
 

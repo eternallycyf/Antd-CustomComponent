@@ -24,15 +24,7 @@ const modifyClassForElement = (selectors: string = '', curClass = '', method = '
   dom.className = finalClass;
 };
 
-const getSelectedMenuKeys = ({
-  pathname,
-  flatMenuKeys,
-  openKeys,
-}: {
-  pathname: string;
-  flatMenuKeys: string[];
-  openKeys: string[];
-}) => {
+const getSelectedMenuKeys = ({ pathname, flatMenuKeys, openKeys }: { pathname: string; flatMenuKeys: string[]; openKeys: string[] }) => {
   const keys = urlToList(pathname).map((itemPath) => getMenuMatches(flatMenuKeys, itemPath).pop());
 
   // if pathname can't match, use the nearest parent's key
@@ -121,10 +113,7 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
                 flMenuClass = unselectedStyles;
               }
               return (
-                <MenuItem
-                  className={`${styles.menuItem} ${styles.subMenuClass} ${styles.thirdMenu}`}
-                  key={itemChild.path || itemChild.name}
-                >
+                <MenuItem className={`${styles.menuItem} ${styles.subMenuClass} ${styles.thirdMenu}`} key={itemChild.path || itemChild.name}>
                   {getMenuItemPath(itemChild, pathname)}
                 </MenuItem>
               );
@@ -133,12 +122,10 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
         );
       }
       //  二级菜单
-      return (
-        <SubMenu className={styles.subMenu} path={item.path} key={item.path || item.name} title={item.name}></SubMenu>
-      );
+      return <SubMenu className={styles.subMenu} path={item.path} key={item.path || item.name} title={item.name}></SubMenu>;
     }) as JSX.Element[];
 
-    const arr = new Array(2).fill(1);
+    const arr = new Array(3).fill(1);
     const contentWrapper = (
       <div onMouseOver={showContentMask} onMouseOut={hideContentMask} className={styles.overview}>
         {arr.map((_, ind) => (

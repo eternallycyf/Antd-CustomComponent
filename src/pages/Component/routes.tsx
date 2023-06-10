@@ -22,5 +22,11 @@ export default {
       component: '@/pages/Component/hook',
       icon: 'smile',
     },
+    {
+      name: 'editTable',
+      path: '/home/editTable',
+      component: '@/pages/Component/EditTable',
+      icon: 'smile',
+    },
   ],
 };

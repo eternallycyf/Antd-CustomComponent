@@ -25,7 +25,7 @@ export const objectToQueryStr = (obj: any) => {
   return str.join('&');
 };
 
-const renderTooltip = (title: string = '', tooltip: string = '', extraText = '') => {
+export const renderTooltip = (title: string = '', tooltip: string = '', extraText = '') => {
   return (
     <div>
       <span style={{ marginRight: 4 }}>{title}</span>
@@ -59,7 +59,7 @@ export const formatPercent = (value: number) => {
   return (value * 100)?.toFixed(2) + '%';
 };
 
-const formatTime = (options: any, text: any) => {
+export const formatTime = (options: any, text: any) => {
   if (_.isNil(text)) return '--';
   if (typeof options.formatTime === 'object') {
     const { format, type } = options.formatTime;
