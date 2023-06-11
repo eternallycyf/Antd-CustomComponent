@@ -29,17 +29,31 @@ const AccessBtn: React.FC<IProps> = (props) => {
     const accessCodeList = accessCollection.map((item) => item);
 
     const btnEleList = (btnList || []).map((btn, index) => {
-      const { code, text, size, onClick, buttonType, groupDict = [], groupValue, formItemProps, onChange, deleteText = '', ...restProps } = btn;
+      const {
+        code,
+        text,
+        size,
+        onClick,
+        buttonType,
+        groupDict = [],
+        groupValue,
+        formItemProps,
+        onChange,
+        deleteText = '',
+        visible,
+        ...restProps
+      } = btn;
 
       if (code && accessCodeList.indexOf(code) === -1) return null;
 
       if (buttonType === 'custom') {
-        return text;
+        return <Fragment key={index}>{text}</Fragment>;
       }
 
       if (buttonType === 'formItem') {
         return (
           <Form.Item
+            key={index}
             name={formItemProps?.name as string}
             label={formItemProps?.label as string}
             {...formItemProps?.itemProps}
@@ -64,7 +78,7 @@ const AccessBtn: React.FC<IProps> = (props) => {
 
       if (buttonType === 'delete') {
         return (
-          <Popconfirm title={deleteText || '确认删除该记录'} data-code={code || getUUID()} onConfirm={onClick}>
+          <Popconfirm key={index} title={deleteText || '确认删除该记录'} data-code={code || getUUID()} onConfirm={onClick}>
             <Button key={`access-${code || index}${getUUID()}`} size={size || 'middle'} danger type="link" {...restProps}>
               {text}
             </Button>

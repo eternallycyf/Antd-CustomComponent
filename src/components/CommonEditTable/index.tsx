@@ -1,7 +1,7 @@
 import { Table as AntdTable } from 'antd';
 import React, { FC } from 'react';
 import VirtualScrollTable from '../CommonTableV5/components/EnhancedTable/VirtualScrollTable';
-import EditTable, { ICommonEditTableHandle, ICommonEditTableProps } from './EditTable';
+import EditTable, { ICommonEditTableHandle, ICommonEditTableProps, ICommonEditTableColumnsType } from './EditTable';
 import Item from './Item';
 
 export const Table: FC<{ isVirtual: boolean; status?: ICommonEditTableProps['status']; [props: string]: any }> = (props) => {

@@ -12,10 +12,18 @@ import type { IBaseColumnsType } from './core/column';
 import { IBaseSearchesType } from './core/form';
 import { IBaseControlProps } from './core/control';
 import { IButtonGroupDefaultProps } from '@/components/AccessBtn/ButtonGroup';
+import { ICommonEditTableHandle, ICommonEditTableProps, ICommonEditTableColumnsType } from '@/components/CommonEditTable/EditTable';
+import { ICommonEditTableItemProps } from '@/components/CommonEditTable/Item';
+
 type boolFunc = (config: { form: FormInstance; formData: any; record: any }) => boolean;
 
 export type IColumnsType<T = Record<string, unknown>, R = Record<string, unknown>> = IBaseColumnsType<T, R>;
 export type ISearchesType<T = Record<string, unknown>> = IBaseSearchesType<T>;
+
+export type IEditTableHandle<Values = any, FormValues = any> = ICommonEditTableHandle<Values, FormValues>;
+export type IEditTableProps<Values = any, Rest = Record<string, unknown>, FormValues = any> = ICommonEditTableProps<Values, Rest, FormValues>;
+export type IEditTableColumnsType<Values = any, Rest = Record<string, unknown>> = ICommonEditTableColumnsType<Values, Rest>;
+export type IEditTableItemProps<Values = any> = ICommonEditTableItemProps<Values>;
 
 //弹窗类型
 export enum ModalType {

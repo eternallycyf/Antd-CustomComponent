@@ -1,0 +1,1 @@
+import { IRecord } from './interface';

@@ -3,12 +3,12 @@ import { IButtonProps, ISearchesType } from '@/typings';
 import { Column } from '@/typings/core/column';
 import { Search } from '@/typings/core/form';
 import { formatColumn } from '@/utils/util';
-import { Col, Form, FormInstance, FormItemProps, FormListFieldData, Row, Spin, TableProps } from 'antd';
-import React, { Key, useEffect, useImperativeHandle } from 'react';
+import { Col, Form, FormInstance, FormItemProps, FormListFieldData, Row, TableProps } from 'antd';
+import React, { Key, useImperativeHandle } from 'react';
 import TableBtn from '../CommonTableV5/components/widgets/TableBtn';
 import { Table } from './';
 import styles from './index.less';
-import { formatEditTableColumns, getCurrentFieldValue, handleExport, IHandleExport, renderFormItem } from './utils';
+import { formatEditTableColumns, getCurrentFieldValue, handleExport, IHandleExport, removeExtraColumnsProps, renderFormItem } from './utils';
 
 // #region
 /**
@@ -58,6 +58,7 @@ export interface ICommonEditTableProps<Values = any, Rest = Record<string, unkno
 export type ICommonEditTableHandle<Values = any, FormItemsValues = any> = {
   form: FormInstance<FormItemsValues>;
   handleExport: IHandleExport<Values>;
+  status: ICommonEditTableProps['status'];
 };
 
 /**
@@ -74,7 +75,7 @@ interface IColumnEditRestProps<Values> {
  * 只有 type === 'custom' || item.transform && status == 'view' 时 render 才会生效
  * item.transform ? item.transform : item.render
  */
-export type IEditTableColumnsType<Values = any, Rest = Record<string, unknown>> = Omit<Column<Values>, 'formItemProps' | 'render'> & {
+export type ICommonEditTableColumnsType<Values = any, Rest = Record<string, unknown>> = Omit<Column<Values>, 'formItemProps' | 'render'> & {
   formItemProps?: Omit<Search<Values>, 'name' | 'label' | 'type'> & {
     rules?: FormItemProps<Values>['rules'];
   };
@@ -94,7 +95,10 @@ interface FormListOperation<Values = any> {
   move: (from: number, to: number) => void;
 }
 
-type IGetColumns<Values = any, Rest = Record<string, unknown>> = (operation: FormListOperation<Values>) => IEditTableColumnsType<Values, Rest>[];
+type IGetColumns<Values = any, Rest = Record<string, unknown>> = (
+  operation: FormListOperation<Values>,
+  status: ICommonEditTableProps['status'],
+) => ICommonEditTableColumnsType<Values, Rest>[];
 
 interface IRenderFnProps<Values> {
   text: any;
@@ -103,7 +107,7 @@ interface IRenderFnProps<Values> {
 }
 
 interface IVisibleFn<Values> {
-  (text: any, record: Values, index: number): boolean;
+  (text: any, record: Values, index: number, status: ICommonEditTableProps['status']): boolean;
 }
 
 type IClick<Values = any> = (record: IRenderFnProps<Values>, operation: FormListOperation<Values>) => void;
@@ -148,26 +152,28 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
   const [buttonBottomLeft, setButtonBottomLeft] = React.useState<IEditTableNotItemButtonProps>(defaultButtonBottomLeft);
   const [buttonBottomRight, setButtonBottomRight] = React.useState<IEditTableNotItemButtonProps>(defaultButtonBottomRight);
   const {} = tableProps;
-  const EditTableContextInitProps = { form, operation: {}, values: [] } as IEditTableContext;
+  const EditTableContextInitProps = { form, operation: {}, values: [], status } as IEditTableContext;
   const EditTableContext = React.createContext<IEditTableContext>(EditTableContextInitProps);
 
   useImperativeHandle(ref, () => ({
     form,
     handleExport,
+    status,
   }));
 
   const EditTableContextProviderProps = {
     form,
     values: form?.getFieldValue(tableFormName) || [],
     handleExport,
+    status,
   };
   //#endregion
 
   // #region
-  const getDefaultColumns: IGetColumns = (operation) => {
+  const getDefaultColumns: IGetColumns = (operation, status) => {
     const values = form?.getFieldValue(tableFormName) || [];
 
-    let newColumns = columns.map((item: IEditTableColumnsType) => {
+    let newColumns = columns.map((item: ICommonEditTableColumnsType) => {
       const { dataIndex, label, formItemProps, type = 'view', ...restItem } = item;
       const { initialValue, rules = [], layout, itemProps } = formItemProps || {};
       return {
@@ -181,7 +187,8 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
           const name = [field.name, dataIndex] as Key[];
           const key = field.key;
           const formProps = {
-            ...restItem,
+            // 解除传递 formatNumber 等参数 控制台报错问题
+            ...removeExtraColumnsProps([restItem]),
             name,
             type,
           };
@@ -238,7 +245,8 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
       } as any);
     }
 
-    return formatColumn(newColumns);
+    // 解除传递 formatNumber 等参数 控制台报错问题
+    return removeExtraColumnsProps(formatColumn(newColumns));
   };
 
   const renderButtonRow = (
@@ -260,11 +268,12 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
               item.onClick(renderProps, operation);
             }
           },
-          visible: !(item.visible == undefined
-            ? true
-            : typeof item.visible === 'function'
-            ? item.visible(renderProps?.[0], renderProps?.[1], renderProps?.[2])
-            : item.visible),
+          // FAQ: 当不是函数形式时 为了兼容tableBtn的visible 所以取函数形式
+          visible: () => {
+            if (item.visible == undefined) return true;
+            if (typeof item.visible === 'function') return item.visible(renderProps?.[0], renderProps?.[1], renderProps?.[2], status);
+            return item.visible;
+          },
         };
 
         return buttonProps;
@@ -305,7 +314,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
                 status={status}
                 scroll={isVirtual ? { y: 800 } : false}
                 dataSource={fields}
-                columns={getDefaultColumns(operation)}
+                columns={getDefaultColumns(operation, status)}
                 rowKey={'key'}
                 pagination={false}
                 {...tableProps}

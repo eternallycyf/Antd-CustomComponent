@@ -4,7 +4,7 @@ import { formatNumber, formatPercent, formatTime, getDictMap } from '@/utils/uti
 import { FormInstance } from 'antd';
 import _ from 'lodash';
 import { downloadExcel } from '../FileExportExcel';
-import { IEditTableColumnsType } from './EditTable';
+import { ICommonEditTableColumnsType } from './EditTable';
 
 export type IHandleExport<Values = any> = (title: string, columns: any[], dataSource: Values[]) => void;
 
@@ -27,7 +27,7 @@ export const renderFormItem = (form: FormInstance, item: any, index?: number) =>
 };
 
 export const handleExport: IHandleExport = (title, columns = [], dataSource = []) => {
-  const getItem = (item: IEditTableColumnsType) => (columns || [])?.find((ele) => ele?.dataIndex === item?.dataIndex);
+  const getItem = (item: ICommonEditTableColumnsType) => (columns || [])?.find((ele) => ele?.dataIndex === item?.dataIndex);
   downloadExcel({
     filename: title,
     sheets: [
@@ -53,7 +53,7 @@ export const getCurrentFieldValue = (form: FormInstance, name: string, index: nu
   return [currentValues, allValues];
 };
 
-export const formatEditTableColumns = (defaultOptions: IEditTableColumnsType, val: any) => {
+export const formatEditTableColumns = (defaultOptions: ICommonEditTableColumnsType, val: any) => {
   const options = {
     format: 'YYYY-MM-DD',
     ellipsis: false,
@@ -100,4 +100,11 @@ export const formatEditTableColumns = (defaultOptions: IEditTableColumnsType, va
   }
 
   return text;
+};
+
+export const removeExtraColumnsProps = (columns: ICommonEditTableColumnsType[] = []): ICommonEditTableColumnsType[] => {
+  return columns.map((item) => {
+    const { ellipsis, format, tooltip, formatNumber, formatPercent, dict, formatTime, ...originProps } = item;
+    return originProps;
+  });
 };
