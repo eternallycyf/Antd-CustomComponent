@@ -132,25 +132,18 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
     afterChildren,
 
     tableProps = {},
-    columns: defaultColumns = [],
-    itemButton: defaultItemButton = [],
-    buttonLeft: defaultButtonLeft = [],
-    buttonRight: defaultButtonRight = [],
-    buttonBottomLeft: defaultButtonBottomLeft = [],
-    buttonBottomRight: defaultButtonBottomRight = [],
+    columns = [],
+    itemButton = [],
+    buttonLeft = [],
+    buttonRight = [],
+    buttonBottomLeft = [],
+    buttonBottomRight = [],
 
     name: tableFormName = 'EditTable',
     formListProps = {},
     initialValues,
     rules = [],
   } = props;
-  // @ts-ignore
-  const [columns, setColumns] = React.useState<IEditTableColumnsType[]>(defaultColumns);
-  const [itemButton, setItemButton] = React.useState<IEditTableButtonProps>(defaultItemButton);
-  const [buttonLeft, setButtonLeft] = React.useState<IEditTableNotItemButtonProps>(defaultButtonLeft);
-  const [buttonRight, setButtonRight] = React.useState<IEditTableNotItemButtonProps>(defaultButtonRight);
-  const [buttonBottomLeft, setButtonBottomLeft] = React.useState<IEditTableNotItemButtonProps>(defaultButtonBottomLeft);
-  const [buttonBottomRight, setButtonBottomRight] = React.useState<IEditTableNotItemButtonProps>(defaultButtonBottomRight);
   const {} = tableProps;
   const EditTableContextInitProps = { form, operation: {}, values: [], status } as IEditTableContext;
   const EditTableContext = React.createContext<IEditTableContext>(EditTableContextInitProps);
