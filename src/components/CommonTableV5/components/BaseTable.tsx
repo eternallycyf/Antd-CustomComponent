@@ -147,7 +147,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
       // 合计行数据处理
       let resultAllAction;
       let newDataSource = [];
-      if (urlAlls && urlAlls.listUrl) {
+      if (isReset && urlAlls && urlAlls.listUrl) {
         resultAllAction = action(urlAlls.listUrl, {
           ...searchParams,
           ...extraParams,
@@ -181,7 +181,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
 
         const newData = isVirtual || !fixRowKeys?.length ? dataSource : getFixedData(dataSource);
 
-        newDataSource = resultAll?.data?.list ? resultAll.data.list : [];
+        newDataSource = resultAll?.data?.list ? resultAll.data.list : this.state.summaryDataSource;
 
         this.setState({
           loading: false,
