@@ -38,9 +38,9 @@ export type Column<TRecord = AnyData> =
       formatTime?: boolean | { type?: string; format: string };
       /**
        * @description 格式化金融数据 增加千分号
-       * 可传入具体的保留位数
+       * @example formatNumber: (val) => [val/10000, 2]  (最后一个是保留的位数)
        */
-      formatNumber?: boolean | number;
+      formatNumber?: boolean | number | ((value: number) => number) | ((value: number) => [number, number]);
       formatPercent?: boolean;
       dict?: ReadonlyArray<{
         text: string;
@@ -79,7 +79,7 @@ export type Column<TRecord = AnyData> =
        * @description 初始化checkbox是否禁用
        */
       initCheckedDisabled?: boolean;
-      useSummary?: (content: React.ReactNode, data: any[]) => React.ReactNode;
+      useSummary?: (content: React.ReactNode, record: any) => React.ReactNode;
     };
 // & FormControl
 // 传入泛型 Columns<{ code: string }> 指定dataIndex及render的record类型

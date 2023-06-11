@@ -32,7 +32,7 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType =>
       title: 'activityPrice',
       width: 112,
       sorter: true,
-      formatNumber: 2,
+      formatNumber: (value) => value * 100,
       align: 'center' as 'center',
       fixed: 'left' as 'left',
       // ellipsis: true,

@@ -44,10 +44,21 @@ export const renderTooltip = (title: string = '', tooltip: string = '', extraTex
 };
 
 export const formatNumber = (options: any, value: number) => {
-  const fractionDigits = typeof options.formatNumber === 'number' ? options.formatNumber : 2;
+  let fractionDigits = typeof options.formatNumber === 'number' ? options.formatNumber : 2;
+  let number = value;
+  if (typeof options.formatNumber == 'function') {
+    const customOptions = options.formatNumber(Number(value));
+    if (Array.isArray(customOptions)) {
+      number = customOptions?.[0];
+      fractionDigits = customOptions?.[1];
+    } else {
+      number = customOptions;
+    }
+  }
+
   if (_.isNil(value)) return '--';
   if (isNaN(Number(value))) return value;
-  return Number(value).toLocaleString(undefined, {
+  return Number(number).toLocaleString(undefined, {
     minimumFractionDigits: fractionDigits,
     maximumFractionDigits: fractionDigits,
   });

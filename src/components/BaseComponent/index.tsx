@@ -36,10 +36,6 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
   public formRef = React.createRef<React.ElementRef<typeof CustomForm>>();
   public scrollRef = React.createRef<HTMLDivElement>();
 
-  componentDidMount() {
-    this.handleRefreshPage();
-  }
-
   // 获取列表dataSource
   protected getDataSource = () => {
     const { getTableData } = this.tableRef.current || {};

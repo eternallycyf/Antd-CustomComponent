@@ -74,7 +74,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
 
   componentDidMount(): void {
     const { initRequest } = this.props;
-    if (initRequest) this.loadData();
+    if (initRequest) this.loadData(true);
     window.addEventListener('dev', () => {
       this.setState({ dev: true }, this.handleColumns);
     });
