@@ -24,8 +24,8 @@ const Demo = () => {
           form={form}
           status={status}
           ref={EditTableRef}
-          isVirtual
-          initialValues={Array.from({ length: 20 }).map((_, index) => ({
+          // isVirtual
+          initialValues={Array.from({ length: 3 }).map((_, index) => ({
             userName: '张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三张三',
             key: index,
             age: 21260,

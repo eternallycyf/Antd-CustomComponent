@@ -4,7 +4,7 @@ import { Column } from '@/typings/core/column';
 import { Search } from '@/typings/core/form';
 import { formatColumn } from '@/utils/util';
 import { Col, Form, FormInstance, FormItemProps, FormListFieldData, Row, TableProps } from 'antd';
-import React, { Key, useImperativeHandle } from 'react';
+import React, { Key, RefObject, useImperativeHandle } from 'react';
 import TableBtn from '../CommonTableV5/components/widgets/TableBtn';
 import { Table } from './';
 import styles from './index.less';
@@ -303,9 +303,10 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
             {renderButtonRow(buttonLeft, buttonRight, operation)}
             <Form.Item className={`${styles.EditTableContent}`}>
               <Table
-                isVirtual={isVirtual}
+                isVirtual={fields?.length >= 100 ? isVirtual : false}
                 status={status}
                 scroll={isVirtual ? { y: 800 } : false}
+                onSearchOrReset={(scrollRef: any) => scrollRef?.current?.dispatchEvent(new CustomEvent('scroll'))}
                 dataSource={fields}
                 columns={getDefaultColumns(operation, status)}
                 rowKey={'key'}
