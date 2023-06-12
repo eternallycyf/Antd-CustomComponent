@@ -56,8 +56,6 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       pageSize: props.defaultPageSize || 30,
       extraParams: props.extraParams || {},
       columns: [],
-      selectedRowKeys: props.selectedRowKeys || [],
-      selectedRows: props.selectedRows || [],
       dev: false,
       dataSource: [],
       requestCount: 0,
@@ -438,10 +436,12 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       isSummary,
       summaryDataSource: newSummaryDataSource = [],
       preChildren,
+      selectedRowKeys = [],
+      selectedRows = [],
       ...extraProps
     } = this.props;
     let restProps: any = { ...extraProps };
-    const { loading, height, total, current, pageSize, columns, dataSource, selectedRowKeys, summaryDataSource = [] } = this.state;
+    const { loading, height, total, current, pageSize, columns, dataSource, summaryDataSource = [] } = this.state;
 
     const paging =
       typeof pagination !== 'boolean'
