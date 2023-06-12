@@ -97,17 +97,46 @@ export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType 
       //   rules: FormRules.withName('select').object().isRequired().create()
       // }
     },
+    // {
+    //   name: 'startDate,endDate',
+    //   label: 'date',
+    //   // format 仅对dateRange类型生效
+    //   type: 'dateRange',
+    //   placeholder: '',
+    //   picker: 'month',
+    //   format: 'YYYY', // 请求给后端的格式
+    //   controlProps: {
+    //     // form外观显示的格式
+    //     format: 'YYYY',
+    //   },
+    // },
     {
-      name: 'startDate,endDate',
-      label: 'date',
-      // format 仅对dateRange类型生效
-      type: 'dateRange',
-      placeholder: '',
-      picker: 'month',
-      format: 'YYYY', // 请求给后端的格式
+      name: 'startDate',
+      label: '开始日期',
+      type: 'date',
+      allowClear: true,
+      format: 'YYYYMMDD',
       controlProps: {
-        // form外观显示的格式
-        format: 'YYYY',
+        format: 'YYYY-MM-DD',
+        disabledDate: (date) => self.getDisabledDate('startDate', date),
+        onChange: () => {
+          if (self.searchRef) {
+            self.searchRef.current?.searchFormRef.current?.form.setFieldsValue({
+              endDate: undefined,
+            });
+          }
+        },
+      },
+    },
+    {
+      name: 'endDate',
+      label: '结束日期',
+      type: 'date',
+      allowClear: true,
+      format: 'YYYYMMDD',
+      controlProps: {
+        format: 'YYYY-MM-DD',
+        disabledDate: (date) => self.getDisabledDate('endDate', date),
       },
     },
     {

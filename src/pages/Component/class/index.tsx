@@ -20,9 +20,14 @@ import { withRoutePage } from '@/core/Enhance/withRoutePage';
 import { compose } from 'redux';
 import { ConnectState } from '@/typings/connect';
 import { ACTIVE_TYPE } from './config/constant';
+import dayjs from 'dayjs';
+import { RouteComponentProps } from '@umijs/renderer-react';
 const { apiPrefixMock } = projectConfig;
 
-interface IProps {}
+type ConnectProps = ConnectState['login'];
+export interface extraMatchParams {}
+
+interface IProps extends RouteComponentProps<extraMatchParams>, ConnectProps {}
 
 interface IState {
   searchParams: {
@@ -65,6 +70,19 @@ class Activity extends BaseComponent<IProps, IState> {
 
   // 打开活动报名列表页面
   handleOpenRegList = (record: any) => {};
+
+  getDisabledDate = (disabledKey: 'startDate' | 'endDate', current: dayjs.Dayjs) => {
+    const [, values] = this.searchRef.current?.handleRealParams();
+    if (!values) return false;
+    if (current && current > dayjs()) return true;
+
+    switch (disabledKey) {
+      case 'startDate':
+        return current && current > dayjs().startOf('day');
+      case 'endDate':
+        return current && current < dayjs(values?.['startDate'], 'YYYYMMDD').startOf('day');
+    }
+  };
 
   handleFormatValues: formatValuesType = (values, record, type) => {
     console.log(values, record, type);
@@ -327,5 +345,5 @@ class Activity extends BaseComponent<IProps, IState> {
 export default compose<typeof Activity>(
   withRoutePage,
   withRouter,
-  connect(({ global, login }: ConnectState) => ({ token: login.token })),
+  connect(({ global, login }: ConnectState) => login),
 )(Activity);

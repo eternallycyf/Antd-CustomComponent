@@ -323,7 +323,7 @@ export interface IControlProps {
   Component?: any;
   dict?: ReadonlyArray<{
     text: string;
-    value: string;
+    value: string | number;
     disabled?: boolean;
     children?: Array<{ text: string; value: string; disabled?: boolean }>;
     rules?: any[]; //校验规则
