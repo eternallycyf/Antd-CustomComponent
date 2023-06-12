@@ -15,6 +15,7 @@ export interface IBaseState {
   expandedRowKeys?: any[];
   expandedKey?: string;
   exportLoading?: boolean;
+  onSelect?: (selectedRowKeys: React.Key[], selectedRows: any[]) => void;
 }
 
 export interface IBaseTableRefFun {
@@ -146,9 +147,17 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
     }
   };
 
+  // 清空选择
+  handleClearSelected = () => {
+    const onSelect = this.handleSelect;
+    this.setState({ selectedRowKeys: [], selectedRows: [] });
+    if (onSelect) onSelect([], []);
+  };
+
   handleBatchDelete = (deleteBatchUrl: string) => {
     const { selectedRowKeys } = this.state;
-    const { handleRefreshPage, handleClearSelected } = this.tableRef.current || {};
+    const { handleClearSelected } = this;
+    const { handleRefreshPage } = this.tableRef.current || {};
 
     if (!deleteBatchUrl) {
       return message.error('请设置 deleteBatchUrl 属性');

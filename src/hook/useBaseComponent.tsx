@@ -21,6 +21,7 @@ const useBaseComponent = (props: IBaseState) => {
     selectedRows: propsSelectedRows = [],
     selectedRowKeys: propsSelectedRowKeys = [],
     expandedRowKeys: propsExpandedRowKeys = [],
+    onSelect,
   } = props;
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -114,8 +115,14 @@ const useBaseComponent = (props: IBaseState) => {
     }
   };
 
+  const handleClearSelected = () => {
+    setSelectedRows([]);
+    setSelectedRowKeys([]);
+    if (onSelect) onSelect([], []);
+  };
+
   const handleBatchDelete = (deleteBatchUrl: string) => {
-    const { handleRefreshPage, handleClearSelected } = tableRef.current || {};
+    const { handleRefreshPage } = tableRef.current || {};
 
     if (!deleteBatchUrl) {
       return message.error('请设置 deleteBatchUrl 属性');

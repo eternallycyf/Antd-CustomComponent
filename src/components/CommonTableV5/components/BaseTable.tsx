@@ -20,8 +20,6 @@ export interface IBaseTableState {
   extraParams: any;
   columns: any[];
   dataSource: any[];
-  selectedRowKeys: any[];
-  selectedRows: any[];
   dev: boolean;
   indeterminate: boolean;
   checkAll: boolean;
@@ -99,13 +97,6 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
 
     if (nextProps.loading !== this.props.loading) {
       this.setState({ loading: nextProps.loading });
-    }
-
-    if (nextProps.selectedRowKeys !== this.props.selectedRowKeys && nextProps.selectedRows !== this.props.selectedRows) {
-      this.setState({
-        selectedRowKeys: nextProps.selectedRowKeys,
-        selectedRows: nextProps.selectedRows,
-      });
     }
   }
 
@@ -333,13 +324,6 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
     );
   };
 
-  // 清空选择
-  handleClearSelected = () => {
-    const { onselect } = this.props;
-    this.setState({ selectedRowKeys: [], selectedRows: [] });
-    if (onselect) onselect([], []);
-  };
-
   /**
    * 选择事件
    * @param selectedRowKeys
@@ -347,23 +331,8 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
    */
   onSelectChange = (selectedRowKeys: any[], selectedRows: any[]) => {
     const { onSelect } = this.props;
-    const stateRows = this.state.selectedRows;
-    let resultRows = [];
-    if (selectedRowKeys.length > selectedRows.length) {
-      const partialSelectedRowKeys = selectedRows.map((row) => row.rowKey);
-      const leftRows = stateRows.filter((row) => selectedRowKeys.indexOf(row.rowKey) >= 0 && partialSelectedRowKeys.indexOf(row.rowKey) < 0);
-      resultRows = leftRows.concat(selectedRows);
-    } else {
-      resultRows = selectedRows;
-    }
-
-    this.setState({
-      selectedRowKeys,
-      selectedRows: resultRows,
-    });
-
     if (onSelect) {
-      onSelect(selectedRowKeys, resultRows);
+      onSelect(selectedRowKeys, selectedRows);
     }
   };
 
