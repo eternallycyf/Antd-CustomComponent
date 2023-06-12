@@ -56,7 +56,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       pageSize: props.defaultPageSize || 30,
       extraParams: props.extraParams || {},
       columns: [],
-      selectedRowkeys: props.selectedRowkeys || [],
+      selectedRowKeys: props.selectedRowKeys || [],
       selectedRows: props.selectedRows || [],
       dev: false,
       dataSource: [],
@@ -441,7 +441,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       ...extraProps
     } = this.props;
     let restProps: any = { ...extraProps };
-    const { loading, height, total, current, pageSize, columns, dataSource, selectedRowkeys, summaryDataSource = [] } = this.state;
+    const { loading, height, total, current, pageSize, columns, dataSource, selectedRowKeys, summaryDataSource = [] } = this.state;
 
     const paging =
       typeof pagination !== 'boolean'
@@ -463,7 +463,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     const selectOptions = onSelect
       ? {
           type: selectType === 'radio' ? 'radio' : 'checkbox',
-          selectedRowkeys,
+          selectedRowKeys,
           columnWidth: 40,
           onChange: this.onSelectChange,
           ...rowSelection,

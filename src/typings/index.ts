@@ -201,7 +201,7 @@ export interface ICommonTable<T> extends TableProps<T> {
   removeSummary?: string[];
   /**@description 操作栏是否固定 */
 
-  openFixed?: boolean;
+  openFixed?: 'right' | 'center' | 'left';
   /**@description 网络请求后data的路径 */
   dataPath?: string;
   /**@description 渲染前最后处理一次column */

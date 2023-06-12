@@ -20,7 +20,7 @@ export interface IBaseTableState {
   extraParams: any;
   columns: any[];
   dataSource: any[];
-  selectedRowkeys: any[];
+  selectedRowKeys: any[];
   selectedRows: any[];
   dev: boolean;
   indeterminate: boolean;
@@ -101,9 +101,9 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
       this.setState({ loading: nextProps.loading });
     }
 
-    if (nextProps.selectedRowkeys !== this.props.selectedRowkeys && nextProps.selectedRows !== this.props.selectedRows) {
+    if (nextProps.selectedRowKeys !== this.props.selectedRowKeys && nextProps.selectedRows !== this.props.selectedRows) {
       this.setState({
-        selectedRowkeys: nextProps.selectedRowkeys,
+        selectedRowKeys: nextProps.selectedRowKeys,
         selectedRows: nextProps.selectedRows,
       });
     }
@@ -336,34 +336,34 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
   // 清空选择
   handleClearSelected = () => {
     const { onselect } = this.props;
-    this.setState({ selectedRowkeys: [], selectedRows: [] });
+    this.setState({ selectedRowKeys: [], selectedRows: [] });
     if (onselect) onselect([], []);
   };
 
   /**
    * 选择事件
-   * @param selectedRowkeys
+   * @param selectedRowKeys
    * @param selectedRows
    */
-  onSelectChange = (selectedRowkeys: any[], selectedRows: any[]) => {
+  onSelectChange = (selectedRowKeys: any[], selectedRows: any[]) => {
     const { onSelect } = this.props;
     const stateRows = this.state.selectedRows;
     let resultRows = [];
-    if (selectedRowkeys.length > selectedRows.length) {
+    if (selectedRowKeys.length > selectedRows.length) {
       const partialSelectedRowKeys = selectedRows.map((row) => row.rowKey);
-      const leftRows = stateRows.filter((row) => selectedRowkeys.indexOf(row.rowKey) >= 0 && partialSelectedRowKeys.indexOf(row.rowKey) < 0);
+      const leftRows = stateRows.filter((row) => selectedRowKeys.indexOf(row.rowKey) >= 0 && partialSelectedRowKeys.indexOf(row.rowKey) < 0);
       resultRows = leftRows.concat(selectedRows);
     } else {
       resultRows = selectedRows;
     }
 
     this.setState({
-      selectedRowkeys,
+      selectedRowKeys,
       selectedRows: resultRows,
     });
 
     if (onSelect) {
-      onSelect(selectedRowkeys, resultRows);
+      onSelect(selectedRowKeys, resultRows);
     }
   };
 
