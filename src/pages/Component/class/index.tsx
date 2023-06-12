@@ -4,7 +4,7 @@ import { formatValuesType } from '@/components/CustomForm';
 import projectConfig from '@/config/projectConfig';
 import { ICommonTable, ModalType } from '@/typings';
 import { formatParams } from '@/utils/util';
-import { Col, Form, Input, Row, Select, Spin, Table } from 'antd';
+import { Col, Form, Input, Row, Select, Space, Spin, Table } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
 import React, { Component, forwardRef } from 'react';
 import { getColumns } from './config/columns';
@@ -22,6 +22,7 @@ import { ConnectState } from '@/typings/connect';
 import { ACTIVE_TYPE } from './config/constant';
 import dayjs from 'dayjs';
 import { RouteComponentProps } from '@umijs/renderer-react';
+import { DeleteOutlined, EditOutlined, ExportOutlined, FileAddOutlined, ImportOutlined, SyncOutlined } from '@ant-design/icons';
 const { apiPrefixMock } = projectConfig;
 
 type ConnectProps = ConnectState['login'];
@@ -38,6 +39,7 @@ interface IState {
   selectedRowKeys: React.Key[];
   expandedKey: string;
   expandedRowKeys: React.Key[];
+  exportLoading: boolean;
   radioValue: (typeof ACTIVE_TYPE)[number]['value'];
   dictType: (typeof ACTIVE_TYPE)[number]['value'];
   groupValue: (typeof ACTIVE_TYPE)[number]['value'];
@@ -55,6 +57,7 @@ class Activity extends BaseComponent<IProps, IState> {
       selectedRowKeys: [],
       expandedKey: 'index',
       expandedRowKeys: [],
+      exportLoading: false,
       radioValue: '0',
       dictType: '1',
       groupValue: '1',
@@ -119,7 +122,7 @@ class Activity extends BaseComponent<IProps, IState> {
   };
 
   render() {
-    const { searchParams, selectedRowKeys, selectedRows, expandedRowKeys, dictType, groupValue } = this.state;
+    const { searchParams, selectedRowKeys, selectedRows, expandedRowKeys, exportLoading, dictType, groupValue } = this.state;
     const tableParams: ICommonTable<any> = {
       columns: getColumns(this),
       searchParams: formatParams(searchParams),
@@ -175,10 +178,12 @@ class Activity extends BaseComponent<IProps, IState> {
       button: [
         {
           text: '新增',
+          icon: <FileAddOutlined />,
           onClick: this.handleAdd,
         },
         {
           text: '获取拖拽后及选择的数据',
+          icon: <ImportOutlined />,
           // element: <Button type="link" danger >ss</Button>,
           onClick: () => {
             console.log(this.getDataSource());
@@ -187,7 +192,14 @@ class Activity extends BaseComponent<IProps, IState> {
           },
         },
         {
-          text: '导出',
+          text: (
+            <Space>
+              <Spin spinning={exportLoading} size="small">
+                {exportLoading ? <SyncOutlined /> : <ExportOutlined />}{' '}
+              </Spin>
+              导出
+            </Space>
+          ),
           onClick: () => this.handleExport('增删改查组件'),
         },
         {
@@ -209,11 +221,13 @@ class Activity extends BaseComponent<IProps, IState> {
       itemButton: [
         {
           text: '编辑',
+          icon: <EditOutlined />,
           onClick: this.handleEdit,
           code: 'class-editButton',
         },
         {
           text: '删除',
+          icon: <DeleteOutlined />,
           buttonType: 'delete',
           // code 权限校验如果后端接口没有返回 则不显示
           code: 'class-deleteButton',

@@ -14,6 +14,7 @@ export interface IBaseState {
   selectedRows?: any[];
   expandedRowKeys?: any[];
   expandedKey?: string;
+  exportLoading?: boolean;
 }
 
 export interface IBaseTableRefFun {
@@ -83,7 +84,7 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
   handleExport = (title: string) => {
     if (this.tableRef.current) {
       const { columns } = this.tableRef.current.props;
-
+      this.setState({ exportLoading: true });
       const getItem = (item: any) => (columns || [])?.find((ele) => ele?.dataIndex === item?.dataIndex);
 
       downloadExcel({
@@ -102,6 +103,9 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
           },
         ],
       });
+      setTimeout(() => {
+        this.setState({ exportLoading: false });
+      }, 2000);
     }
   };
 
