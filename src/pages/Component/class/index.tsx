@@ -241,7 +241,10 @@ class Activity extends BaseComponent<IProps, IState> {
         expandedRowKeys,
         expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.index}</p>,
         rowExpandable: (record) => record.name !== 'Not Expandable',
-        onExpand: this.handleExpand,
+        onExpand: (expanded: boolean, record: any) => {
+          if (!expanded) return this.setState({ expandedRowKeys: [] });
+          this.setState({ expandedRowKeys: [record.index] });
+        },
       },
       onSelect: this.handleSelect,
       dataPath: 'data.list',
