@@ -1,3 +1,4 @@
+import { IUpdateProps } from '@/components/CustomForm/FormItem/update';
 import { IBaseViewProps } from '@/components/CustomForm/FormItem/view';
 import {
   AutoCompleteProps,
@@ -94,5 +95,8 @@ export type IControlType<T extends IBaseFormControlType> = T extends 'input'
   ? any
   : T extends 'view'
   ? IBaseViewProps
+  : T extends 'update'
+  ? IUpdateProps
   : any;
+
 //#endregion

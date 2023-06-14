@@ -7,7 +7,6 @@ export enum FormRuleType {
   regexp = 'regexp',
   integer = 'integer',
   float = 'float',
-  array = 'array',
   object = 'object',
   enum = 'enum',
   date = 'date',
@@ -92,14 +91,6 @@ export default class FormRules {
   public bool(message: string = ':name必须是布尔值'): FormRules {
     this.rules.push({
       type: FormRuleType.boolean,
-      message: message.replace(':name', this.name),
-    });
-    return this;
-  }
-
-  public array(message: string = ':name必须是数组'): FormRules {
-    this.rules.push({
-      type: FormRuleType.array,
       message: message.replace(':name', this.name),
     });
     return this;

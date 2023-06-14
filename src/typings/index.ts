@@ -14,6 +14,7 @@ import { IBaseControlProps } from './core/control';
 import { IButtonGroupDefaultProps } from '@/components/AccessBtn/ButtonGroup';
 import { ICommonEditTableHandle, ICommonEditTableProps, ICommonEditTableColumnsType } from '@/components/CommonEditTable/EditTable';
 import { ICommonEditTableItemProps } from '@/components/CommonEditTable/Item';
+import { IUpdateProps } from '@/components/CustomForm/FormItem/update';
 
 type boolFunc = (config: { form: FormInstance; formData: any; record: any }) => boolean;
 
@@ -256,7 +257,7 @@ export interface CustomForm {
 /**@description 通用配置 */
 export interface FormControl {
   /**@description 控件name */
-  name: string;
+  name?: string;
   /**@description 控件名称 */
   label?: React.ReactNode | (() => React.ReactNode);
   // /**@description 控件类型 */
@@ -276,7 +277,7 @@ export interface FormControl {
   /**@description 远程请求配置 */
   fetchConfig?: IFetchConfig;
   /**@description form.item配置 */
-  itemProps?: FormItemProps;
+  itemProps?: FormItemProps & { next?: IUpdateProps['next'] };
   /**@description 表单配置 尽量使用itemProps formFieldProps一般用rules*/
   /**
    * @description 表单配置 尽量使用itemProps 传递form.Item的属性

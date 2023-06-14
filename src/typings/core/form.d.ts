@@ -19,10 +19,10 @@ export interface IBaseFormControlProps<T> extends ISelectProps, ICustomProps, ID
 type AnyData = Record<string, unknown>;
 export type Search<TRecord = AnyData> =
   | (Omit<FormControl, 'name'> & {
-      name: keyof TRecord;
+      name?: keyof TRecord;
     })
   | (Omit<FormControl, 'name'> & {
-      name: keyof TRecord;
+      name?: keyof TRecord;
     } & FormControl)
   | (Omit<FormControl, 'name'> & IBaseFormControlProps<TRecord> & FormControl & FormItemProps & IViewProps & {});
 
