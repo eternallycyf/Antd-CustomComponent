@@ -5,6 +5,7 @@ import { getFieldComp } from '@/core/helpers';
 import { ISearchProps } from '@/components/CommonSearch/search';
 import { getUUID } from '@/utils/random';
 
+// 适用于不传form的
 //  [
 //   {
 //     type: 'update',
@@ -70,8 +71,9 @@ const renderFormItem = (item: any, index?: number) => {
   return getFieldComp(fieldProps);
 };
 
-const Update: React.FC<IUpdateProps> = React.forwardRef((props, ref) => {
-  const { shouldUpdate, next, ...controlProps } = props;
+const Update: React.FC<{ itemProps: IUpdateProps }> = React.forwardRef((props, ref) => {
+  const { itemProps, ...controlProps } = props;
+  const { shouldUpdate, next } = itemProps;
 
   if (!next) return null;
 
@@ -110,7 +112,10 @@ const Update: React.FC<IUpdateProps> = React.forwardRef((props, ref) => {
 });
 
 Update.defaultProps = {
-  next: () => false,
+  itemProps: {
+    shouldUpdate: () => false,
+    next: () => false,
+  },
 };
 
 export default Update;
