@@ -1,0 +1,49 @@
+@import './variable.less';
+
+.btn-default {
+  border: 1px solid @plus-primary !important;
+  border-radius: 2px !important;
+  background: #FFFFFF;
+  color: @plus-primary !important;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.btn-primary {
+  border: none;
+  border-radius: 2px !important;
+  background: @plus-primary !important;
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.btn-link {
+  color: @plus-primary !important;
+}
+
+.success-tip {}
+
+.warning-tip {
+  padding: 8px 16px;
+  background: #FFF5E8;
+  color: @plus-orange !important;
+  font-weight: 400;
+}
+
+.error-tip {}
+
+.info-tip {}
+
+
+// 默认rest
+:global {
+  .ant-radio-inner {
+    background-color: transparent !important;
+  }
+
+  .ant-radio-wrapper .ant-radio-checked .ant-radio-inner::after {
+    background-color: @plus-primary !important;
+  }
+}
