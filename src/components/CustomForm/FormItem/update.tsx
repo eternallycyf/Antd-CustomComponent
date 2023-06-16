@@ -22,6 +22,10 @@ import { getUUID } from '@/utils/random';
 //               allowClear: true,
 //               itemProps: {
 //                 ...ITEM_PROPS,
+//                 labelAlign: 'right',
+//               },
+//               controlProps: {
+//                  style: { width: '100%' }
 //               },
 //               layout,
 //             },
@@ -87,25 +91,23 @@ const Update: React.FC<{ itemProps: IUpdateProps }> = React.forwardRef((props, r
 
         return (
           <Fragment key={getUUID()}>
-            <Row>
-              {(nextValues || []).map((item: any, index: number) => (
-                <Col span={item['col'] || 24} key={index}>
-                  <Form.Item
-                    labelAlign="right"
-                    label={item?.label}
-                    name={item?.name}
-                    rules={item?.rules || []}
-                    initialValue={item?.initialValue}
-                    {...item.layout}
-                    {...item.itemProps}
-                  >
-                    {renderFormItem(item)}
-                  </Form.Item>
-                </Col>
-              ))}
-            </Row>
+            {(nextValues || []).map((item: any, index: number) => (
+              <Col span={item['col'] || 24} key={index}>
+                <Form.Item
+                  labelAlign="right"
+                  label={item?.label}
+                  name={item?.name}
+                  rules={item?.rules || []}
+                  initialValue={item?.initialValue}
+                  {...item.layout}
+                  {...item.itemProps}
+                >
+                  {renderFormItem(item)}
+                </Form.Item>
+              </Col>
+            ))}
           </Fragment>
-        ) as any;
+        );
       }}
     </Form.Item>
   );
