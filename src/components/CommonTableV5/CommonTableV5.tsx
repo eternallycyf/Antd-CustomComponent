@@ -116,7 +116,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
 
   // 处理列表columns
   handleColumns = () => {
-    const { itemButton, buttonLen, expandedRowRender, isFixed, openFixed, itemButtonWidth }: any = this.props;
+    const { itemButton, buttonLen, expandedRowRender, isFixed, operFixed, itemButtonWidth }: any = this.props;
     const handleSetColumns = (columnList: any) => {
       // 显示行操作项
       if (itemButton && itemButton.length) {
@@ -129,7 +129,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
             key: 'operate',
             align: 'center',
             title: () => this.renderOperateTitle(columnList),
-            fixed: openFixed ? openFixed : expandedRowRender || isFixed ? false : 'right',
+            fixed: operFixed ? operFixed : expandedRowRender || isFixed ? false : 'right',
             render: (text: any, record: any) => {
               const button = itemButton.map((item: any) => {
                 const flag = !item.visible || (item.visible && typeof item.visible === 'function' && item.visible(record));
@@ -241,7 +241,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
           },
         ];
 
-        columnList = expandedRowRender && !openFixed ? [].concat(column, columnList) : [].concat(columnList, column);
+        columnList = expandedRowRender && !operFixed ? [].concat(column, columnList) : [].concat(columnList, column);
       }
       let columns = formatColumnUtil(columnList);
       if (this.props?.formatColumn) {
