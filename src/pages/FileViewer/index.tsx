@@ -1,4 +1,4 @@
-import FileView from '@/components/FileViewer/demo/demo';
+import FileView from '@/components/File/FileViewerV1/demo/demo';
 import { KeepAliveTransfer } from '@/core/base/KeepAlive';
 import { withRoutePage } from '@/core/Enhance/withRoutePage';
 import { withRouter } from '@umijs/max';

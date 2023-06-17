@@ -1,4 +1,4 @@
-import { Page } from '@/components';
+import { Page } from '@/components/CommonCard';
 import { Button } from 'antd';
 
 const Add: React.FC = () => {

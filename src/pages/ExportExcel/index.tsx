@@ -2,7 +2,8 @@ import { Button, Space, Card, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/lib/table/interface';
 import ExcelJs from 'exceljs/dist/exceljs';
-import { ExportExcel, Page } from '@/components/';
+import { Page } from '@/components/CommonCard';
+import * as ExportExcel from '@/components/File/FileExportExcel';
 const { generateHeaders, saveWorkbook, downloadExcel, downloadFiles2ZipWithFolder, downloadFiles2Zip } = ExportExcel;
 
 interface SimpleDemoProps {}

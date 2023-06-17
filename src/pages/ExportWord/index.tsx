@@ -1,2 +1,2 @@
-import ExportWord from '@/components/FileExportWord';
+import ExportWord from '@/components/File/FileExportWord';
 export default ExportWord;

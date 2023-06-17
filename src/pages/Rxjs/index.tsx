@@ -1,4 +1,4 @@
-import { Page } from '@/components';
+import { Page } from '@/components/CommonCard';
 import * as Rx from 'rxjs';
 import { map } from 'rxjs/operators';
 import { useObservable, useEventCallback } from 'rxjs-hooks';

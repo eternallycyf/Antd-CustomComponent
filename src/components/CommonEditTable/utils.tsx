@@ -3,7 +3,7 @@ import { getFieldComp } from '@/core/helpers';
 import { formatNumber, formatPercent, formatTime, getDictMap } from '@/utils/util';
 import { FormInstance } from 'antd';
 import _ from 'lodash';
-import { downloadExcel } from '../FileExportExcel';
+import { downloadExcel } from '../File/FileExportExcel';
 import { ICommonEditTableColumnsType } from './EditTable';
 
 export type IHandleExport<Values = any> = (title: string, columns: any[], dataSource: Values[]) => void;

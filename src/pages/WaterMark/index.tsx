@@ -1,5 +1,6 @@
-import { Page, WaterMark } from '@/components';
-import { Card } from 'antd';
+import { WaterMark } from '@/components/Widget';
+import { Page } from '@/components/CommonCard';
+
 const IndexPage = () => {
   return (
     <Page>

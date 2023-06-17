@@ -1,6 +1,5 @@
-import HookDemo from '@/components/VirtualList/useVirtualList/demo';
-import VirtualListDemo from '@/components/VirtualList/VirtualList/demo';
-import Page from '@/components/Page';
+import VirtualListDemo from '@/components/Widget/VirtualList/demo';
+import Page from '@/components/CommonCard/Page';
 
 export default function VirtualList() {
   return (
@@ -9,9 +8,6 @@ export default function VirtualList() {
         <div style={{ height: 500 }}>
           <VirtualListDemo />
         </div>
-      </Page>
-      <Page>
-        <HookDemo />
       </Page>
     </>
   );

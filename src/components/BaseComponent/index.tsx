@@ -3,7 +3,7 @@ import { message, Modal, TableProps } from 'antd';
 import { deleteAction, postAction } from '@/services/global';
 import CommonSearch from '../CommonSearch';
 import { TableRowSelection } from 'antd/lib/table/interface';
-import { downloadExcel } from '../FileExportExcel';
+import { downloadExcel } from '../File/FileExportExcel';
 import BaseTable from '../CommonTableV5/components/BaseTable';
 import CustomForm from '../CustomForm';
 

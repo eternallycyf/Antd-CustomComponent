@@ -1,4 +1,4 @@
-import { WaterMark } from '@/components';
+import { WaterMark } from '@/components/Widget';
 import config from '@/config/projectConfig';
 import SiderMenu from '@/core/base/CustomMenu';
 import GlobalHeader from '@/core/base/GlobalHeader';

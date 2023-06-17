@@ -1,4 +1,4 @@
-import { CommonSearch, CommonTable, CustomForm, Page } from '@/components';
+import { CommonSearch, CommonTable, CustomForm } from '@/components';
 import { formatValuesType } from '@/components/CustomForm';
 import projectConfig from '@/config/projectConfig';
 import useBaseComponent from '@/hook/useBaseComponent';
@@ -22,6 +22,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { compose } from 'redux';
 import _ from 'lodash';
 import { withRouter } from '@/core/Enhance/withRouter';
+import { Page } from '@/components/CommonCard';
 
 interface IProps {
   IndexPageRef: Ref<IHandle>;
@@ -176,12 +177,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) 
 
   return (
     <Page>
-      <CommonSearch
-        formList={getSearches(self)}
-        handleSearch={self.setSearchParams}
-        ref={self.searchRef}
-        columnNumber={3}
-      />
+      <CommonSearch formList={getSearches(self)} handleSearch={self.setSearchParams} ref={self.searchRef} columnNumber={3} />
       <CommonTable {...tableParams} ref={self.tableRef} />
       <CustomForm
         title="营销活动"
@@ -218,11 +214,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) 
         otherRender={() => (
           <Form form={OtherFormRef}>
             <Form.Item label="以下都是使用getFieldComp方法构造的form"></Form.Item>
-            <Form.Item
-              label="otherFormItem"
-              name="otherFormItem"
-              rules={[{ required: true, message: '请输入otherFormItem' }]}
-            >
+            <Form.Item label="otherFormItem" name="otherFormItem" rules={[{ required: true, message: '请输入otherFormItem' }]}>
               <Input />
             </Form.Item>
             <Row>

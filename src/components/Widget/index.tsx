@@ -1,11 +1,5 @@
-export { default as AvatarUpload } from './AvatarUpload';
-export { default as CheckModal } from './CheckModal';
-export { default as FileViewer } from './FileViewer';
-export { default as MyForm } from './MyForm';
-export { default as SectionTitle } from './SectionTitle';
-export { default as Select } from './Select';
+export { default as Image } from './Image';
 export { default as Trend } from './Trend';
+export { default as VirtualList } from './VirtualList';
+export { default as WaterMark } from './WaterMark';
 export { default as XScroll } from './XScroll';
-export { default as TransformModal } from './TransformModal';
-export { default as CustomModal } from './CustomModal';
-export { default as PageHeader } from './PageHeader';

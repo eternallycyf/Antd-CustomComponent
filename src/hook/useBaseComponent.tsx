@@ -2,7 +2,7 @@ import { IBaseState, IBaseTableRefFun } from '@/components/BaseComponent';
 import CommonSearch from '@/components/CommonSearch';
 import BaseTable from '@/components/CommonTableV5/components/BaseTable';
 import CustomForm from '@/components/CustomForm';
-import { downloadExcel } from '@/components/FileExportExcel';
+import { downloadExcel } from '@/components/File/FileExportExcel';
 import { deleteAction, postAction } from '@/services/global';
 import { message, Modal, TableProps } from 'antd';
 import { TableRowSelection } from 'antd/lib/table/interface';

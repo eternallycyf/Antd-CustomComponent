@@ -1,4 +1,4 @@
-import { CommonSearch, CommonTable, CustomForm, Page } from '@/components';
+import { CommonSearch, CommonTable, CustomForm } from '@/components';
 import BaseComponent from '@/components/BaseComponent';
 import { formatValuesType } from '@/components/CustomForm';
 import projectConfig from '@/config/projectConfig';
@@ -23,6 +23,7 @@ import { ACTIVE_TYPE } from './config/constant';
 import dayjs from 'dayjs';
 import { RouteComponentProps } from '@umijs/renderer-react';
 import { DeleteOutlined, EditOutlined, ExportOutlined, FileAddOutlined, ImportOutlined, SyncOutlined } from '@ant-design/icons';
+import { Page } from '@/components/CommonCard';
 const { apiPrefixMock } = projectConfig;
 
 type ConnectProps = ConnectState['login'];

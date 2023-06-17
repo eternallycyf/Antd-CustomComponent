@@ -1,7 +1,7 @@
 import { Button, Card } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Line } from '@ant-design/charts';
-import { Page } from '@/components';
+import { Page } from '@/components/CommonCard';
 
 const data = [
   { year: '1991', value: 3 },

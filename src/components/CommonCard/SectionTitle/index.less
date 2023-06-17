@@ -1,0 +1,23 @@
+@import '~@/assets/styles/compatible.less';
+
+.SectionTitle {
+  padding-left: 8px;
+  font-size: 14px !important;
+
+
+  &::before {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    display: inline-block;
+    height: 14px;
+    border-left: 4px solid @plus-primary;
+    content: ' ';
+  }
+
+
+  .SectionTitle-title {
+    margin-left: 5px;
+    font-weight: 700;
+  }
+}
