@@ -19,6 +19,47 @@ export const getOtherFormList = (self: InstanceType<typeof Activity>): ISearches
   // return getFormList(self).map((item) => ({ ...item, layout }));
   return [
     {
+      name: '动态',
+      label: '动态',
+      type: 'input',
+      itemProps: { ...ITEM_PROPS },
+      controlProps: {
+        onChange: (e: any) => {
+          if (e.target.value == 1) {
+            self.OtherFormRef.current?.setFieldsValue({
+              flag: 1,
+            });
+          } else {
+            self.OtherFormRef.current?.setFieldsValue({
+              flag: 0,
+            });
+          }
+        },
+      },
+      layout,
+    },
+    {
+      type: 'input',
+      name: 'flag',
+      itemProps: {
+        hidden: true,
+      },
+    },
+    {
+      type: 'update',
+      itemProps: {
+        noStyle: true,
+        shouldUpdate: true,
+        next: (values, form) => {
+          const isFlag = values.flag == 1;
+          if (isFlag) {
+            return <span>hello</span>;
+          }
+          return false;
+        },
+      },
+    },
+    {
       name: 'activityCode',
       label: '活动编码',
       type: 'input',

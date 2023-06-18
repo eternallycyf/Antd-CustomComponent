@@ -285,7 +285,7 @@ export interface FormControl {
    */
   formFieldProps?: { rules?: FormItemProps['rules']; style?: React.CSSProperties };
   /**@description 控件属性配置 */
-  controlProps?: IControlProps & IBaseControlProps;
+  controlProps?: (IControlProps & IBaseControlProps) | Object;
 
   dict?: IControlProps['dict'];
   /**@description 表格属性配置 */

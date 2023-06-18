@@ -75,14 +75,12 @@ const renderFormItem = (item: any, index?: number) => {
   return getFieldComp(fieldProps);
 };
 
-const Update: React.FC<{ itemProps: IUpdateProps }> = React.forwardRef((props, ref) => {
-  const { itemProps, ...controlProps } = props;
-  const { shouldUpdate, next } = itemProps;
-
+const Update: React.FC<IUpdateProps> = React.forwardRef((props, ref) => {
+  const { next, shouldUpdate = true, ...controlProps } = props;
   if (!next) return null;
 
   return (
-    <Form.Item noStyle shouldUpdate={true}>
+    <Form.Item noStyle shouldUpdate={shouldUpdate}>
       {(form) => {
         const values = form.getFieldsValue();
         if (!next) return null;
@@ -116,11 +114,6 @@ const Update: React.FC<{ itemProps: IUpdateProps }> = React.forwardRef((props, r
   );
 });
 
-Update.defaultProps = {
-  itemProps: {
-    shouldUpdate: () => false,
-    next: () => false,
-  },
-};
+Update.defaultProps = {};
 
 export default Update;
