@@ -17,6 +17,10 @@ export interface IGlobalModelState {
   menuList: MenuItem[];
   accessCollection: string[];
   color: IRgba;
+  crmUserInfo: {
+    userId: string;
+    realname: string;
+  };
 }
 
 export interface IGlobalModel {
@@ -54,6 +58,10 @@ const GlobalModel: IGlobalModel = {
     menuList: [],
     accessCollection: (sessionStorage.getItem('accessCollection') as any as any[]) || [],
     color: { r: '51', g: '99', b: '215', a: '1' },
+    crmUserInfo: {
+      userId: '',
+      realname: '',
+    },
   },
   reducers: {
     changeCollapsed(state, { collapsed }) {

@@ -55,7 +55,7 @@ type DeepPartial<T> = T extends object
 
 export interface IUpdateProps {
   shouldUpdate: (prevValues: any, nextValues: any) => boolean;
-  next?: (values: any, form: Omit<FormInstance<any>, 'scrollToField' | 'getFieldInstance'>) => false | DeepPartial<ISearchProps>;
+  next?: (values: any, form: Omit<FormInstance<any>, 'scrollToField' | 'getFieldInstance'>) => false | React.ReactNode | DeepPartial<ISearchProps>;
 }
 
 const renderFormItem = (item: any, index?: number) => {
@@ -88,10 +88,13 @@ const Update: React.FC<{ itemProps: IUpdateProps }> = React.forwardRef((props, r
         if (!next) return null;
         const nextValues = next(values, form);
         if (nextValues === false) return null;
+        if (React.isValidElement(nextValues) && !Array.isArray(nextValues)) {
+          return nextValues;
+        }
 
         return (
           <Fragment key={getUUID()}>
-            {(nextValues || []).map((item: any, index: number) => (
+            {((nextValues as any[]) || []).map((item: any, index: number) => (
               <Col span={item['col'] || 24} key={index}>
                 <Form.Item
                   labelAlign="right"

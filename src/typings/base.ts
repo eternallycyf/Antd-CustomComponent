@@ -29,6 +29,7 @@ const FORM_TYPE_DICT = [
   'editRow', // 可编辑行 有保存和删除按钮
   'view',
   'update', // 动态表单 => shouldUpdate
+  'fileUpload',
 ] as const;
 
 export type IBaseFormControlType = (typeof FORM_TYPE_DICT)[number];

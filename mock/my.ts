@@ -123,4 +123,25 @@ export default {
       });
     }
   },
+
+  'POST /flow/upload': {
+    code: 200,
+    msg: '请求成功',
+    success: true,
+
+    data: mockjs.mock({
+      fileId: '@float(100, 10000, 2, 2)',
+      id: '@float(100, 10000, 2, 2)',
+      url: 'http://xxxx/xxx/1.pdf',
+      name: '1.pdf',
+      fileSize: 646983,
+      fdDownLoadUrl: 'http://xxxx/xxx/1.pdf',
+      fdEntityKey: 'file',
+      fdExternalAttachId: '@float(100, 10000, 2, 2)',
+      fdFileName: '1.pdf',
+      fdFileSize: '@float(100, 10000, 2, 2)',
+      flowId: '@float(100, 10000, 2, 2)',
+      fileName: '1.pdf',
+    }),
+  },
 };

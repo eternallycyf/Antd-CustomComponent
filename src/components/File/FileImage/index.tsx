@@ -9,7 +9,7 @@ export const imageInfo = {
   // doc: require('@/assets/icon/docx.png'),
   // xlsx: require('@/assets/icon/xlsx.png'),
   // xls: require('@/assets/icon/xlsx.png'),
-  // other: require('@/assets/icon/other.png'),
+  other: require('@/assets/icon/word.png'),
 };
 
 interface IFileImageProps {
@@ -19,7 +19,7 @@ interface IFileImageProps {
 }
 
 function getFileAfter(fileName: string) {
-  const file = fileName.split('.');
+  const file = String(fileName).split('.');
   return file[file.length - 1];
 }
 

@@ -1,29 +1,13 @@
-import { message, Tooltip, UploadProps } from 'antd';
-import { IAttachmentList, IFileUploadProps, IHandleAttachmentDelete, IHandleFileChange } from './interface';
+import { message, UploadProps } from 'antd';
 import _ from 'lodash';
-import styles from './index.less';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { IFileUploadDetailProps, IFileUploadProps, IHandleFileChange } from './interface';
 
 export const AFTER_NAMES = ['.exe', '.bat', '.xml', '.acp', '.dll', '.vbs', 'chm', '.cmd', '.jsp', '.php', '.html', '.aspx'];
 export const MAX_SIZE = 100;
 
-export function Icon({ path }: { path: string }) {
-  return <img src={require(`@/assets/icon/${path}.png`)} />;
+export function Icon({ path, className, onClick }: { path: string; className?: string; onClick?: any }) {
+  return <img className={className} onClick={onClick} src={require(`@/assets/icon/${path}.png`)} />;
 }
-
-export const renderTitle = (item: IAttachmentList) => {
-  return (
-    <div className={styles.label}>
-      <span>{item.required && <span className={styles.iconRequired}>*</span>}</span>
-      {item.text}
-      {item.tips && (
-        <Tooltip title={item.tips}>
-          <QuestionCircleOutlined style={{ color: '#8E96A4' }} />
-        </Tooltip>
-      )}
-    </div>
-  );
-};
 
 export const beforeUpload: UploadProps['beforeUpload'] = (file) => {
   const { name, size } = file;
@@ -40,21 +24,28 @@ export const beforeUpload: UploadProps['beforeUpload'] = (file) => {
   return true;
 };
 
-export const handleAttachmentDelete: IHandleAttachmentDelete = (fileParams) => {
-  const { fileId, value, setValue } = fileParams;
-  const newValue = _.cloneDeep(value);
-  const index = newValue.findIndex((item) => item.fileId === fileId);
+export const handleAttachmentDelete = (fileParams: IFileUploadDetailProps & { fileId?: string | number; fileKeys: IFileUploadProps['fileKeys'] }) => {
+  const { fileId, fileList, setFileList, fileKeys } = fileParams;
+  const newValue = _.cloneDeep(fileList);
+  const index = newValue.findIndex((item) => item?.[fileKeys?.fileId!] === fileId);
   if (index != -1) {
     newValue.splice(index, 1);
-    setValue(newValue);
+    setFileList(newValue);
   }
 };
 
-export const handleFileChange: IHandleFileChange = (fileParams, setData) => {
-  const { file, fdEntityKey, defaultValue } = fileParams;
+export const handleAttachmentReplace = (fileParams: IFileUploadDetailProps & { index: number; fileKeys: IFileUploadProps['fileKeys'] }) => {
+  const { uploadRef, fileList, setReplaceIndex, index, fileKeys } = fileParams;
+  setReplaceIndex(index);
+  uploadRef.current.upload.uploader.onClick();
+};
+
+export const handleFileChange: IHandleFileChange = (fileParams, setFileList, replaceIndex, fileKeys) => {
+  const { file, extraRecord, defaultList } = fileParams;
   const { name, uid, status, percent } = file;
+  const currrentIndex = replaceIndex;
   if (status) {
-    let newFile = { fdFileName: name, fileId: uid, status, fdEntityKey, percent };
+    let newFile = { [fileKeys?.fileName!]: name, [fileKeys?.fileId!]: uid, status, percent, ...extraRecord };
     let isSuccess = true;
 
     if (status === 'error') {
@@ -63,23 +54,24 @@ export const handleFileChange: IHandleFileChange = (fileParams, setData) => {
     }
 
     if (status === 'done') {
-      const { code, data } = file.response;
+      const code = file?.response?.code;
+      const data = file?.response?.data;
       if (code == 0 || code == 200) {
-        newFile = { ...newFile, ...data, fdEntityKey };
+        newFile = { ...newFile, ...data, ...extraRecord };
       } else {
         message.error('上传失败');
         isSuccess = false;
       }
 
-      const cloneDeepDefaultValue = _.cloneDeep(defaultValue) || [];
-      const index = cloneDeepDefaultValue.findIndex((item) => item.fileId === uid);
+      const cloneDeepDefaultValue = _.cloneDeep(defaultList) || [];
+      const index = currrentIndex == -1 ? cloneDeepDefaultValue.findIndex((item) => item?.[fileKeys?.fileId!] === uid) : currrentIndex;
       if (index > -1) {
         isSuccess ? cloneDeepDefaultValue.splice(index, 1, newFile) : cloneDeepDefaultValue.splice(index, 1);
       } else {
         cloneDeepDefaultValue.push(newFile);
       }
 
-      setData(cloneDeepDefaultValue);
+      setFileList(cloneDeepDefaultValue);
     }
   }
 };

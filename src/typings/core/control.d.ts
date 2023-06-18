@@ -1,5 +1,6 @@
 import { IUpdateProps } from '@/components/CustomForm/FormItem/update';
 import { IBaseViewProps } from '@/components/CustomForm/FormItem/view';
+import { IFileUploadProps } from '@/components/File/FileUpload/interface';
 import {
   AutoCompleteProps,
   CascaderProps,
@@ -47,7 +48,8 @@ export type IBaseControlProps = (InputProps & SearchProps) &
   TransferProps<any> &
   TreeSelectProps &
   UploadProps &
-  IBaseViewProps;
+  IBaseViewProps &
+  IFileUploadProps;
 
 // 自己使用的时候，可以这样使用 controlProps: {} as IControlType<'input'>
 //#region
@@ -97,6 +99,7 @@ export type IControlType<T extends IBaseFormControlType> = T extends 'input'
   ? IBaseViewProps
   : T extends 'update'
   ? IUpdateProps
+  : T extends 'fileUpload'
+  ? IFileUploadProps
   : any;
-
 //#endregion

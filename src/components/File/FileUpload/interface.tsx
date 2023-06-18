@@ -1,38 +1,91 @@
+import { IButtonProps } from '@/typings';
+import { ConnectState } from '@/typings/connect';
 import { RouteComponentProps } from '@umijs/renderer-react';
-import { UploadFile, UploadProps } from 'antd';
+import { FormItemProps, UploadFile, UploadProps } from 'antd';
 
-export interface IAttachmentList {
-  text: string;
-  name: string;
-  tips?: string;
-  value: any[];
-  required?: boolean;
-  setValue: React.Dispatch<React.SetStateAction<any[]>>;
-  fileId: string;
-}
-
-export interface IFileUploadProps extends RouteComponentProps<any> {
-  isDetail?: boolean;
-  attachmentList: IAttachmentList[];
-  restDownload?: boolean;
-  colNumber?: number;
-  actionUrl?: string;
-  token: string;
-  limitCount?: number;
-}
-
-export interface IFileParams {
-  file: IOriginFileObj;
-  fdEntityKey: string;
-  defaultValue?: any[];
-}
-
-export type IOriginFileObj = UploadFile<any> & {
-  fdEntityKey?: string;
-  fdFileName?: string;
-  uploadDatetime?: string;
+type ConnectProps = {
+  token: ConnectState['login']['token'];
+  crmUserId: ConnectState['global']['crmUserInfo']['userId'];
+  crmUserRealname: ConnectState['global']['crmUserInfo']['realname'];
 };
 
-export type IHandleAttachmentDelete = (fileParams: Pick<IAttachmentList, 'fileId' | 'value' | 'setValue'>) => void;
+export interface IAttachment {
+  label?: string;
+  name: string;
+  tooltip?: string;
+  isRequired?: boolean;
+  maxCount?: number;
 
-export type IHandleFileChange = (fileParams: IFileParams, setData: IAttachmentList['setValue']) => void;
+  /**
+   * @description 拓展的文件信息 和文件名同级
+   */
+  extraRecord?: any;
+
+  extra?: IButtonProps[] | [];
+  headerItemProps?: FormItemProps;
+}
+
+export interface IFileUploadProps extends RouteComponentProps<any>, ConnectProps {
+  attachment: IAttachment;
+  actionUrl?: string;
+  isDetail?: boolean;
+  colNumber?: number;
+
+  isDownloadByS3?: boolean;
+  fileKeys?: {
+    fileName?: string;
+    fileId?: string;
+    updateTime?: string;
+    url?: string;
+  };
+
+  /**
+   * @description 集成到antd
+   */
+  value?: UploadProps<IFileListResponse>[];
+  onChange?: (fileList: UploadProps<IFileListResponse>[]) => void;
+}
+
+export type IHandleFileChange = {
+  (
+    info: {
+      file: UploadFile<IFileListResponse>;
+      fileList: UploadFile<IFileListResponse>[];
+      extraRecord: any;
+      defaultList: IFileListExtraRecord[];
+    },
+    setFileList: React.Dispatch<React.SetStateAction<IFileListExtraRecord[]>>,
+    replaceIndex: number,
+    fileKeys: IFileUploadProps['fileKeys'],
+  ): void;
+};
+
+export type IFileListExtraRecord = {
+  uploadDatetime?: string;
+  fileId?: string;
+  id?: string;
+  url?: string;
+  fileName?: string;
+  fileSize?: string;
+  fdDownLoadUrl?: string;
+  fdEntityKey?: string;
+  fdExternalAttachId?: string;
+  fdFileName?: string;
+  fdFileSize?: string;
+  flowId?: string;
+  [props: string]: any;
+};
+
+export type IFileListResponse = {
+  code: number;
+  msg: string;
+  success: boolean;
+  data: IFileListExtraRecord;
+};
+
+export interface IFileUploadDetailProps extends Pick<IFileUploadProps, 'isDetail' | 'colNumber' | 'fileKeys' | 'isDownloadByS3'> {
+  fileList: IFileListExtraRecord[];
+  setFileList: React.Dispatch<React.SetStateAction<IFileListExtraRecord[]>>;
+  setReplaceIndex: React.Dispatch<React.SetStateAction<number>>;
+  uploadRef: React.MutableRefObject<any>;
+}
