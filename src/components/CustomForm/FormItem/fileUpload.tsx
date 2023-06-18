@@ -3,14 +3,13 @@ import projectConfig from '@/config/projectConfig';
 import { IControlProps } from '@/typings';
 import { Form } from 'antd';
 import React, { useImperativeHandle } from 'react';
+import FileUpload from '@/components/File/FileUpload';
 const { apiPrefixMock } = projectConfig;
 
 export interface IFileUploadControlProps extends Omit<IControlProps, 'onChange'>, IFileUploadProps {}
 
-const FileUpload: React.FC<IFileUploadControlProps> = React.forwardRef((props, ref) => {
+const FileUploadControl: React.FC<IFileUploadControlProps> = (props) => {
   const { label, name, initialValue = [], itemProps, attachment = [], isRequired = false, value, onChange, ...controlProps } = props;
-
-  useImperativeHandle(ref, () => ({}));
 
   return (
     <Form.Item name={name} initialValue={initialValue} required={isRequired} {...itemProps}>
@@ -28,6 +27,6 @@ const FileUpload: React.FC<IFileUploadControlProps> = React.forwardRef((props, r
       />
     </Form.Item>
   );
-});
+};
 
-export default FileUpload;
+export default FileUploadControl;
