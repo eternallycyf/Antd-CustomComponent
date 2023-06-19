@@ -138,7 +138,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
       // 合计行数据处理
       let resultAllAction;
       let newDataSource = [];
-      if (isReset && urlAlls && urlAlls.listUrl) {
+      if (urlAlls && urlAlls.listUrl) {
         resultAllAction = action(urlAlls.listUrl, {
           ...searchParams,
           ...extraParams,
@@ -149,42 +149,47 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
         });
       }
 
-      Promise.all([resultAction, resultAllAction]).then(([result, resultAll]) => {
-        const data = dataPath ? _.get(result, dataPath) : result.data;
-        const rows = Array.isArray(data) ? data : data[recordKey];
-        const total = totalPath ? _.get(result, totalPath) : data.totalCount || data.total || rows.length;
-        // dataSource 数据处理
-        let dataSource = (rows || []).map((item: any, index: number) => ({
-          ...item,
-          index: (currentPage - 1) * pageSize + (index + 1) || index + 1,
-          rowKey: (typeof rowKey === 'function' ? rowKey(item, index) : item[rowKey]) || (currentPage - 1) * pageSize + (index + 1),
-        }));
-        dataSource = dataHandler ? dataHandler(dataSource, data) : dataSource;
+      Promise.all([resultAction, resultAllAction])
+        .then(([result, resultAll]) => {
+          const data = dataPath ? _.get(result, dataPath) : result.data;
+          const rows = Array.isArray(data) ? data : data[recordKey];
+          const total = totalPath ? _.get(result, totalPath) : data.totalCount || data.total || rows.length;
+          // dataSource 数据处理
+          let dataSource = (rows || []).map((item: any, index: number) => ({
+            ...item,
+            index: (currentPage - 1) * pageSize + (index + 1) || index + 1,
+            rowKey: (typeof rowKey === 'function' ? rowKey(item, index) : item[rowKey]) || (currentPage - 1) * pageSize + (index + 1),
+          }));
+          dataSource = dataHandler ? dataHandler(dataSource, data) : dataSource;
 
-        const getFixedData = (dataSource: any[]) => {
-          let newDataSource: any[] = [];
-          let fixRowData = fixRowKeys?.map((item) => dataSource.find((ele: any) => ele.rowKey == item)).filter(Boolean) || [];
-          if (!fixRowData.length) return dataSource;
-          newDataSource = dataSource.filter((item: any) => !fixRowKeys?.includes(item.rowKey));
-          newDataSource = [...fixRowData, ...newDataSource];
-          return newDataSource;
-        };
+          const getFixedData = (dataSource: any[]) => {
+            let newDataSource: any[] = [];
+            let fixRowData = fixRowKeys?.map((item) => dataSource.find((ele: any) => ele.rowKey == item)).filter(Boolean) || [];
+            if (!fixRowData.length) return dataSource;
+            newDataSource = dataSource.filter((item: any) => !fixRowKeys?.includes(item.rowKey));
+            newDataSource = [...fixRowData, ...newDataSource];
+            return newDataSource;
+          };
 
-        const newData = isVirtual || !fixRowKeys?.length ? dataSource : getFixedData(dataSource);
+          const newData = isVirtual || !fixRowKeys?.length ? dataSource : getFixedData(dataSource);
 
-        newDataSource = resultAll?.data?.list ? resultAll.data.list : this.state.summaryDataSource;
+          newDataSource = resultAll?.data?.list ? resultAll.data.list : this.state.summaryDataSource;
 
-        this.setState({
-          loading: false,
-          dataSource: newData,
-          current: currentPage,
-          total,
-          requestCount: requestCount + 1,
-          summaryDataSource: newDataSource,
+          this.setState({
+            loading: false,
+            dataSource: newData,
+            current: currentPage,
+            total,
+            requestCount: requestCount + 1,
+            summaryDataSource: newDataSource,
+          });
+        })
+        .catch((e) => {
+          this.setState({ loading: false });
+          console.error(e);
         });
-      });
     } catch (e) {
-      console.log(e);
+      console.error(e);
       this.setState({ loading: false });
     }
     this.props.handleScroll && this.props.handleScroll();

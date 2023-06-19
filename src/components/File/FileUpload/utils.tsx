@@ -62,16 +62,16 @@ export const handleFileChange: IHandleFileChange = (fileParams, setFileList, rep
         message.error('上传失败');
         isSuccess = false;
       }
-
-      const cloneDeepDefaultValue = _.cloneDeep(defaultList) || [];
-      const index = currrentIndex == -1 ? cloneDeepDefaultValue.findIndex((item) => item?.[fileKeys?.fileId!] === uid) : currrentIndex;
-      if (index > -1) {
-        isSuccess ? cloneDeepDefaultValue.splice(index, 1, newFile) : cloneDeepDefaultValue.splice(index, 1);
-      } else {
-        cloneDeepDefaultValue.push(newFile);
-      }
-
-      setFileList(cloneDeepDefaultValue);
     }
+
+    const cloneDeepDefaultValue = _.cloneDeep(defaultList) || [];
+    const index = currrentIndex == -1 ? cloneDeepDefaultValue.findIndex((item) => item?.[fileKeys?.fileId!] === uid) : currrentIndex;
+    if (index > -1) {
+      isSuccess ? cloneDeepDefaultValue.splice(index, 1, newFile) : cloneDeepDefaultValue.splice(index, 1);
+    } else {
+      cloneDeepDefaultValue.push(newFile);
+    }
+
+    setFileList(cloneDeepDefaultValue);
   }
 };
