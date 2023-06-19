@@ -4,7 +4,7 @@ import { withRoutePage } from '@/core/Enhance/withRoutePage';
 import { ConnectState } from '@/typings/connect';
 import { CloudUploadOutlined } from '@ant-design/icons';
 import { connect, withRouter } from '@umijs/max';
-import { Form, Upload, UploadProps } from 'antd';
+import { Divider, Form, Upload, UploadProps } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { compose } from 'redux';
 import Detail from './Detail';
@@ -28,6 +28,7 @@ const FileUpload: React.FC<IFileUploadProps> = (props) => {
     crmUserId,
     crmUserRealname,
     isDownloadByS3 = true,
+    maxLength = 20,
   } = props;
   const { headerItemProps = {}, maxCount, extraRecord } = attachment;
   const actionUrl = defaultActionUrl || `flow/upload`;
@@ -94,23 +95,26 @@ const FileUpload: React.FC<IFileUploadProps> = (props) => {
 
   return (
     <div className={styles.FileUpload}>
-      <div className={styles.uploadContent}>
-        <Form.Item {...defaultHeaderFormItemProps}>
-          <AccessBtn
-            btnList={
-              attachment?.extra &&
-              (attachment?.extra as any[]).map((item) => ({
-                ...item,
-                size: item?.size || 'middle',
-              }))
-            }
-          />
-        </Form.Item>
+      <div className={styles.uploadContent} style={{ marginTop: fileList?.length != 0 ? 10 : 0 }}>
+        {(attachment?.extra || attachment?.label) && (
+          <Form.Item {...defaultHeaderFormItemProps}>
+            <AccessBtn
+              btnList={
+                attachment?.extra &&
+                (attachment?.extra as any[]).map((item) => ({
+                  ...item,
+                  size: item?.size || 'middle',
+                }))
+              }
+            />
+          </Form.Item>
+        )}
         {fileList?.length != 0 && (
           <Form.Item>
             <Detail {...detailProps} />
           </Form.Item>
         )}
+        {(fileList?.length != 0 || attachment?.extra || attachment?.label) && <Divider dashed style={{ color: '#DEE1E7', margin: '4px 0 0 0' }} />}
         <Form.Item {...uploadFormItemProps}>
           <div ref={uploadWrapperRef} onClick={() => setReplaceIndex(-1)}>
             <Upload.Dragger {...UploadProps} ref={uploadWrapperRef}>

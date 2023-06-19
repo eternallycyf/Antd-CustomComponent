@@ -14,7 +14,7 @@ import { handleAttachmentDelete, handleAttachmentReplace, Icon } from './utils';
 const { apiPrefixMock } = projectConfig;
 
 const Detail: FC<IFileUploadDetailProps> = (props) => {
-  const { isDetail, colNumber, fileList = [], setFileList, setReplaceIndex, uploadRef, fileKeys, isDownloadByS3 } = props;
+  const { isDetail, colNumber, fileList = [], setFileList, setReplaceIndex, uploadRef, fileKeys, isDownloadByS3, maxLength } = props;
 
   const _getPercent = (item: any) => {
     return item?.percent == undefined ? 100 : item?.status == 'uploading' && item?.percent == 100 ? 90 : item?.percent;
@@ -71,12 +71,12 @@ const Detail: FC<IFileUploadDetailProps> = (props) => {
             </Col>
             <Col>
               <Row>
-                <CustomTooltip maxLength={20} text={item?.[fileKeys?.fileName!] ?? '--'} paragraphClassName={styles.fileName} />
+                <CustomTooltip maxLength={maxLength} text={item?.[fileKeys?.fileName!] ?? '--'} paragraphClassName={styles.fileName} />
               </Row>
               {item?.[fileKeys?.fileName!] && (
                 <Row>
                   <CustomTooltip
-                    maxLength={20}
+                    maxLength={maxLength}
                     text={`生效时间： ${item?.[fileKeys?.updateTime!] || dayjs().format('YYYY-MM-DD')}`}
                     paragraphClassName={styles.time}
                   />

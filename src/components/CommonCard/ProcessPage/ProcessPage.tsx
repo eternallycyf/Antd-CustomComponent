@@ -26,11 +26,14 @@ const ProcessPage: FC<IProcessCard> = (props) => {
 
   const renderHeaderRightBtnList = () => {
     if (extraBtnList?.length === 0) return [];
-    return extraBtnList.map((item) => ({
-      ...item,
-      className: `${styles['btn-' + item.buttonStyleType]} ${item.className}`,
-      size: item?.size ?? 'middle',
-    }));
+    return extraBtnList
+      .map((item) => ({
+        ...item,
+        className: `${styles['btn-' + item.buttonStyleType]} ${item.className}`,
+        size: item?.size ?? 'middle',
+        visible: typeof item.visible === 'function' ? item.visible : () => item?.visible ?? true,
+      }))
+      .filter((item) => item.visible(undefined as any as any, undefined as any as any, undefined as any as any));
   };
 
   const headerStyle: React.CSSProperties = {

@@ -2,7 +2,7 @@ import _, { some, isArray, keyBy, keys } from 'lodash';
 import dayjs from 'dayjs';
 import { exportFile } from '@/services/global';
 import React from 'react';
-import { Modal, Tooltip } from 'antd';
+import { message, Modal, Tooltip } from 'antd';
 import Ellipsis from '@/core/base/Ellipsis';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
@@ -279,4 +279,18 @@ export const getTextRequired = (message: string, isRequired: boolean = true): ob
     whiteSpace: true,
     message,
   };
+};
+
+export const errorMessage = (res: any, messageDesc = '') => {
+  if (res.code == 200) {
+    return message.success(`${messageDesc || res.message}成功`);
+  }
+
+  if (res.code == 500) {
+    return message.error(`${messageDesc || res.message}失败`);
+  }
+
+  if (res.success == false) {
+    return message.error(`${messageDesc || res.message}失败`);
+  }
 };

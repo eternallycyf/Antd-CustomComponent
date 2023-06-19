@@ -63,7 +63,7 @@ const View: React.ForwardRefRenderFunction<IViewHandle, IViewProps> = (props, re
 
   useImperativeHandle(ref, () => ({}));
 
-  let value = record?.[name] === undefined ? '' : record?.[name];
+  let value = record?.[name] === undefined ? undefined : record?.[name];
   const values = form?.getFieldsValue() || {};
   if (parser) {
     value = parser(value, record, values);
@@ -86,15 +86,7 @@ const View: React.ForwardRefRenderFunction<IViewHandle, IViewProps> = (props, re
   }
 
   if (!render && rows !== 1) {
-    return (
-      <CustomTooltip.Paragraph
-        className={className}
-        style={style}
-        text={value ?? '--'}
-        copyable={copyable}
-        rows={rows}
-      />
-    );
+    return <CustomTooltip.Paragraph className={className} style={style} text={value ?? '--'} copyable={copyable} rows={rows} />;
   }
 
   if (render) return <span className={styles.desc}>{render(value, record, values)}</span>;

@@ -1,3 +1,5 @@
+import CommonTable from '@/components/CommonTableV5/CommonTableV5';
+import { IColumnsType } from '@/typings';
 import { formatNumber, formatPercent } from '@/utils/util';
 import { Row, Table } from 'antd';
 import React from 'react';
@@ -41,7 +43,16 @@ const ProcessPageTable: React.FC<IProcessPageTableProps> = (props) => {
     };
   });
 
-  return <Table style={{ margin: '0px 0 10px 0' }} className={styles.ProcessPageTable} columns={newColumns} pagination={false} {...props} />;
+  return (
+    <CommonTable
+      showIndex={false}
+      style={{ margin: '0px 0 10px 0' }}
+      className={styles.ProcessPageTable}
+      columns={newColumns as any}
+      pagination={false}
+      {...(props as any)}
+    />
+  );
 };
 
 export default ProcessPageTable;
