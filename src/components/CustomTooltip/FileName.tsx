@@ -3,6 +3,10 @@ import CustomTooltip from './CustomTooltip';
 import FileImage from '@/components/File/FileImage';
 import _ from 'lodash';
 import FileView from '@/components/File/FileViewer';
+import { Space, Typography } from 'antd';
+import projectConfig from '@/config/projectConfig';
+import { handleDownload as handleDownLoadByDefault, postDownloadFile } from '@/services/global';
+const { apiPrefixMock } = projectConfig;
 
 export interface IFileName {
   name: string;
@@ -20,44 +24,86 @@ export interface IFileName {
    * @default 2
    */
   suffixLength?: number;
+
+  hasExtraViewIcon?: boolean;
   hasPreview?: boolean;
-  previewLinkType?: 'flow' | 'default';
+  hasDownLoad?: boolean;
+  hasFileName?: boolean;
+  isIcon?: boolean;
+  previewLinkType?: 'flow' | 'default' | 'S3';
   fileId?: string;
 }
 
-let getPreviewLink = (type = 'default'): string => {
+let getPreviewUrl = (type = 'default', fileId: string): string => {
   switch (type) {
     case 'flow':
-      getPreviewLink = () => '/flow/download';
+      getPreviewUrl = () => `ims/flow/field/download?fileId=${fileId}`;
       break;
     case 'default':
-      getPreviewLink = () => '/download';
+      getPreviewUrl = () => `ims/org/cust/download?id=${fileId}`;
+      break;
+    case 'S3':
+      getPreviewUrl = () => `ims-base/file/downloadByUrl?url=${fileId}`;
       break;
     default:
-      getPreviewLink = () => '';
+      getPreviewUrl = () => '';
       break;
   }
-  return getPreviewLink();
+  return getPreviewUrl('default', '');
 };
 
+const handleDownload = (type: string, fileName: string, fileId: string) => {
+  return type == 'S3'
+    ? postDownloadFile(fileId, fileName)
+    : handleDownLoadByDefault(
+        { id: fileId },
+        {
+          url: `${apiPrefixMock}/ims/org/cust/download`,
+          fileName,
+        },
+      );
+};
+function Icon({ path, className, onClick }: { path: string; className?: string; onClick?: any }) {
+  return <img style={{ cursor: 'pointer' }} className={className} onClick={onClick} src={require(`@/assets/icon/${path}.png`)} />;
+}
+
 const CustomTooltipFileName: FC<IFileName> = (props) => {
-  const { name, prefixLength = 10, suffixLength = 2, hasPreview = false, previewLinkType = 'default', fileId = '' } = props;
+  const {
+    name,
+    prefixLength = 10,
+    suffixLength = 2,
+    hasPreview = true,
+    previewLinkType = 'default',
+    hasDownLoad = true,
+    hasExtraViewIcon = true,
+    hasFileName = true,
+    isIcon = true,
+    fileId = '',
+  } = props;
 
   if (_.isNil(name) || (typeof name === 'string' && name.length === 0)) return <span style={{ color: '#8E96A4' }}>--</span>;
 
   const fileType = name?.lastIndexOf('.') !== -1 ? name?.slice(name?.lastIndexOf('.') + 1) : undefined;
-  const fileName = name.slice(0, name.lastIndexOf('.'));
+  const fileName = String(name).slice(0, name.lastIndexOf('.'));
+  const linkStyles = {
+    color: '#2B5FDC',
+    cursor: 'pointer',
+  };
 
   if (!fileType) return <span style={{ color: '#8E96A4' }}>--</span>;
 
   const lastText = String(fileName).length > prefixLength ? String(fileName).slice(prefixLength).slice(-suffixLength) : '';
+  const fileNameStyle = {
+    color: hasExtraViewIcon ? '#2A303B' : '#2B5FDC',
+    cursor: hasExtraViewIcon ? 'default' : 'pointer',
+  };
 
   const FileNameContent = (
-    <a style={{ color: '#3363D7' }}>
+    <a style={fileNameStyle}>
       <FileImage fileName={fileName ?? '--'} style={{ marginRight: 8 }} />
       {fileName.length > prefixLength + suffixLength ? (
         <>
-          <CustomTooltip style={{ color: '#3363D7' }} text={name ?? '--'} maxLength={prefixLength} />
+          <CustomTooltip style={fileNameStyle} text={name ?? '--'} maxLength={prefixLength} />
           {lastText ?? ''}
         </>
       ) : (
@@ -67,22 +113,29 @@ const CustomTooltipFileName: FC<IFileName> = (props) => {
     </a>
   );
 
-  if (hasPreview) {
-    return (
-      <>
+  const DownLoadIcon = isIcon ? (
+    <Icon path="download" onClick={() => handleDownload(previewLinkType, name, fileId)} />
+  ) : (
+    <span style={linkStyles}>下载</span>
+  );
+  const ViewIcon = isIcon ? <Icon path="view" /> : <span style={linkStyles}>预览</span>;
+
+  return (
+    <Space align="end" size={16}>
+      {hasFileName && !hasPreview && FileNameContent}
+      {hasFileName && hasPreview && hasExtraViewIcon && FileNameContent}
+      {hasPreview && (
         <FileView
           fileInfo={{
             fileName: name,
             fileId,
           }}
-          wrapper={FileNameContent}
-          downLoadUrl={`${getPreviewLink(previewLinkType)}?fileId=${fileId}`}
+          wrapper={hasExtraViewIcon ? ViewIcon : FileNameContent}
+          downLoadUrl={`${getPreviewUrl(previewLinkType, fileId)}`}
         />
-      </>
-    );
-  }
-
-  return FileNameContent;
+      )}
+    </Space>
+  );
 };
 
 export default CustomTooltipFileName;

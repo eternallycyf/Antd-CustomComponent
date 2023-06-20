@@ -75,6 +75,6 @@ export interface IProcessPageDetailHeaderProps {
   formatList?: (info: any, list: IUserInfoFormList[]) => IUserInfoFormList[];
 }
 
-export interface IProcessPageDetailRecord {
+export interface IProcessPageDetailRecord extends IColumnsType<any> {
   flowId: string | number;
 }

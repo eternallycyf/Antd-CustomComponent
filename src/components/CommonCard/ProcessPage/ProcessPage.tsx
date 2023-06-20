@@ -15,8 +15,8 @@ const ProcessPage: FC<IProcessCard> = (props) => {
 
   const renderHeaderLeft = () => {
     return (
-      <div className={styles.headerLeft} onClick={handleTitleOnClick}>
-        <Space size={12}>
+      <div className={styles.headerLeft}>
+        <Space size={12} onClick={handleTitleOnClick}>
           <LeftOutlined style={{ fontSize: 18, marginTop: 2 }} />
           <span className={styles.title}>{title ?? '--'}</span>
         </Space>

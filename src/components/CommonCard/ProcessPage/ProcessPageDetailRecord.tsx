@@ -7,7 +7,7 @@ import { IProcessPageDetailRecord } from './interface';
 const { apiPrefix } = projectConfig;
 
 const ProcessPageDetail: React.FC<IProcessPageDetailRecord> = (props) => {
-  const { flowId } = props;
+  const { flowId, ...restProps } = props;
   if (!flowId) return null;
 
   const tableParams: ICommonTable<any> = {
@@ -20,6 +20,7 @@ const ProcessPageDetail: React.FC<IProcessPageDetailRecord> = (props) => {
       listUrl: `${apiPrefix}/api/flow/list/${flowId}`,
     },
     pagination: false,
+    ...restProps,
   };
 
   return (
