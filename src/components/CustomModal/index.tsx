@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, ModalFuncProps } from 'antd';
+import { Modal, Button, ModalFuncProps, ButtonProps } from 'antd';
 import styles from './index.less';
 
 interface IAsyncConfirm {
@@ -51,30 +51,39 @@ export const asyncConfirm = (props: IAsyncConfirm) => {
 };
 
 interface ICreateModal {
-  onOk?: (status: string, destoryFn: () => void) => void;
+  onOk?: (status: boolean, destoryFn: () => void) => void;
   type?: ModalFuncProps['type'];
   title?: React.ReactNode;
   content?: React.ReactNode;
   modalProps?: ModalFuncProps;
+  footerBtns: {
+    code: boolean;
+    btnChild: React.ReactNode;
+    btnProps?: ButtonProps;
+    onClick?: (status: boolean, destoryFn: () => void) => void;
+  }[];
 }
 
 const CustomModal = async ({
-  onOk = (status, destoryFn) => destoryFn(),
+  onOk = (status, destoryFn) => {
+    destoryFn();
+  },
   type = 'info',
   title = '确定删除嘛',
   content = '',
   modalProps = {},
+  footerBtns = [
+    { code: false, btnChild: '取消' },
+    {
+      btnProps: { type: 'primary' },
+      code: true,
+      btnChild: '确定',
+      onClick: onOk,
+    },
+  ],
 }: ICreateModal) => {
   const confirmCode = await asyncConfirm({
-    footerBtns: [
-      { code: false, btnChild: '取消' },
-      {
-        btnProps: { type: 'primary' },
-        code: true,
-        btnChild: '确定',
-        onClick: onOk,
-      },
-    ],
+    footerBtns,
     type,
     modalProps: {
       title,
