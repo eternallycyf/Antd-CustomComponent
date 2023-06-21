@@ -1,4 +1,5 @@
 // todo 合计
+import { ErrorBoundary } from '@/core/base/ErrorBoundary';
 import { IButtonProps, ISearchesType } from '@/typings';
 import { Column } from '@/typings/core/column';
 import { Search } from '@/typings/core/form';
@@ -12,7 +13,13 @@ import { formatEditTableColumns, getCurrentFieldValue, handleExport, IHandleExpo
 
 // #region
 /**
- * @description context
+ * context
+ * @typedef {Object} IEditTableContext
+ * @property {FormInstance} form - form实例
+ * @property {FormListOperation<Values>} operation - formList的操作
+ * @property {Values[]} values - formList的值
+ * @template Values -
+ * @template FormItemsValues -
  */
 interface IEditTableContext<Values = any, FormItemsValues = any> extends ICommonEditTableHandle<Values, FormItemsValues> {
   operation: FormListOperation<Values>;
@@ -20,16 +27,36 @@ interface IEditTableContext<Values = any, FormItemsValues = any> extends ICommon
 }
 
 /**
- * @description 通用编辑表格
- * @type {Record<string,unknown>} Values 表单name
- * @type {Record<string,unknown>} Rest 其他自定义的参数 => (columnsType & Rest)[]
+ * 通用编辑表格
+ * @typedef {Object} ICommonEditTableProps
+ * @property {FormInstance} form - form实例
+ * @property {string} [status='edit'] - 编辑状态
+ * @property {boolean} [showIndex=true] - 是否显示序号
+ * @property {boolean} [isVirtual=false] - 是否是虚拟列表虚拟列表 必须传入 scroll.y 高度
+ *
+ * @property {React.ReactNode | ((value: IEditTableContext) => React.ReactNode)} [beforeChildren] - 表格前面的内容
+ * @property {React.ReactNode | ((value: IEditTableContext) => React.ReactNode)} [afterChildren] - 表格后面的内容
+ *
+ * @property {TableProps} [tableProps] - table的props
+ * @property {IGetColumns} columns - table的columns
+ * @property {IEditTableButtonProps} [itemButton] - 每一行的操作按钮
+ * @property {IEditTableNotItemButtonProps} [buttonLeft] - 表格左边的按钮
+ * @property {IEditTableNotItemButtonProps} [buttonRight] - 表格右边的按钮
+ * @property {IEditTableNotItemButtonProps} [buttonBottomLeft] - 表格底部左边的按钮
+ * @property {IEditTableNotItemButtonProps} [buttonBottomRight] - 表格底部右边的按钮
+ *
+ * @property {string} [name='EditTable'] - formList的name
+ * @property {React.ComponentProps<typeof Form.List>} [formListProps] - formList的props
+ * @property {any[]} [initialValues] - formList的initialValues
+ * @property {React.ComponentProps<typeof Form.List>['rules']} [rules] - formList的rules
+ * @template Values - 表单name
+ * @template Rest - 其他自定义的参数 => (columnsType & Rest)[]
  */
 export interface ICommonEditTableProps<Values = any, Rest = Record<string, unknown>, FormItemsValues = any> {
   /**@description 基础配置 */
   form: FormInstance<FormItemsValues>;
   status?: 'view' | 'edit';
   showIndex?: boolean;
-  // 虚拟列表必须传入 scroll.y 高度
   isVirtual?: boolean;
 
   /**@description 其他内容配置 */
@@ -81,7 +108,12 @@ export type ICommonEditTableColumnsType<Values = any, Rest = Record<string, unkn
   };
   render?: (value: any, record: Values, index: number, allValues: Values[]) => React.ReactNode;
   shouldUpdate?: FormItemProps<Values>['shouldUpdate'];
-  // status === 'view' 状态时 展示数据转换 和render一样 只不过为了使用formatCoumn的方法 用这个代替render
+  /**
+   * @name 自定义转换的方法
+   * @description status === 'view' 状态时 展示数据转换 和render一样 只不过为了使用formatCoumn的方法 用这个代替render
+   * @example <caption>自定义转换的方法</caption>
+   * transform: (text, record, index, allValues) => text + '元'
+   */
   transform?: (text: any, record: Values, index: number, allValues: Values[]) => React.ReactNode;
 } & Rest &
   IColumnEditRestProps<Values>;
@@ -293,36 +325,38 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
   //#endregion
 
   return (
-    <Form.List name={tableFormName} initialValue={initialValues} rules={rules} {...formListProps}>
-      {(fields, operation, { errors }) => {
-        return (
-          <EditTableContext.Provider value={{ ...EditTableContextProviderProps, operation }}>
-            <Form.Item noStyle>
-              <EditTableContext.Consumer>{typeof beforeChildren === 'function' ? beforeChildren : () => null}</EditTableContext.Consumer>
-            </Form.Item>
-            {renderButtonRow(buttonLeft, buttonRight, operation)}
-            <Form.Item className={`${styles.EditTableContent}`}>
-              <Table
-                isVirtual={fields?.length >= 100 ? isVirtual : false}
-                status={status}
-                scroll={isVirtual ? { y: 800 } : false}
-                onSearchOrReset={(scrollRef: any) => scrollRef?.current?.dispatchEvent(new CustomEvent('scroll'))}
-                dataSource={fields}
-                columns={getDefaultColumns(operation, status)}
-                rowKey={'key'}
-                pagination={false}
-                {...tableProps}
-              />
-            </Form.Item>
-            {renderButtonRow(buttonBottomLeft, buttonBottomRight, operation)}
-            <Form.Item noStyle>
-              <EditTableContext.Consumer>{typeof afterChildren === 'function' ? afterChildren : () => null}</EditTableContext.Consumer>
-            </Form.Item>
-            <Form.ErrorList errors={errors} />
-          </EditTableContext.Provider>
-        );
-      }}
-    </Form.List>
+    <ErrorBoundary>
+      <Form.List name={tableFormName} initialValue={initialValues} rules={rules} {...formListProps}>
+        {(fields, operation, { errors }) => {
+          return (
+            <EditTableContext.Provider value={{ ...EditTableContextProviderProps, operation }}>
+              <Form.Item noStyle>
+                <EditTableContext.Consumer>{typeof beforeChildren === 'function' ? beforeChildren : () => null}</EditTableContext.Consumer>
+              </Form.Item>
+              {renderButtonRow(buttonLeft, buttonRight, operation)}
+              <Form.Item className={`${styles.EditTableContent}`}>
+                <Table
+                  isVirtual={fields?.length >= 100 ? isVirtual : false}
+                  status={status}
+                  scroll={isVirtual ? { y: 800 } : false}
+                  onSearchOrReset={(scrollRef: any) => scrollRef?.current?.dispatchEvent(new CustomEvent('scroll'))}
+                  dataSource={fields}
+                  columns={getDefaultColumns(operation, status)}
+                  rowKey={'key'}
+                  pagination={false}
+                  {...tableProps}
+                />
+              </Form.Item>
+              {renderButtonRow(buttonBottomLeft, buttonBottomRight, operation)}
+              <Form.Item noStyle>
+                <EditTableContext.Consumer>{typeof afterChildren === 'function' ? afterChildren : () => null}</EditTableContext.Consumer>
+              </Form.Item>
+              <Form.ErrorList errors={errors} />
+            </EditTableContext.Provider>
+          );
+        }}
+      </Form.List>
+    </ErrorBoundary>
   );
 };
 

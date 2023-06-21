@@ -7,6 +7,7 @@ import useSyncState from '@/hook/useSyncState';
 import styles from './index.less';
 import RenderTag from './renderTag';
 import { RowProps } from 'antd';
+import { ErrorBoundary } from '@/core/base/ErrorBoundary';
 
 export interface IToolTipTagProps {
   formList: ISearchesType;
@@ -182,29 +183,31 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
   };
 
   return (
-    <CommonSearch
-      {...restProps}
-      isInline={isInline}
-      rowProps={rowProps}
-      ref={searchRef}
-      formList={formList}
-      showToolTipTag={showToolTipTag}
-      showSearchBtn={showSearchBtn}
-      handleTagList={handleTagList}
-      handleResetCallback={() => {
-        setTagList([]);
-        if (handleResetCallback) handleResetCallback();
-      }}
-    >
-      {showToolTipTag && tagList ? (
-        <div ref={divRef} className={styles.tagRow}>
-          {tagList().map((item, index) => (
-            <RenderTag key={index} item={item} index={index} handleDeleteTag={handleDeleteTag} checkBoxStatus={checkBoxStatus} />
-          ))}
-        </div>
-      ) : null}
-      {children}
-    </CommonSearch>
+    <ErrorBoundary>
+      <CommonSearch
+        {...restProps}
+        isInline={isInline}
+        rowProps={rowProps}
+        ref={searchRef}
+        formList={formList}
+        showToolTipTag={showToolTipTag}
+        showSearchBtn={showSearchBtn}
+        handleTagList={handleTagList}
+        handleResetCallback={() => {
+          setTagList([]);
+          if (handleResetCallback) handleResetCallback();
+        }}
+      >
+        {showToolTipTag && tagList ? (
+          <div ref={divRef} className={styles.tagRow}>
+            {tagList().map((item, index) => (
+              <RenderTag key={index} item={item} index={index} handleDeleteTag={handleDeleteTag} checkBoxStatus={checkBoxStatus} />
+            ))}
+          </div>
+        ) : null}
+        {children}
+      </CommonSearch>
+    </ErrorBoundary>
   );
 };
 

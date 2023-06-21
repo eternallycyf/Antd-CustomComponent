@@ -15,6 +15,7 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { getDvaApp } from '@umijs/max';
 import _ from 'lodash';
+import { ErrorBoundary } from '@/core/base/ErrorBoundary';
 const { theme } = getDvaApp()._store.getState().global;
 
 const CommonTableContext = React.createContext<ICommonTableContext>({ loading: false });
@@ -544,12 +545,12 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     );
 
     return (
-      <Fragment>
+      <ErrorBoundary>
         <CommonTableContext.Provider value={{ loading }}>
           {preChildren && typeof preChildren === 'function' ? (preChildren({ loading }) as any) : null}
         </CommonTableContext.Provider>
         {draggable ? <DndProvider backend={HTML5Backend}>{table}</DndProvider> : table}
-      </Fragment>
+      </ErrorBoundary>
     );
   }
 }
