@@ -49,7 +49,7 @@ let getPreviewUrl = (type = 'default', fileId: string): string => {
       getPreviewUrl = () => '';
       break;
   }
-  return getPreviewUrl('default', '');
+  return getPreviewUrl(type, fileId);
 };
 
 const handleDownload = (type: string, fileName: string, fileId: string) => {
@@ -116,7 +116,9 @@ const CustomTooltipFileName: FC<IFileName> = (props) => {
   const DownLoadIcon = isIcon ? (
     <Icon path="download" onClick={() => handleDownload(previewLinkType, name, fileId)} />
   ) : (
-    <span style={linkStyles}>下载</span>
+    <span style={linkStyles} onClick={() => handleDownload(previewLinkType, name, fileId)}>
+      下载
+    </span>
   );
   const ViewIcon = isIcon ? <Icon path="view" /> : <span style={linkStyles}>预览</span>;
 
@@ -128,12 +130,13 @@ const CustomTooltipFileName: FC<IFileName> = (props) => {
         <FileView
           fileInfo={{
             fileName: name,
-            fileId,
+            fileId: previewLinkType == 'S3' ? undefined : fileId,
           }}
           wrapper={hasExtraViewIcon ? ViewIcon : FileNameContent}
           downLoadUrl={`${getPreviewUrl(previewLinkType, fileId)}`}
         />
       )}
+      {hasDownLoad && DownLoadIcon}
     </Space>
   );
 };
