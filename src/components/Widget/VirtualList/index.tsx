@@ -1,16 +1,7 @@
-import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import { ALIGNMENT, DIRECTION, marginProp, oppositeMarginProp, positionProp, scrollProp, SCROLL_CHANGE_REASON, sizeProp } from './constants';
 import SizeAndPositionManager, { ItemSize } from './SizeAndPositionManager';
-import {
-  ALIGNMENT,
-  DIRECTION,
-  SCROLL_CHANGE_REASON,
-  marginProp,
-  oppositeMarginProp,
-  positionProp,
-  scrollProp,
-  sizeProp,
-} from './constants';
 
 export { DIRECTION as ScrollDirection } from './constants';
 
@@ -146,10 +137,7 @@ export default class VirtualList extends React.PureComponent<Props, State> {
   });
 
   readonly state: State = {
-    offset:
-      this.props.scrollOffset ||
-      (this.props.scrollToIndex != null && this.getOffsetForIndex(this.props.scrollToIndex)) ||
-      0,
+    offset: this.props.scrollOffset || (this.props.scrollToIndex != null && this.getOffsetForIndex(this.props.scrollToIndex)) || 0,
     scrollChangeReason: SCROLL_CHANGE_REASON.REQUESTED,
   };
 
@@ -172,12 +160,9 @@ export default class VirtualList extends React.PureComponent<Props, State> {
 
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { estimatedItemSize, itemCount, itemSize, scrollOffset, scrollToAlignment, scrollToIndex } = this.props;
-    const scrollPropsHaveChanged =
-      nextProps.scrollToIndex !== scrollToIndex || nextProps.scrollToAlignment !== scrollToAlignment;
+    const scrollPropsHaveChanged = nextProps.scrollToIndex !== scrollToIndex || nextProps.scrollToAlignment !== scrollToAlignment;
     const itemPropsHaveChanged =
-      nextProps.itemCount !== itemCount ||
-      nextProps.itemSize !== itemSize ||
-      nextProps.estimatedItemSize !== estimatedItemSize;
+      nextProps.itemCount !== itemCount || nextProps.itemSize !== itemSize || nextProps.estimatedItemSize !== estimatedItemSize;
 
     if (nextProps.itemSize !== itemSize) {
       this.sizeAndPositionManager.updateConfig({
@@ -227,11 +212,7 @@ export default class VirtualList extends React.PureComponent<Props, State> {
     this.rootNode[scrollProp[scrollDirection]] = value;
   }
 
-  getOffsetForIndex(
-    index: number,
-    scrollToAlignment = this.props.scrollToAlignment,
-    itemCount: number = this.props.itemCount,
-  ): number {
+  getOffsetForIndex(index: number, scrollToAlignment = this.props.scrollToAlignment, itemCount: number = this.props.itemCount): number {
     const { scrollDirection = DIRECTION.VERTICAL } = this.props;
 
     if (index < 0 || index >= itemCount) {

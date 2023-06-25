@@ -1,5 +1,5 @@
-import { Link } from '@umijs/max';
 import { MenuItem } from '@/typings';
+import { Link } from '@umijs/max';
 // 去除多余斜杠
 export const conversionPath = (path: string) => {
   if (path && path.indexOf('http') === 0) {

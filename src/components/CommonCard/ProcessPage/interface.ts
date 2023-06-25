@@ -15,11 +15,11 @@ export interface IUserInfoFormList {
 
   isPhone?: boolean;
   isSubTitle?: boolean;
-  /**@description 仅在 type='tip'时生效 */
+  /**@name 仅在 type='tip'时生效 */
   tipMessage?: string;
   tipType?: 'success' | 'warning' | 'error' | 'info';
 
-  /**@description 自定义元素 */
+  /**@name 自定义元素 */
   format?: (value: any, record?: any) => React.ReactNode;
 
   formatValue?: (value: any, record?: any) => number | string;
@@ -31,10 +31,10 @@ export interface IUserInfoFormList {
 export interface IProcessCard extends RouteComponentProps<any> {
   title?: React.ReactNode;
   /**
-   * @description buttonStyleType 必传 就是 Button.type 新版样式
+   * @name buttonStyleType 必传 就是 Button.type 新版样式
    */
   extraBtnList?: (IButtonProps & { buttonStyleType: ButtonProps['type'] })[];
-  /**@description 会覆盖extraBtnList */
+  /**@name 会覆盖extraBtnList */
   extra?: React.ReactNode;
   children?: React.ReactNode;
   className?: string;

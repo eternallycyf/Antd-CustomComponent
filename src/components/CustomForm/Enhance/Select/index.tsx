@@ -6,7 +6,7 @@ const { Option } = Select;
 interface Iprops {
   /**
    * 可以这样写属性描述
-   * @description       也可以显式加上描述名
+   * @name       也可以显式加上描述名
    * @default           支持定义默认值
    * @type              number
    */

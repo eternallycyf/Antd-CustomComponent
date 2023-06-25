@@ -1,11 +1,11 @@
-import React from 'react';
-import _ from 'lodash';
-import update from 'immutability-helper';
-import { ICommonTable } from '@/typings';
-import { getAction, postAction } from '@/services/global';
+import { DraggableBodyRow } from '@/components/CommonTableV5/components/widgets/DragTableRow';
 import { ResizableTitle } from '@/components/CommonTableV5/components/widgets/Resizable';
 import { renderBtn } from '@/components/CommonTableV5/components/widgets/TableBtn';
-import { DraggableBodyRow } from '@/components/CommonTableV5/components/widgets/DragTableRow';
+import { getAction, postAction } from '@/services/global';
+import { ICommonTable } from '@/typings';
+import update from 'immutability-helper';
+import _ from 'lodash';
+import React from 'react';
 import { EditableCell } from './widgets/EditableCell';
 
 export interface IBaseTableState {
@@ -343,7 +343,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
 
   /**
    *  处理表头大小变更
-   * @param index
+   * @param {number} index
    * @returns
    */
   handleResize =
@@ -361,8 +361,8 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
 
   /**
    *  拖拽行
-   * @param dragIndex
-   * @param hoverIndex
+   * @param {number} dragIndex
+   * @param {number} hoverIndex
    */
   moveRow = (dragIndex: number, hoverIndex: number) => {
     const { dataSource } = this.state;

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { addEvent } from '../../helpers';
 
 declare const document: Document & {
@@ -72,11 +72,7 @@ const FullScreen: React.FC<any> = () => {
   return (
     <div style={fullScreenStyle}>
       <Tooltip placement="bottom" title={fullScreen ? '退出全屏' : '全屏'}>
-        {fullScreen ? (
-          <FullscreenExitOutlined onClick={handleFullScreen} />
-        ) : (
-          <FullscreenOutlined onClick={handleFullScreen} />
-        )}
+        {fullScreen ? <FullscreenExitOutlined onClick={handleFullScreen} /> : <FullscreenOutlined onClick={handleFullScreen} />}
       </Tooltip>
     </div>
   );

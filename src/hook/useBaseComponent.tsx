@@ -4,8 +4,7 @@ import BaseTable from '@/components/CommonTableV5/components/BaseTable';
 import CustomForm from '@/components/CustomForm';
 import { downloadExcel } from '@/components/File/FileExportExcel';
 import { deleteAction, postAction } from '@/services/global';
-import { message, Modal, TableProps } from 'antd';
-import { TableRowSelection } from 'antd/lib/table/interface';
+import { message, Modal } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
 type IBaseTableInstance = InstanceType<typeof BaseTable> & IBaseTableRefFun;

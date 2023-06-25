@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import classNames from 'classnames';
+import { getUUID } from '@/utils/random';
+import { Checkbox, Radio } from 'antd';
+import _, { debounce } from 'lodash';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Table from './MemoTable';
 import styles from './VirtualScrollTable.less';
-import { debounce } from 'lodash';
-import { Checkbox, Radio } from 'antd';
-import { getUUID } from '@/utils/random';
-import _ from 'lodash';
 
 function getFirstFixRight(columns: any) {
   let firstFixRightColumnIndex = -1;

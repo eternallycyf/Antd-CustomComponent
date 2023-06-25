@@ -13,9 +13,9 @@ export type formatValuesType = (
   record: any,
   /**
    * @param {'add_submit' | 'edit_submit' | 'edit_echo'}  [type=any]
-   * @description add_submit 添加模态框确定前触发
-   * @description edit_submit 编辑模态框确定前触发
-   * @description edit_echo 编辑模态框回显前触发
+   * @name add_submit 添加模态框确定前触发
+   * @name edit_submit 编辑模态框确定前触发
+   * @name edit_echo 编辑模态框回显前触发
    */
   type: 'add_submit' | 'edit_submit' | 'edit_echo',
 ) => any;
@@ -60,17 +60,7 @@ type IHandle = {
 
 const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) => {
   let { modalConf } = props;
-  const {
-    title,
-    modalType,
-    onSubmit,
-    onCancel,
-    formatValues,
-    isShowTitlePrefix = true,
-    otherRender,
-    handleSubmitPreCallBack,
-    ...otherProps
-  } = props;
+  const { title, modalType, onSubmit, onCancel, formatValues, isShowTitlePrefix = true, otherRender, handleSubmitPreCallBack, ...otherProps } = props;
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -128,9 +118,7 @@ const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref)
       const data = formatValues ? formatValues(values, record, isEdit ? 'edit_submit' : 'add_submit') : values;
       const { action, callback, failCallback, completeCallback } = onSubmit;
       try {
-        const res = _.isString(action)
-          ? await postAction(action as unknown as string, data)
-          : await action(data, isEdit);
+        const res = _.isString(action) ? await postAction(action as unknown as string, data) : await action(data, isEdit);
         if (res.code === 200) {
           const chinesePattern: RegExp = /^[\u4e00-\u9fa5]+$/;
           const messageStr: string = chinesePattern.test(res.msg) ? res.msg : '操作成功';

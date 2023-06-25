@@ -82,14 +82,7 @@ const EditTableControl: React.ForwardRefRenderFunction<IHandle, IEditTableProps>
       return {
         ...col,
         render: (text: any, field: any) => {
-          const {
-            controlProps,
-            name,
-            type,
-            formFieldProps = {},
-            itemProps = {},
-            ...restFieldProps
-          } = col.formItemProps;
+          const { controlProps, name, type, formFieldProps = {}, itemProps = {}, ...restFieldProps } = col.formItemProps;
 
           const defaultControlProps = controlProps ? controlProps : {};
 

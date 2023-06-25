@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
-import { IChartConfig } from './interface';
 import styles from './chart.less';
+import { IChartConfig } from './interface';
 
 export const formatNumber = (number: number, isPercent = true) => {
   if (number == 0) return 0;
@@ -43,7 +43,7 @@ export const BASE_CONFIG = {
   // 区域缩放 滑块是否可自定义拉伸大小
   HAS_DATA_ZOOM_LOCK: false,
   /**
-   * @description 区域缩放-滑块初始化开始点
+   * @name 区域缩放-滑块初始化开始点
    * @example '2021-03月'
    */
   DATA_ZOOM_START_VALUE: '',

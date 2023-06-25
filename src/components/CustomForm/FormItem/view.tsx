@@ -10,18 +10,18 @@ type IViewHandle = {};
 export type IBaseViewProps = {
   record?: any;
   /**
-   * @description 是否可复制 没有 render 时生效
+   * @name 是否可复制 没有 render 时生效
    */
   copyable?: boolean;
   /**
-   * @description maxLength rows render 只能同时存在一个
+   * @name maxLength rows render 只能同时存在一个
    */
   maxLength?: number;
   rows?: number;
   hasPreview?: boolean;
   previewProps?: IFileName;
   /**
-   * @description
+   * @name
    * 只参与展示 不参与最终结果
    * 参与最终onFinish的数据 以原始数据为基数(和parser的结果无关)
    */

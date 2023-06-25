@@ -5,7 +5,7 @@ import { Column } from '@/typings/core/column';
 import { Search } from '@/typings/core/form';
 import { formatColumn } from '@/utils/util';
 import { Col, Form, FormInstance, FormItemProps, FormListFieldData, Row, TableProps } from 'antd';
-import React, { Key, RefObject, useImperativeHandle } from 'react';
+import React, { Key, useImperativeHandle } from 'react';
 import TableBtn from '../CommonTableV5/components/widgets/TableBtn';
 import { Table } from './';
 import styles from './index.less';
@@ -13,8 +13,7 @@ import { formatEditTableColumns, getCurrentFieldValue, handleExport, IHandleExpo
 
 // #region
 /**
- * context
- * @typedef {Object} IEditTableContext
+ * @typedef {Object} IEditTableContext context
  * @property {FormInstance} form - form实例
  * @property {FormListOperation<Values>} operation - formList的操作
  * @property {Values[]} values - formList的值
@@ -53,17 +52,17 @@ interface IEditTableContext<Values = any, FormItemsValues = any> extends ICommon
  * @template Rest - 其他自定义的参数 => (columnsType & Rest)[]
  */
 export interface ICommonEditTableProps<Values = any, Rest = Record<string, unknown>, FormItemsValues = any> {
-  /**@description 基础配置 */
+  /**@name 基础配置 */
   form: FormInstance<FormItemsValues>;
   status?: 'view' | 'edit';
   showIndex?: boolean;
   isVirtual?: boolean;
 
-  /**@description 其他内容配置 */
+  /**@name 其他内容配置 */
   beforeChildren?: React.ReactNode | ((value: IEditTableContext<Values, FormItemsValues>) => React.ReactNode);
   afterChildren?: React.ReactNode | ((value: IEditTableContext<Values, FormItemsValues>) => React.ReactNode);
 
-  /**@description table配置 */
+  /**@name table配置 */
   tableProps?: TableProps<Values>;
   columns: ReturnType<IGetColumns<Values, Rest>>;
   itemButton?: IEditTableButtonProps<Values>;
@@ -72,7 +71,7 @@ export interface ICommonEditTableProps<Values = any, Rest = Record<string, unkno
   buttonBottomLeft?: IEditTableNotItemButtonProps<Values>;
   buttonBottomRight?: IEditTableNotItemButtonProps<Values>;
 
-  /**@description formList 配置 */
+  /**@name formList 配置 */
   name?: string;
   formListProps?: React.ComponentProps<typeof Form.List>;
   initialValues?: Values[];
@@ -80,7 +79,7 @@ export interface ICommonEditTableProps<Values = any, Rest = Record<string, unkno
 }
 
 /**
- * @description 通用编辑表格ref获取的方法
+ * @name 通用编辑表格ref获取的方法
  */
 export type ICommonEditTableHandle<Values = any, FormItemsValues = any> = {
   form: FormInstance<FormItemsValues>;
@@ -89,7 +88,7 @@ export type ICommonEditTableHandle<Values = any, FormItemsValues = any> = {
 };
 
 /**
- * @description 通用编辑表格的列的额外参数
+ * @name 通用编辑表格的列的额外参数
  */
 interface IColumnEditRestProps<Values> {
   type?: ISearchesType[number]['type'];
@@ -98,7 +97,7 @@ interface IColumnEditRestProps<Values> {
 }
 
 /**
- * @description columns
+ * @name columns
  * 只有 type === 'custom' || item.transform && status == 'view' 时 render 才会生效
  * item.transform ? item.transform : item.render
  */
@@ -110,7 +109,7 @@ export type ICommonEditTableColumnsType<Values = any, Rest = Record<string, unkn
   shouldUpdate?: FormItemProps<Values>['shouldUpdate'];
   /**
    * @name 自定义转换的方法
-   * @description status === 'view' 状态时 展示数据转换 和render一样 只不过为了使用formatCoumn的方法 用这个代替render
+   * @name status === 'view' 状态时 展示数据转换 和render一样 只不过为了使用formatCoumn的方法 用这个代替render
    * @example <caption>自定义转换的方法</caption>
    * transform: (text, record, index, allValues) => text + '元'
    */

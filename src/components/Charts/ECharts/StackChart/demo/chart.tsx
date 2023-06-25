@@ -1,5 +1,5 @@
-import { IChartConfig as IChartConfig2 } from '@/components/Charts/ECharts/StackChart/interface';
 import { BASE_CONFIG, formatNumber } from '@/components/Charts/ECharts/PieChart/utils';
+import { IChartConfig as IChartConfig2 } from '@/components/Charts/ECharts/StackChart/interface';
 import { BASE_CONFIG as BASE_CONFIG2 } from '@/components/Charts/ECharts/StackChart/utils';
 
 export const getAssetTrends = (data: any): IChartConfig2[] => {

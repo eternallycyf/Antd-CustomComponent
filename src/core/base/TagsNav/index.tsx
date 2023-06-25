@@ -1,11 +1,11 @@
+import { homePage as homePagePath } from '@/config/projectConfig';
 import { MenuItem } from '@/typings';
 import { localStore } from '@/utils/storage';
+import { History, history, useLocation } from '@umijs/max';
 import _ from 'lodash';
 import pathToRegexp from 'path-to-regexp';
 import React, { useEffect, useState } from 'react';
-import { History, history, useLocation } from '@umijs/max';
 import MenuTabs, { MenuTab } from './MenuTabs';
-import { homePage as homePagePath } from '@/config/projectConfig';
 
 function getMetaDataOfTab(pathname: string, breadcrumbNameMap: MenuItem): MenuItem {
   return Object.values(breadcrumbNameMap).find((item: MenuItem) => {

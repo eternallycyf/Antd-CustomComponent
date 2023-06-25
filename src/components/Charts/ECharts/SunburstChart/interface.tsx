@@ -1,14 +1,14 @@
-import { BASE_CONFIG } from './utils';
 import { CSSProperties } from 'react';
+import { BASE_CONFIG } from './utils';
 
 export type IGetOptions = {
   data: any;
   /**
-   * @description 基础配置
+   * @name 基础配置
    */
   baseConfig?: Partial<typeof BASE_CONFIG>;
   /**
-   * @description echarts配置
+   * @name echarts配置
    */
   chartConfig?: any;
   style?: CSSProperties;
@@ -24,12 +24,12 @@ interface fieldNames {
 
 export interface IChartConfig {
   /**
-   * @description 数据key
+   * @name 数据key
    * @required
    */
   fieldNames: fieldNames;
   /**
-   * @description tooltip 显示的单位
+   * @name tooltip 显示的单位
    * @default ''
    */
   unitSymbol?: string;

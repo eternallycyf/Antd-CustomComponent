@@ -6,10 +6,7 @@ interface IKeepAliveTransferProps {
   keepAliveId: string;
 }
 
-const KeepAliveTransfer = <Props extends IKeepAliveTransferProps>(
-  KeepAliveComponent: React.ComponentType<Props> | any,
-  keepAliveId?: string,
-) => {
+const KeepAliveTransfer = <Props extends IKeepAliveTransferProps>(KeepAliveComponent: React.ComponentType<Props> | any, keepAliveId?: string) => {
   const displayName = KeepAliveComponent.displayName || KeepAliveComponent.name || keepAliveId;
 
   return (props: Omit<Props, keyof IKeepAliveTransferProps>) => {

@@ -1,4 +1,4 @@
-/**@description 表单的基础属性 */
+/**@name 表单的基础属性 */
 import { FormItemProps } from 'antd';
 import { Method } from 'axios';
 import { ISelectFetchConfig } from './control/select';

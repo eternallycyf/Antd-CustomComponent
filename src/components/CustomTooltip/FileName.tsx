@@ -1,18 +1,18 @@
-import React, { FC } from 'react';
-import CustomTooltip from './CustomTooltip';
 import FileImage from '@/components/File/FileImage';
-import _ from 'lodash';
 import FileView from '@/components/File/FileViewer';
-import { Space, Typography } from 'antd';
 import projectConfig from '@/config/projectConfig';
 import { handleDownload as handleDownLoadByDefault, postDownloadFile } from '@/services/global';
+import { Space } from 'antd';
+import _ from 'lodash';
+import { FC } from 'react';
+import CustomTooltip from './CustomTooltip';
 const { apiPrefixMock } = projectConfig;
 
 export interface IFileName {
   name: string;
   /**
-   * @description 前缀最大长度
-   * @description 实际长度 = prefixLength + 2
+   * @name 前缀最大长度
+   * @name 实际长度 = prefixLength + 2
    * 因为 ... 后需要显示两个字符
    * @example name={'2213.png'} prefixLength={3} => 2213.png
    * @example name={'22133.png'} prefixLength={3} => 22133.png
@@ -20,7 +20,7 @@ export interface IFileName {
    */
   prefixLength?: number;
   /**
-   * @description 后缀最大长度
+   * @name 后缀最大长度
    * @default 2
    */
   suffixLength?: number;

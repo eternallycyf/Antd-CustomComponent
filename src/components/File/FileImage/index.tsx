@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 export const imageInfo = {
   // pdf: require('@/assets/icon/pdf.png'),
   // pdg: require('@/assets/icon/pdf.png'),

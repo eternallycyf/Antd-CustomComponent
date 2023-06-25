@@ -1,7 +1,7 @@
+import { message, Modal } from 'antd';
 import React, { PureComponent } from 'react';
-import { Modal, message } from 'antd';
-import FileView from './FileView';
 import { ExcelRenderer } from 'react-excel-renderer';
+import FileView from './FileView';
 const txtFileTypes = ['txt', 'json', 'js', 'css', 'java', 'py', 'html', 'jsx', 'ts', 'tsx', 'xml', 'md', 'log'];
 const fileAllTypes = ['docx', 'xlsx', 'png', 'jpg', 'pdf', ...txtFileTypes];
 class FilePreView extends PureComponent<any, any> {

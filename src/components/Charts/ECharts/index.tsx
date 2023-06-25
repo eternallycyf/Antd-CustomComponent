@@ -1,6 +1,6 @@
-import { useRef, useImperativeHandle, forwardRef } from 'react';
-import type { EChartsReactProps } from 'echarts-for-react/lib/types';
 import ReactECharts from 'echarts-for-react';
+import type { EChartsReactProps } from 'echarts-for-react/lib/types';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 interface IHandle {
   ref: echarts.ECharts;

@@ -27,7 +27,7 @@ export interface ICheckBoxRecord extends CheckboxOptionType {
 }
 
 /**
- * @description [parantId, value]
+ * @name [parantId, value]
  */
 export type ICheckRecord = [string, string];
 
@@ -141,9 +141,7 @@ const CheckModal: ICheckModal = (props) => {
   const handleSelectOrRemoveKeys = (type: 'select' | 'remove') => {
     if (type == 'select') {
       const newLeftValues = leftValues.filter((item) => !item.isChecked);
-      let newRightValues: ICheckBoxRecord[] = leftValues
-        .filter((item) => item.isChecked)
-        .map((item) => ({ ...item, isChecked: false }));
+      let newRightValues: ICheckBoxRecord[] = leftValues.filter((item) => item.isChecked).map((item) => ({ ...item, isChecked: false }));
       if (newRightValues?.length == 0) return;
       setLeftValues(newLeftValues);
       // 根据options初始顺序排序 && 保留原有值
@@ -155,9 +153,7 @@ const CheckModal: ICheckModal = (props) => {
       setRightValues(newRightValues);
     }
     if (type == 'remove') {
-      let newLeftValues: ICheckBoxRecord[] = rightValues
-        .filter((item) => item.isChecked)
-        .map((item) => ({ ...item, isChecked: false }));
+      let newLeftValues: ICheckBoxRecord[] = rightValues.filter((item) => item.isChecked).map((item) => ({ ...item, isChecked: false }));
       const newRightValues = rightValues.filter((item) => !item.isChecked);
       if (newLeftValues?.length == 0) return;
       // 根据options初始顺序排序 && 保留原有值
@@ -177,9 +173,7 @@ const CheckModal: ICheckModal = (props) => {
     <>
       <Form.Item className={styles['TransformModal']} style={{ marginBottom: 0 }}>
         <CheckboxContext.Provider value={{ value, rightValues, leftValues, handleOpenModal }}>
-          <CheckboxContext.Consumer>
-            {typeof children === 'function' ? children : () => renderBtn(handleOpenModal)}
-          </CheckboxContext.Consumer>
+          <CheckboxContext.Consumer>{typeof children === 'function' ? children : () => renderBtn(handleOpenModal)}</CheckboxContext.Consumer>
         </CheckboxContext.Provider>
         <Form.Item noStyle>
           <Modal

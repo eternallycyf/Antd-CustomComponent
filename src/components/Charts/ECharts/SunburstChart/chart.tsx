@@ -1,7 +1,6 @@
-import dayjs from 'dayjs';
 import _ from 'lodash';
-import { IGetOptions, IChartConfig } from './interface';
-import { renderTooltip, BASE_CONFIG as BASECONFIG, formatNumber } from './utils';
+import { IChartConfig, IGetOptions } from './interface';
+import { BASE_CONFIG as BASECONFIG, formatNumber, renderTooltip } from './utils';
 
 export const getOptions = (config: IGetOptions) => {
   const { data: DATA, baseConfig = {}, chartConfig = {} } = config;

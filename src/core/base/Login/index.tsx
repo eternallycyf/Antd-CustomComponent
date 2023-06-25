@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
-import { connect, history, withRouter, Dispatch } from '@umijs/max';
+import { ConnectState } from '@/typings/connect';
+import { connect, Dispatch, history, withRouter } from '@umijs/max';
+import { Button, Checkbox, Form, Input } from 'antd';
+import { useState } from 'react';
 import styles from './index.less';
 import Loading from './Loading';
-import { ConnectState } from '@/typings/connect';
 
 const Login = ({ dispatch }: { dispatch: Dispatch }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -28,10 +28,7 @@ const Login = ({ dispatch }: { dispatch: Dispatch }) => {
           <div className="mx-auto max-w-1xl lg:max-w-2xl">
             <figure className="mt-10">
               <blockquote className="text-center text-xl font-semibold leading-8 text-gray-900 sm:text-2xl sm:leading-9">
-                <p>
-                  All the gloom is left to the past, from the beginning of meeting you, the winter is gone, the Star
-                  River is bright!
-                </p>
+                <p>All the gloom is left to the past, from the beginning of meeting you, the winter is gone, the Star River is bright!</p>
               </blockquote>
               <figcaption className="mt-10">
                 <div className="mt-4 flex items-center justify-center space-x-3 text-base">
@@ -45,13 +42,7 @@ const Login = ({ dispatch }: { dispatch: Dispatch }) => {
             </figure>
           </div>
         </section>
-        <Form
-          className={styles['site-form']}
-          name="basic"
-          initialValues={{ remember: remember }}
-          onFinish={onFinish}
-          layout="vertical"
-        >
+        <Form className={styles['site-form']} name="basic" initialValues={{ remember: remember }} onFinish={onFinish} layout="vertical">
           <Form.Item
             label="Username"
             name="username"

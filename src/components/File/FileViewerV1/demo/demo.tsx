@@ -1,8 +1,8 @@
-import FilePreView from '../FilePreView';
-import React, { useRef } from 'react';
-import { Upload, Form, Button, Card, Table } from 'antd';
-import { columns, dataSource } from './constant';
 import Page from '@/components/CommonCard/Page';
+import { Button, Form, Table, Upload } from 'antd';
+import { useRef } from 'react';
+import FilePreView from '../FilePreView';
+import { columns, dataSource } from './constant';
 
 const normFile = (e: any) => {
   if (Array.isArray(e)) return e;

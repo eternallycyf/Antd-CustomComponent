@@ -7,9 +7,7 @@ import { getFieldComp } from '@/core/helpers';
 import styles from './index.less';
 
 const FormItem = Form.Item;
-const PlainComp = ({ className, children }: { className: string; children: React.ReactNode }) => (
-  <div className={className}>{children}</div>
-);
+const PlainComp = ({ className, children }: { className: string; children: React.ReactNode }) => <div className={className}>{children}</div>;
 
 // 行内元素默认宽度
 const defaultInlineWidth = {

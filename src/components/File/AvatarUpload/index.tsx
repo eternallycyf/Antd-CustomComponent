@@ -1,9 +1,9 @@
-import React, { useImperativeHandle, useState } from 'react';
-import styles from './index.less';
 import { PlusOutlined, RetweetOutlined } from '@ant-design/icons';
 import { Form, Upload } from 'antd';
-import type { UploadProps } from 'antd/es/upload';
 import ImgCrop from 'antd-img-crop';
+import type { UploadProps } from 'antd/es/upload';
+import React, { useImperativeHandle, useState } from 'react';
+import styles from './index.less';
 
 const normFile = (e: any) => {
   if (Array.isArray(e)) return e;

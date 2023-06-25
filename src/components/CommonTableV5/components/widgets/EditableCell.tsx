@@ -1,7 +1,7 @@
 import { EditableContext } from '@/components/CustomForm/FormItem/editRow';
 import { getFieldComp } from '@/core/helpers';
 import { IBaseFormControlType } from '@/typings/base';
-import { InputNumber, Input, Form, FormInstance, FormItemProps } from 'antd';
+import { FormInstance, FormItemProps } from 'antd';
 import React, { useContext } from 'react';
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {

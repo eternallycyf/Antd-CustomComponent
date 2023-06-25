@@ -1,11 +1,11 @@
-import React, { FC, useCallback } from 'react';
-import { LogoutOutlined } from '@ant-design/icons';
-import { Avatar, MenuProps, Spin } from 'antd';
-import { connect, history, withRouter, Dispatch } from '@umijs/max';
-import { RouteComponentProps } from '@umijs/renderer-react';
-import HeaderDropdown from './HeaderDropdown';
-import styles from '../index.less';
 import { ConnectState } from '@/typings/connect';
+import { LogoutOutlined } from '@ant-design/icons';
+import { connect, Dispatch, withRouter } from '@umijs/max';
+import { RouteComponentProps } from '@umijs/renderer-react';
+import { Avatar, MenuProps } from 'antd';
+import { FC } from 'react';
+import styles from '../index.less';
+import HeaderDropdown from './HeaderDropdown';
 
 interface IProps extends RouteComponentProps<any> {
   userInfo: ConnectState['global']['userInfo'];

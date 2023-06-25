@@ -1,12 +1,11 @@
+import { Image, Skeleton } from 'antd';
+import cx from 'classnames';
+import { renderAsync } from 'docx-preview';
 import type { CSSProperties } from 'react';
 import { PureComponent } from 'react';
-import style from './fileView.less';
-import cx from 'classnames';
-import { Skeleton, Image } from 'antd';
 import { OutTable } from 'react-excel-renderer';
-import { defaultOptions, renderAsync } from 'docx-preview';
+import style from './fileView.less';
 import MarkDown from './MarkDown';
-import React from 'react';
 
 interface IProps {
   styles?: CSSProperties;
@@ -130,23 +129,18 @@ class FileView extends PureComponent<IProps, any> {
     // 当使用旧版浏览器时 需要兼容 globalThis
     if (fileType === 'docx') {
       setTimeout(() => {
-        renderAsync(
-          blob,
-          document.getElementById('file-preview-modal') as HTMLDivElement,
-          null as unknown as HTMLDivElement,
-          {
-            className: 'docx', // 默认和文档样式类的类名/前缀
-            inWrapper: true, // 启用围绕文档内容渲染包装器
-            ignoreWidth: false, // 禁止页面渲染宽度
-            ignoreHeight: false, // 禁止页面渲染高度
-            ignoreFonts: false, // 禁止字体渲染
-            breakPages: true, // 在分页符上启用分页
-            ignoreLastRenderedPageBreak: true, //禁用lastRenderedPageBreak元素的分页
-            experimental: false, //启用实验性功能（制表符停止计算）
-            trimXmlDeclaration: true, //如果为真，xml声明将在解析之前从xml文档中删除
-            debug: false, // 启用额外的日志记录
-          },
-        );
+        renderAsync(blob, document.getElementById('file-preview-modal') as HTMLDivElement, null as unknown as HTMLDivElement, {
+          className: 'docx', // 默认和文档样式类的类名/前缀
+          inWrapper: true, // 启用围绕文档内容渲染包装器
+          ignoreWidth: false, // 禁止页面渲染宽度
+          ignoreHeight: false, // 禁止页面渲染高度
+          ignoreFonts: false, // 禁止字体渲染
+          breakPages: true, // 在分页符上启用分页
+          ignoreLastRenderedPageBreak: true, //禁用lastRenderedPageBreak元素的分页
+          experimental: false, //启用实验性功能（制表符停止计算）
+          trimXmlDeclaration: true, //如果为真，xml声明将在解析之前从xml文档中删除
+          debug: false, // 启用额外的日志记录
+        });
       }, 0);
     }
   };
@@ -165,14 +159,7 @@ class FileView extends PureComponent<IProps, any> {
     }
 
     if (fileType == 'xlsx') {
-      return (
-        <OutTable
-          data={excelData.rows}
-          columns={excelData.cols}
-          tableClassName={style.ExcelTable2007}
-          tableHeaderRowClass={style.heading}
-        />
-      );
+      return <OutTable data={excelData.rows} columns={excelData.cols} tableClassName={style.ExcelTable2007} tableHeaderRowClass={style.heading} />;
     }
 
     if (fileType == 'png' || fileType == 'jpg') {

@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
-import cx from 'classnames';
-import { IButtonProps } from '@/typings';
 import AccessBtn from '@/components/AccessBtn';
+import { IButtonProps } from '@/typings';
+import cx from 'classnames';
+import React, { Fragment } from 'react';
 import styles from './index.less';
-// 渲染button
+
 export const renderBtn = (button: any) => {
   if (!button || !button.length) return null;
   const filterButton = button.filter((item: any) => {

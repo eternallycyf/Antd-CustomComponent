@@ -1,13 +1,13 @@
+import { getImage, getMenuItemPath } from '@/core/helpers/utils';
 import { MenuItem as MenuItemProps } from '@/typings';
 import { getMenuMatches, urlToList } from '@/utils/menu';
+import { getDvaApp } from '@umijs/max';
 import { List, Popover } from 'antd';
 import React, { FC, useCallback } from 'react';
+import { IBaseMenuProps } from '../../SliderMenu/BaseMenu';
 import styles from '../index.less';
 import MenuItem from './MenuItem';
 import SubMenu from './SubMenu';
-import { IBaseMenuProps } from '../../SliderMenu/BaseMenu';
-import { getImage, getMenuItemPath } from '@/core/helpers/utils';
-import { getDvaApp } from '@umijs/max';
 
 const modifyClassForElement = (selectors: string = '', curClass = '', method = 'add') => {
   const dom = document.querySelector(selectors)!;

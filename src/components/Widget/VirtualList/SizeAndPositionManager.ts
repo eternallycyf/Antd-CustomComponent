@@ -103,9 +103,7 @@ export default class SizeAndPositionManager {
     const lastMeasuredSizeAndPosition = this.getSizeAndPositionOfLastMeasuredItem();
 
     return (
-      lastMeasuredSizeAndPosition.offset +
-      lastMeasuredSizeAndPosition.size +
-      (this.itemCount - this.lastMeasuredIndex - 1) * this.estimatedItemSize
+      lastMeasuredSizeAndPosition.offset + lastMeasuredSizeAndPosition.size + (this.itemCount - this.lastMeasuredIndex - 1) * this.estimatedItemSize
     );
   }
 
@@ -156,15 +154,10 @@ export default class SizeAndPositionManager {
     return Math.max(0, Math.min(totalSize - containerSize, idealOffset));
   }
 
-  getVisibleRange({
-    containerSize,
-    offset,
-    overscanCount,
-  }: {
-    containerSize: number;
-    offset: number;
-    overscanCount: number;
-  }): { start?: number; stop?: number } {
+  getVisibleRange({ containerSize, offset, overscanCount }: { containerSize: number; offset: number; overscanCount: number }): {
+    start?: number;
+    stop?: number;
+  } {
     const totalSize = this.getTotalSize();
 
     if (totalSize === 0) {

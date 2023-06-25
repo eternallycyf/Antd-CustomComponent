@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
-import _ from 'lodash';
-import { IGetOptions, IChartConfig } from './interface';
-import { defaultFormatColor, renderTooltip, BASE_CONFIG as BASECONFIG, formatNumber } from './utils';
 import ecStat from 'echarts-stat';
+import { IChartConfig, IGetOptions } from './interface';
+import { BASE_CONFIG as BASECONFIG, defaultFormatColor, formatNumber, renderTooltip } from './utils';
 
 export const getOptions = (config: IGetOptions) => {
   const { data: _data = [], baseConfig = {}, chartConfig = [] } = config;
@@ -194,8 +193,7 @@ export const getOptions = (config: IGetOptions) => {
             fontSize: 12,
             fontWeight: 400,
           },
-          formatter: (config: any) =>
-            formatNumber({ number: config.data[item.dataKey] as number }) + (item?.unitSymbol ?? ''),
+          formatter: (config: any) => formatNumber({ number: config.data[item.dataKey] as number }) + (item?.unitSymbol ?? ''),
         },
         data: DATA,
         ...(item.series || {}),

@@ -1,5 +1,4 @@
 /* eslint-disable no-useless-escape */
-import { IChartConfig } from './interface';
 import styles from './chart.less';
 
 export const formatNumber = (config: { number: number; isPercent?: boolean }) => {

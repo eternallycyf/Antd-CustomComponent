@@ -1,6 +1,6 @@
-import styles from './index.less';
+import { CardProps, Spin, SpinProps } from 'antd';
 import React from 'react';
-import { SpinProps, CardProps, Spin } from 'antd';
+import styles from './index.less';
 
 interface IPage {
   loading?: boolean;

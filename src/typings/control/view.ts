@@ -1,16 +1,16 @@
 export interface IViewProps {
   className?: string;
   /**
-   * @description maxLength rows render 只能同时存在一个
+   * @name maxLength rows render 只能同时存在一个
    */
   /**
-   * @description 是否可复制 没有 render 时生效
+   * @name 是否可复制 没有 render 时生效
    */
   copyable?: boolean;
   maxLength?: number;
   rows?: number;
   /**
-   * @description
+   * @name 解析展示数据
    * 只参与展示 不参与最终结果
    * 参与最终onFinish的数据 以原始数据为基数(和parser的结果无关)
    */

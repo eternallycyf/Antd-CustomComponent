@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useReducer } from 'react';
-import { IKeepAliveContext, KeepAliveContext } from './KeepAliveContext';
-import { KeepAliveActions, keepAliveReducer, KeepAliveState } from './KeepAliveReducer';
 import * as actionTypes from './actionTypes';
+import { KeepAliveContext } from './KeepAliveContext';
+import { KeepAliveActions, keepAliveReducer } from './KeepAliveReducer';
 
 interface IKeepAliveProps {
   children: React.ReactNode;

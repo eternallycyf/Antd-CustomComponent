@@ -1,9 +1,8 @@
-import { AnyAction } from 'redux';
-import { EffectsCommandMap } from 'dva';
-import { FormInstance } from 'antd/es/form';
-import { ILoginModelState } from '../models/login';
-import { IGlobalModelState } from '../models/global';
 import { History } from '@umijs/max';
+import { EffectsCommandMap } from 'dva';
+import { AnyAction } from 'redux';
+import { IGlobalModelState } from '../models/global';
+import { ILoginModelState } from '../models/login';
 
 export interface Loading {
   global: boolean;
@@ -37,12 +36,7 @@ export type Effect = (
  * @type P: Type of payload
  * @type C: Type of callback
  */
-export type Dispatch = <P = any, C = (payload: P) => void>(action: {
-  type: string;
-  payload?: P;
-  callback?: C;
-  [key: string]: any;
-}) => any;
+export type Dispatch = <P = any, C = (payload: P) => void>(action: { type: string; payload?: P; callback?: C; [key: string]: any }) => any;
 
 /**
  * Window declare

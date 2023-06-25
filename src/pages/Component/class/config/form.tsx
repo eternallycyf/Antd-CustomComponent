@@ -47,13 +47,7 @@ export const getFormList = (self: InstanceType<typeof Activity>): ISearchesType 
         ));
         return (
           <>
-            <CustomTooltip.FileName
-              name={'xxasdasdasdx.png'}
-              prefixLength={5}
-              hasPreview={true}
-              previewLinkType="default"
-              fileId="11xxx"
-            />
+            <CustomTooltip.FileName name={'xxasdasdasdx.png'} prefixLength={5} hasPreview={true} previewLinkType="default" fileId="11xxx" />
             <CustomTooltip
               text={Array.from({ length: 300 }, (v, i) => (
                 <span>==</span>

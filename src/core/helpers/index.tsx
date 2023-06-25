@@ -1,11 +1,10 @@
-import React, { ForwardRefExoticComponent } from 'react';
-import _ from 'lodash';
-import dayjs from 'dayjs';
-import BraftEditor from 'braft-editor';
-import { Form } from 'antd';
 import { FieldCompType } from '@/typings';
 import Icon from '@ant-design/icons';
-import type { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon';
+import { Form } from 'antd';
+import BraftEditor from 'braft-editor';
+import dayjs from 'dayjs';
+import _ from 'lodash';
+import { ForwardRefExoticComponent } from 'react';
 
 export const urlPattern = /^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/;
 

@@ -8,9 +8,7 @@ interface ComponentWithAuthProps extends Props {
   isAuth: boolean;
 }
 
-export default function withAuthentication<P extends Props>(
-  Component: React.ComponentType<P>,
-): React.FC<ComponentWithAuthProps & P> {
+export default function withAuthentication<P extends Props>(Component: React.ComponentType<P>): React.FC<ComponentWithAuthProps & P> {
   return function AuthenticatedComponent(props: ComponentWithAuthProps & P) {
     const { isAuth, ...rest } = props;
 

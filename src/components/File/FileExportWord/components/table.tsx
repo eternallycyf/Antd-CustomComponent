@@ -1,5 +1,5 @@
 import { Table } from 'antd';
-import React, { useImperativeHandle, forwardRef } from 'react';
+import { forwardRef, useImperativeHandle } from 'react';
 const columns = [
   {
     title: '姓名',
@@ -98,15 +98,7 @@ const TableComponent = (props: any, table: any) => {
   }));
 
   return (
-    <Table
-      ref={table}
-      pagination={false}
-      columns={columns}
-      dataSource={dataTable}
-      scroll={{ y: 500 }}
-      bordered
-      rowKey={(record) => record.name}
-    />
+    <Table ref={table} pagination={false} columns={columns} dataSource={dataTable} scroll={{ y: 500 }} bordered rowKey={(record) => record.name} />
   );
 };
 

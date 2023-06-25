@@ -1,5 +1,5 @@
-import React, { useMemo, memo, forwardRef } from 'react';
 import { Table } from 'antd';
+import { memo } from 'react';
 const MemoTable = memo(
   (props: any) => {
     const { tableRef, ...restProps } = props;

@@ -1,9 +1,8 @@
-import React, { useState, useEffect, FC } from 'react';
-import { ColorPicker, ColorPickerProps } from 'antd';
-import styles from './index.less';
-import type { Color } from 'antd/es/color-picker';
 import { IRgba } from '@/core/layouts/BasicLayout';
 import { Dispatch } from '@umijs/max';
+import { ColorPicker, ColorPickerProps } from 'antd';
+import type { Color } from 'antd/es/color-picker';
+import React, { FC } from 'react';
 
 interface IProps {
   color: IRgba;

@@ -1,15 +1,15 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import OldBaseMenu from '@/core/base/SliderMenu/BaseMenu';
+import { IRgba } from '@/core/layouts/BasicLayout';
+import { MenuItem } from '@/typings';
+import { getFlatMenuKeys, getSubMenus } from '@/utils/menu';
 import { SwapOutlined } from '@ant-design/icons';
 import { Layout } from 'antd';
 import classNames from 'classnames';
 import { Dispatch } from 'dva';
-import { getFlatMenuKeys, getSubMenus } from '@/utils/menu';
-import NewBaseMenu from './components/BaseMenu';
-import OldBaseMenu from '@/core/base/SliderMenu/BaseMenu';
-import styles from './index.less';
-import { MenuItem } from '@/typings';
 import { History } from 'history';
-import { IRgba } from '@/core/layouts/BasicLayout';
+import { FC, useEffect, useMemo, useState } from 'react';
+import NewBaseMenu from './components/BaseMenu';
+import styles from './index.less';
 const { Sider } = Layout;
 
 export interface IBaseMenuProps {
@@ -62,15 +62,7 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
 
   return (
     <div ref={ref0}>
-      <Sider
-        theme={theme}
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        collapsedWidth={0}
-        width={180}
-        className={siderClassName}
-      >
+      <Sider theme={theme} trigger={null} collapsible collapsed={collapsed} collapsedWidth={0} width={180} className={siderClassName}>
         {sliderMenuState === '2' ? (
           <OldBaseMenu
             {...defaultProps}

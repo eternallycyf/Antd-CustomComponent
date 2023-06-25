@@ -1,29 +1,48 @@
 import CommonSearch from '@/components/CommonSearch/search';
-import { FormControl, ISearchesType } from '@/typings';
+import { ErrorBoundary } from '@/core/base/ErrorBoundary';
+import useSyncState from '@/hook/useSyncState';
+import { ISearchesType } from '@/typings';
+import { RowProps } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import _ from 'lodash';
-import React, { FC, useEffect, useImperativeHandle, useRef } from 'react';
-import useSyncState from '@/hook/useSyncState';
+import React, { useEffect, useImperativeHandle, useRef } from 'react';
 import styles from './index.less';
 import RenderTag from './renderTag';
-import { RowProps } from 'antd';
-import { ErrorBoundary } from '@/core/base/ErrorBoundary';
 
+/**
+ * @property {ISearchesType} formList - 搜索表单列表
+ * @property {any} record - 值会映射到表单
+ * @property {boolean} expandForm - 是否展开
+ * @property {number} columnNumber - 一行放几个 formItem
+ * @property {boolean} showSearchBtn - 是否展示搜索按钮
+ * @property {boolean} showResetBtn - 是否展示重置按钮
+ * @property {boolean} showToolTipTag - 是否展示toolTip tag
+ * @property {boolean} checkBoxStatus - checkbox的状态
+ * @property {(values: any) => void} handleSearch - 进行搜索
+ * @property {(fn: () => void) => void} handleResetPreCallback - 重置前的回调
+ * @property {() => void} handleResetCallback - 重置回调
+ * @property {(name: string, itemValue: any) => void} handleDeleteTagCallback - 删除tag的回调函数
+ * @property {RowProps} rowProps
+ * @property {boolean} isInline - 是否是行内表单
+ * @property {string} wrapperClassName
+ * @property {React.ReactNode} preChildren
+ * @property {any} [propName: string]
+ */
 export interface IToolTipTagProps {
   formList: ISearchesType;
-  record?: any; // 值会映射到表单
-  expandForm?: boolean; // 是否展开
-  columnNumber?: number; // 一行放几个 formItem
-  showSearchBtn?: boolean; // 是否展示搜索按钮
-  showResetBtn?: boolean; // 是否展示重置按钮
-  showToolTipTag?: boolean; // 是否展示toolTip tag
-  checkBoxStatus?: boolean; // checkbox的状态
-  handleSearch?: (values: any) => void; // 进行搜索
-  handleResetPreCallback?: (fn: () => void) => void; // 重置前的回调
-  handleResetCallback?: () => void; // 重置回调
-  handleDeleteTagCallback?: (name: string, itemValue: any) => void; // 删除tag的回调函数
+  record?: any;
+  expandForm?: boolean;
+  columnNumber?: number;
+  showSearchBtn?: boolean;
+  showResetBtn?: boolean;
+  showToolTipTag?: boolean;
+  checkBoxStatus?: boolean;
+  handleSearch?: (values: any) => void;
+  handleResetPreCallback?: (fn: () => void) => void;
+  handleResetCallback?: () => void;
+  handleDeleteTagCallback?: (name: string, itemValue: any) => void;
   rowProps?: RowProps;
-  isInline?: boolean; // 是否是行内表单
+  isInline?: boolean;
   wrapperClassName?: string;
   preChildren?: React.ReactNode;
   [propName: string]: any;

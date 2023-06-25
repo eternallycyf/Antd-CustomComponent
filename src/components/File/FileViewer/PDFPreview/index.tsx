@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-import { Modal } from 'antd';
 import PDFView from '@/components/File/FileViewerV1/FileView';
+import { Modal } from 'antd';
+import React, { PureComponent } from 'react';
 
 class PDFPreview extends PureComponent<any, any> {
   protected pdfViewRef: React.RefObject<any> = React.createRef();

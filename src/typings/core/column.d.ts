@@ -1,24 +1,20 @@
-import { FormItemProps } from 'antd';
-import { ColumnGroupType, ColumnType } from 'antd/lib/table/interface';
+import { ColumnType } from 'antd/lib/table/interface';
 import { ReactNode } from 'react';
 import { Search } from './form';
 
 //#region
 type AnyData = Record<string, unknown>;
 type RenderReturn<TRecord = AnyData> = ReturnType<NonNullable<ColumnType<TRecord>['render']>>;
+
+/**
+ * @typedef {object} tableColumn
+ * @template {TRecord = AnyData} - TRecord
+ */
 export type Column<TRecord = AnyData> =
-  // | (Omit<ColumnGroupType<TRecord>, 'render'> & {
-  //     render?: (value: TRecord, record: TRecord, index: number) => RenderReturn<TRecord>;
-  //   })
-  // | (ColumnType<TRecord> & {
-  //     dataIndex?: keyof TRecord;
-  //     render?: <T = TRecord>(value: T, record: TRecord, index: number) => RenderReturn<TRecord>;
-  //   })
   | ColumnType<TRecord> & {
       title: ReactNode | (() => ReactNode);
       /**
-       * @description 仅针对title的tooltip
-       * 可传入字符串 或者传入对象
+       * @name 仅针对title的tooltip
        * */
       tooltip?:
         | string
@@ -28,16 +24,16 @@ export type Column<TRecord = AnyData> =
             extraText?: () => ReactNode;
           };
       /**
-       * @description 格式化时间
-       * 1. formatTime:true 默认格式化为YYYY-MM-DD
-       * 2. formatTime:true format:YYYY-MM-DD HH:mm:ss => 格式化为YYYY-MM-DD HH:mm:ss
-       * 3. formatTime:{ type: 'YYYY.MM.DD', format: 'YYYY-MM-DD' } => 格式化为YYYY-MM-DD
-       * 针对特殊格式 可传入人对象 dayjs(text, type).format(format)
+       * @name 格式化时间
+       * @example formatTime:true 默认格式化为YYYY-MM-DD
+       * @example formatTime:true format:YYYY-MM-DD HH:mm:ss => 格式化为YYYY-MM-DD HH:mm:ss
+       * @example formatTime:{ type: 'YYYY.MM.DD', format: 'YYYY-MM-DD' } => 格式化为YYYY-MM-DD
+       * @example 针对特殊格式 可传入人对象 dayjs(text, type).format(format)
        */
       format?: string;
       formatTime?: boolean | { type?: string; format: string };
       /**
-       * @description 格式化金融数据 增加千分号
+       * @name 格式化金融数据 增加千分号
        * @example formatNumber: (val) => [val/10000, 2]  (最后一个是保留的位数)
        */
       formatNumber?: boolean | number | ((value: number) => number) | ((value: number) => [number, number]);
@@ -55,35 +51,40 @@ export type Column<TRecord = AnyData> =
             lines?: number;
             number?: number;
           };
-
+      /**
+       * @property {keyof TRecord | string} [dataIndex = '']
+       */
       dataIndex?: keyof TRecord;
       children?: Column<TRecord>[];
-      // 仅在editable为true时生效
+      /**
+       * @name 是否可编辑 仅在editable为true时生效
+       */
       editable?: boolean;
       formItemProps?: Search<TRecord>;
-      // 权限控制
+      /**
+       * @name 权限控制是否可见
+       */
       acpCode?: string;
 
-      // 自定义排序发给后端的字段
+      /**
+       * @name 自定义排序发给后端的字段
+       */
       sorterIndex?: string;
 
       /**
-       * @description 点击分页功能 是否刷新 用于前端自己排序
+       * @name 点击分页功能 是否刷新 用于前端自己排序
        */
       isRefresh?: boolean;
       /**
-       * @description 初始化是否显示
+       * @name 初始化是否显示
        */
       initChecked?: boolean;
       /**
-       * @description 初始化checkbox是否禁用
+       * @name 初始化checkbox是否禁用
        */
       initCheckedDisabled?: boolean;
-      useSummary?: (content: React.ReactNode, record: any) => React.ReactNode;
+      useSummary?: (content: React.ReactNode, record: keyof TRecord) => React.ReactNode;
     };
-// & FormControl
-// 传入泛型 Columns<{ code: string }> 指定dataIndex及render的record类型
 type Columns<TRecord = AnyData, Rest = AnyData> = (Column<TRecord> & Rest)[];
-//表单控件
 export type IBaseColumnsType<T = AnyData, R = AnyData> = Columns<T, R>;
 //#endregion

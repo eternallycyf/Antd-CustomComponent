@@ -1,7 +1,7 @@
-import { Effect } from '@/typings/connect';
-import { Reducer } from 'redux';
 import * as service from '@/services';
+import { Effect } from '@/typings/connect';
 import { history } from '@umijs/max';
+import { Reducer } from 'redux';
 
 export interface ILoginModelState {
   token: string;

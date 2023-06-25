@@ -1,7 +1,6 @@
 import CommonTable from '@/components/CommonTableV5/CommonTableV5';
-import { IColumnsType } from '@/typings';
 import { formatNumber, formatPercent } from '@/utils/util';
-import { Row, Table } from 'antd';
+import { Row } from 'antd';
 import React from 'react';
 import styles from './index.less';
 import { IProcessPageTableProps } from './interface';

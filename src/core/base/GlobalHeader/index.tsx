@@ -1,9 +1,9 @@
-import { FC } from 'react';
-import { Layout, Row, Col, Input, Switch } from 'antd';
-import RightContent from './RightContent';
-import styles from './index.less';
-import FullScreen from '../FullScreen';
 import { Dispatch } from '@umijs/max';
+import { Col, Input, Layout, Row, Switch } from 'antd';
+import { FC } from 'react';
+import FullScreen from '../FullScreen';
+import styles from './index.less';
+import RightContent from './RightContent';
 const { Header } = Layout;
 interface IProps {
   ColorPicker: React.ReactNode;

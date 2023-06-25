@@ -1,6 +1,6 @@
-import styles from './index.less';
-import { Row, Col } from 'antd';
+import { Col, Row } from 'antd';
 import React, { FC } from 'react';
+import styles from './index.less';
 
 interface ISectionTitle {
   title: React.ReactNode;

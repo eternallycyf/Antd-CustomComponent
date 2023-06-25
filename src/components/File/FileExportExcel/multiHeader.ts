@@ -1,16 +1,6 @@
 import { Worksheet } from 'exceljs';
 import ExcelJs from 'exceljs/dist/exceljs';
-import {
-  addDataTable,
-  addHeaderStyle,
-  DEFAULT_COLUMN_WIDTH,
-  generateHeaders,
-  getColumnNumber,
-  ITableHeader,
-  mergeColumnCell,
-  mergeRowCell,
-  saveWorkbook,
-} from '.';
+import { addDataTable, DEFAULT_COLUMN_WIDTH, generateHeaders, getColumnNumber, ITableHeader, mergeColumnCell, mergeRowCell, saveWorkbook } from '.';
 
 interface ISlash {
   left: string;

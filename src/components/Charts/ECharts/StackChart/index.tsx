@@ -1,11 +1,10 @@
 import { Empty } from 'antd';
-import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import ReactECharts from 'echarts-for-react';
+import _ from 'lodash';
+import { Fragment, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { getOptions } from './chart';
 import { IGetOptions } from './interface';
 import { BASE_CONFIG } from './utils';
-import React from 'react';
-import ReactECharts from 'echarts-for-react';
-import _ from 'lodash';
 
 const StackChart = (props: IGetOptions) => {
   const [options, setOptions] = useState({});

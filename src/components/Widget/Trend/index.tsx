@@ -1,5 +1,5 @@
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import React, { FC } from 'react';
-import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 // import { Icon } from 'antd';
 import classNames from 'classnames';
 import styles from './index.less';

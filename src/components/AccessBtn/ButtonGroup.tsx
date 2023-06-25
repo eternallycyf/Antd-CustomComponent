@@ -1,6 +1,5 @@
 import { Button } from 'antd';
-import React from 'react';
-import { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './index.less';
 
 export interface IButtonGroupDefaultProps {

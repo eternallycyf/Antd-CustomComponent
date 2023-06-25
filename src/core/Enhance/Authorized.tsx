@@ -1,11 +1,10 @@
 import { ConnectState } from '@/typings/connect';
-import { connect, Dispatch, withRouter, Outlet } from '@umijs/max';
-import { History } from 'history';
+import { connect, Dispatch, Outlet, withRouter } from '@umijs/max';
+import { RouteComponentProps } from '@umijs/renderer-react';
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { RouteComponentProps } from '@umijs/renderer-react';
-import { withRoutePage } from './withRoutePage';
 import { compose } from 'redux';
+import { withRoutePage } from './withRoutePage';
 
 interface IProps extends RouteComponentProps<any> {
   token: string;

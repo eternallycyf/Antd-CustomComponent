@@ -1,4 +1,4 @@
-import React, { FC, memo, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 interface IWaterMarkProps {
   width?: number;
   height?: number;

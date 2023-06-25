@@ -1,8 +1,8 @@
-import React, { useState, forwardRef } from 'react';
-import { Modal, Spin } from 'antd';
-import { renderAsync } from 'docx-preview';
 import projectConfig from '@/config/projectConfig';
 import request from '@/utils/request';
+import { Modal, Spin } from 'antd';
+import { renderAsync } from 'docx-preview';
+import React, { forwardRef, useState } from 'react';
 const { apiPrefix } = projectConfig;
 
 export type WordPreviewYHandle = {

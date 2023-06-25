@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
-import { IChartConfig } from './interface';
 import styles from './chart.less';
+import { IChartConfig } from './interface';
 
 export const formatNumber = ({ number, isPercent = true }: { number: number; isPercent?: true }) => {
   if (number == 0) return 0;
@@ -104,9 +104,7 @@ export const renderTooltip = (
           <div class="${styles.contrastContent}">
             ${data
               .map((item) => {
-                const left = item.shape
-                  ? `<div class="${styles[item.shape]}" style=\"--color:${item.shapeColor}\"></div>`
-                  : '';
+                const left = item.shape ? `<div class="${styles[item.shape]}" style=\"--color:${item.shapeColor}\"></div>` : '';
                 const currentValue = item?.format ? item.format(item.value) : item.value;
                 const isBold = item?.isBold ? styles.isBold : undefined;
                 const isOnly = item?.isOnly ? styles.contentCenter : styles.content;

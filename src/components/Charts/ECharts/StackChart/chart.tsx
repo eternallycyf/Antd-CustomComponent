@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
-import { IGetOptions, IChartConfig } from './interface';
-import { defaultFormatColor, renderTooltip, BASE_CONFIG as BASECONFIG, formatNumber } from './utils';
+import { IChartConfig, IGetOptions } from './interface';
+import { BASE_CONFIG as BASECONFIG, defaultFormatColor, formatNumber, renderTooltip } from './utils';
 
 export const getOptions = (config: IGetOptions) => {
   const { data: DATA = [], baseConfig = {}, chartConfig = {}, currentSelectedLegend = [] } = config;

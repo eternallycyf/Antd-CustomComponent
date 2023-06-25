@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-import { Avatar, AvatarProps } from 'antd';
 import imageDefault from '@/assets/image_default.png';
+import { Avatar, AvatarProps } from 'antd';
+import React, { PureComponent } from 'react';
 
 interface IProps {
   fetch: any;

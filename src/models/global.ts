@@ -1,9 +1,9 @@
-import { Reducer } from 'redux';
+import { IRgba } from '@/core/layouts/BasicLayout';
+import * as service from '@/services';
 import { MenuItem, UserInfo } from '@/typings';
 import { Effect } from 'dva';
-import * as service from '@/services';
-import { menuList as MENU_LIST, breadcrumbNameMap as BREAD_CRUMB_NAEMMAP } from './constant';
-import { IRgba } from '@/core/layouts/BasicLayout';
+import { Reducer } from 'redux';
+import { breadcrumbNameMap as BREAD_CRUMB_NAEMMAP, menuList as MENU_LIST } from './constant';
 
 export interface IGlobalModelState {
   theme: 'dark' | 'light';

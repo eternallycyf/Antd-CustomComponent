@@ -1,4 +1,3 @@
-import React from 'react';
 import { Resizable } from 'react-resizable';
 
 export const ResizableTitle = (props: any) => {

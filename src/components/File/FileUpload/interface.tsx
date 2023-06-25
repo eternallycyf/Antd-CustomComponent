@@ -17,7 +17,7 @@ export interface IAttachment {
   maxCount?: number;
 
   /**
-   * @description 拓展的文件信息 和文件名同级
+   * @name 拓展的文件信息 和文件名同级
    */
   extraRecord?: any;
 
@@ -41,7 +41,7 @@ export interface IFileUploadProps extends RouteComponentProps<any>, ConnectProps
   };
 
   /**
-   * @description 集成到antd
+   * @name 集成到antd
    */
   value?: UploadProps<IFileListResponse>[];
   onChange?: (fileList: UploadProps<IFileListResponse>[]) => void;

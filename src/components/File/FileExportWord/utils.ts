@@ -1,7 +1,7 @@
 import Docxtemplater from 'docxtemplater';
-import PizZip from 'pizzip';
-import JSZipUtils from 'jszip-utils';
 import { saveAs } from 'file-saver';
+import JSZipUtils from 'jszip-utils';
+import PizZip from 'pizzip';
 
 const path = process.env.NODE_ENV === 'development' ? `./word.docx` : `/Antd-CustomComponent/word.docx`;
 

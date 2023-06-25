@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import type { TabsProps } from 'antd';
-import { Tabs } from 'antd';
-import StickyBox from 'react-sticky-box';
 import type { DragEndEvent } from '@dnd-kit/core';
 import { DndContext, PointerSensor, useSensor } from '@dnd-kit/core';
 import { arrayMove, horizontalListSortingStrategy, SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import type { TabsProps } from 'antd';
+import { Tabs } from 'antd';
+import React, { useState } from 'react';
+import StickyBox from 'react-sticky-box';
 
 interface IPlusTabsProps extends TabsProps {
   isSticky?: boolean;

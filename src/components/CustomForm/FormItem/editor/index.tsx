@@ -112,16 +112,7 @@ export default class UploadDemo extends React.Component<EditorProps> {
   };
 
   render() {
-    const {
-      form,
-      valueType,
-      extendControlKey,
-      value,
-      onChange,
-      getImageURL,
-      showWordLimitPrompt = true,
-      ...restProps
-    } = this.props;
+    const { form, valueType, extendControlKey, value, onChange, getImageURL, showWordLimitPrompt = true, ...restProps } = this.props;
     const { editorRef, handlePastedText } = this;
     // 自定义控件
     const customControlsKeys = Object.keys(CustomControls);

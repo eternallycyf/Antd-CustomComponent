@@ -1,16 +1,15 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { connect } from '@umijs/max';
-import { Button, Space, Form, Popconfirm } from 'antd';
-import { ConnectState } from '@/typings/connect';
-import { IButtonProps } from '@/typings';
-import { getUUID } from '@/utils/random';
-import styles from './index.less';
-import ButtonGroup from './ButtonGroup';
 import { getFieldComp } from '@/core/helpers';
+import { IButtonProps } from '@/typings';
+import { ConnectState } from '@/typings/connect';
+import { getUUID } from '@/utils/random';
+import { connect } from '@umijs/max';
+import { Button, Form, Popconfirm, Space } from 'antd';
+import React, { Fragment, useEffect, useState } from 'react';
+import ButtonGroup from './ButtonGroup';
 
 interface IProps {
   className?: string;
-  accessCollection?: string[]; // 权限集合
+  accessCollection?: string[];
   children?: React.ReactNode;
   type?: 'ButtonGroup' | 'Button';
   btnList?: IButtonProps[];

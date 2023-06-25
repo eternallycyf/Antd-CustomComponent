@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
-import { Menu } from 'antd';
-import { MenuItem } from '@/typings';
-import { History } from 'history';
 import { getSubMenuOrItem } from '@/core/helpers/utils';
+import { MenuItem } from '@/typings';
+import { Menu } from 'antd';
+import { History } from 'history';
+import React, { useCallback } from 'react';
 
 export interface IBaseMenuProps {
   style?: React.CSSProperties;

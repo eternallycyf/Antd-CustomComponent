@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { MenuItem } from '@/typings';
+import { getDefaultCollapsedSubMenus, getFlatMenuKeys } from '@/utils/menu';
 import { Layout } from 'antd';
 import classNames from 'classnames';
+import { History } from 'history';
+import React, { useEffect, useMemo, useState } from 'react';
 import BaseMenu from './BaseMenu';
 import styles from './index.less';
-import { MenuItem } from '@/typings';
-import { History } from 'history';
-import { getDefaultCollapsedSubMenus, getFlatMenuKeys } from '@/utils/menu';
 const { Sider } = Layout;
 
 export interface ISiderMenu {

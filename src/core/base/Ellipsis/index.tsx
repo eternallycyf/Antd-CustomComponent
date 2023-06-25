@@ -1,8 +1,8 @@
 // @ts-nocheck
-import { Tooltip, TooltipProps } from 'antd';
-import React, { Component } from 'react';
-import classNames from 'classnames';
 import { cutStrByFullLength, getStrFullLength } from '@/core/helpers/string';
+import { Tooltip, TooltipProps } from 'antd';
+import classNames from 'classnames';
+import React, { Component } from 'react';
 import styles from './index.less';
 
 interface IEllipsisProps {

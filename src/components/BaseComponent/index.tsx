@@ -1,11 +1,10 @@
-import React from 'react';
-import { message, Modal, TableProps } from 'antd';
 import { deleteAction, postAction } from '@/services/global';
+import { message, Modal } from 'antd';
+import React from 'react';
 import CommonSearch from '../CommonSearch';
-import { TableRowSelection } from 'antd/lib/table/interface';
-import { downloadExcel } from '../File/FileExportExcel';
 import BaseTable from '../CommonTableV5/components/BaseTable';
 import CustomForm from '../CustomForm';
+import { downloadExcel } from '../File/FileExportExcel';
 
 export interface IBaseState {
   loading?: boolean;

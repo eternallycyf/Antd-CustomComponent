@@ -1,5 +1,5 @@
+import { Button, ButtonProps, Modal, ModalFuncProps } from 'antd';
 import React from 'react';
-import { Modal, Button, ModalFuncProps, ButtonProps } from 'antd';
 import styles from './index.less';
 
 interface IAsyncConfirm {

@@ -1,7 +1,7 @@
 import type { ColumnType } from 'antd/es/table/interface';
-import { saveAs } from 'file-saver';
+import { Cell, Row, Workbook, Worksheet } from 'exceljs';
 import ExcelJs from 'exceljs/dist/exceljs';
-import { Workbook, Worksheet, Row, Cell } from 'exceljs';
+import { saveAs } from 'file-saver';
 import JsZip from 'jszip';
 
 export interface IDownloadFiles2Zip {
@@ -311,23 +311,13 @@ export function mergeColumnCell(
     pointer = nameRow1.lastIndexOf(name);
     if (shouldVerticalMerge && shouldHorizontalMerge) {
       // 两个方向都合并
-      worksheet.mergeCells(
-        Number(rowHeader1.number),
-        index + 1,
-        Number(rowHeader2.number),
-        nameRow1.lastIndexOf(name) + 1,
-      );
+      worksheet.mergeCells(Number(rowHeader1.number), index + 1, Number(rowHeader2.number), nameRow1.lastIndexOf(name) + 1);
     } else if (shouldVerticalMerge && !shouldHorizontalMerge) {
       // 只在垂直方向上同一列的两行合并
       worksheet.mergeCells(Number(rowHeader1.number), index + 1, Number(rowHeader2.number), index + 1);
     } else if (!shouldVerticalMerge && shouldHorizontalMerge) {
       // 只有水平方向同一行的多列合并
-      worksheet.mergeCells(
-        Number(rowHeader1.number),
-        index + 1,
-        Number(rowHeader1.number),
-        nameRow1.lastIndexOf(name) + 1,
-      );
+      worksheet.mergeCells(Number(rowHeader1.number), index + 1, Number(rowHeader1.number), nameRow1.lastIndexOf(name) + 1);
       // eslint-disable-next-line no-param-reassign
       const cell = rowHeader1.getCell(index + 1);
       cell.alignment = { vertical: 'middle', horizontal: 'center' };

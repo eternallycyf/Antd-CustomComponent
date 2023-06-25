@@ -1,5 +1,5 @@
 // 虚拟列表
-import { RefObject, useEffect, useState, FC } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 interface Args extends IntersectionObserverInit {
   freezeOnceVisible?: boolean;
 }

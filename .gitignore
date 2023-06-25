@@ -13,3 +13,4 @@
 yarn.lock
 .vscode/*
 .eslintcache
+.idea/*

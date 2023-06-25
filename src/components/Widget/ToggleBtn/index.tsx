@@ -1,6 +1,6 @@
-import { Button, Tooltip, type ButtonProps } from 'antd';
-import React, { FC, CSSProperties, ReactNode, SetStateAction } from 'react';
 import { QuestionCircleFilled, RetweetOutlined } from '@ant-design/icons';
+import { Button, Tooltip, type ButtonProps } from 'antd';
+import React, { CSSProperties, ReactNode, SetStateAction } from 'react';
 
 interface IToggleBtnValue {
   size?: ButtonProps['size'];
@@ -27,12 +27,7 @@ type IDefaultProps = {
   [Key in string as `default${Key & string}`]: any;
 };
 
-const ToggleButton = <T extends Record<string, IToggleBtnValue>>({
-  status,
-  setStatus,
-  dict,
-  cb,
-}: IToggleButtonProps<T>) => {
+const ToggleButton = <T extends Record<string, IToggleBtnValue>>({ status, setStatus, dict, cb }: IToggleButtonProps<T>) => {
   const currentDict: IToggleBtnValue = dict[status];
   const currentSize: IToggleBtnValue['size'] = currentDict?.size || 'small';
   const toggleDictStatus: string = Object.keys(dict).find((item) => item != status) as string;
@@ -41,8 +36,7 @@ const ToggleButton = <T extends Record<string, IToggleBtnValue>>({
   const defaultProps: IDefaultProps = {
     defaultHasTooltip: true,
     defaultToggleIcon: <RetweetOutlined />,
-    defaultButtonStyle:
-      currentDict.buttonType == 'primary' ? {} : { color: '#1348a2', border: '1px solid #1348a2', background: '#fff' },
+    defaultButtonStyle: currentDict.buttonType == 'primary' ? {} : { color: '#1348a2', border: '1px solid #1348a2', background: '#fff' },
     defaultIconStyle: currentDict.buttonType == 'default' ? {} : { color: 'rgba(255,255,255,0.7)' },
   };
 

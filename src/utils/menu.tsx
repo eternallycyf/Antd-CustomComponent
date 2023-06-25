@@ -1,7 +1,6 @@
-import React from 'react';
+import { MenuItem } from '@/typings';
 import _ from 'lodash';
 import pathToRegXp from 'path-to-regexp';
-import { MenuItem } from '@/typings';
 
 /**
  * 获取面包屑映射

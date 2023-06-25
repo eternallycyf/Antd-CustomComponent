@@ -1,11 +1,11 @@
 import projectConfig from '@/config/projectConfig';
 import { ConnectState } from '@/typings/connect';
-import { MenuUnfoldOutlined, MenuFoldOutlined, HomeOutlined } from '@ant-design/icons';
+import { HomeOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { History } from '@umijs/max';
 import { Dropdown, Tabs, TabsProps } from 'antd';
 import cx from 'classnames';
 import { connect } from 'dva';
 import React from 'react';
-import { History } from '@umijs/max';
 import styles from './index.less';
 const { homePage: homePagePath } = projectConfig;
 
@@ -40,19 +40,7 @@ export interface MenuTabsProps {
 }
 
 const MenuTabs: React.FC<MenuTabsProps> = (props) => {
-  const {
-    tabs,
-    activeKey,
-    tabChildren,
-    tabsProps,
-    onRefresh,
-    onSwitch,
-    onRemove,
-    onRemoveAll,
-    onRemoveOthers,
-    dispatch,
-    collapsed,
-  } = props;
+  const { tabs, activeKey, tabChildren, tabsProps, onRefresh, onSwitch, onRemove, onRemoveAll, onRemoveOthers, dispatch, collapsed } = props;
 
   const handleTabEdit = (targetKey: React.MouseEvent | React.KeyboardEvent | string, action: 'add' | 'remove') => {
     if (action === 'remove' && typeof targetKey === 'string') {
@@ -107,9 +95,7 @@ const MenuTabs: React.FC<MenuTabsProps> = (props) => {
           }}
           trigger={['contextMenu']}
         >
-          <div className={cx(styles.tabTitle)}>
-            {key === homePagePath ? <HomeOutlined className={styles['icon-home']} /> : tab}
-          </div>
+          <div className={cx(styles.tabTitle)}>{key === homePagePath ? <HomeOutlined className={styles['icon-home']} /> : tab}</div>
         </Dropdown>
       </div>
     );

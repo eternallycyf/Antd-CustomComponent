@@ -1,5 +1,5 @@
-import React from 'react';
 import _ from 'lodash';
+import React from 'react';
 
 export const shouldRoutePageUpdate = (nextProps: any, thisProps: any) => {
   const {
@@ -30,8 +30,7 @@ export const shouldRoutePageUpdate = (nextProps: any, thisProps: any) => {
 
   const { pathname: thisPathname, search: thisSearch, state: thisState } = thisLocation || {};
 
-  const isLocationChange =
-    nextPathname !== thisPathname || nextSearch !== thisSearch || !_.isEqual(nextState, thisState);
+  const isLocationChange = nextPathname !== thisPathname || nextSearch !== thisSearch || !_.isEqual(nextState, thisState);
 
   if (isLocationChange) return false;
   return true;
@@ -41,9 +40,7 @@ function getDisplayName<T>(WrappedComponent: React.ComponentType<T>) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 
-export function withRoutePage<Wrapper = React.ComponentClass<any>>(
-  WrappedComponent: React.ComponentType<any>,
-): Wrapper {
+export function withRoutePage<Wrapper = React.ComponentClass<any>>(WrappedComponent: React.ComponentType<any>): Wrapper {
   const WithRoutePage = React.memo((props: any) => {
     return <WrappedComponent {...props} />;
   }, shouldRoutePageUpdate);

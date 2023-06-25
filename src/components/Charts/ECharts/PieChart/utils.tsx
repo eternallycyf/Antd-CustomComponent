@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
-import { IChartConfig } from './interface';
 import styles from './chart.less';
+import { IChartConfig } from './interface';
 
 export const formatNumber = (config: { number: number; isPercent?: true }) => {
   if (config?.number == undefined) return '--';

@@ -63,8 +63,7 @@ const TransformItem = (props: ICheckModalItem) => {
   };
 
   const indeterminate =
-    values?.filter((item) => item.isChecked || false).length < values?.length &&
-    values?.filter((item) => item.isChecked || false).length > 0;
+    values?.filter((item) => item.isChecked || false).length < values?.length && values?.filter((item) => item.isChecked || false).length > 0;
 
   return (
     <>
@@ -75,9 +74,7 @@ const TransformItem = (props: ICheckModalItem) => {
               <Checkbox
                 indeterminate={indeterminate}
                 onChange={handelCheckAll}
-                checked={
-                  values?.filter((item) => item.isChecked || false).length === values?.length && values?.length != 0
-                }
+                checked={values?.filter((item) => item.isChecked || false).length === values?.length && values?.length != 0}
               />
             )}
             <span className={styles.title}>{title}</span>
@@ -89,12 +86,7 @@ const TransformItem = (props: ICheckModalItem) => {
         <Divider className={styles.divider} />
         <div className={styles.searchBox}>
           <div className={styles.search}>
-            <Input
-              onChange={_.debounce(handleSearch, 500)}
-              suffix={<SearchOutlined />}
-              allowClear
-              placeholder="请输入名字进行搜素"
-            />
+            <Input onChange={_.debounce(handleSearch, 500)} suffix={<SearchOutlined />} allowClear placeholder="请输入名字进行搜素" />
           </div>
         </div>
         <div className={styles.Collapse}>

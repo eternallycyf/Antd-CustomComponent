@@ -1,9 +1,9 @@
 import { ConnectState } from '@/typings/connect';
+import { connect } from '@umijs/max';
 import { Space } from 'antd';
 import { FC } from 'react';
-import { connect } from '@umijs/max';
-import Avatar from './AvatarDropdown';
 import styles from '../index.less';
+import Avatar from './AvatarDropdown';
 
 interface IProps {
   userInfo: ConnectState['global']['userInfo'];

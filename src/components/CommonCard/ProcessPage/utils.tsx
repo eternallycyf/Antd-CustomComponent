@@ -5,7 +5,7 @@ import { Col } from 'antd';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import styles from './index.less';
-import { IProcessCard, IUserInfoFormList } from './interface';
+import { IUserInfoFormList } from './interface';
 
 export const addSpace = (str: string) => str.replace(/(\d{3})(\d{4})/g, '$1 $2 ');
 

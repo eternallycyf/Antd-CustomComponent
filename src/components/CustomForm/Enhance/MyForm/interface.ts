@@ -2,7 +2,7 @@ import { FormInstance, FormProps } from 'antd';
 import { Search } from '@/typings/core/form';
 
 /**
- * @description
+ * @name
  * parser和transform同时使用:
  * 1. parser 用于展示
  * 2. transform 用于最终onFinish的数据
@@ -10,17 +10,17 @@ import { Search } from '@/typings/core/form';
  */
 export type IFormList = Search<any> & {
   /**
-   * @description 是否展示风格
+   * @name 是否展示风格
    */
   isView?: boolean;
   /**
-   * @description 只用于展示 isView === true 时使用
+   * @name 只用于展示 isView === true 时使用
    * 只展示
    * 不参与最终onFinish的数据
    */
   parser?: (value: any, record: any) => any;
   /**
-   * @description
+   * @name
    * 不展示
    * 参与最终onFinish的数据 以原始数据为基数(和parser的结果无关)
    */
@@ -30,7 +30,7 @@ export type IFormList = Search<any> & {
 export type IHandle = {
   form: FormInstance;
   /**
-   * @description 转换数据方法 && 设置回显数据
+   * @name 转换数据方法 && 设置回显数据
    * @param record
    * @param formList
    * @param isInit
@@ -42,20 +42,20 @@ export type IHandle = {
 
 export type IMyFormProps = {
   /**
-   * @description 组件ref
+   * @name 组件ref
    * @type {React.RefObject<IHandle>}
    */
   wrapperRef: any;
   /**
-   * @description 表单
+   * @name 表单
    */
   formList: IFormList[];
   /**
-   * @description 初始数据
+   * @name 初始数据
    */
   defaultValue?: Object;
   /**
-   * @description 是否展示风格
+   * @name 是否展示风格
    */
   isViewMode?: boolean;
   /**
@@ -63,11 +63,11 @@ export type IMyFormProps = {
    */
   formProps?: FormProps;
   /**
-   * @description 提交回调
+   * @name 提交回调
    */
   onFinish: (values: any) => void;
   /**
-   * @description 重置回调
+   * @name 重置回调
    */
   onResetCallback?: () => void;
 };

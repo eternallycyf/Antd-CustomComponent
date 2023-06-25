@@ -1,4 +1,4 @@
-import { SetStateAction, useCallback, useState, useEffect, useRef } from 'react';
+import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 
 const useStateCallback = (defaultVal: any) => {
   const [state, setState] = useState(defaultVal);

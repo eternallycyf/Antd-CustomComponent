@@ -1,6 +1,5 @@
-import './Loading.less';
 import { useEffect } from 'react';
-import React from 'react';
+import './Loading.less';
 const Loading = () => {
   useEffect(() => {
     const spinner = document.querySelector('.js-spinner') as HTMLDivElement;

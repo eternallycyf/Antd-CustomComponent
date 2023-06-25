@@ -52,13 +52,7 @@ class IndexPage extends React.Component {
 
   render() {
     return (
-      <MyForm
-        isViewMode
-        wrapperRef={this.MyFormRef}
-        formList={getMyFormList()}
-        onFinish={(val) => console.log(val)}
-        defaultValue={defaultValue}
-      />
+      <MyForm isViewMode wrapperRef={this.MyFormRef} formList={getMyFormList()} onFinish={(val) => console.log(val)} defaultValue={defaultValue} />
     );
   }
 }

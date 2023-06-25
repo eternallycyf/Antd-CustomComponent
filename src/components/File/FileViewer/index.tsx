@@ -1,11 +1,11 @@
+import projectConfig from '@/config/projectConfig';
+import request from '@/utils/request';
+import { Button, message, Modal } from 'antd';
 import React, { PureComponent, ReactNode } from 'react';
 import ReactFileViewer from 'react-file-viewer';
-import { Button, message, Modal } from 'antd';
-import request from '@/utils/request';
+import styles from './index.less';
 import PDFPreview from './PDFPreview';
 import WordPreview from './WordPreview';
-import styles from './index.less';
-import projectConfig from '@/config/projectConfig';
 const { apiPrefix } = projectConfig;
 
 interface IProps {

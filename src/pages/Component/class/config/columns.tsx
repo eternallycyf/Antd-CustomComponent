@@ -2,7 +2,7 @@ import { IColumnsType } from '@/typings';
 import Activity from '../index';
 import { ACTIVE_TYPE } from './constant';
 
-export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType => {
+export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<any> => {
   return [
     {
       dataIndex: 'activityName',

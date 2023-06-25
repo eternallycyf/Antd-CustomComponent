@@ -4,7 +4,6 @@ import { Fragment } from 'react';
 import { getOptions } from './chart';
 import { IGetOptions } from './interface';
 import { BASE_CONFIG } from './utils';
-import React from 'react';
 
 const PieChart = (props: IGetOptions) => {
   const { data, baseConfig = BASE_CONFIG, chartConfig = {}, style } = props;

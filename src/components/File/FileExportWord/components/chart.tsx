@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Line } from '@ant-design/plots';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 const DemoLine = (props: any, charts: any) => {
   const [data, setData] = useState([]);

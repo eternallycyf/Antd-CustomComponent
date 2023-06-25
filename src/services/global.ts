@@ -1,5 +1,5 @@
-import { request } from '@umijs/max';
 import projectConfig from '@/config/projectConfig';
+import { request } from '@umijs/max';
 import { message } from 'antd';
 const { apiPrefix, apiPrefixMock } = projectConfig;
 

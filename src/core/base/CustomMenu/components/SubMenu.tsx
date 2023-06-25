@@ -1,7 +1,7 @@
 import { withRouter } from '@umijs/max';
+import { RouteComponentProps } from '@umijs/renderer-react';
 import React, { FC, useCallback } from 'react';
 import styles from '../index.less';
-import { RouteComponentProps } from '@umijs/renderer-react';
 
 interface ISubmenuProps extends RouteComponentProps<any> {
   title: string;
