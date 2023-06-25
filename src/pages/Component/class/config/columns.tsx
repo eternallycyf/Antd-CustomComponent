@@ -2,7 +2,16 @@ import { IColumnsType } from '@/typings';
 import Activity from '../index';
 import { ACTIVE_TYPE } from './constant';
 
-export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<any> => {
+export interface IRecord {
+  name: string;
+  index: number;
+  activityName: string;
+  activityStartTime: string;
+  activityPrice: number;
+  activityType: string;
+}
+
+export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<IRecord> => {
   return [
     {
       dataIndex: 'activityName',

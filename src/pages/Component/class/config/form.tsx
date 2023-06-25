@@ -8,6 +8,7 @@ import { Button, Popconfirm, Tag } from 'antd';
 import { add } from 'lodash';
 import { CustomTooltip } from '@/components';
 import { Fragment } from 'react';
+import { IRecord } from './columns';
 const { apiPrefix } = projectConfig;
 
 const layout = {

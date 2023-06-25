@@ -7,7 +7,7 @@ import { formatParams } from '@/utils/util';
 import { Col, Form, Input, Row, Select, Space, Spin, Table } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
 import React, { Component, forwardRef } from 'react';
-import { getColumns } from './config/columns';
+import { getColumns, IRecord } from './config/columns';
 import { getFormList } from './config/form';
 import { getSearches } from './config/search';
 import { getOtherFormList } from './config/otherFormList';
@@ -19,7 +19,7 @@ import { getFieldComp } from '@/core/helpers';
 import { withRoutePage } from '@/core/Enhance/withRoutePage';
 import { compose } from 'redux';
 import { ConnectState } from '@/typings/connect';
-import { ACTIVE_TYPE } from './config/constant';
+import { ACTIVE_TYPE, DEFAULT_ACTIVE_TYPE } from './config/constant';
 import dayjs from 'dayjs';
 import { RouteComponentProps } from '@umijs/renderer-react';
 import { DeleteOutlined, EditOutlined, ExportOutlined, FileAddOutlined, ImportOutlined, SyncOutlined } from '@ant-design/icons';
@@ -59,9 +59,9 @@ class Activity extends BaseComponent<IProps, IState> {
       expandedKey: 'index',
       expandedRowKeys: [],
       exportLoading: false,
-      radioValue: '0',
-      dictType: '1',
-      groupValue: '1',
+      radioValue: DEFAULT_ACTIVE_TYPE,
+      dictType: DEFAULT_ACTIVE_TYPE,
+      groupValue: DEFAULT_ACTIVE_TYPE,
     };
   }
 
@@ -124,7 +124,7 @@ class Activity extends BaseComponent<IProps, IState> {
 
   render() {
     const { searchParams, selectedRowKeys, selectedRows, expandedRowKeys, exportLoading, dictType, groupValue } = this.state;
-    const tableParams: ICommonTable<any> = {
+    const tableParams: ICommonTable<IRecord> = {
       columns: getColumns(this),
       searchParams: formatParams(searchParams),
       rowKey: 'index',
