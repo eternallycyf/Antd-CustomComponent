@@ -3,7 +3,7 @@ import React from 'react';
 import CommonCardList from './CardList';
 
 /**
- * @typedef ICardListHandle 卡片列表组件的ref
+ * @typedef ICardListHandle - 卡片列表组件的ref
  * @template T - 列表项record
  * @property {(defaultParams?: any, defaultData?: any) => Promise<T[]>} fetchData - 请求数据
  * @example <caption>fetchData</caption>
@@ -14,7 +14,7 @@ export type ICardListHandle<T = Record<string, any>> = {
 };
 
 /**
- * @typedef ICardListProps 卡片列表组件
+ * @typedef ICardListProps - 卡片列表组件
  * @template T - 列表项record
  *
  * @property {string} [title] - 标题
@@ -48,7 +48,7 @@ export interface ICardListProps<T = Record<string, any>> {
    * @property {any} [params] - 请求参数
    * @property {'get' | 'post'} [method='get'] - 请求方法
    * @property {string} [dataPath] - 数据路径
-   * @property {ReadonlyArray<unknown>} [depts] - 依赖改变时重新请求
+   * @property {ReadonlyArray<unknown>} [depts=[]] - 依赖改变时重新请求
    */
   fetchConfig?: {
     apiUrl: string;

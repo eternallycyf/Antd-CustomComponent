@@ -43,6 +43,12 @@ const FileUpload: React.FC<IFileUploadProps> = (props) => {
     onChange && onChange(fileList);
   }, [fileList]);
 
+  useEffect(() => {
+    if (Array.isArray(value) && value?.length > fileList?.length) {
+      setFileList(value);
+    }
+  }, [value]);
+
   const defaultHeaderFormItemProps = {
     label: attachment?.label,
     tooltip: attachment?.tooltip,
@@ -89,6 +95,7 @@ const FileUpload: React.FC<IFileUploadProps> = (props) => {
     uploadRef: uploadWrapperRef,
     fileKeys,
     isDownloadByS3,
+    maxLength,
   };
 
   if (isDetail) return <Detail {...detailProps} />;

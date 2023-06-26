@@ -9,9 +9,13 @@ import styles from './index.less';
 import { IProcessCard } from './interface';
 
 const ProcessPage: FC<IProcessCard> = (props) => {
-  const { className, history, title, extra, children, extraBtnList = [] } = props;
+  const { className, history, title, extra, children, extraBtnList = [], handleHeaderOnClick } = props;
 
-  const handleTitleOnClick = () => history?.goBack();
+  const handleTitleOnClick = () => {
+    if (typeof handleHeaderOnClick === 'function') {
+      handleHeaderOnClick();
+    }
+  };
 
   const renderHeaderLeft = () => {
     return (

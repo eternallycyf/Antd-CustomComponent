@@ -38,6 +38,8 @@ export interface IProcessCard extends RouteComponentProps<any> {
   extra?: React.ReactNode;
   children?: React.ReactNode;
   className?: string;
+
+  handleHeaderOnClick?: () => void;
 }
 
 export interface IProcessPageCardProps {

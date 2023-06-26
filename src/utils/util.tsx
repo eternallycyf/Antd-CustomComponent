@@ -293,3 +293,32 @@ export const errorMessage = (res: any, messageDesc = '') => {
     return message.error(`${messageDesc || res.message}失败`);
   }
 };
+
+/**
+ * 获取两个范围之内的所有 日期|月份
+ * @param {dayjs.Dayjs} startDate
+ * @param {dayjs.Dayjs} endDate
+ * @param {day|month} type
+ * @returns {string[]}
+ */
+export const getEnumerateDaysBetweenDates = (startDate: dayjs.Dayjs, endDate: dayjs.Dayjs, type: 'month' | 'day') => {
+  const formatString = type == 'month' ? 'YYYY-MM' : 'YYYY-MM-DD';
+  const addTime = type == 'month' ? 'month' : 'days';
+  if (dayjs(startDate).format(formatString) == dayjs(endDate).format(formatString)) return [dayjs(startDate).format(formatString)];
+  let startTime = startDate;
+  let endTime = endDate;
+  if (!dayjs(startDate).isBefore(endDate)) {
+    startTime = endDate;
+    endTime = startDate;
+  }
+  let dates = [];
+  let SDate = dayjs(startTime);
+  let EDate = dayjs(endTime);
+  dates.push(SDate.format(formatString));
+  while (SDate.add(1, addTime).isBefore(EDate)) {
+    SDate = SDate.add(1, addTime);
+    dates.push(SDate.format(formatString));
+  }
+  dates.push(EDate.format(formatString));
+  return dates;
+};
