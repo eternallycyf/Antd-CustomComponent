@@ -30,12 +30,12 @@ const CardList: React.ForwardRefRenderFunction<ICardListHandle, ICardListProps> 
   }));
 
   const [{ value: data = [], loading }, fetchData] = useAsyncFn(async (defaultParams?, defaultData?) => {
-    const response = request(fetchConfig?.apiUrl!, {
+    const response = await request(fetchConfig?.apiUrl!, {
       method: fetchConfig?.method || 'get',
       params: defaultParams || fetchConfig?.params,
       data: defaultData || fetchConfig?.data,
     });
-    const data = _.get(await response, fetchConfig?.dataPath || 'data.data');
+    const data = _.get(response, fetchConfig?.dataPath || 'data.data');
     return data && data?.length != 0 ? data.map((item: any, index: number) => ({ ...item, index })) : [];
   }, fetchConfig?.depts || []);
 
