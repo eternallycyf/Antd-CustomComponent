@@ -39,6 +39,8 @@ export default {
             'list|30': [
               {
                 name: '@city',
+                title: '@ctitle',
+                desc: '@cparagraph',
                 'value|1-100': 50,
                 'type|0-2': 1,
                 'activeStatus|0-2': 1,
