@@ -25,7 +25,7 @@ const Detail: FC<IFileUploadDetailProps> = (props) => {
   };
 
   const handleDelete = (item: IFileListExtraRecord) => {
-    handleAttachmentDelete({ fileKeys, [fileKeys!.fileId!]: item?.[fileKeys?.fileId!], ...props });
+    handleAttachmentDelete({ fileKeys, fileId: item?.[fileKeys?.fileId!], ...props });
   };
 
   const getViewUrl = (item: IFileListExtraRecord) => {
@@ -73,11 +73,11 @@ const Detail: FC<IFileUploadDetailProps> = (props) => {
               <Row>
                 <CustomTooltip maxLength={maxLength} text={item?.[fileKeys?.fileName!] ?? '--'} paragraphClassName={styles.fileName} />
               </Row>
-              {item?.[fileKeys?.fileName!] && (
+              {item?.[fileKeys?.updateTime!] && (
                 <Row>
                   <CustomTooltip
                     maxLength={maxLength}
-                    text={`生效时间： ${item?.[fileKeys?.updateTime!] || dayjs().format('YYYY-MM-DD')}`}
+                    text={`生效时间： ${item?.[fileKeys?.updateTime!] && dayjs(item?.[fileKeys?.updateTime!]).format('YYYY-MM-DD')}`}
                     paragraphClassName={styles.time}
                   />
                 </Row>

@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { IFileUploadDetailProps, IFileUploadProps, IHandleFileChange } from './interface';
 
 export const AFTER_NAMES = ['.exe', '.bat', '.xml', '.acp', '.dll', '.vbs', 'chm', '.cmd', '.jsp', '.php', '.html', '.aspx'];
+export const BAFAULT_NAMES = `.%'&\></${'`'}~:--`.split('');
 export const MAX_SIZE = 100;
 
 export function Icon({ path, className, onClick }: { path: string; className?: string; onClick?: any }) {
@@ -12,6 +13,8 @@ export function Icon({ path, className, onClick }: { path: string; className?: s
 export const beforeUpload: UploadProps['beforeUpload'] = (file) => {
   const { name, size } = file;
   const afterName = name.slice(name.lastIndexOf('.'));
+  const beforeName = name.slice(0, name.lastIndexOf('.'));
+
   const maxSizeLength = MAX_SIZE * 1024 * 1024;
   if (size > maxSizeLength) {
     message.error(`文件大小最大不能超过${MAX_SIZE}M`);
@@ -19,6 +22,10 @@ export const beforeUpload: UploadProps['beforeUpload'] = (file) => {
   }
   if (AFTER_NAMES.includes(afterName)) {
     message.error('不支持上传该类型文件!');
+    return false;
+  }
+  if (BAFAULT_NAMES.some((item) => beforeName.includes(item))) {
+    message.error(`文件名不能包含特殊字符! ${BAFAULT_NAMES.join('')}`);
     return false;
   }
   return true;
