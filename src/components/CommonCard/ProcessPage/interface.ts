@@ -33,11 +33,14 @@ export interface IProcessCard extends RouteComponentProps<any> {
   /**
    * @name buttonStyleType 必传 就是 Button.type 新版样式
    */
-  extraBtnList?: (IButtonProps & { buttonStyleType: ButtonProps['type'] })[];
+  extraBtnList?: (IButtonProps & { buttonStyleType: ButtonProps['type'] | 'danger' })[];
   /**@name 会覆盖extraBtnList */
   extra?: React.ReactNode;
   children?: React.ReactNode;
   className?: string;
+
+  dotColor?: string;
+  dotText?: string;
 
   handleHeaderOnClick?: () => void;
 }

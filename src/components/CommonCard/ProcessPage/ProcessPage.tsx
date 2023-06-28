@@ -2,14 +2,14 @@ import { AccessBtn } from '@/components';
 import { withRoutePage } from '@/core/Enhance/withRoutePage';
 import { LeftOutlined } from '@ant-design/icons';
 import { withRouter } from '@umijs/max';
-import { Card, Space } from 'antd';
+import { Card, Space, Badge } from 'antd';
 import React, { FC } from 'react';
 import { compose } from 'redux';
 import styles from './index.less';
 import { IProcessCard } from './interface';
 
 const ProcessPage: FC<IProcessCard> = (props) => {
-  const { className, history, title, extra, children, extraBtnList = [], handleHeaderOnClick } = props;
+  const { className, history, title, extra, children, extraBtnList = [], handleHeaderOnClick, dotColor, dotText } = props;
 
   const handleTitleOnClick = () => {
     if (typeof handleHeaderOnClick === 'function') {
@@ -20,9 +20,10 @@ const ProcessPage: FC<IProcessCard> = (props) => {
   const renderHeaderLeft = () => {
     return (
       <div className={styles.headerLeft}>
-        <Space size={12} onClick={handleTitleOnClick}>
-          <LeftOutlined style={{ fontSize: 18, marginTop: 2 }} />
+        <Space size={12} onClick={handleTitleOnClick} style={{ cursor: 'pointer' }}>
+          <LeftOutlined style={{ fontSize: 20, marginTop: 2 }} />
           <span className={styles.title}>{title ?? '--'}</span>
+          {dotText && <Badge color={dotColor} text={<span style={{ fontSize: 14, color: dotColor }}>{dotText}</span>} />}
         </Space>
       </div>
     );

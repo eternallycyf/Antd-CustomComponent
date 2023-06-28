@@ -6,6 +6,7 @@ import { connect } from '@umijs/max';
 import { Button, Form, Popconfirm, Space } from 'antd';
 import React, { Fragment, useEffect, useState } from 'react';
 import ButtonGroup from './ButtonGroup';
+import styles from './index.less';
 
 interface IProps {
   className?: string;
@@ -77,7 +78,14 @@ const AccessBtn: React.FC<IProps> = (props) => {
 
       if (buttonType === 'delete') {
         return (
-          <Popconfirm key={index} title={deleteText || '确认删除该记录'} data-code={code || getUUID()} onConfirm={onClick}>
+          <Popconfirm
+            key={index}
+            title={deleteText || '确认删除该记录'}
+            data-code={code || getUUID()}
+            onConfirm={onClick}
+            okButtonProps={{ classNames: styles['btn-primary'] }}
+            cancelButtonProps={{ classNames: styles['btn-default'] }}
+          >
             <Button key={`access-${code || index}${getUUID()}`} size={size || 'middle'} danger type="link" {...restProps}>
               {text}
             </Button>

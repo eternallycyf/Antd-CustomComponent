@@ -35,21 +35,22 @@ export interface IFileName {
 }
 
 let getPreviewUrl = (type = 'default', fileId: string): string => {
+  let str = '';
   switch (type) {
     case 'flow':
-      getPreviewUrl = () => `ims/flow/field/download?fileId=${fileId}`;
+      str = `ims/flow/field/download?fileId=${fileId}`;
       break;
     case 'default':
-      getPreviewUrl = () => `ims/org/cust/download?id=${fileId}`;
+      str = `ims/org/cust/download?id=${fileId}`;
       break;
     case 'S3':
-      getPreviewUrl = () => `ims-base/file/downloadByUrl?url=${fileId}`;
+      str = `ims-base/file/downloadByUrl?url=${fileId}`;
       break;
     default:
-      getPreviewUrl = () => '';
+      str = '';
       break;
   }
-  return getPreviewUrl(type, fileId);
+  return str;
 };
 
 const handleDownload = (type: string, fileName: string, fileId: string) => {
