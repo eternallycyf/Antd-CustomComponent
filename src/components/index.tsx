@@ -9,6 +9,7 @@ import CustomForm from './CustomForm';
 import * as EnhanceFormItem from './CustomForm/Enhance';
 import CustomModal from './CustomModal';
 import CustomTooltip from './CustomTooltip/CustomTooltip';
+import CommonDescriptions from './CommonDescriptions';
 import * as File from './File';
 import * as Widget from './Widget';
 
@@ -26,4 +27,5 @@ export {
   File,
   Widget,
   EnhanceFormItem,
+  CommonDescriptions,
 };

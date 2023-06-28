@@ -82,7 +82,7 @@ interface IRowProps {
    */
   row?: RowProps;
 }
-interface ICustomTooltipProps extends IBaseProps, ISingleRowProps, IRowProps {}
+export interface ICustomTooltipProps extends IBaseProps, ISingleRowProps, IRowProps {}
 type ICustomTooltipSimpleProps = IBaseProps & ISingleRowProps;
 type ICustomTooltipRowProps = IBaseProps & IRowProps;
 export type IProps<T extends boolean | unknown> = T extends true

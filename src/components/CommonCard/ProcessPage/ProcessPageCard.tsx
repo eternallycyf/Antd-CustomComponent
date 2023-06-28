@@ -7,7 +7,7 @@ const ProcessPageCard: React.FC<IProcessPageCardProps> = (props) => {
   const { title, children, extraContent } = props;
   return (
     <div className={styles.ProcessPageCard}>
-      <SectionTitle title={title} extraContent={extraContent} />
+      {(title || extraContent) && <SectionTitle title={title} extraContent={extraContent} />}
       <div style={{ marginTop: 16 }}>{children}</div>
     </div>
   );

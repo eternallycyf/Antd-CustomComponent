@@ -24,7 +24,7 @@ export const objectToQueryStr = (obj: any) => {
   return str.join('&');
 };
 
-export const renderTooltip = (title: string = '', tooltip: string = '', extraText = '') => {
+export const renderTooltip = (title: string = '', tooltip: React.ReactNode = '', extraText: React.ReactNode = '') => {
   return (
     <div>
       <span style={{ marginRight: 4 }}>{title}</span>
