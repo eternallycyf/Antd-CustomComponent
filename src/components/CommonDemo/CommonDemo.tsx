@@ -1,12 +1,11 @@
 import request from '@/utils/request';
-import { Card, Empty, List } from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useEffect, useImperativeHandle } from 'react';
 import { useAsyncFn } from 'react-use';
-import { IDescriptionsHandle, IDescriptionsProps } from './';
+import { ICommonDemoHandle, ICommonDemoProps } from './';
 import styles from './index.less';
 
-const CommonDesc: React.ForwardRefRenderFunction<IDescriptionsHandle, IDescriptionsProps> = (props, ref) => {
+const CommonDemo: React.ForwardRefRenderFunction<ICommonDemoHandle, ICommonDemoProps> = (props, ref) => {
   const { fetchConfig } = props;
 
   useEffect(() => {
@@ -30,4 +29,4 @@ const CommonDesc: React.ForwardRefRenderFunction<IDescriptionsHandle, IDescripti
   return <Fragment></Fragment>;
 };
 
-export default CommonDesc;
+export default CommonDemo;
