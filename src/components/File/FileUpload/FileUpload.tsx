@@ -82,7 +82,7 @@ const FileUpload: React.FC<IFileUploadProps> = (props) => {
   };
   const UploadDraggerContent = (
     <div>
-      <CloudUploadOutlined /> 将文件拖到此处，或<span className={styles['btn-link']}>点击上传</span>
+      <CloudUploadOutlined /> 将文件拖到此处或 <span className={styles['btn-link']}>点击上传</span>
     </div>
   );
 

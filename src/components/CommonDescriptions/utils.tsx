@@ -51,7 +51,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
         <CustomTooltip
           {...defaultColProps}
           col={23}
-          paragraphClassName={defaultColProps?.className}
+          paragraphClassName={`${item.labelClassName} ${item.wrapperClassName} ${defaultColProps?.className}`}
           maxLength={maxLength}
           {...controlProps}
           text={value ?? '--'}
@@ -62,7 +62,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
     if (item.type === 'tip') {
       const className = `${item?.className} ${styles[item.tipType + '-tip']}`;
       return (
-        <Col {...defaultColProps} className={''} style={{ ...defaultColProps, margin: 0 }}>
+        <Col {...defaultColProps} className={''} style={{ ...defaultColProps, margin: 0, paddingLeft: 0 }}>
           <div className={className}>
             <CustomTooltip
               style={{ padding: 0 }}
@@ -87,19 +87,34 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
           // @ts-ignore
           newValue = renderTooltip(label, item.tooltip(), ' : ');
         }
+      } else {
+        newValue = label + ' : ';
       }
 
       const type = item.maxLength != undefined ? 'text' : 'textarea';
-      let minWidth = typeof item.label == 'string' ? item.label.length * 20 : 70;
+      let minWidth = 35;
       if (item.tooltip) minWidth += 20;
       return (
         <Col {...defaultColProps}>
           <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-            <span style={{ minWidth, marginTop: 2 }}>{newValue}</span>
+            <span style={{ minWidth }} className={item.labelClassName}>
+              {newValue}&nbsp;
+            </span>
             {type == 'text' ? (
-              <CustomTooltip col={22} paragraphClassName={defaultColProps?.className} maxLength={maxLength} {...controlProps} text={value ?? '--'} />
+              <CustomTooltip
+                col={22}
+                paragraphClassName={`${item.wrapperClassName} ${defaultColProps?.className} `}
+                maxLength={maxLength}
+                {...controlProps}
+                text={value ?? '--'}
+              />
             ) : (
-              <CustomTooltip.Paragraph rows={item.rows || 2} className={defaultColProps?.className} {...controlProps} text={value ?? '--'} />
+              <CustomTooltip.Paragraph
+                rows={item.rows || 2}
+                className={`${item.wrapperClassName} ${defaultColProps?.className}`}
+                {...controlProps}
+                text={value ?? '--'}
+              />
             )}
           </div>
         </Col>

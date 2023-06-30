@@ -3,10 +3,10 @@ import { ICommonTable } from '@/typings';
 import React from 'react';
 import CommonTable from '../../CommonTableV5/CommonTableV5';
 import styles from './index.less';
-import { IProcessPageDetailRecord } from './interface';
+import { IProcessPageRecordProps } from './interface';
 const { apiPrefix } = projectConfig;
 
-const ProcessPageDetail: React.FC<IProcessPageDetailRecord> = (props) => {
+const ProcessPageDetail: React.FC<IProcessPageRecordProps> = (props) => {
   const { flowId, ...restProps } = props;
   if (!flowId) return null;
 
@@ -24,7 +24,7 @@ const ProcessPageDetail: React.FC<IProcessPageDetailRecord> = (props) => {
   };
 
   return (
-    <div className={styles.ProcessPageDetailRecord}>
+    <div className={styles.ProcessPageRecord.tsx}>
       <CommonTable {...tableParams} />
     </div>
   );

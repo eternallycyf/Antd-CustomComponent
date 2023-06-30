@@ -281,15 +281,15 @@ export const getTextRequired = (message: string, isRequired: boolean = true): ob
 };
 
 export const errorMessage = (res: any, messageDesc = '') => {
-  if (res.code == 200) {
+  if (res?.code == 200) {
     return message.success(`${messageDesc || res.message}成功`);
   }
 
-  if (res.code == 500) {
+  if (res?.code == 500) {
     return message.error(`${messageDesc || res.message}失败`);
   }
 
-  if (res.success == false) {
+  if (res?.success == false) {
     return message.error(`${messageDesc || res.message}失败`);
   }
 };
@@ -321,4 +321,38 @@ export const getEnumerateDaysBetweenDates = (startDate: dayjs.Dayjs, endDate: da
   }
   dates.push(EDate.format(formatString));
   return dates;
+};
+
+type ITransformFormParams = {
+  values: any;
+  selectKeys?: string[];
+  dateKeys?: string[];
+  monthKeys?: string[];
+  yearsKeys?: string[];
+};
+
+export const transformFormValues = ({ values, selectKeys = [], dateKeys = [], monthKeys = [], yearsKeys = [] }: ITransformFormParams) => {
+  let result: any = values;
+
+  selectKeys.forEach((key) => {
+    const itemValues = values?.[key];
+    result[key] = typeof itemValues == 'object' ? itemValues?.value || itemValues?.key : itemValues;
+  });
+
+  dateKeys.forEach((key) => {
+    const itemValues = values?.[key];
+    result[key] = typeof itemValues != undefined ? dayjs(itemValues).format('YYYYMMDD') : undefined;
+  });
+
+  monthKeys.forEach((key) => {
+    const itemValues = values?.[key];
+    result[key] = typeof itemValues != undefined ? dayjs(itemValues).format('YYYYMM') : undefined;
+  });
+
+  yearsKeys.forEach((key) => {
+    const itemValues = values?.[key];
+    result[key] = typeof itemValues != undefined ? dayjs(itemValues).format('YYYY') : undefined;
+  });
+
+  return result;
 };

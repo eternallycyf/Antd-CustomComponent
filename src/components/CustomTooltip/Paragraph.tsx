@@ -28,7 +28,7 @@ const CustomTooltipParagraph: FC<IParagraph> = (props) => {
 
   const restEllipsisProps = typeof ellipsisProps === 'object' ? ellipsisProps : {};
   return (
-    <Tooltip title={text ?? '--'} {...tooltipProps}>
+    <Tooltip title={text ?? '--'} overlayStyle={{ maxWidth: 500 }} {...tooltipProps}>
       <Paragraph
         style={{ marginBottom: 0, ...style }}
         className={`${styles.desc} ${className} ${rows === 1 ? styles['single-line'] : ''}`}

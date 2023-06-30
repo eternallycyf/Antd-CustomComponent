@@ -21,6 +21,8 @@ export interface IDescriptionsColumns<T = AnyData> {
   type: 'text' | 'tip' | 'formItem';
   span?: number;
   className?: string;
+  labelClassName?: string;
+  wrapperClassName?: string;
   visible?: boolean | ((value: any, record: T) => boolean);
 
   /**
@@ -86,7 +88,7 @@ export interface IDescriptionsProps<T = AnyData> {
   title?: React.ReactNode;
   extra?: React.ReactNode | IButtonProps[];
   tooltip?: React.ReactNode;
-  columns: IDescriptionsColumns<T>[];
+  columns?: IDescriptionsColumns<T>[];
   className?: string;
   beforeChildren?: React.ReactNode;
   afterChildren?: React.ReactNode;
@@ -94,6 +96,9 @@ export interface IDescriptionsProps<T = AnyData> {
 
   dataSource?: T;
   loading?: boolean;
+
+  labelClassName?: string;
+  wrapperClassName?: string;
 
   /**
    * @name 请求配置

@@ -22,6 +22,8 @@ const CommonDesc: React.ForwardRefRenderFunction<IDescriptionsHandle, IDescripti
     extra: defaultExtra,
     rowProps,
     className,
+    labelClassName,
+    wrapperClassName,
     beforeChildren,
     afterChildren,
   } = props;
@@ -40,7 +42,7 @@ const CommonDesc: React.ForwardRefRenderFunction<IDescriptionsHandle, IDescripti
       params: defaultParams || fetchConfig?.params,
       data: defaultData || fetchConfig?.data,
     });
-    const data = _.get(response, fetchConfig?.dataPath || 'data.data');
+    const data = _.get(response, fetchConfig?.dataPath || 'data');
     if (dataHandler) return dataHandler(data);
     return data || {};
   }, fetchConfig?.depts || []);
@@ -52,14 +54,20 @@ const CommonDesc: React.ForwardRefRenderFunction<IDescriptionsHandle, IDescripti
   const currentData = dataSource != undefined ? dataSource : data;
   const currentLoading = defaultLoading != undefined ? defaultLoading : loading;
 
+  const currentColumns = (columns || [])?.map((item) => ({
+    ...item,
+    labelClassName: item.labelClassName || labelClassName,
+    wrapperClassName: item.wrapperClassName || wrapperClassName,
+  }));
+
   return (
     <Fragment>
       <Skeleton loading={currentLoading}>
         <div className={`${styles.CommonDescriptions} ${className}`}>
           {beforeChildren}
           {(title || extraContent) && <ProcessPageCard title={title} extraContent={extraContent} />}
-          <Row className={styles.CommonDescriptions} gutter={[9, 9]} justify="start" align="middle" {...rowProps}>
-            {renderDetail(columns, currentData)}
+          <Row className={styles.CommonDescriptions} gutter={[8, 8]} justify="start" align="middle" {...rowProps}>
+            {renderDetail(currentColumns, currentData)}
           </Row>
           {afterChildren}
         </div>

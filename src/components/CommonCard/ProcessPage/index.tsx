@@ -1,27 +1,18 @@
 import CompoundedComponent from './ProcessPage';
 import ProcessPageCard from './ProcessPageCard';
-import ProcessPageDesc from './ProcessPageDesc';
-import ProcessPageDetail from './ProcessPageDetail';
-import ProcessPageDetailHeader from './ProcessPageDetailHeader';
-import ProcessPageDetailRecord from './ProcessPageDetailRecord';
-import ProcessPageTable from './ProcessPageTable';
+import ProcessPageHeader from './ProcessPageHeader';
+import ProcessPageRecord from './ProcessPageRecord';
 
 type CompoundedComponent = typeof CompoundedComponent & {
   Card: typeof ProcessPageCard;
-  Desc: typeof ProcessPageDesc;
-  Table: typeof ProcessPageTable;
-  Detail: typeof ProcessPageDetail;
-  SubHeader: typeof ProcessPageDetailHeader;
-  Record: typeof ProcessPageDetailRecord;
+  SubHeader: typeof ProcessPageHeader;
+  Record: typeof ProcessPageRecord;
 };
 
 const ProcessPage = CompoundedComponent as CompoundedComponent;
 
 ProcessPage.Card = ProcessPageCard;
-ProcessPage.Desc = ProcessPageDesc;
-ProcessPage.Table = ProcessPageTable;
-ProcessPage.Detail = ProcessPageDetail;
-ProcessPage.SubHeader = ProcessPageDetailHeader;
-ProcessPage.Record = ProcessPageDetailRecord;
+ProcessPage.SubHeader = ProcessPageHeader;
+ProcessPage.Record = ProcessPageRecord;
 
 export default ProcessPage;

@@ -6,10 +6,10 @@ import { Card, Space, Badge } from 'antd';
 import React, { FC } from 'react';
 import { compose } from 'redux';
 import styles from './index.less';
-import { IProcessCard } from './interface';
+import { IProcessPageProps } from './interface';
 
-const ProcessPage: FC<IProcessCard> = (props) => {
-  const { className, history, title, extra, children, extraBtnList = [], handleHeaderOnClick, dotColor, dotText } = props;
+const ProcessPage: FC<IProcessPageProps> = (props) => {
+  const { className, title, extra, children, extraBtnList = [], handleHeaderOnClick, dotColor, dotText } = props;
 
   const handleTitleOnClick = () => {
     if (typeof handleHeaderOnClick === 'function') {
