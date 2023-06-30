@@ -7,7 +7,7 @@ import { apiPrefixMock } from '@/config';
 import { Divider } from 'antd';
 
 const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
-  const { formatTime, columns, title, ...restProps } = props;
+  const { formatTime, columns, title, formatApplyPerson, formatSubTitle, ...restProps } = props;
 
   const userInfoFormList: IDescriptionsColumns<any>[] = [
     {
@@ -15,7 +15,8 @@ const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
       type: 'text' as 'text',
       span: 24,
       className: styles.subTitle,
-      formatValue: (val, record) => `关于【${record?.realname ?? '--'}】- 【${record?.department ?? '--'}】的 ${title}`,
+      formatValue: (val, record) =>
+        formatSubTitle ? formatSubTitle(val, record) : `关于【${record?.realname ?? '--'}（${record?.department ?? '--'}）】的 ${title ?? '--'}`,
     },
     {
       type: 'formItem' as 'formItem',
@@ -23,6 +24,7 @@ const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
       key: 'realname',
       span: 6,
       className: styles.desc,
+      formatValue: (val, record) => (formatApplyPerson ? formatApplyPerson(val, record) : val ?? '--'),
     },
     {
       type: 'formItem' as 'formItem',

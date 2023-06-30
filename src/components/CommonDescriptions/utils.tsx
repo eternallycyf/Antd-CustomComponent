@@ -21,13 +21,14 @@ export const formatTime = (options: any, text: any) => {
 export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) => {
   if (list?.length === 0) return null;
   return list.map((item) => {
-    let value = item?.formatValue ? item?.formatValue(info?.[item.key], info) : info?.[item.key];
+    let value = info?.[item.key];
     const controlProps = item?.controlProps ?? {};
     if (item.isPhone) value = addSpace(String(value));
     if (item.formatPercent) value = formatPercent(value);
     if (item.formatNumber) value = formatNumber(item, value);
     if (item.formatTime) value = formatTime(item, value);
     if (item.dict) value = getDictMap(item.dict)[value];
+    if (item.formatValue) value = item?.formatValue(info?.[item.key], info);
     if (item.visible != undefined) {
       if (typeof item.visible === 'boolean' && item.visible === false) {
         return null;
@@ -82,23 +83,24 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
       let newValue: any = item?.label;
       if (item.tooltip) {
         if (typeof item.tooltip === 'string') {
-          newValue = renderTooltip(label, item.tooltip as string, ' : ');
+          newValue = renderTooltip(label, item.tooltip as string, '：');
         } else if (typeof item.tooltip === 'function') {
           // @ts-ignore
-          newValue = renderTooltip(label, item.tooltip(), ' : ');
+          newValue = renderTooltip(label, item.tooltip(), '：');
         }
       } else {
-        newValue = label + ' : ';
+        newValue = label + '：';
       }
 
       const type = item.maxLength != undefined ? 'text' : 'textarea';
-      let minWidth = 35;
+      let minWidth = 40;
+      if (typeof newValue == 'string') minWidth = newValue.length * 12;
       if (item.tooltip) minWidth += 20;
       return (
         <Col {...defaultColProps}>
-          <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
             <span style={{ minWidth }} className={item.labelClassName}>
-              {newValue}&nbsp;
+              {newValue}
             </span>
             {type == 'text' ? (
               <CustomTooltip

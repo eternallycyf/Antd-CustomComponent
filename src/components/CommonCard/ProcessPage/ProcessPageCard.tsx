@@ -11,7 +11,7 @@ const ProcessPageCard: React.FC<IProcessPageCardProps> = (props) => {
     <div className={styles.ProcessPageCard}>
       {(title || extraContent) && <SectionTitle title={title} extraContent={extraContent} />}
       {descList != undefined && (
-        <div style={{ marginTop: 16 }}>
+        <div style={{ marginTop: 8, marginBottom: 8 }}>
           <Space size={30}>
             {(descList || []).map((val, index) => (
               <span key={index} className={styles.desc}>

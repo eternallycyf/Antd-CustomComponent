@@ -30,8 +30,10 @@ export interface IProcessPageCardProps {
 
 export interface IProcessPageSubHeader extends IProcessPageCardProps {}
 
-export interface IProcessPageHeaderProps<T = any> extends IDescriptionsProps<T> {
-  formatTime?: (val: any, record: keyof T) => string;
+export interface IProcessPageHeaderProps<T = Record<string, unknown>> extends IDescriptionsProps<T> {
+  formatTime?: (val: any, record: T) => string;
+  formatSubTitle?: (val: any, record: T) => string;
+  formatApplyPerson?: (val: any, record: T) => string;
   title?: string;
 }
 
