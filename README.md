@@ -1,6 +1,6 @@
 ## TODO
 
-- toggle to vite
+- toggle to next
   - ~~登录页~~
   - ~~tailwind~~
   - ~~权限流程~~
