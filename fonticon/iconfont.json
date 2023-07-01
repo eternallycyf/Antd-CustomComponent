@@ -1,0 +1,58 @@
+{
+  "id": "3226899",
+  "name": "no name",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "111",
+  "glyphs": [
+    {
+      "icon_id": "28071266",
+      "name": "菜单-驾驶舱",
+      "font_class": "caidan-jiashicang",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "28071267",
+      "name": "菜单-营销中心",
+      "font_class": "caidan-yingxiaozhongxin",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "28071268",
+      "name": "菜单-订单中心",
+      "font_class": "caidan-dingdanzhongxin1",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "28071269",
+      "name": "菜单-系统管理",
+      "font_class": "caidan-xitongguanli",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "28071270",
+      "name": "菜单-站点管理",
+      "font_class": "caidan-zhandianguanli",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "28071271",
+      "name": "菜单-设备管理",
+      "font_class": "caidan-shebeiguanli",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "28071182",
+      "name": "菜单-订单中心",
+      "font_class": "caidan-dingdanzhongxin",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    }
+  ]
+}
