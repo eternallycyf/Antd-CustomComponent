@@ -194,10 +194,14 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
     const isMultiple = mode === 'multiple' || controlProps?.mode === 'multiple';
     let newValue = [];
     if (isMultiple) {
-      const value = form.getFieldValue(name);
-      newValue = value.filter((item: any) => item.label || item.text !== itemValue);
+      let value = form.getFieldValue(name);
+      newValue = value
+        .filter((item: any) => (item.label || item.text) !== itemValue)
+        .map((item: any) => ({ ...item, label: item.label || item.text }));
     }
-    form.setFieldsValue({ [name]: isMultiple ? newValue : undefined });
+    form.setFieldsValue({
+      [name]: isMultiple ? newValue : undefined,
+    });
     handleTagList(form.getFieldsValue());
   };
 

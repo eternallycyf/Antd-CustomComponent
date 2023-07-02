@@ -72,7 +72,6 @@ export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType 
       allowClear: true,
       controlProps: {
         mode: 'multiple' as any,
-        labelInValue: true,
       },
     },
     {

@@ -152,26 +152,13 @@ class Activity extends BaseComponent<IProps, IState> {
             const extraParams = this.tableRef.current?.state.extraParams;
             this.setState({ groupValue }, () => this.handleDynamicParam({ ...extraParams, groupValue: e as any }));
           },
-          groupDict: [
-            {
-              name: '全部',
-              value: '',
-            },
-            {
-              name: '满折',
-              value: '1',
-            },
-            {
-              name: '满减',
-              value: '2',
-            },
-          ],
+          groupDict: ACTIVE_TYPE as any,
         },
         {
           buttonType: 'custom',
           text: (
             <Form.Item style={{ marginBottom: 0, width: 200 }}>
-              <Select options={[{ label: '万元', value: '1' }]} />
+              <Select defaultValue={'1'} options={[{ label: '万元', value: '1' }]} />
             </Form.Item>
           ),
         },
@@ -208,14 +195,21 @@ class Activity extends BaseComponent<IProps, IState> {
           text: '',
           formItemProps: {
             name: 'money',
-            label: '万元',
+            label: '单位',
             type: 'select',
             dict: [
+              {
+                text: '元',
+                value: '0',
+              },
               {
                 text: '万元',
                 value: '1',
               },
             ],
+            controlProps: {
+              defaultValue: '1',
+            },
           },
         },
       ],
