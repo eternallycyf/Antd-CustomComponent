@@ -48,9 +48,9 @@ export const handleExport: IHandleExport = (title, columns = [], dataSource = []
 
 export const getCurrentFieldValue = (form: FormInstance, name: string, index: number) => {
   if (!form) return [undefined, undefined];
-  const currentValues = (form.getFieldValue(name) || [])?.[index] || {};
-  const allValues = form.getFieldValue(name) || [];
-  return [currentValues, allValues];
+  const record = (form.getFieldValue(name) || [])?.[index] || {};
+  const arr = form.getFieldValue(name) || [];
+  return [record, arr];
 };
 
 export const formatEditTableColumns = (defaultOptions: ICommonEditTableColumnsType, val: any) => {

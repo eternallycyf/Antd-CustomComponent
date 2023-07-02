@@ -32,6 +32,8 @@ interface IEditTableContext<Values = any, FormItemsValues = any> extends ICommon
  * @property {string} [status='edit'] - 编辑状态
  * @property {boolean} [showIndex=true] - 是否显示序号
  * @property {boolean} [isVirtual=false] - 是否是虚拟列表虚拟列表 必须传入 scroll.y 高度
+ * @property {boolean} [isMultiple=true] - 是否是实时保存类型 为false时 editable = true 才会生效
+ * @property {string[]} [editableKeys] - 可编辑的key
  *
  * @property {React.ReactNode | ((value: IEditTableContext) => React.ReactNode)} [beforeChildren] - 表格前面的内容
  * @property {React.ReactNode | ((value: IEditTableContext) => React.ReactNode)} [afterChildren] - 表格后面的内容
@@ -57,6 +59,8 @@ export interface ICommonEditTableProps<Values = any, Rest = Record<string, unkno
   status?: 'view' | 'edit';
   showIndex?: boolean;
   isVirtual?: boolean;
+  isMultiple?: boolean;
+  editableKeys?: string[];
 
   /**@name 其他内容配置 */
   beforeChildren?: React.ReactNode | ((value: IEditTableContext<Values, FormItemsValues>) => React.ReactNode);
@@ -132,13 +136,13 @@ type IGetColumns<Values = any, Rest = Record<string, unknown>> = (
 ) => ICommonEditTableColumnsType<Values, Rest>[];
 
 interface IRenderFnProps<Values> {
-  text: any;
   record: Values;
+  arr: Values[];
   index: number;
 }
 
 interface IVisibleFn<Values> {
-  (text: any, record: Values, index: number, status: ICommonEditTableProps['status']): boolean;
+  (record: Values, arr: Values[], index: number, status: ICommonEditTableProps['status']): boolean;
 }
 
 type IClick<Values = any> = (record: IRenderFnProps<Values>, operation: FormListOperation<Values>) => void;
@@ -158,6 +162,8 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
     status = 'edit',
     showIndex = true,
     isVirtual = false,
+    isMultiple = true,
+    editableKeys = [],
 
     beforeChildren,
     afterChildren,
@@ -212,7 +218,8 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
           const key = field.key;
           const formProps = {
             // 解除传递 formatNumber 等参数 控制台报错问题
-            ...removeExtraColumnsProps([restItem]),
+            ...removeExtraColumnsProps([restItem])?.[0],
+            editable: !!item.editable,
             name,
             type,
           };
@@ -231,18 +238,32 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
             return formatEditTableColumns(item, val);
           }
 
+          if (!item.editable && !isMultiple) {
+            return formatEditTableColumns(item, val);
+          }
+
           return (
-            <Form.Item
-              labelAlign="right"
-              label={label as string}
-              name={name}
-              key={key}
-              rules={rules || []}
-              initialValue={initialValue}
-              {...layout}
-              {...itemProps}
-            >
-              {renderFormItem(form, formProps, index)}
+            <Form.Item noStyle shouldUpdate={true}>
+              {(inLineForm) => {
+                const currentValue = inLineForm?.getFieldValue(tableFormName) || []?.[name as any];
+                if (!isMultiple && !editableKeys.includes(String(currentValue?.[index]?.key))) {
+                  return formatEditTableColumns(item, val);
+                }
+                return (
+                  <Form.Item
+                    labelAlign="right"
+                    label={label as string}
+                    name={name}
+                    key={key}
+                    rules={rules || itemProps?.rules || []}
+                    initialValue={initialValue}
+                    {...layout}
+                    {...itemProps}
+                  >
+                    {renderFormItem(form, formProps, index)}
+                  </Form.Item>
+                );
+              }}
             </Form.Item>
           );
         },
@@ -256,7 +277,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
         dataIndex: 'operation',
         render: (text: number, field: FormListFieldData, index: number) => {
           const renderProps = getCurrentFieldValue(form, tableFormName, index);
-          return renderButtonRow(itemButton, [], operation, { text: renderProps?.[0], record: renderProps?.[1], index });
+          return renderButtonRow(itemButton, [], operation, { record: renderProps?.[0], arr: renderProps?.[1], index });
         },
       });
     }
@@ -295,7 +316,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
           // FAQ: 当不是函数形式时 为了兼容tableBtn的visible 所以取函数形式
           visible: () => {
             if (item.visible == undefined) return true;
-            if (typeof item.visible === 'function') return item.visible(renderProps?.[0], renderProps?.[1], renderProps?.[2], status);
+            if (typeof item.visible === 'function') return item.visible(renderProps?.record, renderProps?.arr || [], renderProps?.index!, status);
             return item.visible;
           },
         };
