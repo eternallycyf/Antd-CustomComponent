@@ -28,17 +28,23 @@ const CustomTooltipParagraph: FC<IParagraph> = (props) => {
 
   const restEllipsisProps = typeof ellipsisProps === 'object' ? ellipsisProps : {};
   return (
-    <Tooltip title={text ?? '--'} overlayStyle={{ maxWidth: 500 }} {...tooltipProps}>
-      <Paragraph
-        style={{ marginBottom: 0, ...style }}
-        className={`${styles.desc} ${className} ${rows === 1 ? styles['single-line'] : ''}`}
-        copyable={copyable}
-        ellipsis={{ rows, expandable: false, tooltip: text ?? '--', ...restEllipsisProps }}
-        {...restProps}
-      >
-        {text ?? '--'}
-      </Paragraph>
-    </Tooltip>
+    <Paragraph
+      style={{ marginBottom: 0, ...style }}
+      className={`${styles.desc} ${className} ${rows === 1 ? styles['single-line'] : ''}`}
+      copyable={copyable}
+      ellipsis={{
+        rows,
+        expandable: false,
+        tooltip: {
+          overlayStyle: { maxWidth: 500 },
+          ...tooltipProps,
+        },
+        ...restEllipsisProps,
+      }}
+      {...restProps}
+    >
+      {text ?? '--'}
+    </Paragraph>
   );
 };
 
