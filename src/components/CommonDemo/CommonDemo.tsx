@@ -1,30 +1,16 @@
-import request from '@/utils/request';
-import _ from 'lodash';
-import React, { Fragment, useEffect, useImperativeHandle } from 'react';
-import { useAsyncFn } from 'react-use';
+import useFetch from '@/hook/useFetch';
+import React, { Fragment, useImperativeHandle } from 'react';
 import { ICommonDemoHandle, ICommonDemoProps } from './';
 import styles from './index.less';
 
 const CommonDemo: React.ForwardRefRenderFunction<ICommonDemoHandle, ICommonDemoProps> = (props, ref) => {
-  const { fetchConfig } = props;
+  const { fetchConfig, dataHandler } = props;
 
-  useEffect(() => {
-    fetchData();
-  }, fetchConfig?.depts || []);
+  const [{ value: data = {}, loading }, fetchData] = useFetch({ fetchConfig: fetchConfig as any, dataHandler });
 
   useImperativeHandle(ref, () => ({
     fetchData,
   }));
-
-  const [{ value: data = [], loading }, fetchData] = useAsyncFn(async (defaultParams?, defaultData?) => {
-    const response = await request(fetchConfig?.apiUrl!, {
-      method: fetchConfig?.method || 'get',
-      params: defaultParams || fetchConfig?.params,
-      data: defaultData || fetchConfig?.data,
-    });
-    const data = _.get(response, fetchConfig?.dataPath || 'data.data');
-    return data && data?.length != 0 ? data.map((item: any, index: number) => ({ ...item, index })) : [];
-  }, fetchConfig?.depts || []);
 
   return <Fragment></Fragment>;
 };
