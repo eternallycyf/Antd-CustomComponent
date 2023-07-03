@@ -23,7 +23,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
   return list.map((item) => {
     let value = info?.[item.key];
     const controlProps = item?.controlProps ?? {};
-    if (item.isPhone) value = addSpace(String(value));
+    if (item.isPhone) value = value ? addSpace(String(value)) : undefined;
     if (item.formatPercent) value = formatPercent(value);
     if (item.formatNumber) value = formatNumber(item, value);
     if (item.formatTime) value = formatTime(item, value);
