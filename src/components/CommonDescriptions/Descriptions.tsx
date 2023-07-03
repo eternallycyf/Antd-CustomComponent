@@ -1,3 +1,4 @@
+import useFetch, { useFetchProps } from '@/hook/useFetch';
 import request from '@/utils/request';
 import { renderTooltip } from '@/utils/util';
 import { Row, Skeleton } from 'antd';
@@ -27,25 +28,11 @@ const CommonDesc: React.ForwardRefRenderFunction<IDescriptionsHandle, IDescripti
     beforeChildren,
     afterChildren,
   } = props;
-
-  useEffect(() => {
-    fetchData();
-  }, fetchConfig?.depts || []);
+  const [{ value: data = {}, loading }, fetchData] = useFetch({ fetchConfig: fetchConfig as any, dataHandler });
 
   useImperativeHandle(ref, () => ({
     fetchData,
   }));
-
-  const [{ value: data = {}, loading }, fetchData] = useAsyncFn(async (defaultParams?, defaultData?) => {
-    const response = await request(fetchConfig?.apiUrl!, {
-      method: fetchConfig?.method || 'get',
-      params: defaultParams || fetchConfig?.params,
-      data: defaultData || fetchConfig?.data,
-    });
-    const data = _.get(response, fetchConfig?.dataPath || 'data');
-    if (dataHandler) return dataHandler(data);
-    return data || {};
-  }, fetchConfig?.depts || []);
 
   const title = defaultTitle ? renderTooltip(defaultTitle as string, tooltip) : undefined;
   const extraContent =

@@ -1,4 +1,5 @@
 import { IProps } from '@/components/CustomTooltip/interface';
+import { useFetchProps, useFetchState } from '@/hook/useFetch';
 import { IButtonProps, IColumnsType } from '@/typings';
 import { RowProps } from 'antd';
 import React from 'react';
@@ -70,7 +71,7 @@ export interface IDescriptionsColumns<T = AnyData> {
  * await DescRef.current?.fetchData({ kw: 1 }, { num: 2 });
  */
 export type IDescriptionsHandle<T = AnyData> = {
-  fetchData: (defaultParams?: any, defaultData?: any) => Promise<T[]>;
+  fetchData: useFetchState<T>['1'];
 };
 
 /**
@@ -84,7 +85,7 @@ export type IDescriptionsHandle<T = AnyData> = {
  * @property {boolean} [loading] - 自定义加载状态
  * @property {IDescriptionsProps['fetchConfig']} fetchConfig - 请求配置
  */
-export interface IDescriptionsProps<T = AnyData> {
+export interface IDescriptionsProps<T = AnyData> extends useFetchProps<T> {
   title?: React.ReactNode;
   extra?: React.ReactNode | IButtonProps[];
   tooltip?: React.ReactNode;
@@ -92,33 +93,12 @@ export interface IDescriptionsProps<T = AnyData> {
   className?: string;
   beforeChildren?: React.ReactNode;
   afterChildren?: React.ReactNode;
-  dataHandler?: (data: T) => T;
 
   dataSource?: T;
   loading?: boolean;
 
   labelClassName?: string;
   wrapperClassName?: string;
-
-  /**
-   * @name 请求配置
-   * @property {string} apiUrl - 请求地址
-   * @property {any} [params] - 请求参数
-   * @property {'get' | 'post'} [method='get'] - 请求方法
-   * @property {string} [dataPath] - 数据路径
-   * @property {ReadonlyArray<unknown>} [depts=[]] - 依赖改变时重新请求
-   */
-  fetchConfig?: {
-    apiUrl: string;
-    params?: any;
-    data?: any;
-    method?: 'get' | 'post';
-    dataPath: string;
-    /**
-     * @name 依赖改变时重新请求
-     */
-    depts?: ReadonlyArray<unknown>;
-  };
 
   rowProps?: RowProps;
 }

@@ -1,3 +1,4 @@
+import { useFetchProps, useFetchState } from '@/hook/useFetch';
 import { CardProps, ListProps, PaginationProps } from 'antd';
 import React from 'react';
 import CommonCardList from './CardList';
@@ -10,7 +11,7 @@ import CommonCardList from './CardList';
  * await CardRef.current?.fetchData({ kw: 1 }, { num: 2 });
  */
 export type ICardListHandle<T = Record<string, any>> = {
-  fetchData: (defaultParams?: any, defaultData?: any) => Promise<T[]>;
+  fetchData: useFetchState<T>['1'];
 };
 
 /**
@@ -30,7 +31,7 @@ export type ICardListHandle<T = Record<string, any>> = {
  * @property {ListProps<T>} [listProps] - 列表的属性
  * @property {PaginationProps} [paginationProps] - 分页的属性
  */
-export interface ICardListProps<T = Record<string, any>> {
+export interface ICardListProps<T = Record<string, any>> extends useFetchProps<T> {
   title?: string;
   extra?: React.ReactNode;
   /**
@@ -41,26 +42,6 @@ export interface ICardListProps<T = Record<string, any>> {
   column?: number;
   actions?: CardProps['actions'];
   renderItem?: ListProps<T>['renderItem'];
-
-  /**
-   * @name 请求配置
-   * @property {string} apiUrl - 请求地址
-   * @property {any} [params] - 请求参数
-   * @property {'get' | 'post'} [method='get'] - 请求方法
-   * @property {string} [dataPath] - 数据路径
-   * @property {ReadonlyArray<unknown>} [depts=[]] - 依赖改变时重新请求
-   */
-  fetchConfig?: {
-    apiUrl: string;
-    params?: any;
-    data?: any;
-    method?: 'get' | 'post';
-    dataPath: string;
-    /**
-     * @name 依赖改变时重新请求
-     */
-    depts?: ReadonlyArray<unknown>;
-  };
 
   cardProps?: CardProps;
   listProps?: ListProps<T>;
