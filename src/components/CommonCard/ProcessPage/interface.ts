@@ -24,6 +24,7 @@ export interface IProcessPageCardProps {
   title?: React.ReactNode;
   children?: React.ReactNode;
   extraContent?: React.ReactNode;
+  style?: React.CSSProperties;
 
   descList?: string[];
 }

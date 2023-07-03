@@ -55,6 +55,7 @@ const FileUpload: React.FC<IFileUploadProps> = (props) => {
     required: attachment?.isRequired,
     wrapperCol: { style: { textAlign: 'right' as 'right' } },
     colon: attachment?.extra ? true : false,
+    style: { marginBottom: 0, ...headerItemProps?.style },
     ...headerItemProps,
   };
 
@@ -77,6 +78,7 @@ const FileUpload: React.FC<IFileUploadProps> = (props) => {
       handleFileChange(params, setFileList, replaceIndex, fileKeys);
     },
     style: {
+      marginBottom: 0,
       width: maxCount && (fileList || [])?.length >= maxCount ? 0 : '100%',
     },
   };

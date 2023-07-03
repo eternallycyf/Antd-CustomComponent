@@ -5,10 +5,10 @@ import styles from './index.less';
 import { IProcessPageCardProps } from './interface';
 
 const ProcessPageCard: React.FC<IProcessPageCardProps> = (props) => {
-  const { title, children, extraContent, descList } = props;
+  const { title, children, extraContent, descList, style } = props;
 
   return (
-    <div className={styles.ProcessPageCard}>
+    <div className={styles.ProcessPageCard} style={style}>
       {(title || extraContent) && <SectionTitle title={title} extraContent={extraContent} />}
       {descList != undefined && (
         <div style={{ marginTop: 8, marginBottom: 8 }}>
