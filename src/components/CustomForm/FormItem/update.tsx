@@ -4,6 +4,7 @@ import { IControlProps } from '@/typings';
 import { getFieldComp } from '@/core/helpers';
 import { ISearchProps } from '@/components/CommonSearch/search';
 import { getUUID } from '@/utils/random';
+import { renderFormItem } from '@/utils/util';
 
 // 适用于不传form的
 //  [
@@ -57,23 +58,6 @@ export interface IUpdateProps {
   shouldUpdate: (prevValues: any, nextValues: any) => boolean;
   next?: (values: any, form: Omit<FormInstance<any>, 'scrollToField' | 'getFieldInstance'>) => false | React.ReactNode | DeepPartial<ISearchProps>;
 }
-
-const renderFormItem = (item: any, index?: number) => {
-  const { name, type, initialValue, formFieldProps, controlProps, ...otherProps } = item;
-  const myControlProps = {
-    ...controlProps,
-    size: (controlProps && controlProps.size) || 'small',
-  };
-  const fieldProps = {
-    name,
-    type,
-    initialValue,
-    formFieldProps,
-    controlProps: myControlProps,
-    ...otherProps,
-  };
-  return getFieldComp(fieldProps);
-};
 
 const Update: React.FC<IUpdateProps> = React.forwardRef((props, ref) => {
   const { next, shouldUpdate = true, ...controlProps } = props;

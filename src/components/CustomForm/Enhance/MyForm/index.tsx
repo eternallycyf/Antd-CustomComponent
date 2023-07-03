@@ -1,10 +1,10 @@
 import { CustomTooltip } from '@/components';
+import { renderFormItem } from '@/utils/util';
 import { Button, Col, Form, Row, Space } from 'antd';
 import _ from 'lodash';
 import { forwardRef, useImperativeHandle } from 'react';
 import styles from './index.less';
 import { IHandle, IMyFormProps } from './interface';
-import { renderFormItem } from './utils';
 
 const MyForm: React.ForwardRefRenderFunction<IHandle, IMyFormProps> = (props) => {
   const [form] = Form.useForm();

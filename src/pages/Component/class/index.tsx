@@ -24,6 +24,7 @@ import dayjs from 'dayjs';
 import { RouteComponentProps } from '@umijs/renderer-react';
 import { DeleteOutlined, EditOutlined, ExportOutlined, FileAddOutlined, ImportOutlined, SyncOutlined } from '@ant-design/icons';
 import { Page } from '@/components/CommonCard';
+import { renderFormItem } from '@/utils/util';
 const { apiPrefixMock } = projectConfig;
 
 type ConnectProps = ConnectState['login'];
@@ -94,25 +95,6 @@ class Activity extends BaseComponent<IProps, IState> {
       return record;
     }
     return { values };
-  };
-
-  renderFormItem = (item: any, index?: number) => {
-    const form = this.OtherFormRef.current;
-    const { name, type, initialValue, formFieldProps, controlProps, ...otherProps } = item;
-    const myControlProps = {
-      ...controlProps,
-      size: (controlProps && controlProps.size) || 'small',
-    };
-    const fieldProps = {
-      form,
-      name,
-      type,
-      initialValue,
-      formFieldProps,
-      controlProps: myControlProps,
-      ...otherProps,
-    };
-    return getFieldComp(fieldProps);
   };
 
   handleOnReset = (fn: any) => {
@@ -341,7 +323,7 @@ class Activity extends BaseComponent<IProps, IState> {
                       {...item.layout}
                       {...item.itemProps}
                     >
-                      {this.renderFormItem(item)}
+                      {renderFormItem(item, index)}
                     </Form.Item>
                   </Col>
                 ))}

@@ -23,6 +23,7 @@ import { compose } from 'redux';
 import _ from 'lodash';
 import { withRouter } from '@/core/Enhance/withRouter';
 import { Page } from '@/components/CommonCard';
+import { renderFormItem } from '@/utils/util';
 
 interface IProps {
   IndexPageRef: Ref<IHandle>;
@@ -70,25 +71,6 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) 
       return record;
     }
     return { values };
-  };
-
-  const renderFormItem = (item: any, index?: number) => {
-    const form = OtherFormRef;
-    const { name, type, initialValue, formFieldProps, controlProps, ...otherProps } = item;
-    const myControlProps = {
-      ...controlProps,
-      size: (controlProps && controlProps.size) || 'small',
-    };
-    const fieldProps = {
-      form,
-      name,
-      type,
-      initialValue,
-      formFieldProps,
-      controlProps: myControlProps,
-      ...otherProps,
-    };
-    return getFieldComp(fieldProps);
   };
 
   const tableParams: ICommonTable<any> = {

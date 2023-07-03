@@ -9,7 +9,8 @@ import React, { Key, useImperativeHandle } from 'react';
 import TableBtn from '../CommonTableV5/components/widgets/TableBtn';
 import { Table } from './';
 import styles from './index.less';
-import { formatEditTableColumns, getCurrentFieldValue, handleExport, IHandleExport, removeExtraColumnsProps, renderFormItem } from './utils';
+import { formatEditTableColumns, getCurrentFieldValue, handleExport, IHandleExport, removeExtraColumnsProps } from './utils';
+import { renderFormItem } from '@/utils/util';
 
 // #region
 /**
@@ -260,7 +261,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
                     {...layout}
                     {...itemProps}
                   >
-                    {renderFormItem(form, formProps, index)}
+                    {renderFormItem(formProps, index)}
                   </Form.Item>
                 );
               }}

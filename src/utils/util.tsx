@@ -1,7 +1,8 @@
 import Ellipsis from '@/core/base/Ellipsis';
+import { getFieldComp } from '@/core/helpers';
 import { exportFile } from '@/services/global';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { message, Tooltip } from 'antd';
+import { FormInstance, message, Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 
@@ -355,4 +356,24 @@ export const transformFormValues = ({ values, selectKeys = [], dateKeys = [], mo
   });
 
   return result;
+};
+
+export const renderFormItem = (item: any, index?: number) => {
+  const { name, type, initialValue, formFieldProps, controlProps, ...otherProps } = item;
+  const myControlProps = {
+    ...controlProps,
+    size: (controlProps && controlProps.size) || 'small',
+  };
+  const fieldProps = {
+    name,
+    type,
+    initialValue,
+    formFieldProps,
+    controlProps: myControlProps,
+    ...otherProps,
+  };
+  if (item.children) {
+    return item.children.map((child: any, childIndex: number) => renderFormItem(child, childIndex));
+  }
+  return getFieldComp(fieldProps);
 };

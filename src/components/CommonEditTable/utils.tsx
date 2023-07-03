@@ -8,24 +8,6 @@ import { ICommonEditTableColumnsType } from './EditTable';
 
 export type IHandleExport<Values = any> = (title: string, columns: any[], dataSource: Values[]) => void;
 
-export const renderFormItem = (form: FormInstance, item: any, index?: number) => {
-  const { name, type, initialValue, formFieldProps, controlProps, ...otherProps } = item;
-  const myControlProps = {
-    ...controlProps,
-    size: (controlProps && controlProps.size) || 'small',
-  };
-  const fieldProps = {
-    form,
-    name,
-    type,
-    initialValue,
-    formFieldProps,
-    controlProps: myControlProps,
-    ...otherProps,
-  };
-  return getFieldComp(fieldProps);
-};
-
 export const handleExport: IHandleExport = (title, columns = [], dataSource = []) => {
   const getItem = (item: ICommonEditTableColumnsType) => (columns || [])?.find((ele) => ele?.dataIndex === item?.dataIndex);
   downloadExcel({
