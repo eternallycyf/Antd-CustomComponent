@@ -24,6 +24,7 @@ export interface IDescriptionsColumns<T = AnyData> {
   className?: string;
   labelClassName?: string;
   wrapperClassName?: string;
+  acpCode?: string;
   visible?: boolean | ((value: any, record: T) => boolean);
 
   /**
