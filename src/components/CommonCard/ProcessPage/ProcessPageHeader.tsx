@@ -7,7 +7,7 @@ import { apiPrefixMock } from '@/config';
 import { Divider } from 'antd';
 
 const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
-  const { formatTime, columns, title, formatApplyPerson, formatSubTitle, ...restProps } = props;
+  const { formatTime, columns, title, formatApplyPerson, formatSubTitle, hasDivider = false, fetchConfig, ...restProps } = props;
 
   const userInfoFormList: IDescriptionsColumns<any>[] = [
     {
@@ -59,10 +59,11 @@ const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
         fetchConfig={{
           apiUrl: `${apiPrefixMock}/ims/flow/field/login/user`,
           dataPath: 'data',
+          ...fetchConfig,
         }}
         {...restProps}
       />
-      <Divider />
+      {hasDivider && <Divider />}
     </div>
   );
 };

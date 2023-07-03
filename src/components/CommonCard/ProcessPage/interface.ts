@@ -35,6 +35,7 @@ export interface IProcessPageHeaderProps<T = Record<string, unknown>> extends ID
   formatSubTitle?: (val: any, record: T) => string;
   formatApplyPerson?: (val: any, record: T) => string;
   title?: string;
+  hasDivider?: boolean;
 }
 
 export interface IProcessPageRecordProps extends IColumnsType<any> {

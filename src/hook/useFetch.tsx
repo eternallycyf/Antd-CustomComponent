@@ -18,7 +18,7 @@ export interface useFetchProps<T = any> {
    * @property {string} [dataPath='data.data'] - 数据路径
    * @property {ReadonlyArray<unknown>} [depts=[]] - 依赖改变时重新请求
    */
-  fetchConfig: {
+  fetchConfig?: {
     apiUrl?: string;
     method?: 'get' | 'post';
     params?: any;
