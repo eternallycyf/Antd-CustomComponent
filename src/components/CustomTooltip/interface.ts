@@ -70,6 +70,10 @@ interface RowProps {
    */
   customShowBtn?: () => boolean;
   /**
+   * @name 更多的长度
+   */
+  customMoreLength?: number;
+  /**
    * @name 是否是标签
    * @property {boolean} [isTag=false]
    */

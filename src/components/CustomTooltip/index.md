@@ -97,6 +97,23 @@ const tagS = arr.map((_, i) => (
     isTag: true,
   }}
 />
+
+// 更多
+const rows = 2;
+const arr = Array.from({ length: 3 }, (v, i) => <div key={i}>string</div>);
+return (
+  <CustomTooltip
+    text={arr}
+    row={{
+      rows,
+      isTag: true,
+      btnStyle: 'btn',
+      expend: true,
+      customMoreLength: arr.length - 2,
+      EllipsisSymbol: true,
+      customShowBtn: () => arr?.length > 2,
+    }}
+  />
 ```
 
 ### 3.CustomTooltip.Paragraph 多行文字溢出显示 ...及 tooltip
@@ -133,7 +150,29 @@ const tagS = arr.map((_, i) => (
 - after: 'xxx...xxx.png';
 
 ```tsx | pure
-<CustomTooltip.FileName name={'xxx.png'} prefixLength={5} />
+// 展示文件名+两个图标
+<CustomTooltip.FileName
+  name={'1.png'}
+  fileId={record?.url}
+  hasFileName={false}
+  hasDownLoad={false}
+  isIcon={false}
+  perviewLinkType='S3'
+/>
+<CustomTooltip.FileName
+  name={'1.png'}
+  hasFileName={false}
+  hasPreview={false}
+  isIcon={false}
+  fileId={record?.url}
+  perviewLinkType='S3'
+/>
+
+// 文件名+点击预览
+<CustomTooltip.FileName
+  name={'1.png'}
+  fileId={record?.fileId}
+/>
 ```
 
 ### FAQ

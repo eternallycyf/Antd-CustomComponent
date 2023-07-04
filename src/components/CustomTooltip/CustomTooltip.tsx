@@ -128,6 +128,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
             </>
           ) : (
             <span className={cx['expand-btn']}>
+              {row?.customMoreLength ? `更多 ${row?.customMoreLength} ` : ''}
               <UpOutlined className={cx['apply-shake']} />
             </span>
           )}
@@ -150,7 +151,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
             </>
           ) : (
             <span className={cx['expand-btn']}>
-              <DownOutlined className={cx['apply-shake']} />
+              {row?.customMoreLength && '收起'} <DownOutlined className={cx['apply-shake']} />
             </span>
           )}
         </a>
@@ -166,17 +167,20 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
   const customRows = isTextToObject ? (typeof row.rows === 'number' && row.isTag ? row.rows + 1 : row.rows) : row.rows;
 
   // 处理 初始化的闪烁问题 设置最大高度 为一行的高度, 溢出隐藏 当点击时恢复
-  const customRowsColStyles = {
-    maxHeight: overflowStatus === 'hidden' ? row.lineMaxHeight : '100%',
-    overflow: overflowStatus,
-    paddingRight: row.isRight ? 46 : 0,
-  };
+  const customRowsColStyles =
+    row?.customMoreLength == undefined
+      ? {
+          maxHeight: overflowStatus === 'hidden' ? row.lineMaxHeight : '100%',
+          overflow: overflowStatus,
+          paddingRight: row.isRight ? 46 : 0,
+        }
+      : { paddingRight: row.isRight ? 46 : 0 };
   const customRowEllipsisParagraphProps = isExpand
     ? { ...customRowBaseProps }
     : {
         ...customRowBaseProps,
         ellipsis: {
-          rows: customRows as number,
+          rows: row?.customMoreLength && row?.btnStyle == 'btn' ? (customRows as number) + 1 : (customRows as number),
           expandable: hasExpend ? isExpand : false,
           suffix: hasExpend ? (isExpand ? '' : (getToggleButton(true) as any as string)) : '',
           tooltip: isTextToObject ? '' : text,
