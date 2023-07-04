@@ -1,3 +1,4 @@
+import { CustomTooltip } from '@/components';
 import Ellipsis from '@/core/base/Ellipsis';
 import { getFieldComp } from '@/core/helpers';
 import { exportFile } from '@/services/global';
@@ -46,7 +47,7 @@ export const renderTooltip = (title: string = '', tooltip: React.ReactNode = '',
 export const formatNumber = (options: any, value: number) => {
   let fractionDigits = typeof options.formatNumber === 'number' ? options.formatNumber : 2;
   let number = value;
-  if (typeof options.formatNumber == 'function') {
+  if (typeof options.formatNumber === 'function') {
     const customOptions = options.formatNumber(Number(value));
     if (Array.isArray(customOptions)) {
       number = customOptions?.[0];
@@ -127,6 +128,29 @@ export function formatColumn(columns: any[]) {
 
         if (Number.isInteger(item.formatNumber) || item.formatNumber) {
           item.render = (text: number) => formatNumber(item, text);
+        }
+
+        if (item?.renderExpandMore && typeof item?.renderExpandMore === 'function') {
+          item.render = (text: any, record: any, index: number) => {
+            const result = item?.renderExpandMore(text, record, index);
+            if (result == false) return '--';
+            const [arr, rows] = result;
+            if (!arr?.length) return '--';
+            return (
+              <CustomTooltip
+                text={arr}
+                row={{
+                  rows,
+                  isTag: true,
+                  btnStyle: 'btn',
+                  expend: true,
+                  customMoreLength: arr?.length - rows,
+                  EllipsisSymbol: true,
+                  customShowBtn: () => arr?.length > rows,
+                }}
+              />
+            );
+          };
         }
 
         if (item.ellipsis) {
@@ -337,22 +361,22 @@ export const transformFormValues = ({ values, selectKeys = [], dateKeys = [], mo
 
   selectKeys.forEach((key) => {
     const itemValues = values?.[key];
-    result[key] = typeof itemValues == 'object' ? itemValues?.value || itemValues?.key : itemValues;
+    result[key] = typeof itemValues === 'object' ? itemValues?.value || itemValues?.key : itemValues;
   });
 
   dateKeys.forEach((key) => {
     const itemValues = values?.[key];
-    result[key] = typeof itemValues != undefined ? dayjs(itemValues).format('YYYYMMDD') : undefined;
+    result[key] = typeof itemValues !== undefined ? dayjs(itemValues).format('YYYYMMDD') : undefined;
   });
 
   monthKeys.forEach((key) => {
     const itemValues = values?.[key];
-    result[key] = typeof itemValues != undefined ? dayjs(itemValues).format('YYYYMM') : undefined;
+    result[key] = typeof itemValues !== undefined ? dayjs(itemValues).format('YYYYMM') : undefined;
   });
 
   yearsKeys.forEach((key) => {
     const itemValues = values?.[key];
-    result[key] = typeof itemValues != undefined ? dayjs(itemValues).format('YYYY') : undefined;
+    result[key] = typeof itemValues !== undefined ? dayjs(itemValues).format('YYYY') : undefined;
   });
 
   return result;

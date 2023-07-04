@@ -78,24 +78,8 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<IR
       title: '展开更多',
       width: 112,
       align: 'center' as 'center',
-      render: (_, __, index) => {
-        if (index < 3) return '--';
-        const rows = 2;
-        const arr = Array.from({ length: 10 }, (v, i) => <div key={i}>string</div>);
-        return (
-          <CustomTooltip
-            text={arr}
-            row={{
-              rows,
-              isTag: true,
-              btnStyle: 'btn',
-              expend: true,
-              customMoreLength: arr.length - 2,
-              EllipsisSymbol: true,
-              customShowBtn: () => arr?.length > 2,
-            }}
-          />
-        );
+      renderExpandMore: () => {
+        return [Array.from({ length: 3 }, (v, i) => <div key={i}>string</div>), 2];
       },
     },
   ];
