@@ -1,3 +1,4 @@
+import { CustomTooltip } from '@/components';
 import { IColumnsType } from '@/typings';
 import Activity from '../index';
 import { ACTIVE_TYPE } from './constant';
@@ -9,6 +10,7 @@ export interface IRecord {
   activityStartTime: string;
   activityPrice: number;
   activityType: string;
+  expandMore: string;
 }
 
 export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<IRecord> => {
@@ -18,7 +20,7 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<IR
       title: '活动名称',
       tooltip: () => 'tooltip',
       formatNumber: true,
-      width: 300,
+      width: 200,
       sorter: true,
       align: 'center' as 'center',
       fixed: 'left' as 'left',
@@ -70,6 +72,31 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<IR
       //   order: sorter,
       //   sort: 'xxxxxx',
       // }),
+    },
+    {
+      dataIndex: 'expandMore',
+      title: '展开更多',
+      width: 112,
+      align: 'center' as 'center',
+      render: (_, __, index) => {
+        if (index < 3) return '--';
+        const rows = 2;
+        const arr = Array.from({ length: 10 }, (v, i) => <div key={i}>string</div>);
+        return (
+          <CustomTooltip
+            text={arr}
+            row={{
+              rows,
+              isTag: true,
+              btnStyle: 'btn',
+              expend: true,
+              customMoreLength: arr.length - 2,
+              EllipsisSymbol: true,
+              customShowBtn: () => arr?.length > 2,
+            }}
+          />
+        );
+      },
     },
   ];
 };

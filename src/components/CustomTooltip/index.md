@@ -113,7 +113,7 @@ return (
       EllipsisSymbol: true,
       customShowBtn: () => arr?.length > 2,
     }}
-  />
+  />)
 ```
 
 ### 3.CustomTooltip.Paragraph 多行文字溢出显示 ...及 tooltip
