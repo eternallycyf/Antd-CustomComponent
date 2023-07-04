@@ -61,7 +61,7 @@ export type Column<TRecord = AnyData> =
        * @example <caption>返回空时显示--</caption>
        * renderExpandMore: () => false
        */
-      renderExpandMore?: (text: any, record: keyof TRecord, index: number) => [React.ReactNode, number] | false;
+      renderExpandMore?: (text: any, record: keyof TRecord, index: number) => [React.ReactNode, number] | [React.ReactNode] | false;
       /**
        * @property {keyof TRecord | string} [dataIndex = '']
        */

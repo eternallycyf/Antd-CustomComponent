@@ -79,7 +79,7 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<IR
       width: 112,
       align: 'center' as 'center',
       renderExpandMore: () => {
-        return [Array.from({ length: 3 }, (v, i) => <div key={i}>string</div>), 2];
+        return [Array.from({ length: 3 }, (v, i) => <div key={i}>string</div>)];
       },
     },
   ];
