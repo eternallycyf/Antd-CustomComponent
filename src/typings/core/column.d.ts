@@ -53,6 +53,7 @@ export type Column<TRecord = AnyData> =
           };
       /**
        * @name 更多展开收起 - 仅在ellipsis为false时生效 && 节点必须是单行(块级元素)的 如果是多行不支持展示更多数量
+       * @returns {[React.ReactNode,number]|false} [节点,最大行数] 最大行数默认为2 传入false时不显示
        * @example <caption>示例</caption>
        * renderExpandMore: () => {
        *  return [Array.from({ length: 3 }, (v, i) => <div key={i}>string</div>),2]
@@ -60,7 +61,7 @@ export type Column<TRecord = AnyData> =
        * @example <caption>返回空时显示--</caption>
        * renderExpandMore: () => false
        */
-      renderExpandMore?: (text: any, record: keyof TRecord, index: number) => React.ReactNode | false;
+      renderExpandMore?: (text: any, record: keyof TRecord, index: number) => [React.ReactNode, number] | false;
       /**
        * @property {keyof TRecord | string} [dataIndex = '']
        */

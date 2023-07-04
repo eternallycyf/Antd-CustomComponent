@@ -134,7 +134,7 @@ export function formatColumn(columns: any[]) {
           item.render = (text: any, record: any, index: number) => {
             const result = item?.renderExpandMore(text, record, index);
             if (result == false) return '--';
-            const [arr, rows] = result;
+            const [arr, rows = 2] = result;
             if (!arr?.length) return '--';
             return (
               <CustomTooltip
