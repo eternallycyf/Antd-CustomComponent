@@ -32,6 +32,7 @@ export interface IProcessPageCardProps {
 export interface IProcessPageSubHeader extends IProcessPageCardProps {}
 
 export interface IProcessPageHeaderProps<T = Record<string, unknown>> extends IDescriptionsProps<T> {
+  businessId: string | number;
   formatTime?: (val: any, record: T) => string;
   formatSubTitle?: (val: any, record: T) => string;
   formatApplyPerson?: (val: any, record: T) => string;

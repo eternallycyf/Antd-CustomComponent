@@ -1,3 +1,4 @@
+import useFetch from '@/hook/useFetch';
 import request from '@/utils/request';
 import { Card, Empty, List } from 'antd';
 import _ from 'lodash';
@@ -15,29 +16,18 @@ const CardList: React.ForwardRefRenderFunction<ICardListHandle, ICardListProps> 
     rowKey = 'index',
     renderItem,
 
+    dataHandler,
     fetchConfig,
     cardProps,
     listProps,
     paginationProps,
   } = props;
 
-  useEffect(() => {
-    fetchData();
-  }, fetchConfig?.depts || []);
+  const [{ value: data, loading }, fetchData] = useFetch<any>({ fetchConfig, dataHandler });
 
   useImperativeHandle(ref, () => ({
     fetchData,
   }));
-
-  const [{ value: data = [], loading }, fetchData] = useAsyncFn(async (defaultParams?, defaultData?) => {
-    const response = await request(fetchConfig?.apiUrl!, {
-      method: fetchConfig?.method || 'get',
-      params: defaultParams || fetchConfig?.params,
-      data: defaultData || fetchConfig?.data,
-    });
-    const data = _.get(response, fetchConfig?.dataPath || 'data.data');
-    return data && data?.length != 0 ? data.map((item: any, index: number) => ({ ...item, index })) : [];
-  }, fetchConfig?.depts || []);
 
   return (
     <Fragment>

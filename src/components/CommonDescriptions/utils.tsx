@@ -71,7 +71,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
             <div className={className}>
               <CustomTooltip
                 style={{ padding: 0 }}
-                col={23}
+                col={24}
                 paragraphClassName={className}
                 maxLength={9999 || item?.maxLength}
                 {...controlProps}
@@ -98,6 +98,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
 
         const type = item.maxLength != undefined ? 'text' : 'textarea';
         let minWidth = 40;
+        // TODO: ASCLL码 的字符串*4
         if (typeof newValue == 'string') minWidth = newValue.length * 12;
         if (item.tooltip) minWidth += 20;
         return (

@@ -20,8 +20,8 @@ const ProcessPage: FC<IProcessPageProps> = (props) => {
   const renderHeaderLeft = () => {
     return (
       <div className={styles.headerLeft}>
-        <Space size={12} onClick={handleTitleOnClick} style={{ cursor: 'pointer' }}>
-          <LeftOutlined style={{ fontSize: 20, marginTop: 2 }} />
+        <Space size={12}>
+          <LeftOutlined onClick={handleTitleOnClick} style={{ cursor: 'pointer', fontSize: 20, marginTop: 2 }} />
           <span className={styles.title}>{title ?? '--'}</span>
           {dotText && <Badge color={dotColor} text={<span style={{ fontSize: 14, color: dotColor }}>{dotText}</span>} />}
         </Space>
@@ -43,17 +43,17 @@ const ProcessPage: FC<IProcessPageProps> = (props) => {
 
   const headerStyle: React.CSSProperties = {
     background: '#fff',
-    padding: 17,
+    padding: '10px 20px',
   };
 
   const bodyStyle: React.CSSProperties = {
-    marginTop: 12,
+    marginTop: 4,
     overflowY: 'auto',
     height: '81vh',
   };
 
   return (
-    <div style={{ background: '#EFF1F4', padding: '0 12px' }}>
+    <div style={{ background: '#EFF1F4', padding: '12px' }}>
       <Card
         bordered={false}
         bodyStyle={bodyStyle}

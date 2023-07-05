@@ -7,7 +7,7 @@ import { apiPrefixMock } from '@/config';
 import { Divider } from 'antd';
 
 const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
-  const { formatTime, columns, title, formatApplyPerson, formatSubTitle, hasDivider = false, fetchConfig, ...restProps } = props;
+  const { formatTime, columns, title, formatApplyPerson, formatSubTitle, hasDivider = false, fetchConfig, businessId, ...restProps } = props;
 
   const userInfoFormList: IDescriptionsColumns<any>[] = [
     {
@@ -16,7 +16,7 @@ const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
       span: 24,
       className: styles.subTitle,
       formatValue: (val, record) =>
-        formatSubTitle ? formatSubTitle(val, record) : `关于【${record?.realname ?? '--'}（${record?.department ?? '--'}）】的 ${title ?? '--'}`,
+        formatSubTitle ? formatSubTitle(val, record) : `关于【${record?.realname ?? '--'}（${record?.deptName ?? '--'}）】的 ${title ?? '--'}`,
     },
     {
       type: 'formItem' as 'formItem',
@@ -29,7 +29,7 @@ const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
     {
       type: 'formItem' as 'formItem',
       label: '申请部门',
-      key: 'department',
+      key: 'deptName',
       span: 6,
       className: styles.desc,
     },
@@ -44,7 +44,7 @@ const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
     {
       type: 'formItem' as 'formItem',
       label: '申请时间',
-      key: 'time',
+      key: 'applyTime',
       span: 6,
       formatValue: (val, record) => (formatTime ? formatTime(val, record) : dayjs().format('YYYY-MM-DD HH:mm:ss')),
       className: styles.desc,
@@ -54,16 +54,16 @@ const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
   return (
     <div className={styles.ProcessPageHeader}>
       <CommonDescriptions
-        rowProps={{ gutter: [20, 20] }}
+        rowProps={{ gutter: [8, 8] }}
         columns={columns ? columns : userInfoFormList}
         fetchConfig={{
-          apiUrl: `${apiPrefixMock}/ims/flow/field/login/user`,
+          apiUrl: `${apiPrefixMock}/ims/main/common/applicant?businessId=${businessId ?? ''}`,
           dataPath: 'data',
           ...fetchConfig,
         }}
         {...restProps}
       />
-      {hasDivider && <Divider />}
+      {hasDivider && <Divider style={{ margin: '20px 0 0 0' }} />}
     </div>
   );
 };

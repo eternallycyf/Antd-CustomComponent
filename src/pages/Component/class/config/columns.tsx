@@ -78,7 +78,8 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<IR
       title: '展开更多',
       width: 112,
       align: 'center' as 'center',
-      renderExpandMore: () => {
+      renderExpandMore: (_, __, index) => {
+        if (index < 3) return false;
         return [Array.from({ length: 3 }, (v, i) => <div key={i}>string</div>)];
       },
     },
