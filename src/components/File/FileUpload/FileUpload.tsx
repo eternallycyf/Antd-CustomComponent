@@ -59,9 +59,7 @@ const FileUpload: React.FC<IFileUploadProps> = (props) => {
     ...headerItemProps,
   };
 
-  const uploadFormItemProps = {
-    name: attachment?.name,
-  };
+  const uploadFormItemProps = {};
   const UploadProps: UploadProps<IFileListResponse> = {
     name: 'file',
     multiple: false,

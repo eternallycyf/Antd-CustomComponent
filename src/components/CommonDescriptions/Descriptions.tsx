@@ -28,7 +28,7 @@ const CommonDesc: React.ForwardRefRenderFunction<IDescriptionsHandle, IDescripti
     beforeChildren,
     afterChildren,
   } = props;
-  const [{ value: data = {}, loading }, fetchData] = useFetch<any>({ fetchConfig, dataHandler });
+  const [{ value: data = {}, loading }, fetchData] = useFetch({ fetchConfig, dataHandler });
 
   useImperativeHandle(ref, () => ({
     fetchData,

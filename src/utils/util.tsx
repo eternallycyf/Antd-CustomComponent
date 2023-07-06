@@ -305,17 +305,23 @@ export const getTextRequired = (message: string, isRequired: boolean = true): ob
   };
 };
 
-export const errorMessage = (res: any, messageDesc = '') => {
+export const errorMessage = (res: any, messageDesc = '', errorCB: Function, successCB: Function) => {
   if (res?.code == 200) {
-    return message.success(`${messageDesc || res.message}成功`);
+    message.success(`${messageDesc || res.message}成功`);
+    successCB && successCB();
+    return;
   }
 
   if (res?.code == 500) {
-    return message.error(`${messageDesc || res.message}失败`);
+    message.error(`${messageDesc || res.message}失败`);
+    errorCB && errorCB();
+    return;
   }
 
   if (res?.success == false) {
-    return message.error(`${messageDesc || res.message}失败`);
+    message.error(`${messageDesc || res.message}失败`);
+    errorCB && errorCB();
+    return;
   }
 };
 

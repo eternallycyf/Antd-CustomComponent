@@ -58,7 +58,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
       let defaultColProps = {
         key: (item.key || getUUID()) as string,
         className: item.className ? item.className : `${styles.desc}`,
-        span: item?.span ?? 24,
+        span: item?.span ?? 20,
       };
       const maxLength = item?.maxLength ?? 40;
 
@@ -109,9 +109,9 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
           newValue = label + '：';
         }
 
-        const type = item.maxLength != undefined ? 'text' : 'textarea';
+        const type = item?.rows || item?.rows == undefined ? 'textarea' : 'text';
         let minWidth = 40;
-        if (typeof newValue == 'string') minWidth = getValueLen(newValue) * 6;
+        if (typeof newValue == 'string') minWidth = getValueLen(String(newValue)) * 6;
         if (item.tooltip) minWidth += 20;
         return (
           <Col {...defaultColProps}>
@@ -129,7 +129,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
                 />
               ) : (
                 <CustomTooltip.Paragraph
-                  rows={item.rows || 2}
+                  rows={item.rows || 1}
                   className={`${item.wrapperClassName} ${defaultColProps?.className}`}
                   {...controlProps}
                   text={value ?? '--'}

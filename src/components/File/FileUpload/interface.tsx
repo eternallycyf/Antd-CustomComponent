@@ -11,7 +11,6 @@ type ConnectProps = {
 
 export interface IAttachment {
   label?: string;
-  name: string;
   tooltip?: string;
   isRequired?: boolean;
   maxCount?: number;
