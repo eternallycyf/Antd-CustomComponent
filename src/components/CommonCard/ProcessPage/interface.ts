@@ -41,5 +41,5 @@ export interface IProcessPageHeaderProps<T = Record<string, unknown>> extends ID
 }
 
 export interface IProcessPageRecordProps extends IColumnsType<any> {
-  flowId: string | number;
+  businessId: string | number;
 }

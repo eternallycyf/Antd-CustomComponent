@@ -9,6 +9,19 @@ import styles from './index.less';
 
 export const addSpace = (str: string) => str.replace(/(\d{3})(\d{4})/g, '$1 $2 ');
 
+function getValueLen(_nameValue: string) {
+  var nameStr = _nameValue;
+  var len = 0;
+  for (var i = 0; i < nameStr.length; i++) {
+    if (nameStr.charCodeAt(i) > 255 || nameStr.charCodeAt(i) < 0) {
+      len += 2;
+    } else {
+      len++;
+    }
+  }
+  return len == undefined ? 0 : len;
+}
+
 export const formatTime = (options: any, text: any) => {
   if (_.isNil(text)) return '--';
   if (typeof options.formatTime === 'object') {
@@ -98,8 +111,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
 
         const type = item.maxLength != undefined ? 'text' : 'textarea';
         let minWidth = 40;
-        // TODO: ASCLL码 的字符串*4
-        if (typeof newValue == 'string') minWidth = newValue.length * 12;
+        if (typeof newValue == 'string') minWidth = getValueLen(newValue) * 6;
         if (item.tooltip) minWidth += 20;
         return (
           <Col {...defaultColProps}>
