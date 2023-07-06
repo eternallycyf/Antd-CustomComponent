@@ -1,4 +1,4 @@
-import { Result } from 'antd';
+import { Card, Result } from 'antd';
 import type { ErrorInfo } from 'react';
 import React from 'react';
 
@@ -19,7 +19,11 @@ class ErrorBoundary extends React.Component<{ children?: React.ReactNode }, { ha
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
-      return <Result status="error" title="Something went wrong." extra={this.state.errorInfo} />;
+      return (
+        <Card>
+          <Result status="error" title="Something went wrong." extra={this.state.errorInfo} />
+        </Card>
+      );
     }
     return this.props.children;
   }
