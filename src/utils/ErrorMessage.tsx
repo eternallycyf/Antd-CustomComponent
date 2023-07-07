@@ -54,19 +54,16 @@ export default class ErrorMessage<T = any> {
       if (code == 200 && code != -1) {
         message.success(`${name || msg}成功`);
         successCB && successCB(response);
-        return response;
       }
 
       if (code == 500 && code != -1) {
         message.error(`${name || msg}失败`);
         errorCB && errorCB(response);
-        return response;
       }
 
       if (success == false && code != -1) {
         message.error(`${name || msg}失败`);
         errorCB && errorCB(response);
-        return response;
       }
       finallyCB && finallyCB(response);
       return this.response;

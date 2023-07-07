@@ -1,4 +1,4 @@
-import CommonDescriptions, { IDescriptionsColumns } from '@/components/CommonDescriptions';
+import CommonDescriptions, { IDescriptionsColumns, IDescriptionsHandle } from '@/components/CommonDescriptions';
 import dayjs from 'dayjs';
 import React from 'react';
 import { IProcessPageHeaderProps } from './interface';
@@ -6,7 +6,7 @@ import styles from './index.less';
 import { apiPrefixMock } from '@/config';
 import { Divider } from 'antd';
 
-const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
+const ProcessPageHeader: React.ForwardRefRenderFunction<IDescriptionsHandle, IProcessPageHeaderProps> = (props, ref) => {
   const { formatTime, columns, title, formatApplyPerson, formatSubTitle, hasDivider = false, fetchConfig, businessId, ...restProps } = props;
 
   const userInfoFormList: IDescriptionsColumns<any>[] = [
@@ -61,6 +61,7 @@ const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
           dataPath: 'data',
           ...fetchConfig,
         }}
+        ref={ref}
         {...restProps}
       />
       {hasDivider && <Divider style={{ margin: '20px 0 0 0' }} />}
@@ -68,4 +69,4 @@ const ProcessPageHeader: React.FC<IProcessPageHeaderProps> = (props) => {
   );
 };
 
-export default ProcessPageHeader;
+export default React.forwardRef(ProcessPageHeader);

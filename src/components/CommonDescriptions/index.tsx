@@ -73,6 +73,7 @@ export interface IDescriptionsColumns<T = AnyData> {
  */
 export type IDescriptionsHandle<T = AnyData> = {
   fetchData: useFetchState<T>['1'];
+  data: T;
 };
 
 /**

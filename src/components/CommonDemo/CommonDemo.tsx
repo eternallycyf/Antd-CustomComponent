@@ -6,7 +6,7 @@ import styles from './index.less';
 const CommonDemo: React.ForwardRefRenderFunction<ICommonDemoHandle, ICommonDemoProps> = (props, ref) => {
   const { fetchConfig, dataHandler } = props;
 
-  const [{ value: data = {}, loading }, fetchData] = useFetch({ fetchConfig: fetchConfig as any, dataHandler });
+  const [{ value: data = {}, loading }, fetchData] = useFetch<any>({ fetchConfig, dataHandler });
 
   useImperativeHandle(ref, () => ({
     fetchData,

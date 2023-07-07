@@ -28,10 +28,11 @@ const CommonDesc: React.ForwardRefRenderFunction<IDescriptionsHandle, IDescripti
     beforeChildren,
     afterChildren,
   } = props;
-  const [{ value: data = {}, loading }, fetchData] = useFetch({ fetchConfig, dataHandler });
+  const [{ value: data = {}, loading }, fetchData] = useFetch<any>({ fetchConfig, dataHandler });
 
   useImperativeHandle(ref, () => ({
     fetchData,
+    data,
   }));
 
   const title = defaultTitle ? renderTooltip(defaultTitle as string, tooltip) : undefined;
