@@ -82,9 +82,16 @@ export type IDescriptionsHandle<T = AnyData> = {
  * @property {React.ReactNode} [title] - 标题
  * @property {React.ReactNode} [extra] - 额外内容
  * @property {IDescriptionsColumns<T>[]} columns - 列表项
+ * @property {string} [className] - 样式类名
+ * @property {string} [labelClassName] - label样式类名
+ * @property {string} [wrapperClassName] - wrapper样式类名
+ * @property {RowProps} [rowProps] - Row组件属性
+ * @property {React.ReactNode} [beforeChildren] - 描述列表前内容
+ * @property {React.ReactNode} [afterChildren] - 描述列表后内容
  * @property {(data: T) => T} [dataHandler] - 数据处理函数
  * @property {T} [dataSource] - 自定义数据源
  * @property {boolean} [loading] - 自定义加载状态
+ * @property {boolean} [visible] - 是否显示
  * @property {IDescriptionsProps['fetchConfig']} fetchConfig - 请求配置
  */
 export interface IDescriptionsProps<T = AnyData> extends useFetchProps<T> {
@@ -103,6 +110,7 @@ export interface IDescriptionsProps<T = AnyData> extends useFetchProps<T> {
   wrapperClassName?: string;
 
   rowProps?: RowProps;
+  visible?: boolean;
 }
 
 const CompoundedCommonDescList = React.forwardRef<IDescriptionsHandle, IDescriptionsProps>(CommonDesc) as <Values = Record<string, unknown>>(
