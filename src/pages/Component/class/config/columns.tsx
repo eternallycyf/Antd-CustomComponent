@@ -10,6 +10,7 @@ export interface IRecord {
   activityStartTime: string;
   activityPrice: number;
   activityType: string;
+  activityDesc: string;
   expandMore: string;
 }
 
@@ -26,6 +27,7 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<IR
       fixed: 'left' as 'left',
       ellipsis: true,
       initCheckedDisabled: true,
+      length: 2,
     },
     {
       dataIndex: 'activityStartTime',
@@ -72,6 +74,23 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<IR
       //   order: sorter,
       //   sort: 'xxxxxx',
       // }),
+    },
+    {
+      dataIndex: 'activityDesc',
+      title: '活动描述',
+      width: 112,
+      align: 'center' as 'center',
+      ellipsis: true,
+      ellipsisType: 'length',
+      maxLength: 5,
+    },
+    {
+      dataIndex: 'activityDesc',
+      title: '活动描述',
+      width: 112,
+      align: 'center' as 'center',
+      ellipsis: true,
+      rows: 3,
     },
     {
       dataIndex: 'expandMore',

@@ -89,8 +89,8 @@ export function formatColumn(columns: any[]) {
     format: 'YYYY-MM-DD',
     ellipsis: false,
     ellipsisType: 'line',
-    lines: 1,
-    number: 100,
+    rows: 1,
+    maxLength: 100,
   };
 
   const deepData = _.cloneDeep(columns);
@@ -166,13 +166,9 @@ export function formatColumn(columns: any[]) {
             if (item.formatNumber) newText = formatNumber(item, text);
 
             return options.ellipsisType === 'line' ? (
-              <Ellipsis tooltip={true} lines={options.lines}>
-                {newText}
-              </Ellipsis>
+              <Ellipsis lines={options.rows}>{newText}</Ellipsis>
             ) : (
-              <Ellipsis tooltip={true} length={options.number}>
-                {newText}
-              </Ellipsis>
+              <Ellipsis length={options.maxLength}>{newText}</Ellipsis>
             );
           };
           item.ellipsis = {

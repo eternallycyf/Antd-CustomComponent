@@ -44,13 +44,26 @@ export type Column<TRecord = AnyData> =
         [key: string]: any;
       }>;
 
-      ellipsis?:
-        | boolean
-        | {
-            ellipsisType?: 'line' | undefined;
-            lines?: number;
-            number?: number;
-          };
+      ellipsis?: boolean;
+      /**
+       * @name 超出省略类型
+       * @default [line=1]
+       * @example line:1 => 单行
+       * @example length:30 => 最大字符数量
+       */
+      ellipsisType?: 'line' | 'length' | undefined;
+      /**
+       * @name 最大行数
+       * @default [rows=1]
+       * @example rows:1 => 单行
+       */
+      rows?: number;
+      /**
+       * @name 最大字符数量
+       * @default [maxLength=100]
+       * @example maxLength:30 => 最大字符数量
+       */
+      maxLength?: number;
       /**
        * @name 更多展开收起 - 仅在ellipsis为false时生效 && 节点必须是单行(块级元素)
        * @returns {[React.ReactNode,number]|[React.ReactNode]|false} [节点,最大行数] 最大行数默认为2 传入false时不显示

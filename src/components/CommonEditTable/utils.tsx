@@ -40,8 +40,8 @@ export const formatEditTableColumns = (defaultOptions: ICommonEditTableColumnsTy
     format: 'YYYY-MM-DD',
     ellipsis: false,
     ellipsisType: 'line',
-    lines: 1,
-    number: 100,
+    rows: 1,
+    maxLength: 100,
     ...defaultOptions,
   };
 
@@ -70,12 +70,13 @@ export const formatEditTableColumns = (defaultOptions: ICommonEditTableColumnsTy
     options.ellipsis = {
       showTitle: false,
     };
+
     return options.ellipsisType === 'line' ? (
-      <Ellipsis tooltip={true} lines={options.lines}>
+      <Ellipsis tooltip={true} lines={options.rows}>
         {text}
       </Ellipsis>
     ) : (
-      <Ellipsis tooltip={true} length={options.number}>
+      <Ellipsis tooltip={true} length={options.maxLength}>
         {text}
       </Ellipsis>
     );
