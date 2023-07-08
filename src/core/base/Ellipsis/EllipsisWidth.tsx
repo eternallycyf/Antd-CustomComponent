@@ -30,9 +30,10 @@ const EllipsisWidth = (props: EllipsisWidthProps) => {
     <Tooltip
       {...tooltipProps}
       overlayClassName={`${prefix}-tooltip`}
+      overlayStyle={{ maxWidth: 700, ...tooltipProps?.overlayStyle }}
       title={children}
-      visible={tooltipVisible}
-      onVisibleChange={handleTooltipVisibleChange}
+      open={tooltipVisible}
+      onOpenChange={handleTooltipVisibleChange}
     >
       {node}
     </Tooltip>

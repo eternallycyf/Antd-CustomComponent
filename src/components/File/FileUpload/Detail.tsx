@@ -67,11 +67,8 @@ const Detail: FC<IFileUploadDetailProps> = (props) => {
         <Col>
           <Row gutter={[12, 24]} justify="space-between" align="middle">
             <Col>
-              <FileImage fileName={item?.[fileKeys?.fileName!] ?? '--'} />
-            </Col>
-            <Col>
               <Row>
-                <CustomTooltip maxLength={maxLength} text={item?.[fileKeys?.fileName!] ?? '--'} paragraphClassName={styles.fileName} />
+                <CustomTooltip.FileName hasPreview={false} hasDownLoad={false} prefixLength={maxLength} name={item?.[fileKeys?.fileName!] ?? '--'} />
               </Row>
               {item?.[fileKeys?.updateTime!] && (
                 <Row>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import classNames from 'classnames';
+import styles from './index.less';
 import { TooltipProps } from 'antd';
 import EllipsisText from './EllipsisText';
 import EllipsisWidth from './EllipsisWidth';
@@ -37,11 +37,11 @@ const Ellipsis = (props: EllipsisProps) => {
     ...restProps
   } = props;
 
-  const cls = classNames(`${prefix}-ellipsis`, className, {
-    [`${prefix}-width-mode`]: width,
-    [`${prefix}-line`]: lines && !isSupportLineClamp,
-    [`${prefix}-lineClamp`]: lines && isSupportLineClamp,
-  });
+  const cls = `${styles['plus-ellipsis']} ${className}
+  ${width ? styles['plus-ellipsis-width-mode'] : ''}
+  ${lines && !isSupportLineClamp ? styles['plus-ellipsis-line'] : ''}
+  ${lines && isSupportLineClamp ? styles['plus-ellipsis-lineClamp'] : ''}
+  `;
 
   // 一种限制都没有返回原值
   if (!lines && !length && !width) {

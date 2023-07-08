@@ -101,7 +101,7 @@ const CustomTooltipFileName: FC<IFileName> = (props) => {
 
   const FileNameContent = (
     <a style={fileNameStyle}>
-      <FileImage fileName={fileName ?? '--'} style={{ marginRight: 8 }} />
+      <FileImage fileName={fileName ?? '--'} style={{ marginRight: 8, marginTop: -3 }} />
       {fileName.length > prefixLength + suffixLength ? (
         <>
           <CustomTooltip style={fileNameStyle} text={name ?? '--'} maxLength={prefixLength} />

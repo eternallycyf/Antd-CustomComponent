@@ -55,7 +55,7 @@ const EllipsisText: React.FC<EllipsisTextProps> = (props) => {
 
   if (tooltip) {
     return (
-      <Tooltip {...tooltipProps} overlayClassName={`${prefix}-tooltip`} title={text}>
+      <Tooltip {...tooltipProps} overlayClassName={`${prefix}-tooltip`} overlayStyle={{ maxWidth: 700, ...tooltipProps?.overlayStyle }} title={text}>
         <span>
           {displayText}
           {tail}

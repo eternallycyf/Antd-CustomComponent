@@ -67,18 +67,10 @@ export const formatEditTableColumns = (defaultOptions: ICommonEditTableColumnsTy
   }
 
   if (options.ellipsis) {
-    options.ellipsis = {
-      showTitle: false,
-    };
-
     return options.ellipsisType === 'line' ? (
-      <Ellipsis tooltip={true} lines={options.rows}>
-        {text}
-      </Ellipsis>
+      <Ellipsis lines={options.rows}>{text}</Ellipsis>
     ) : (
-      <Ellipsis tooltip={true} length={options.maxLength}>
-        {text}
-      </Ellipsis>
+      <Ellipsis length={options.maxLength}>{text}</Ellipsis>
     );
   }
 

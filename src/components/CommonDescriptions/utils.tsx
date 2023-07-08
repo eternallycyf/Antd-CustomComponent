@@ -1,4 +1,5 @@
 import { CustomTooltip } from '@/components';
+import Ellipsis from '@/core/base/Ellipsis';
 import { getUUID } from '@/utils/random';
 import { formatNumber, formatPercent, getDictMap, renderTooltip } from '@/utils/util';
 import { Col } from 'antd';
@@ -66,14 +67,15 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
 
       if (item.type == 'text') {
         return (
-          <CustomTooltip
-            {...defaultColProps}
-            col={23}
-            paragraphClassName={`${item.labelClassName} ${item.wrapperClassName} ${defaultColProps?.className}`}
-            maxLength={maxLength}
-            {...controlProps}
-            text={value ?? '--'}
-          />
+          <Col {...defaultColProps}>
+            <Ellipsis
+              length={maxLength}
+              className={`${item.labelClassName} ${item.wrapperClassName} ${defaultColProps?.className}`}
+              {...controlProps}
+            >
+              {value ?? '--'}
+            </Ellipsis>
+          </Col>
         );
       }
 
@@ -111,7 +113,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
 
         const type = item?.rows || item?.rows == undefined ? 'textarea' : 'text';
         let minWidth = 40;
-        if (typeof newValue == 'string') minWidth = getValueLen(String(newValue)) * 6;
+        if (typeof newValue == 'string') minWidth = getValueLen(String(newValue)) * 6.25;
         if (item.tooltip) minWidth += 20;
         return (
           <Col {...defaultColProps}>
@@ -120,20 +122,13 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
                 {newValue}
               </span>
               {type == 'text' ? (
-                <CustomTooltip
-                  col={22}
-                  paragraphClassName={`${item.wrapperClassName} ${defaultColProps?.className} `}
-                  maxLength={maxLength}
-                  {...controlProps}
-                  text={value ?? '--'}
-                />
+                <Ellipsis length={maxLength} className={`${item.wrapperClassName} ${defaultColProps?.className} `} {...controlProps}>
+                  {value ?? '--'}
+                </Ellipsis>
               ) : (
-                <CustomTooltip.Paragraph
-                  rows={item.rows || 1}
-                  className={`${item.wrapperClassName} ${defaultColProps?.className}`}
-                  {...controlProps}
-                  text={value ?? '--'}
-                />
+                <Ellipsis lines={item.rows || 1} className={`${item.wrapperClassName} ${defaultColProps?.className}`} {...controlProps}>
+                  {value ?? '--'}
+                </Ellipsis>
               )}
             </div>
           </Col>

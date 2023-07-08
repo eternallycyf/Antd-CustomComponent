@@ -38,6 +38,7 @@ const EllipsisLineClamp = (props: EllipsisLineClampProps) => {
     <Tooltip
       {...tooltipProps}
       overlayClassName={`${prefix}-tooltip`}
+      overlayStyle={{ maxWidth: 700, ...tooltipProps?.overlayStyle }}
       title={children}
       open={tooltipVisible}
       onOpenChange={handleTooltipVisibleChange}
