@@ -78,7 +78,7 @@ export type Column<TRecord = AnyData> =
       /**
        * @property {keyof TRecord | string} [dataIndex = '']
        */
-      dataIndex?: keyof TRecord;
+      dataIndex?: keyof TRecord & string;
       children?: Column<TRecord>[];
       /**
        * @name 是否可编辑 仅在editable为true时生效

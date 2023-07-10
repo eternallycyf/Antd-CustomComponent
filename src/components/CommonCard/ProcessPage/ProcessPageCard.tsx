@@ -5,7 +5,8 @@ import styles from './index.less';
 import { IProcessPageCardProps } from './interface';
 
 const ProcessPageCard: React.FC<IProcessPageCardProps> = (props) => {
-  const { title, children, extraContent, descList, style } = props;
+  const { title, children, extraContent, descList, style, visible = true } = props;
+  if (!visible) return null;
 
   return (
     <div className={styles.ProcessPageCard} style={style}>
