@@ -31,7 +31,7 @@ function routeTo(targetTab: MenuTab) {
   if (targetTab) history.push(targetTab?.location ?? '/');
 }
 
-function addTab(newTab: MenuTab, activeTabs: MenuTab[]): any[] {
+function addTab(newTab: MenuTab, activeTabs: MenuTab[]): any {
   // filter 过滤路由 为 '/' 的children, map 添加第一个 tab不可删除
   return [...activeTabs, newTab].map((item, index) => {
     if (activeTabs.length === 0 && index === 0) {
@@ -105,21 +105,23 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
       }
     } else {
       const activeTab = tabs.find((tab) => pathToRegexp(tab.key).test(_activeKey));
+      const activeTabIndex = tabs.findIndex((tab) => pathToRegexp(tab.key).test(_activeKey));
       if (!tabChildren[metaData.path]) {
         tabChildren[metaData.path] = children;
         setTabChildren({ ...tabChildren });
       }
-      if (!activeTab) {
-        // 新增
-        const newTag = {
-          tab: activeTitle,
-          key: metaData.path,
-          location,
-        };
-        const addedTabs = addTab(newTag, tabs);
-        setTabs(addedTabs);
-        localStore.set('tabs', addedTabs);
+      const newTab = {
+        tab: activeTitle,
+        key: metaData.path,
+        location,
+      };
+      let newTabs = _.cloneDeep(tabs);
+      if (!activeTab) newTabs = addTab(newTab, tabs);
+      if (activeTab) {
+        newTabs.splice(activeTabIndex, 1, newTab);
       }
+      localStore.set('tabs', newTabs);
+      setTabs(newTabs);
     }
     setActiveKey(_activeKey);
   }, [_activeKey]);
