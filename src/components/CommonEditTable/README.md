@@ -4,13 +4,11 @@
 
 ```tsx
 import { AccessBtn, CommonEditTable } from '@/components';
-import { IEditTableHandle, IEditTableProps } from '@/typings';
+import { IEditTableColumnsType, IEditTableHandle, IEditTableProps } from '@/typings';
 import { PlusCircleOutlined, VerticalAlignBottomOutlined, WarningOutlined } from '@ant-design/icons';
 import { Button, Card, Form, message } from 'antd';
 import dayjs from 'dayjs';
 import React from 'react';
-import { columns } from './config/columns';
-import { IColumnsExtraRecord, IFormValues, IRecord } from './config/interface';
 
 export const columns: IEditTableColumnsType<IRecord, IColumnsExtraRecord>[] = [
   {
@@ -18,15 +16,13 @@ export const columns: IEditTableColumnsType<IRecord, IColumnsExtraRecord>[] = [
     title: '姓名',
     type: 'input',
     align: 'center',
-    formItemProps: {},
     ellipsis: true,
     width: 100,
     tooltip: 'sss',
     editable: true,
     formItemProps: {
-      itemProps: {
-        rules: [{ required: true, message: '请输入姓名' }],
-      },
+      rules: [{ required: true, message: '请输入姓名' }],
+      itemProps: {},
     },
   },
   {

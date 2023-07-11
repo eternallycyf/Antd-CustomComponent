@@ -1,6 +1,6 @@
 // todo 合计
 import { ErrorBoundary } from '@/core/base/ErrorBoundary';
-import { IButtonProps, ISearchesType } from '@/typings';
+import { FormControl, IButtonProps, ISearchesType } from '@/typings';
 import { IBaseFormControlType } from '@/typings/base';
 import { Column } from '@/typings/core/column';
 import { Search } from '@/typings/core/form';
@@ -107,8 +107,9 @@ interface IColumnEditRestProps<Values> {
  * item.transform ? item.transform : item.render
  */
 export type ICommonEditTableColumnsType<Values = any, Rest = Record<string, unknown>> = Omit<Column<Values>, 'formItemProps' | 'render'> & {
-  formItemProps?: Omit<Search<Values>, 'name' | 'label' | 'type'> & {
+  formItemProps?: Omit<Search<Values>, 'name' | 'label' | 'type' | 'controlProps'> & {
     rules?: FormItemProps<Values>['rules'];
+    controlProps?: Partial<FormControl['controlProps']>;
   };
   render?: (value: any, record: Values, index: number, allValues: Values[]) => React.ReactNode;
   shouldUpdate?: FormItemProps<Values>['shouldUpdate'];
