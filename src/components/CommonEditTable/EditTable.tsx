@@ -107,6 +107,8 @@ interface IColumnEditRestProps<Values> {
  * item.transform ? item.transform : item.render
  */
 export type ICommonEditTableColumnsType<Values = any, Rest = Record<string, unknown>> = Omit<Column<Values>, 'formItemProps' | 'render'> & {
+  /**@name 是否有必填标记 */
+  hasRequiredMark?: boolean;
   formItemProps?: Omit<Search<Values>, 'name' | 'label' | 'type' | 'controlProps'> & {
     rules?: FormItemProps<Values>['rules'];
     controlProps?: Partial<FormControl['controlProps']>;
@@ -209,11 +211,18 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
     const values = form?.getFieldValue(tableFormName) || [];
 
     let newColumns = columns.map((item: ICommonEditTableColumnsType) => {
-      const { dataIndex, label, formItemProps, type = 'view', editable = true, ...restTableProps } = item;
+      const { dataIndex, label, formItemProps, type = 'view', editable = true, onHeaderCell, hasRequiredMark = false, ...restTableProps } = item;
       const { initialValue, rules = [], layout, itemProps, ...restItem } = formItemProps || {};
       return {
         dataIndex,
         ...restTableProps,
+        onHeaderCell: (columns: any) => {
+          const restOnHeaderCellProps = onHeaderCell ? onHeaderCell?.(columns) : {};
+          return {
+            ...restOnHeaderCellProps,
+            className: `${restOnHeaderCellProps?.className} ${hasRequiredMark && styles['isRequired']}`,
+          };
+        },
         render: (text: number, field: FormListFieldData, index: number) => {
           const renderProps = getCurrentFieldValue(form, tableFormName, index);
           const val = renderProps?.[0]?.[item?.dataIndex!];
@@ -283,6 +292,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
           const renderProps = getCurrentFieldValue(form, tableFormName, index);
           return renderButtonRow(itemButton, [], operation, { record: renderProps?.[0], arr: renderProps?.[1], index });
         },
+        onHeaderCell: null as any,
       });
     }
     if (showIndex) {

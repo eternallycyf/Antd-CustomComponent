@@ -8,4 +8,15 @@
       margin-bottom: 0;
     }
   }
+
+  .isRequired {
+    min-width: 400px;
+  }
+
+  .isRequired::after {
+    color: '#e62c3b';
+    content: '*';
+    font-weight: 500;
+    font-size: 14px;
+  }
 }
