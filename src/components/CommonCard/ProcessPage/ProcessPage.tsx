@@ -49,7 +49,7 @@ const ProcessPage: FC<IProcessPageProps> = (props) => {
   const bodyStyle: React.CSSProperties = {
     marginTop: 4,
     overflowY: 'auto',
-    height: '81vh',
+    height: '82.4h',
   };
 
   return (

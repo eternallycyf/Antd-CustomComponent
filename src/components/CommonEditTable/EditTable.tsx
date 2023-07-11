@@ -1,16 +1,16 @@
 // todo 合计
 import { ErrorBoundary } from '@/core/base/ErrorBoundary';
 import { IButtonProps, ISearchesType } from '@/typings';
+import { IBaseFormControlType } from '@/typings/base';
 import { Column } from '@/typings/core/column';
 import { Search } from '@/typings/core/form';
-import { formatColumn } from '@/utils/util';
+import { formatColumn, renderFormItem } from '@/utils/util';
 import { Col, Form, FormInstance, FormItemProps, FormListFieldData, Row, TableProps } from 'antd';
 import React, { Key, useImperativeHandle } from 'react';
 import TableBtn from '../CommonTableV5/components/widgets/TableBtn';
 import { Table } from './';
 import styles from './index.less';
 import { formatEditTableColumns, getCurrentFieldValue, handleExport, IHandleExport, removeExtraColumnsProps } from './utils';
-import { renderFormItem } from '@/utils/util';
 
 // #region
 /**
@@ -96,7 +96,7 @@ export type ICommonEditTableHandle<Values = any, FormItemsValues = any> = {
  * @name 通用编辑表格的列的额外参数
  */
 interface IColumnEditRestProps<Values> {
-  type?: ISearchesType[number]['type'];
+  type?: IBaseFormControlType;
   label?: ISearchesType[number]['label'];
   name?: Values;
 }
@@ -149,9 +149,12 @@ interface IVisibleFn<Values> {
 type IClick<Values = any> = (record: IRenderFnProps<Values>, operation: FormListOperation<Values>) => void;
 type INotItemButtonClick<Values = any> = (record: undefined, operation: FormListOperation<Values>) => void;
 type IEditTableButtonProps<Values = any> = (Omit<IButtonProps<IClick<Values>>, 'visible'> & {
+  /**@description 详细见 '~@/assets/styles/compatible.less';*/
+  buttonStyleType?: string;
   visible?: boolean | IVisibleFn<Values>;
 })[];
 type IEditTableNotItemButtonProps<Values = any> = (Omit<IButtonProps<INotItemButtonClick<Values>>, 'visible'> & {
+  buttonStyleType?: string;
   visible?: boolean | IVisibleFn<Values>;
 })[];
 //#endregion
@@ -205,11 +208,11 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
     const values = form?.getFieldValue(tableFormName) || [];
 
     let newColumns = columns.map((item: ICommonEditTableColumnsType) => {
-      const { dataIndex, label, formItemProps, type = 'view', ...restItem } = item;
-      const { initialValue, rules = [], layout, itemProps } = formItemProps || {};
+      const { dataIndex, label, formItemProps, type = 'view', editable = true, ...restTableProps } = item;
+      const { initialValue, rules = [], layout, itemProps, ...restItem } = formItemProps || {};
       return {
         dataIndex,
-        ...restItem,
+        ...restTableProps,
         render: (text: number, field: FormListFieldData, index: number) => {
           const renderProps = getCurrentFieldValue(form, tableFormName, index);
           const val = renderProps?.[0]?.[item?.dataIndex!];
@@ -218,9 +221,8 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
           const name = [field.name, dataIndex] as Key[];
           const key = field.key;
           const formProps = {
-            // 解除传递 formatNumber 等参数 控制台报错问题
-            ...removeExtraColumnsProps([restItem])?.[0],
-            editable: !!item.editable,
+            ...restItem,
+            editable,
             name,
             type,
           };
@@ -239,7 +241,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
             return formatEditTableColumns(item, val);
           }
 
-          if (!item.editable && !isMultiple) {
+          if (!item.editable) {
             return formatEditTableColumns(item, val);
           }
 
@@ -308,6 +310,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
         const { ...otherProps } = item;
         const buttonProps = {
           ...otherProps,
+          className: `${styles['btn-' + item?.buttonStyleType]} ${item.className}`,
           onClick: () => {
             if (typeof item.onClick === 'function') {
               // @ts-ignore
