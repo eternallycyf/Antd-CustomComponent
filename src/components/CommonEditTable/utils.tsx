@@ -1,5 +1,6 @@
 import Ellipsis from '@/core/base/Ellipsis';
 import { getFieldComp } from '@/core/helpers';
+import { FormControl } from '@/typings';
 import { formatNumber, formatPercent, formatTime, getDictMap } from '@/utils/util';
 import { FormInstance } from 'antd';
 import _ from 'lodash';
@@ -47,7 +48,7 @@ export const formatEditTableColumns = (defaultOptions: ICommonEditTableColumnsTy
 
   let text = val;
   if (_.isNil(text)) return '--';
-  if (typeof text == 'string' && text.trim()?.length == 0) return '--';
+  if (typeof text === 'string' && text.trim()?.length == 0) return '--';
 
   if (options.dict) {
     text = getDictMap(options.dict)[text];
