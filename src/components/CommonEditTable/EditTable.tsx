@@ -10,7 +10,7 @@ import React, { Key, useImperativeHandle } from 'react';
 import TableBtn from '../CommonTableV5/components/widgets/TableBtn';
 import { Table } from './';
 import styles from './index.less';
-import { formatEditTableColumns, getCurrentFieldValue, handleExport, IHandleExport, removeExtraColumnsProps } from './utils';
+import { formatEditTableColumns, getCurrentFieldValue, handleExport, IHandleExport, removeExtraColumnsProps, addExtraIndexParams } from './utils';
 
 // #region
 /**
@@ -212,7 +212,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
 
     let newColumns = columns.map((item: ICommonEditTableColumnsType) => {
       const { dataIndex, label, formItemProps, type = 'view', editable = true, onHeaderCell, hasRequiredMark = false, ...restTableProps } = item;
-      const { initialValue, rules = [], layout, itemProps, ...restItem } = formItemProps || {};
+      const { initialValue, rules = [], layout, itemProps, controlProps, ...restItem } = formItemProps || {};
       return {
         dataIndex,
         ...restTableProps,
@@ -232,6 +232,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
           const key = field.key;
           const formProps = {
             ...restItem,
+            controlProps: addExtraIndexParams(controlProps, index),
             editable,
             name,
             type,

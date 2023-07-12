@@ -83,3 +83,15 @@ export const removeExtraColumnsProps = (columns: ICommonEditTableColumnsType[] =
     return originProps;
   });
 };
+
+export const addExtraIndexParams = (controlProps: Partial<FormControl['controlProps']>, index: number) => {
+  const newControlProps = { ...controlProps };
+  Object.keys(newControlProps).forEach((key) => {
+    if (typeof newControlProps[key] === 'function') {
+      newControlProps[key] = (...args: any[]) => {
+        return controlProps?.[key]?.(...args, index);
+      };
+    }
+  });
+  return newControlProps;
+};
