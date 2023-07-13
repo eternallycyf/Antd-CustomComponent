@@ -117,7 +117,7 @@ export type ICommonEditTableColumnsType<Values = any, Rest = Record<string, unkn
   shouldUpdate?: FormItemProps<Values>['shouldUpdate'];
   /**
    * @name 自定义转换的方法
-   * @name status === 'view' 状态时 展示数据转换 和render一样 只不过为了使用formatCoumn的方法 用这个代替render
+   * @name status === 'view' | !editable 状态时 展示数据转换 和render一样 只不过为了使用formatCoumn的方法 用这个代替render
    * @example <caption>自定义转换的方法</caption>
    * transform: (text, record, index, allValues) => text + '元'
    */
@@ -242,7 +242,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
             return item.render?.(val, currentValues, index, allValues);
           }
 
-          if (status == 'view') {
+          if (status == 'view' || !item.editable) {
             if (item.transform) {
               return item.transform?.(val, currentValues, index, allValues);
             }
@@ -252,16 +252,15 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
             return formatEditTableColumns(item, val);
           }
 
-          if (!item.editable) {
-            return formatEditTableColumns(item, val);
-          }
-
           return (
             <Form.Item noStyle shouldUpdate={true}>
               {(inLineForm) => {
                 const currentValue = inLineForm?.getFieldValue(tableFormName) || []?.[name as any];
                 if (!isMultiple && !editableKeys.includes(String(currentValue?.[index]?.key))) {
                   return formatEditTableColumns(item, val);
+                }
+                if (formProps?.type == 'update') {
+                  <Row {...itemProps}>{renderFormItem({ ...formProps, itemProps: addExtraIndexParams(itemProps, index) }, index)}</Row>;
                 }
                 return (
                   <Form.Item

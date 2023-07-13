@@ -56,7 +56,12 @@ type DeepPartial<T> = T extends object
 
 export interface IUpdateProps {
   shouldUpdate: (prevValues: any, nextValues: any) => boolean;
-  next?: (values: any, form: Omit<FormInstance<any>, 'scrollToField' | 'getFieldInstance'>) => false | React.ReactNode | DeepPartial<ISearchProps>;
+  /**@name index使用commonEditable 自动注入 */
+  next?: (
+    values: any,
+    form: Omit<FormInstance<any>, 'scrollToField' | 'getFieldInstance'>,
+    index?: number,
+  ) => false | React.ReactNode | DeepPartial<ISearchProps>;
 }
 
 const Update: React.FC<IUpdateProps> = React.forwardRef((props, ref) => {
