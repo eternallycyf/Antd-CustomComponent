@@ -45,6 +45,7 @@ interface IState {
   radioValue: (typeof ACTIVE_TYPE)[number]['value'];
   dictType: (typeof ACTIVE_TYPE)[number]['value'];
   groupValue: (typeof ACTIVE_TYPE)[number]['value'];
+  height: number;
 }
 
 class Activity extends BaseComponent<IProps, IState> {
@@ -63,6 +64,7 @@ class Activity extends BaseComponent<IProps, IState> {
       radioValue: DEFAULT_ACTIVE_TYPE,
       dictType: DEFAULT_ACTIVE_TYPE,
       groupValue: DEFAULT_ACTIVE_TYPE,
+      height: 1000,
     };
   }
 
@@ -71,6 +73,8 @@ class Activity extends BaseComponent<IProps, IState> {
     history.listen(({ location }) => {
       console.log(location);
     });
+    const height = document.querySelector(`.${styles.page} .ant-table-body`)?.getBoundingClientRect()?.top! - 60;
+    this.setState({ height });
   }
 
   // 打开活动报名列表页面
@@ -105,7 +109,7 @@ class Activity extends BaseComponent<IProps, IState> {
   };
 
   render() {
-    const { searchParams, selectedRowKeys, selectedRows, expandedRowKeys, exportLoading, dictType, groupValue } = this.state;
+    const { height, searchParams, selectedRowKeys, selectedRows, expandedRowKeys, exportLoading, dictType, groupValue } = this.state;
     const tableParams: ICommonTable<IRecord> = {
       columns: getColumns(this),
       searchParams: formatParams(searchParams),
@@ -246,7 +250,7 @@ class Activity extends BaseComponent<IProps, IState> {
       // 虚拟列表配置
       isVirtual: false,
       scroll: { y: 800 },
-      fixRowKeys: [1, 2, 3],
+      // fixRowKeys: [1],
       rowEventHandlers: {
         onClick: (record, index, event) => {},
       },
@@ -256,7 +260,7 @@ class Activity extends BaseComponent<IProps, IState> {
     };
 
     return (
-      <Page>
+      <Page className={styles.page} style={{ '--height': `${height}px` }}>
         <CommonTable
           {...tableParams}
           ref={this.tableRef}

@@ -74,7 +74,7 @@ export default {
         code: 200,
         data: {
           ...mockjs.mock({
-            'list|3': [
+            'list|2': [
               {
                 name: '@city',
                 'value|1-100': 50,
