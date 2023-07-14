@@ -1,4 +1,26 @@
+## 合并行
+
+```tsx
+{
+  // 行合并
+  onCell: (record, rowIndex){
+    if(rowIndex % 2 === 0) return { rowSpan: 0}
+    return { rowSpan: 2}
+  }
+  // 列合并
+  onCell: (record, rowIndex){
+    return { colSpan: 3}
+  }
+  // 不支持行列同时合并
+  onCell: (record, rowIndex){
+    return { colSpan: 3,rowSpan:2 }
+  }
+}
+```
+
 ## 虚拟列表固定行 滚动时保留滚动位置
+
+- TODO: 当 handleRefresh 时 空白 需要手动调用 this.scrollRef.current.dispatchEvent(new CustomEvent('scroll'));
 
 ```tsx
 {
