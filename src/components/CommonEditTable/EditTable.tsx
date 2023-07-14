@@ -252,6 +252,28 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
             return formatEditTableColumns(item, val);
           }
 
+          const Content = ({ form, formProps, index }: { form: any; formProps: any; index: number }) => (
+            <Form.Item
+              labelAlign="right"
+              label={label as string}
+              name={name}
+              key={key}
+              rules={rules || itemProps?.rules || []}
+              initialValue={initialValue}
+              {...layout}
+              {...itemProps}
+            >
+              {renderFormItem(formProps, index)}
+            </Form.Item>
+          );
+
+          if (isMultiple && formProps?.type == 'update') {
+            // FAQ: 可编辑表格使用 type == 'update'
+            // 为Form.Item.type == 'update' 注入 index
+            return <Row {...itemProps}>{(renderFormItem({ ...formProps, itemProps: addExtraIndexParams(itemProps, index) }), index)}</Row>;
+          }
+          if (isMultiple) return <Content form={form} formProps={formProps as any} index={index} />;
+
           return (
             <Form.Item noStyle shouldUpdate={true}>
               {(inLineForm) => {
@@ -259,23 +281,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
                 if (!isMultiple && !editableKeys.includes(String(currentValue?.[index]?.key))) {
                   return formatEditTableColumns(item, val);
                 }
-                if (formProps?.type == 'update') {
-                  <Row {...itemProps}>{renderFormItem({ ...formProps, itemProps: addExtraIndexParams(itemProps, index) }, index)}</Row>;
-                }
-                return (
-                  <Form.Item
-                    labelAlign="right"
-                    label={label as string}
-                    name={name}
-                    key={key}
-                    rules={rules || itemProps?.rules || []}
-                    initialValue={initialValue}
-                    {...layout}
-                    {...itemProps}
-                  >
-                    {renderFormItem(formProps, index)}
-                  </Form.Item>
-                );
+                return <Content form={inLineForm} formProps={formProps as any} index={index} />;
               }}
             </Form.Item>
           );

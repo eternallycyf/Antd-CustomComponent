@@ -46,9 +46,12 @@ export const formatEditTableColumns = (defaultOptions: ICommonEditTableColumnsTy
     ...defaultOptions,
   };
 
+  const emptyStyle = { color: '#8E96A4' };
+  const emptyText = <span style={emptyStyle}>--</span>;
+
   let text = val;
-  if (_.isNil(text)) return '--';
-  if (typeof text === 'string' && text.trim()?.length == 0) return '--';
+  if (_.isNil(text)) return emptyText;
+  if (typeof text === 'string' && text.trim()?.length == 0) return emptyText;
 
   if (options.dict) {
     text = getDictMap(options.dict)[text];
@@ -69,9 +72,13 @@ export const formatEditTableColumns = (defaultOptions: ICommonEditTableColumnsTy
 
   if (options.ellipsis) {
     return options.ellipsisType === 'line' ? (
-      <Ellipsis lines={options.rows}>{text}</Ellipsis>
+      <Ellipsis lines={options.rows} style={text == '--' ? emptyStyle : {}}>
+        {text}
+      </Ellipsis>
     ) : (
-      <Ellipsis length={options.maxLength}>{text}</Ellipsis>
+      <Ellipsis length={options.maxLength} style={text == '--' ? emptyStyle : {}}>
+        {text}
+      </Ellipsis>
     );
   }
 
@@ -85,7 +92,7 @@ export const removeExtraColumnsProps = (columns: ICommonEditTableColumnsType[] =
   });
 };
 
-export const addExtraIndexParams = (controlProps: Partial<FormControl['controlProps']>, index: number) => {
+export const addExtraIndexParams = (controlProps: any, index: number) => {
   const newControlProps = { ...controlProps };
   Object.keys(newControlProps).forEach((key) => {
     if (typeof newControlProps[key] === 'function') {

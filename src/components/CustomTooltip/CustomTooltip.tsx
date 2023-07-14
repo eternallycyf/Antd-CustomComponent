@@ -205,7 +205,12 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
 
   // row.rows = 1 且 text.length > maxLength
   const SingleOverflowParagraph = (
-    <Tooltip title={text} style={styles} className={`${ellipsisClassName} ${tooltipClassName}`}>
+    <Tooltip
+      title={text}
+      style={styles}
+      overlayInnerStyle={{ maxWidth: 700, overflowY: 'auto' }}
+      className={`${ellipsisClassName} ${tooltipClassName}`}
+    >
       <Paragraph {...copyableProps} style={styles} className={paragraphClassName}>
         {isTextToObject ? '' : String(text).slice(0, maxLength) + isShowEllipsisSymbol ?? '--'}
       </Paragraph>
