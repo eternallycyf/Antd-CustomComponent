@@ -1,4 +1,4 @@
-## 实时保存
+## 实时保存见/home/editTable
 
 ## 多行
 
@@ -183,4 +183,50 @@ const Demo = () => {
 };
 
 export default Demo;
+```
+
+## FAQ
+
+### 1.type == 'update'
+
+```tsx
+{
+  dataIndex: 'userName',
+  title: '姓名',
+  hasRequiredMark: true,
+  type: 'update',
+  align: 'center',
+  width: 240,
+  formItemProps: {
+    itemProps: {
+      noStyle: true,
+      style: { display: 'flex'},
+      next: (values, form, index) => {
+        return [
+          {
+            name: [index, 'userName'],
+            width: 140,
+            col: 12,
+            type: 'input',
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+## 2.type == 'view';
+
+```tsx
+{
+  dataIndex: 'deptName',
+  title: '部门',
+  type: 'xxx',
+  align: 'center',
+  ellipsis: true,
+  editable: false,
+  width: 100,
+  // transform: (val, record, index) => xxx;
+}
 ```

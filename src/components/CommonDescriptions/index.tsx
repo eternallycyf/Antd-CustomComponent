@@ -1,10 +1,16 @@
-import { IProps } from '@/components/CustomTooltip/interface';
+import type { IProps as ICustomTooltipProps } from '@/components/CustomTooltip/interface';
+import { EllipsisProps } from '@/core/base/Ellipsis/Ellipsis';
 import { useFetchProps, useFetchState } from '@/hook/useFetch';
 import { IButtonProps, IColumnsType } from '@/typings';
 import { RowProps } from 'antd';
 import React from 'react';
-import { IParagraph } from '../CustomTooltip/Paragraph';
 import CommonDesc from './Descriptions';
+
+type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;
 
 export type Columns = IColumnsType extends Array<infer R> ? R : never;
 type AnyData = Record<string, unknown>;
@@ -17,7 +23,7 @@ export interface IDescriptionsColumns<T = AnyData> {
   /**
    * @description 1.主要配置
    */
-  key: keyof T;
+  key: keyof T & string;
   label?: string;
   type: 'text' | 'tip' | 'formItem';
   span?: number;
@@ -61,7 +67,7 @@ export interface IDescriptionsColumns<T = AnyData> {
   /**
    * @description 4.其他配置
    */
-  controlProps?: Partial<IProps<unknown> & IParagraph> & { [props: string]: any };
+  controlProps?: DeepPartial<ICustomTooltipProps<unknown> & EllipsisProps> & { [props: string]: any };
 }
 
 /**

@@ -33,7 +33,7 @@ interface IEditTableContext<Values = any, FormItemsValues = any> extends ICommon
  * @property {string} [status='edit'] - 编辑状态
  * @property {boolean} [showIndex=true] - 是否显示序号
  * @property {boolean} [isVirtual=false] - 是否是虚拟列表虚拟列表 必须传入 scroll.y 高度
- * @property {boolean} [isMultiple=true] - 是否是实时保存类型 为false时 editable = true 才会生效
+ * @property {boolean} [isMultiple=true] - 是否是实时保存类型 为false时 editable = true 才会可编辑
  * @property {string[]} [editableKeys] - 可编辑的key
  *
  * @property {React.ReactNode | ((value: IEditTableContext) => React.ReactNode)} [beforeChildren] - 表格前面的内容

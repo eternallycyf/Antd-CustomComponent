@@ -7,6 +7,8 @@ import dayjs from 'dayjs';
 import _ from 'lodash';
 import { IDescriptionsColumns } from './index';
 import styles from './index.less';
+import type { IProps as ICustomTooltipProps } from '@/components/CustomTooltip/interface';
+import { EllipsisProps } from '@/core/base/Ellipsis/Ellipsis';
 
 export const addSpace = (str: string) => str.replace(/(\d{3})(\d{4})/g, '$1 $2 ');
 
@@ -71,7 +73,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
             <Ellipsis
               length={maxLength}
               className={`${item.labelClassName} ${item.wrapperClassName} ${defaultColProps?.className}`}
-              {...controlProps}
+              {...(controlProps as EllipsisProps)}
             >
               {value ?? '--'}
             </Ellipsis>
@@ -89,7 +91,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
                 col={24}
                 paragraphClassName={className}
                 maxLength={9999 || item?.maxLength}
-                {...controlProps}
+                {...(controlProps as ICustomTooltipProps<unknown>)}
                 text={item?.tipMessage ?? '--'}
               />
             </div>
@@ -122,11 +124,19 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
                 {newValue}
               </span>
               {type == 'text' ? (
-                <Ellipsis length={maxLength} className={`${item.wrapperClassName} ${defaultColProps?.className} `} {...controlProps}>
+                <Ellipsis
+                  length={maxLength}
+                  className={`${item.wrapperClassName} ${defaultColProps?.className} `}
+                  {...(controlProps as EllipsisProps)}
+                >
                   {value ?? '--'}
                 </Ellipsis>
               ) : (
-                <Ellipsis lines={item.rows || 1} className={`${item.wrapperClassName} ${defaultColProps?.className}`} {...controlProps}>
+                <Ellipsis
+                  lines={item.rows || 1}
+                  className={`${item.wrapperClassName} ${defaultColProps?.className}`}
+                  {...(controlProps as EllipsisProps)}
+                >
                   {value ?? '--'}
                 </Ellipsis>
               )}
