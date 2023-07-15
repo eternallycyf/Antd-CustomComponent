@@ -12,6 +12,7 @@ import CustomTooltip from './CustomTooltip/CustomTooltip';
 import CommonDescriptions from './CommonDescriptions';
 import * as File from './File';
 import * as Widget from './Widget';
+import AudioPlayer from './AudioPlayer';
 
 export {
   AccessBtn,
@@ -28,4 +29,5 @@ export {
   Widget,
   EnhanceFormItem,
   CommonDescriptions,
+  AudioPlayer,
 };
