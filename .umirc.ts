@@ -67,4 +67,13 @@ export default defineConfig({
   //   },
   // ],
   tailwindcss: {},
+  lessLoader: {
+    modifyVars: {
+      hack: `true; @import "${path.resolve('src/assets/styles/variable.less')}";`,
+    },
+    javascriptEnabled: true,
+  },
+  cssLoader: {
+    url: true,
+  },
 });
