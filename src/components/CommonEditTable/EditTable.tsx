@@ -242,7 +242,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
             return item.render?.(val, currentValues, index, allValues);
           }
 
-          if (status == 'view' || !item.editable) {
+          if (status == 'view' || !editable) {
             if (item.transform) {
               return item.transform?.(val, currentValues, index, allValues);
             }

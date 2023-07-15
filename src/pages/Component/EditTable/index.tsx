@@ -3,18 +3,48 @@ import { IEditTableHandle, IEditTableProps } from '@/typings';
 import { PlusCircleOutlined, VerticalAlignBottomOutlined, WarningOutlined } from '@ant-design/icons';
 import { Button, Card, Form } from 'antd';
 import dayjs from 'dayjs';
-import React from 'react';
-import { columns } from './config/columns';
+import React, { useEffect } from 'react';
+import { getColumns } from './config/columns';
 import { IColumnsExtraRecord, IFormValues, IRecord } from './config/interface';
 
 const Demo = () => {
   const [form] = Form.useForm<IFormValues>();
   const EditTableRef = React.useRef<IEditTableHandle<IRecord, IFormValues>>(null!);
   const [status, setStatus] = React.useState<IEditTableProps['status']>('edit');
+  const [currentRatio, setCurrentRatio] = React.useState<number>(0);
+
+  useEffect(() => {
+    handleGetCurrentRatio();
+  }, []);
 
   const handleOnSubmit = () => {
     const values = EditTableRef.current.form.getFieldsValue();
     console.log(values);
+    form.validateFields();
+  };
+
+  const handleGetCurrentRatio = () => {
+    const tableValues = form.getFieldValue('EditTable') || [];
+    if (tableValues.length == 0) return setCurrentRatio(0);
+    const ratio = tableValues.reduce((acc: any[], cru: any) => acc + (cru?.ratio || 0), 0) || 0;
+    setCurrentRatio(Number(ratio?.toFixed(2)));
+  };
+
+  const handleCheckIsRatioExceedExcessie = (_: any, val: number) => {
+    if (val == null) return Promise.reject('必填项');
+    const tableValues = form.getFieldValue('EditTable') || [];
+    if (tableValues?.length == 0) return Promise.resolve('');
+    if (currentRatio != 100) {
+      return Promise.reject('比例综合必须等于100%');
+    }
+    return Promise.resolve('');
+  };
+
+  const formItemProps = {
+    currentRatio,
+    setCurrentRatio,
+    handleGetCurrentRatio,
+    handleCheckIsRatioExceedExcessie,
   };
 
   return (
@@ -30,7 +60,7 @@ const Demo = () => {
             key: index,
             age: 21260,
           }))}
-          columns={columns}
+          columns={getColumns(formItemProps)}
           buttonLeft={[]}
           buttonRight={[
             {
@@ -53,7 +83,7 @@ const Demo = () => {
               visible: (text, record, index, status) => status == 'view',
               // visible: (text, record, index) => status == 'view',
               icon: <VerticalAlignBottomOutlined />,
-              onClick: (values, operation) => EditTableRef.current.handleExport('导出', columns, form.getFieldValue('EditTable')),
+              onClick: (values, operation) => EditTableRef.current.handleExport('导出', getColumns(formItemProps), form.getFieldValue('EditTable')),
             },
           ]}
           itemButton={[
@@ -109,4 +139,4 @@ const Demo = () => {
   );
 };
 
-export default Demo;
+export default React.memo(Demo);

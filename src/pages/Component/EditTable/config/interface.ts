@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 export interface IRecord {
   userName: string;
   time?: dayjs.Dayjs;
-  age?: number;
+  ratio?: number;
 }
 
 export interface IFormValues {
