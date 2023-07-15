@@ -13,6 +13,7 @@ import CommonDescriptions from './CommonDescriptions';
 import * as File from './File';
 import * as Widget from './Widget';
 import AudioPlayer from './AudioPlayer';
+import VideoViewer from './VideoViewer';
 
 export {
   AccessBtn,
@@ -30,4 +31,5 @@ export {
   EnhanceFormItem,
   CommonDescriptions,
   AudioPlayer,
+  VideoViewer,
 };

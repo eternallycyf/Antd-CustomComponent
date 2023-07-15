@@ -294,9 +294,7 @@ const InternalAudioPlayer: React.ForwardRefRenderFunction<unknown, AudioPlayerPr
             content={getVolumePopupContent()}
             open={volumeOpen}
             onOpenChange={onVolumeVisibleChange}
-            getPopupContainer={(triggerNode) => {
-              return triggerNode.parentNode as HTMLElement;
-            }}
+            getPopupContainer={(triggerNode) => triggerNode.parentNode as HTMLElement}
           >
             <div className="box volume-box">{volumeIcon()}</div>
           </Popover>
@@ -309,9 +307,7 @@ const InternalAudioPlayer: React.ForwardRefRenderFunction<unknown, AudioPlayerPr
             placement="top"
             open={rateOpen}
             onOpenChange={onRateVisibleChange}
-            getPopupContainer={(triggerNode) => {
-              return triggerNode.parentNode as HTMLElement;
-            }}
+            getPopupContainer={(triggerNode) => triggerNode.parentNode as HTMLElement}
             content={rateRange.map((rateItem) => (
               <p
                 className="change-audio-rate-item"
