@@ -37,10 +37,10 @@ const Ellipsis = (props: EllipsisProps) => {
     ...restProps
   } = props;
 
-  const cls = `${styles['plus-ellipsis']} ${className}
-  ${width ? styles['plus-ellipsis-width-mode'] : ''}
-  ${lines && !isSupportLineClamp ? styles['plus-ellipsis-line'] : ''}
-  ${lines && isSupportLineClamp ? styles['plus-ellipsis-lineClamp'] : ''}
+  const cls = `${styles[prefix + '-ellipsis']} ${className}
+  ${width ? styles[prefix + '-width-mode'] : ''}
+  ${lines && !isSupportLineClamp ? styles[prefix + '-line'] : ''}
+  ${lines && isSupportLineClamp ? styles[prefix + '-lineClamp'] : ''}
   `;
 
   // 一种限制都没有返回原值
