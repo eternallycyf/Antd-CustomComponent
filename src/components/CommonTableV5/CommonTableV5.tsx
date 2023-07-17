@@ -43,6 +43,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     isSummary: false,
     summaryPosition: 'top',
     removeSummary: [], // 移除的合计项
+    showSorterTooltip: false,
   };
   cls: string = '';
   constructor(props: ICommonTable<T>) {
@@ -439,6 +440,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       preChildren,
       selectedRowKeys = [],
       selectedRows = [],
+      showSorterTooltip = false,
       ...extraProps
     } = this.props;
     let restProps: any = { ...extraProps };
@@ -492,6 +494,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
         scroll={scroll}
         pagination={paging}
         columns={columns}
+        showSorterTooltip={showSorterTooltip}
         dataSource={data?.length > 0 ? data : dataSource}
         rowSelection={selectOptions}
         onChange={(...params: any[]) => {

@@ -180,6 +180,8 @@ export interface ICommonTable<T = any> extends TableProps<T> {
   footer?: (currentPageData: any) => React.ReactNode;
   /**@name 是否显示序号 */
   showIndex?: boolean;
+  /**@name 是否显示排序的tooltip */
+  showSorterTooltip?: boolean;
   /**@name 是否计算列表高度 */
   calcHeight?: boolean;
   /**@name 其他的高度 */
