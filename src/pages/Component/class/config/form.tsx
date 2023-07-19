@@ -91,6 +91,14 @@ export const getFormList = (self: InstanceType<typeof Activity>): ISearchesType 
       },
     },
     {
+      name: 'isAgree',
+      type: 'checkbox',
+      col: 24,
+      initialValue: ['1'],
+      rules: [{ validator: (_: any, value) => (value?.length > 0 ? Promise.resolve() : Promise.reject('请勾选')) }],
+      dict: [{ text: '请确认', value: '1' }],
+    },
+    {
       name: 'activityCode',
       label: '活动编码',
       type: 'input',
