@@ -68,6 +68,7 @@
     "react-window": "^1.8.8",
     "redux-persist": "^6.0.0",
     "remark-gfm": "^3.0.1",
+    "runes2": "^1.1.2",
     "rxjs": "^7.8.1",
     "rxjs-hooks": "^0.8.0-alpha.0",
     "video.js": "^8.3.0"
