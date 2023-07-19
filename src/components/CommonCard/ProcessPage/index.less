@@ -4,11 +4,20 @@
   margin: 0 12px 12px 12px !important;
 
   .headerLeft {
+    display: flex;
+    align-items: center;
 
     .title {
       color: #15181e;
       font-weight: 700;
-      font-size: 20px !important;
+      font-size: 17px !important;
+    }
+
+    :global {
+      .ant-space-item {
+        display: flex;
+        align-items: center;
+      }
     }
   }
 

@@ -288,7 +288,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
         },
       };
     });
-    if (itemButton && status === 'edit') {
+    if (itemButton && itemButton?.length != 0 && status === 'edit') {
       newColumns.push({
         title: '操作',
         align: 'center',
