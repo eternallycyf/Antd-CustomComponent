@@ -229,20 +229,6 @@ const VirtualScrollTable = (props: any) => {
   const [totalWidth, setTotalWidth] = useState(0);
 
   useEffect(() => {
-    setTotalWidth(Math.max(columnTotalWidth, (tableRef as any)?.current?.clientWidth - 14));
-  }, [tableRef.current]);
-
-  useEffect(() => {
-    const totalResize = (window.onresize = () => {
-      setTotalWidth(Math.max(columnTotalWidth, (tableRef as any)?.current?.clientWidth - 14));
-    });
-    window.addEventListener('resize', totalResize);
-    return () => {
-      window.removeEventListener('resize', totalResize);
-    };
-  }, [totalWidth]);
-
-  useEffect(() => {
     if (totalWidth >= columnTotalWidth) {
       mergedColumns.forEach((column: any, index: number) => {
         column.realWidth = getColumnRealWidth(tableRef?.current, column, index, mergedColumns);
@@ -268,6 +254,23 @@ const VirtualScrollTable = (props: any) => {
     const [hoverRowIndex, setHoverRowIndex] = useState(-1);
     const [tableScrollTop, setTableScrollTop] = useState(0);
     const scrollRef = useRef<any>(null);
+
+    useEffect(() => {
+      setTotalWidth(Math.max(columnTotalWidth, (tableRef as any)?.current?.clientWidth - 14));
+    }, [tableRef.current]);
+
+    useEffect(() => {
+      const totalResize = (window.onresize = () => {
+        setTotalWidth(Math.max(columnTotalWidth, (tableRef as any)?.current?.clientWidth - 14));
+        setTimeout(() => {
+          scrollRef.current && scrollRef.current.dispatchEvent(new CustomEvent('scroll'));
+        }, 1000);
+      });
+      window.addEventListener('resize', totalResize);
+      return () => {
+        window.removeEventListener('resize', totalResize);
+      };
+    }, [totalWidth]);
 
     useEffect(() => {
       setTableData(scrollRef.current);

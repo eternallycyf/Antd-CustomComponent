@@ -192,7 +192,9 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
       console.error(e);
       this.setState({ loading: false });
     }
-    this.props.handleScroll && this.props.handleScroll();
+    setTimeout(() => {
+      this.props.handleScroll && this.props.handleScroll();
+    }, 1000);
   };
 
   handleBasicColumns = (props: any) => {
