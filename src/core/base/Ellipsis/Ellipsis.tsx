@@ -10,8 +10,7 @@ import EllipsisLineClamp from './EllipsisLineClamp';
 const isSupportLineClamp = document.body.style.webkitLineClamp !== undefined;
 
 export interface EllipsisProps {
-  tooltip?: boolean;
-  tooltipProps?: TooltipProps;
+  tooltip?: boolean | TooltipProps;
   length?: number;
   lines?: number;
   fullWidthRecognition?: boolean;
@@ -33,9 +32,9 @@ const Ellipsis = (props: EllipsisProps) => {
     style,
     fullWidthRecognition = false,
     prefix = 'plus-ellipsis',
-    tooltipProps = {},
     ...restProps
   } = props;
+  const tooltipProps: TooltipProps = typeof tooltip === 'object' ? tooltip : {};
 
   const cls = `${styles[prefix + '-ellipsis']} ${className}
   ${width ? styles[prefix + '-width-mode'] : ''}
@@ -69,7 +68,7 @@ const Ellipsis = (props: EllipsisProps) => {
         tooltipProps={tooltipProps}
         length={length}
         text={children || ''}
-        tooltip={tooltip}
+        tooltip={tooltip as boolean}
         fullWidthRecognition={fullWidthRecognition}
         {...restProps}
       />

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
-import { Tooltip } from 'antd';
+import { Tooltip, TooltipProps } from 'antd';
 import { EllipsisProps } from './Ellipsis';
 
 const bisection = (th: number, m: number, b: number, e: any, text: string, shadowNode: { innerHTML: string; offsetHeight: any }): number => {
@@ -38,7 +38,9 @@ const bisection = (th: number, m: number, b: number, e: any, text: string, shado
   return bisection(th, mid, begin, end, text, shadowNode);
 };
 
-type EllipsisLineProps = Omit<EllipsisProps, 'length' | 'width' | 'fullWidthRecognition'>;
+interface EllipsisLineProps extends Omit<EllipsisProps, 'length' | 'width' | 'fullWidthRecognition'> {
+  tooltipProps?: TooltipProps;
+}
 
 const EllipsisLine = (props: EllipsisLineProps) => {
   const { className, prefix, lines = 2, tooltip, tooltipProps, children, ...restProps } = props;

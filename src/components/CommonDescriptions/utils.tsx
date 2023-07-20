@@ -9,6 +9,9 @@ import { IDescriptionsColumns } from './index';
 import styles from './index.less';
 import type { IProps as ICustomTooltipProps } from '@/components/CustomTooltip/interface';
 import { EllipsisProps } from '@/core/base/Ellipsis/Ellipsis';
+import { FC } from 'react';
+import { EllipsisExpandProps } from '@/core/base/Ellipsis/Expand';
+import { Merge, DeepPartial } from '@/typings/utils';
 
 export const addSpace = (str: string) => str.replace(/(\d{3})(\d{4})/g, '$1 $2 ');
 
@@ -34,6 +37,15 @@ export const formatTime = (options: any, text: any) => {
   return dayjs(text).format(typeof options.formatTime == 'boolean' ? 'YYYY-MM-DD' : options.formatTime);
 };
 
+const ContentWrapper: FC<Merge<DeepPartial<Merge<EllipsisProps, EllipsisExpandProps>>, { expand: boolean }>> = (props) => {
+  const { expand, children, ...restProps } = props;
+  if (expand) {
+    return <Ellipsis.Expand {...(restProps as EllipsisExpandProps)} />;
+  } else {
+    return <Ellipsis {...(restProps as EllipsisProps)}>{children as string}</Ellipsis>;
+  }
+};
+
 export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) => {
   if (list?.length === 0) return null;
   const accessCollection = JSON.parse(sessionStorage.getItem('accessCollection') || '[]');
@@ -42,7 +54,11 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
     .filter(({ acpCode }) => (acpCode ? accessCollection.includes(acpCode) : true))
     .map((item) => {
       let value = info?.[item.key];
+      /** 默认值 */
+      const expand = item?.expand ?? false;
+      const maxLength = item?.maxLength ?? 40;
       const controlProps = item?.controlProps ?? {};
+
       if (item.isPhone) value = value ? addSpace(String(value)) : undefined;
       if (item.formatPercent) value = formatPercent(value);
       if (item.formatNumber) value = formatNumber(item, value);
@@ -57,26 +73,35 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
           return null;
         }
       }
+      if (item?.format) return item?.format(value, info);
 
+      /** 默认值 */
       let defaultColProps = {
         key: (item.key || getUUID()) as string,
         className: item.className ? item.className : `${styles.desc}`,
         span: item?.span ?? 20,
       };
-      const maxLength = item?.maxLength ?? 40;
-
-      if (item?.format) return item?.format(value, info);
+      const defaultExpandProps = expand
+        ? {
+            content: value,
+            rows: item?.rows ?? 2,
+            expandText: '展开',
+            collapseText: '收起',
+          }
+        : {};
 
       if (item.type == 'text') {
         return (
           <Col {...defaultColProps}>
-            <Ellipsis
+            <ContentWrapper
+              expand={expand}
               length={maxLength}
               className={`${item.labelClassName} ${item.wrapperClassName} ${defaultColProps?.className}`}
               {...(controlProps as EllipsisProps)}
+              {...defaultExpandProps}
             >
               {value ?? '--'}
-            </Ellipsis>
+            </ContentWrapper>
           </Col>
         );
       }
@@ -100,6 +125,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
       }
 
       if (item.type == 'formItem') {
+        /** 添加tooltip */
         const label = item?.label;
         let newValue: any = item?.label;
         if (item.tooltip) {
@@ -113,33 +139,30 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
           newValue = label + '：';
         }
 
+        /** 渲染多行or一行 */
         const type = item?.rows || item?.rows == undefined ? 'textarea' : 'text';
         let minWidth = 40;
         if (typeof newValue == 'string') minWidth = getValueLen(String(newValue)) * 6.25;
         if (item.tooltip) minWidth += 20;
+        let formItemProps = {
+          expand,
+          className: `${item.wrapperClassName} ${defaultColProps?.className}`,
+          ...defaultExpandProps,
+          ...controlProps,
+        };
+        if (type == 'text') {
+          formItemProps = { ...formItemProps, length: maxLength };
+        } else {
+          formItemProps = { ...formItemProps, lines: item.rows ?? 1 };
+        }
+
         return (
           <Col {...defaultColProps}>
             <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
               <span style={{ minWidth }} className={item.labelClassName}>
                 {newValue}
               </span>
-              {type == 'text' ? (
-                <Ellipsis
-                  length={maxLength}
-                  className={`${item.wrapperClassName} ${defaultColProps?.className} `}
-                  {...(controlProps as EllipsisProps)}
-                >
-                  {value ?? '--'}
-                </Ellipsis>
-              ) : (
-                <Ellipsis
-                  lines={item.rows || 1}
-                  className={`${item.wrapperClassName} ${defaultColProps?.className}`}
-                  {...(controlProps as EllipsisProps)}
-                >
-                  {value ?? '--'}
-                </Ellipsis>
-              )}
+              <ContentWrapper {...formItemProps}>{value ?? '--'}</ContentWrapper>
             </div>
           </Col>
         );

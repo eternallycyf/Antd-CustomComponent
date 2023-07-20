@@ -33,7 +33,7 @@ export interface EllipsisTextProps {
   tooltip: boolean;
   className: string;
   fullWidthRecognition: boolean;
-  tooltipProps: TooltipProps;
+  tooltipProps?: TooltipProps;
 }
 
 const EllipsisText: React.FC<EllipsisTextProps> = (props) => {

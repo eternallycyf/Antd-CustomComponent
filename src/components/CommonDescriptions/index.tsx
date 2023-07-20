@@ -1,7 +1,9 @@
 import type { IProps as ICustomTooltipProps } from '@/components/CustomTooltip/interface';
 import { EllipsisProps } from '@/core/base/Ellipsis/Ellipsis';
+import { EllipsisExpandProps } from '@/core/base/Ellipsis/Expand';
 import { useFetchProps, useFetchState } from '@/hook/useFetch';
 import { IButtonProps, IColumnsType } from '@/typings';
+import { Merge } from '@/typings/utils';
 import { RowProps } from 'antd';
 import React from 'react';
 import CommonDesc from './Descriptions';
@@ -49,6 +51,13 @@ export interface IDescriptionsColumns<T = AnyData> {
    */
   rows?: number;
   maxLength?: number;
+  /**
+   * @name 是否展开 仅在字符串类型下生效
+   * @default false
+   * @description 如果是true 默认 rows=2
+   * @description 开启expand后 maxLength将 失效
+   */
+  expand?: boolean;
 
   /**
    * @description 3.格式化配置
@@ -67,7 +76,7 @@ export interface IDescriptionsColumns<T = AnyData> {
   /**
    * @description 4.其他配置
    */
-  controlProps?: DeepPartial<ICustomTooltipProps<unknown> & EllipsisProps> & { [props: string]: any };
+  controlProps?: DeepPartial<Merge<Merge<ICustomTooltipProps<unknown>, EllipsisProps>, EllipsisExpandProps>>;
 }
 
 /**

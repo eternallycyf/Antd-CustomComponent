@@ -18,3 +18,20 @@ const Base = () => {
 
 export default Base;
 ```
+
+```tsx
+CustomModal({
+  title: 'xxx',
+  content: 'xxx',
+  footerBtns: [
+    {
+      btnProps: { type: 'primary' },
+      code: true,
+      btnChild: '知道了',
+    },
+  ],
+  modalProps: {
+    width: 800,
+  },
+});
+```

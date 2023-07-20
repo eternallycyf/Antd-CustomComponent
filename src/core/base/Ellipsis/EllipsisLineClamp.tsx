@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Tooltip } from 'antd';
+import { Tooltip, TooltipProps } from 'antd';
 import { EllipsisProps } from './Ellipsis';
 
-type EllipsisLineClampProps = Omit<EllipsisProps, 'length' | 'width' | 'fullWidthRecognition'>;
+interface EllipsisLineClampProps extends Omit<EllipsisProps, 'length' | 'width' | 'fullWidthRecognition'> {
+  tooltipProps?: TooltipProps;
+}
 
 const EllipsisLineClamp = (props: EllipsisLineClampProps) => {
   const { className, prefix, lines, tooltip, tooltipProps, children, ...restProps } = props;

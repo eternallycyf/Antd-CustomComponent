@@ -8,7 +8,7 @@ import styles from './index.less';
 
 const classPrefix = `plus-ellipsis`;
 
-export type EllipsisProps = {
+export type EllipsisExpandProps = {
   content: string;
   direction?: 'start' | 'end' | 'middle';
   rows?: number;
@@ -37,7 +37,7 @@ type EllipsisedValue = {
   tailing?: string;
 };
 
-const EllipsisExpand = (p: EllipsisProps): React.ReactElement => {
+const EllipsisExpand = (p: EllipsisExpandProps): React.ReactElement => {
   const props = mergeProps(defaultProps, p);
   const rootRef = useRef<HTMLDivElement>(null);
   const expandElRef = useRef<HTMLAnchorElement>(null);
