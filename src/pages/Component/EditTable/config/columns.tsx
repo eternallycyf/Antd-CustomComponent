@@ -66,15 +66,6 @@ export const getColumns = (params: IGetColumnsParams): IEditTableColumnsType<IRe
         },
         rules: [
           {
-            validateTrigger: 'onSubmit',
-            required: true,
-            validator: (_, value) => {
-              if (value == 0) return Promise.reject('比例不能为0');
-              if (value == null) return Promise.reject('必填项');
-              return Promise.resolve('');
-            },
-          },
-          {
             required: true,
             validator: handleCheckIsRatioExceedExcessie,
             validateTrigger: 'onSubmit',

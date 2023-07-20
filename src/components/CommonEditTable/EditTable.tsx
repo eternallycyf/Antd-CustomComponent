@@ -35,6 +35,7 @@ interface IEditTableContext<Values = any, FormItemsValues = any> extends ICommon
  * @property {boolean} [isVirtual=false] - 是否是虚拟列表虚拟列表 必须传入 scroll.y 高度
  * @property {boolean} [isMultiple=true] - 是否是实时保存类型 为false时 editable = true 才会可编辑
  * @property {string[]} [editableKeys] - 可编辑的key
+ * @property {number} [itemButtonWidth=undefined] - 每一行的操作按钮的宽度 默认自适应
  *
  * @property {React.ReactNode | ((value: IEditTableContext) => React.ReactNode)} [beforeChildren] - 表格前面的内容
  * @property {React.ReactNode | ((value: IEditTableContext) => React.ReactNode)} [afterChildren] - 表格后面的内容
@@ -62,6 +63,7 @@ export interface ICommonEditTableProps<Values = any, Rest = Record<string, unkno
   isVirtual?: boolean;
   isMultiple?: boolean;
   editableKeys?: string[];
+  itemButtonWidth?: number;
 
   /**@name 其他内容配置 */
   beforeChildren?: React.ReactNode | ((value: IEditTableContext<Values, FormItemsValues>) => React.ReactNode);
@@ -171,6 +173,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
     isVirtual = false,
     isMultiple = true,
     editableKeys = [],
+    itemButtonWidth,
 
     beforeChildren,
     afterChildren,
@@ -292,7 +295,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
       newColumns.push({
         title: '操作',
         align: 'center',
-        width: values && values?.length != 0 ? itemButton.length * 70 : 60,
+        width: itemButtonWidth || (values && values?.length != 0) ? itemButton.length * 70 : 60,
         dataIndex: 'operation',
         render: (text: number, field: FormListFieldData, index: number) => {
           const renderProps = getCurrentFieldValue(form, tableFormName, index);

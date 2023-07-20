@@ -32,6 +32,7 @@ const Demo = () => {
 
   const handleCheckIsRatioExceedExcessie = (_: any, val: number) => {
     if (val == null) return Promise.reject('必填项');
+    if (val == 0) return Promise.reject('比例不能为0');
     const tableValues = form.getFieldValue('EditTable') || [];
     if (tableValues?.length == 0) return Promise.resolve('');
     if (currentRatio != 100) {
