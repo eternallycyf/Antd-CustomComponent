@@ -85,6 +85,7 @@ const AccessBtn: React.FC<IProps> = (props) => {
             onConfirm={onClick}
             okButtonProps={{ classNames: styles['btn-primary'] }}
             cancelButtonProps={{ classNames: styles['btn-default'] }}
+            overlayStyle={{ maxWidth: 400 }}
           >
             <Button key={`access-${code || index}${getUUID()}`} size={size || 'middle'} danger type="link" {...restProps}>
               {text}

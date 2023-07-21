@@ -95,7 +95,7 @@ export const getFormList = (self: InstanceType<typeof Activity>): ISearchesType 
       type: 'checkbox',
       col: 24,
       initialValue: ['1'],
-      rules: [{ validator: (_: any, value) => (value?.length > 0 ? Promise.resolve() : Promise.reject('请勾选')) }],
+      rules: [{ validator: (_: any, value) => (value && value?.length != 0 ? Promise.resolve() : Promise.reject('请勾选')) }],
       dict: [{ text: '请确认', value: '1' }],
     },
     {
