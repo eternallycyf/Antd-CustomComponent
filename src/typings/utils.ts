@@ -9,3 +9,6 @@ export type DeepPartial<T> = T extends object
       [P in keyof T]?: DeepPartial<T[P]>;
     }
   : T;
+
+// 重映射
+type CapitalizeStr<Str extends string> = Str extends `${infer Rest}` ? `xxx-${Rest}` : Str;
