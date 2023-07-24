@@ -56,6 +56,7 @@ type IHandle = {
   handleAdd: (record: any) => void;
   handleEdit: (record: any) => void;
   handleCancel: () => void;
+  record: any;
 };
 
 const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) => {
@@ -72,6 +73,7 @@ const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref)
     handleAdd,
     handleEdit,
     handleCancel,
+    record,
   }));
 
   const handleAdd = (defaultProps: any) => {

@@ -1,18 +1,18 @@
-import React, { useImperativeHandle } from 'react';
+import React, { Fragment, useImperativeHandle } from 'react';
 import { FormInstance } from 'antd';
 import _ from 'lodash';
 import CustomTooltip from '@/components/CustomTooltip/CustomTooltip';
 import styles from '../index.less';
 import { IFileName } from '@/components/CustomTooltip/FileName';
+import { ContentWrapper } from '@/components/CommonDescriptions/utils';
+import { DeepPartial, Merge } from '@/typings/utils';
+import { EllipsisProps } from '@/core/base/Ellipsis/Ellipsis';
+import { EllipsisExpandProps } from '@/core/base/Ellipsis/Expand';
 
 type IViewHandle = {};
 
 export type IBaseViewProps = {
   record?: any;
-  /**
-   * @name 是否可复制 没有 render 时生效
-   */
-  copyable?: boolean;
   /**
    * @name maxLength rows render 只能同时存在一个
    */
@@ -20,6 +20,7 @@ export type IBaseViewProps = {
   rows?: number;
   hasPreview?: boolean;
   previewProps?: IFileName;
+  ellipsisProps?: DeepPartial<Merge<Merge<EllipsisProps, EllipsisExpandProps>, { expand: boolean }>>;
   /**
    * @name
    * 只参与展示 不参与最终结果
@@ -29,7 +30,6 @@ export type IBaseViewProps = {
   render?: (value: any, record: any, values: any) => React.ReactNode;
 };
 
-// TODO: 文件预览
 export interface IViewProps extends IBaseViewProps {
   form: FormInstance;
   disabled?: boolean;
@@ -48,48 +48,61 @@ const View: React.ForwardRefRenderFunction<IViewHandle, IViewProps> = (props, re
     label,
     name = '',
     record,
-    rows = 1,
-    maxLength = 20,
+    rows,
+    maxLength,
     initialValue = '',
     style = {},
     className,
-    copyable = false,
     render,
     parser,
     hasPreview,
     previewProps = {},
+    ellipsisProps = {},
     ...restProps
   } = props;
 
   useImperativeHandle(ref, () => ({}));
 
   let value = record?.[name] === undefined ? undefined : record?.[name];
+  const CustomTooltipMaxLength = maxLength || 20;
   const values = form?.getFieldsValue() || {};
   if (parser) {
     value = parser(value, record, values);
   }
 
   if (hasPreview) {
-    return <CustomTooltip.FileName name={value} prefixLength={maxLength} hasPreview={hasPreview} {...previewProps} />;
+    return <CustomTooltip.FileName name={value} prefixLength={CustomTooltipMaxLength} hasPreview={hasPreview} {...previewProps} />;
   }
 
-  if (!render && rows === 1) {
-    return (
-      <CustomTooltip
-        paragraphClassName={`${styles.desc} ${className}`}
-        style={style}
-        text={value ?? '--'}
-        maxLength={maxLength}
-        copyable={copyable}
-      />
-    );
+  const expand = ellipsisProps?.expand ?? false;
+  const defaultExpandProps = expand
+    ? {
+        content: value.repeat(5),
+        rows: rows ?? 1,
+        expandText: '展开',
+        collapseText: '收起',
+      }
+    : { children: value.repeat(5) };
+
+  let ContentWrapperProps: any = {
+    expand,
+    className: `${styles.desc} ${className}`,
+    style,
+    ...defaultExpandProps,
+    ...ellipsisProps,
+  };
+  const type = rows || (rows == undefined && !maxLength) ? 'textarea' : 'text';
+  if (type == 'text') {
+    ContentWrapperProps = { ...ContentWrapperProps, length: CustomTooltipMaxLength };
+  } else {
+    ContentWrapperProps = { ...ContentWrapperProps, lines: rows ?? 1 };
   }
 
-  if (!render && rows !== 1) {
-    return <CustomTooltip.Paragraph className={className} style={style} text={value ?? '--'} copyable={copyable} rows={rows} />;
+  if (!render) {
+    return <ContentWrapper {...ContentWrapperProps} />;
   }
 
-  if (render) return <span className={styles.desc}>{render(value, record, values)}</span>;
+  if (render) return <Fragment>{render(value, record, values)}</Fragment>;
 
   return <span className={styles.desc}>--</span>;
 };

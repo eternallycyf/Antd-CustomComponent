@@ -22,8 +22,6 @@ const defaultInlineWidth = {
 };
 
 const FormBuilder: React.FC<CustomForm> = (props) => {
-  console.log(props, '=======');
-
   const {
     form,
     type,

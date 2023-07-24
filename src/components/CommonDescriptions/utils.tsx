@@ -37,7 +37,7 @@ export const formatTime = (options: any, text: any) => {
   return dayjs(text).format(typeof options.formatTime == 'boolean' ? 'YYYY-MM-DD' : options.formatTime);
 };
 
-const ContentWrapper: FC<Merge<DeepPartial<Merge<EllipsisProps, EllipsisExpandProps>>, { expand: boolean }>> = (props) => {
+export const ContentWrapper: FC<Merge<DeepPartial<Merge<EllipsisProps, EllipsisExpandProps>>, { expand: boolean }>> = (props) => {
   const { expand, children, ...restProps } = props;
   if (expand) {
     return <Ellipsis.Expand {...(restProps as EllipsisExpandProps)} />;
