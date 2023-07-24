@@ -1,8 +1,10 @@
-import { EditableContext } from '@/components/CustomForm/FormItem/editRow';
 import { getFieldComp } from '@/core/helpers';
+import { ICommonTable } from '@/typings';
 import { IBaseFormControlType } from '@/typings/base';
 import { FormInstance, FormItemProps } from 'antd';
 import React, { useContext } from 'react';
+
+export const EditableContext = React.createContext<ICommonTable<any>>({} as ICommonTable<any>);
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   fieldProps: {
