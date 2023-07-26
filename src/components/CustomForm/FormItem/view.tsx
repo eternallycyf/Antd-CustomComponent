@@ -77,12 +77,12 @@ const View: React.ForwardRefRenderFunction<IViewHandle, IViewProps> = (props, re
   const expand = ellipsisProps?.expand ?? false;
   const defaultExpandProps = expand
     ? {
-        content: value.repeat(5),
+        content: value,
         rows: rows ?? 1,
         expandText: '展开',
         collapseText: '收起',
       }
-    : { children: value.repeat(5) };
+    : { children: value };
 
   let ContentWrapperProps: any = {
     expand,

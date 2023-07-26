@@ -1,5 +1,6 @@
 import { RefObject } from 'react';
-import { useIsomorphicLayoutEffect, useMemoizedFn } from 'ahooks';
+import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect';
+import useMemoizedFn from './useMemoizedFn';
 
 export function useResizeEffect<T extends HTMLElement>(effect: (target: T) => void, targetRef: RefObject<T>) {
   const fn = useMemoizedFn(effect);
