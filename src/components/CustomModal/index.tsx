@@ -8,7 +8,7 @@ interface IAsyncConfirm {
   type: ModalFuncProps['type'];
 }
 
-export const asyncConfirm = (props: IAsyncConfirm) => {
+export const asyncConfirm = (props: IAsyncConfirm): Promise<{ destory: Function; update: Function }> => {
   const { footerBtns, modalProps, type = 'info' } = props;
 
   return new Promise((resolve) => {
@@ -47,6 +47,7 @@ export const asyncConfirm = (props: IAsyncConfirm) => {
       className: styles.async_confirm,
       content: modalContent,
     });
+    resolve(modalRef as any as Promise<{ destory: Function; update: Function }>);
   });
 };
 
@@ -82,7 +83,7 @@ const CustomModal = async ({
     },
   ],
 }: ICreateModal) => {
-  const confirmCode = await asyncConfirm({
+  return await asyncConfirm({
     footerBtns,
     type,
     modalProps: {
