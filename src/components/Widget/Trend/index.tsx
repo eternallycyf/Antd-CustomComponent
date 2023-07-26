@@ -6,7 +6,7 @@ import styles from './index.less';
 
 export interface ITrendProps {
   colorful?: boolean;
-  flag: 'up' | 'down';
+  flag: 'up' | 'down' | false;
   style?: React.CSSProperties;
   reverseColor?: boolean;
   children?: React.ReactNode;
