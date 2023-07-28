@@ -17,7 +17,6 @@ interface Iprop {
    */
   args: Args;
 }
-export const IProps = <T,>(props: Iprop) => <></>;
 
 function useVirtualList(
   elementRef: RefObject<Element>,

@@ -252,6 +252,7 @@ componentDidMount(){
         // )
         this.handleSearch({ ...value, ...params }})
         hasListen = true;
+        this.props.history.replace({ pathname: '/跳转地址路由', query: {} })
       }
     }
   }
@@ -259,17 +260,7 @@ componentDidMount(){
   !hasListen && this.handleSearch(values)
 }
 
-handleResetCallBack = () => router.push({ pathname: '/跳转地址路由', query: {} })
-
 initRequest: false;
-
-<CommonSearch
-  handleSearch={(val) => {
-    router.push({ pathname: `/当前路由`, query: {} })
-    this.handleSearch(val)
-  }}
-  handleResetCallBack={this.handleResetCallBack}
-/>
 
 export default compose(
   withRoutePage,

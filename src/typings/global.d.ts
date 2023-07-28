@@ -12,3 +12,5 @@ declare module 'braft-extensions/dist/table';
 declare module 'braft-extensions/dist/max-length';
 declare module 'braft-extensions/dist/color-picker';
 declare module 'mockjs';
+
+interface Window {}

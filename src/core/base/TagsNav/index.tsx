@@ -124,7 +124,7 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
       setTabs(newTabs);
     }
     setActiveKey(_activeKey);
-  }, [_activeKey]);
+  }, [location]);
 
   const handleRefresh = (refreshKey: string) => {
     tabChildren[refreshKey] = React.cloneElement(tabChildren[refreshKey], {

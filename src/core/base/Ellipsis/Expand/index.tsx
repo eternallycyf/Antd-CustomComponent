@@ -203,7 +203,7 @@ const EllipsisExpand = (p: EllipsisExpandProps): React.ReactElement => {
         </>
       );
     return (
-      <Tooltip overlayStyle={{ maxWidth: 800 }} {...tooltipProps}>
+      <Tooltip overlayStyle={{ maxWidth: 400 }} {...tooltipProps}>
         {ellipsised.leading}
         {expandActionElement}
         {ellipsised.tailing}
