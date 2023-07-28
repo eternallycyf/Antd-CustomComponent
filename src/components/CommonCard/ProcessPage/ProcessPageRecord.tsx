@@ -10,9 +10,9 @@ const ProcessPageDetail: React.FC<IProcessPageRecordProps> = (props) => {
   const { businessId, ...restProps } = props;
   if (!businessId) return null;
 
-  const tableParams: ICommonTable<any> = {
+  const tableParams: any = {
     columns: [],
-    rowKey: 'flowId',
+    rowKey: 'flowId' as string,
     fetchMethod: 'get',
     showIndex: false,
     dataPath: 'data.data',

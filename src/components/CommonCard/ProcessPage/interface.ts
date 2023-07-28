@@ -1,7 +1,8 @@
-import { IButtonProps, IColumnsType } from '@/typings';
+import { IButtonProps, IColumnsType, ICommonTable } from '@/typings';
 import { RouteComponentProps } from '@umijs/renderer-react';
 import { ButtonProps, TableProps } from 'antd';
 import { IDescriptionsColumns, IDescriptionsProps } from '@/components/CommonDescriptions';
+import { DeepPartial } from '@/typings/utils';
 
 export interface IProcessPageProps extends RouteComponentProps<any> {
   title?: React.ReactNode;
@@ -41,6 +42,6 @@ export interface IProcessPageHeaderProps<T = Record<string, unknown>> extends ID
   hasDivider?: boolean;
 }
 
-export interface IProcessPageRecordProps extends IColumnsType<any> {
-  businessId: string | number;
+export interface IProcessPageRecordProps extends DeepPartial<ICommonTable<any>> {
+  businessId: string;
 }
