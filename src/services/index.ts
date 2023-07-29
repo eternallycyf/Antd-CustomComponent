@@ -4,7 +4,7 @@ export function fetchToken() {
   return request('/login', { method: 'POST' });
 }
 
-export function fetchUserInfo() {
+export function fetchUserInfo(params?: any) {
   return request('/fetchUserInfo', { method: 'POST' });
 }
 

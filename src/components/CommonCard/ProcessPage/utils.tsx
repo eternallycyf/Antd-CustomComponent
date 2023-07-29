@@ -4,12 +4,13 @@ import { RouteComponentProps } from '@/typings/router';
 import { DeepPartial, Merge, ValueOf } from '@/typings/utils';
 import { handleDownload } from '@/utils/util';
 import projectConfig from '@/config/projectConfig';
+import { history } from '@umijs/max';
 const { apiPrefixMock } = projectConfig;
 
 export type IStateFlowStatus = [ValueOf<typeof FLOW_STATUS>, keyof typeof FLOW_STATUS];
 type ConnectProps = DeepPartial<Merge<ConnectState['login'], ConnectState['global']>>;
 export interface extraMatchParams {
-  businessId?: string;
+  businessId: string;
 }
 export interface IProcessProps extends RouteComponentProps<extraMatchParams>, ConnectProps {}
 
@@ -61,4 +62,9 @@ export const handleDownAll = (recordDataSource: any) => {
       );
     });
   } catch (error) {}
+};
+
+export const handleRouterToCenter = (props: any) => {
+  window.closeTab(props.match.url);
+  history.push('/processCenter');
 };
