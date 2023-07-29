@@ -18,7 +18,7 @@ export interface IProcessPageProps extends RouteComponentProps<any> {
   dotColor?: string;
   dotText?: string;
 
-  handleHeaderOnClick?: () => void;
+  handleHeaderOnClick?: Function;
 }
 
 export interface IProcessPageCardProps {

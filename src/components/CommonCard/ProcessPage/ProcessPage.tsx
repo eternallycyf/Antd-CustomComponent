@@ -21,7 +21,7 @@ const ProcessPage: FC<IProcessPageProps> = (props) => {
     return (
       <div className={styles.headerLeft}>
         <Space size={12}>
-          <LeftOutlined onClick={handleTitleOnClick} style={{ cursor: 'pointer', fontSize: 20, marginTop: 2 }} />
+          <LeftOutlined onClick={handleTitleOnClick} style={{ cursor: 'pointer', fontSize: 20, marginTop: -2 }} />
           <span className={styles.title}>{title ?? '--'}</span>
           {dotText && <Badge color={dotColor} text={<span style={{ fontSize: 14, color: dotColor }}>{dotText}</span>} />}
         </Space>

@@ -7,6 +7,11 @@
   color: @plus-primary !important;
   font-weight: 500;
   font-size: 14px;
+
+  &:hover {
+    border-color: @plus-primary;
+    color: @plus-primary;
+  }
 }
 
 .btn-primary {
@@ -17,6 +22,11 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 14px;
+
+  &:hover {
+    background-color: @plus-primary-hover;
+    color: #fff;
+  }
 }
 
 .btn-link {
@@ -58,13 +68,103 @@
   font-weight: 400;
 }
 
-// 默认rest
-:global {
-  .ant-radio-inner {
-    background-color: transparent !important;
-  }
+.plus-modal {
+  :global {
+    .ant-modal-title {
+      color: #15181e;
+      font-weight: 500;
+      font-size: 16px;
+    }
 
-  .ant-radio-wrapper .ant-radio-checked .ant-radio-inner::after {
-    background-color: @plus-primary !important;
+    .ant-modal-content {
+      .ant-btn-primary {
+        &:extend(.btn-primary);
+      }
+    }
+
+    .ant-modal-body {
+      overflow-y: auto;
+      max-height: 600px;
+    }
+
+    .ant-modal-footer button:first-child {
+      &:extend(.btn-default);
+    }
+
+    .ant-radio-inner {
+      background-color: transparent !important;
+    }
+
+    .ant-radio-wrapper .ant-radio-checked .ant-radio-inner::after {
+      background-color: @plus-primary !important;
+    }
+  }
+}
+
+.plus-table {
+  :global {
+    .ant-table-header .ant-table-thead tr>th {
+      border-bottom: 1px solid #eff1f4 !important;
+      background: #fafafb;
+      color: #8e96a4;
+      font-weight: 600 !important;
+      font-size: 12px;
+
+      &::before {
+        border: none !important;
+      }
+    }
+
+    .ant-table-tbody>tr>td {
+      color: #2a303b;
+      font-weight: 400 !important;
+      font-size: 12px;
+
+      a {
+        color: #2b5fdc;
+        font-weight: 400;
+        font-size: 12px;
+      }
+    }
+
+    .ant-table-tbody>.ant-table-row>td {
+      padding: 13px 12px !important;
+    }
+  }
+}
+
+.plus-formContent {}
+
+.plus-detail-formContent {
+  :global {
+
+    .ant-input[disabled],
+    .ant-input-number-disabled {
+      background-color: #f5f6f8;
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    .ant-radio-wrapper-disabled span {
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    .ant-form-item-control-input-content {
+      .ant-select-disabled {
+        .ant-select-selector {
+          background-color: #f5f6f8;
+          color: rgba(0, 0, 0, 0.85);
+        }
+      }
+    }
+
+    .ant-checkbox-wrapper-disabled span {
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    .ant-form-item-with-help {
+      .ant-checkbox-inner {
+        border: 1px solid red;
+      }
+    }
   }
 }
