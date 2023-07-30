@@ -5,6 +5,7 @@ import { DeepPartial, Merge, ValueOf } from '@/typings/utils';
 import { handleDownload } from '@/utils/util';
 import projectConfig from '@/config/projectConfig';
 import { history } from '@umijs/max';
+import dayjs from 'dayjs';
 const { apiPrefixMock } = projectConfig;
 
 export type IStateFlowStatus = [ValueOf<typeof FLOW_STATUS>, keyof typeof FLOW_STATUS];
@@ -67,4 +68,34 @@ export const handleDownAll = (recordDataSource: any) => {
 export const handleRouterToCenter = (props: any) => {
   window.closeTab(props.match.url);
   history.push('/processCenter');
+};
+
+export const getFlowDetailInfo = (data: any) => {
+  let subInfo = {
+    title: data?.fdSubject,
+    realname: data?.sqr,
+    deptName: data?.sqrbm,
+    mobile: data?.lxdh,
+    applyTime: data?.sqs ?? dayjs().format('YYYY-MM-DD HH:mm:ss'),
+    oaUrl: data?.oaUrl,
+    attachment: (data?.fileData || []).map((item: any) => ({ ...item, percent: 100, status: 'done' })),
+  };
+  let baseOptions = {
+    ...data?.mainData,
+    attachment: subInfo.attachment,
+  };
+  return [subInfo, baseOptions, data?.status];
+};
+
+export const getStatusMc = (status: IStateFlowStatus['0']) => {
+  const statusMc = Object.entries(FLOW_STATUS).filter(([key, val]) => val == status)?.[0]?.[0];
+  return statusMc;
+};
+
+export const routerToOaLinkUrl = (oaUrl: string) => window.open(oaUrl, '_blank');
+
+export const routerToDetailPage = (props: IProcessProps, businessId: string, path: string) => {
+  //@ts-ignore
+  window.closeTab(props.match.url);
+  return history.push(`/process/${path}/edit/${businessId}`);
 };

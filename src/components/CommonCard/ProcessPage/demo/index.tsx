@@ -1,27 +1,39 @@
-import projectConfig from '@/config/projectConfig';
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { Col, Form } from 'antd';
-import { FLOW_STATUS, FLOW_STATUS_COLOR, handleRouterToCenter, IProcessProps, IStateFlowStatus } from '@/components/CommonCard/ProcessPage/utils';
 import ProcessPage from '@/components/CommonCard/ProcessPage';
-import useFlowMatchParams from '@/hook/useFlowMatchParams';
-import { useAsync } from 'react-use';
-import { fetchUserInfo } from '@/services';
-import dayjs from 'dayjs';
-import { connect, history } from '@umijs/max';
-import ErrorMessage from '@/utils/ErrorMessage';
 import { IProcessPageProps } from '@/components/CommonCard/ProcessPage/interface';
-import styles from './index.less';
-import { getFormList } from './config/form';
+import {
+  FLOW_STATUS,
+  FLOW_STATUS_COLOR,
+  getFlowDetailInfo,
+  getStatusMc,
+  handleRouterToCenter,
+  IProcessProps,
+  IStateFlowStatus,
+  routerToDetailPage,
+  routerToOaLinkUrl,
+} from '@/components/CommonCard/ProcessPage/utils';
+import projectConfig from '@/config/projectConfig';
+import { withRouter } from '@/core/Enhance/withRouter';
+import useFlowMatchParams from '@/hook/useFlowMatchParams';
+import { fetchUserInfo } from '@/services';
+import { ConnectState } from '@/typings/connect';
+import ErrorMessage from '@/utils/ErrorMessage';
 import { getUUID } from '@/utils/random';
 import { renderFormItem } from '@/utils/util';
+import { connect, history } from '@umijs/max';
+import { Col, Form, Skeleton } from 'antd';
+import dayjs from 'dayjs';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { useAsync } from 'react-use';
 import { compose } from 'redux';
-import { withRouter } from '@/core/Enhance/withRouter';
-import { ConnectState } from '@/typings/connect';
+import { getFormList } from './config/form';
+import styles from './index.less';
 const { apiPrefixMock } = projectConfig;
 
 const ProcessPageDemo: FC<IProcessProps> = (props) => {
   //#region
+  // TODO: 页面title及路由关键词
   const title = '测试流程';
+  const flowPath = 'ProcessPageDemo';
   const { businessId = '', status } = useFlowMatchParams({ ...props, flowPath: 'demo' });
 
   const EditForm = Form.useForm()[0];
@@ -40,31 +52,20 @@ const ProcessPageDemo: FC<IProcessProps> = (props) => {
   const { value: currentRecord, loading: recordLoading } = useAsync(async () => {
     //@ts-ignore
     const { data } = await fetchUserInfo({ businessId });
-    let subInfo = {
-      title: data?.fdSubject,
-      realname: data?.sqr,
-      deptName: data?.sqrbm,
-      mobile: data?.lxdh,
-      applyTime: data?.sqs ?? dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      oaUrl: data?.oaUrl,
-      attachment: data?.fileData.map((item: any) => ({
-        ...item,
-        percent: 100,
-        status: 'done',
-      })),
-    };
 
-    let beseOptions = {
-      ...data?.mainData,
-      attachment: subInfo.attachment,
-    };
-    const statusMc = Object.entries(FLOW_STATUS).filter(([key, val]) => val == data?.status)?.[0]?.[0];
-    setFlowStatus([data?.status, statusMc as any]);
+    let [subInfo, beseOptions, flowStatus] = getFlowDetailInfo(data);
+    const { attachment = [] } = beseOptions;
+    const flowStatusMc = getStatusMc(flowStatus);
+
+    beseOptions = parseFormValues(data, beseOptions);
+
+    setFlowStatus([flowStatus, flowStatusMc as any]);
     EditForm.setFieldsValue(beseOptions);
     return subInfo;
   }, []);
 
   const subTitle = useMemo(() => {
+    // TODO 标题格式
     if (status === 'detail') return currentRecord?.title || '--';
     const subData = SubHeaderRef.current.data;
     return `关于【${subData?.realname ?? '--'}】（${subData?.depName ?? '--'}）】的${title}`;
@@ -72,7 +73,14 @@ const ProcessPageDemo: FC<IProcessProps> = (props) => {
   //#endregion
 
   //#region
+  // 解析接口返回的 data => form.setFieldsValue(data);
+  const parseFormValues = (data: any, baseOptions: any) => {
+    // TODO: 回显转换格式
+    return baseOptions;
+  };
+
   const tranFormValues = (currentStatusMc: IStateFlowStatus[1]) => {
+    // TODO: 提交转换格式
     const values = EditForm.getFieldsValue();
     let baseOptions = { ...values };
     if (status === 'edit') baseOptions = { ...baseOptions, businessId };
@@ -84,26 +92,25 @@ const ProcessPageDemo: FC<IProcessProps> = (props) => {
 
   const handleConfirm = async (currentStatusMc: IStateFlowStatus[1]) => {
     const currentStatus = FLOW_STATUS[currentStatusMc];
-    let baseOptions = tranFormValues(currentStatusMc);
+    // TODO: 请求接口
+    const confirmFn = flowStatus?.[1] === '已驳回' ? fetchUserInfo : fetchUserInfo;
+    const flowMethods: Record<'已废止' | '草稿中' | '提交', Function> = {
+      已废止: confirmFn,
+      草稿中: confirmFn,
+      提交: confirmFn,
+    };
 
-    if (currentStatusMc === '查看0A') {
-      window.open(currentRecord?.oaUrl, '_blank');
-    }
-
-    if (currentStatusMc === '编辑') {
-      //@ts-ignore
-      window.closeTab(props.match.url);
-      return history.push('/demo');
-    }
-
+    if (currentStatusMc === '查看0A') return routerToOaLinkUrl(currentRecord?.oaUrl);
+    if (currentStatusMc === '编辑') return routerToDetailPage(props, businessId, flowPath);
     if (currentStatusMc === '已废止') {
-      const res = await fetchUserInfo(businessId);
+      const res = await flowMethods['已废止'](businessId);
       ErrorMessage.withName('废止').withResponse(res).widthSuccessCallback(handleRouterToCenter).create();
     }
 
+    let baseOptions = tranFormValues(currentStatusMc);
     if (currentStatusMc === '草稿中') {
       setConfirmLoading(true);
-      const res = await fetchUserInfo(baseOptions);
+      const res = await flowMethods['草稿中'](baseOptions);
       ErrorMessage.withName('草稿保存')
         .withResponse(res)
         .widthSuccessCallback(handleRouterToCenter)
@@ -114,8 +121,7 @@ const ProcessPageDemo: FC<IProcessProps> = (props) => {
     if (currentStatusMc === '提交') {
       await EditForm.validateFields();
       setConfirmLoading(true);
-      const fn = flowStatus?.[1] === '已驳回' ? fetchUserInfo : fetchUserInfo;
-      const res = await fn(baseOptions);
+      const res = await flowMethods['提交'](baseOptions);
       ErrorMessage.withName('提交')
         .withResponse(res)
         .widthSuccessCallback(handleRouterToCenter)
@@ -179,6 +185,15 @@ const ProcessPageDemo: FC<IProcessProps> = (props) => {
 
   //#region
   const dotText = status === 'add' ? '发起流程' : flowStatus?.[1];
+  const ProcessPageProps = {
+    title,
+    dotText,
+    dotColor: FLOW_STATUS_COLOR?.[dotText!],
+    className: styles.page,
+    extraBtnList,
+    handleHeaderOnClick: handleRouterToCenter,
+  };
+  // TODO: 传递给formList的参数
   const formListParams = {
     status,
     form: EditForm,
@@ -188,34 +203,33 @@ const ProcessPageDemo: FC<IProcessProps> = (props) => {
   //#endregion
 
   return (
-    <ProcessPage
-      title={title}
-      dotText={dotText}
-      dotColor={FLOW_STATUS_COLOR?.[dotText!]}
-      className={styles.page}
-      extraBtnList={extraBtnList}
-      handleHeaderOnClick={handleRouterToCenter}
-    >
+    <ProcessPage {...ProcessPageProps}>
       <ProcessPage.SubHeader title={title} ref={SubHeaderRef} hasDivider businessId={businessId} formatSubTitle={() => subTitle} />
 
       <ProcessPage.Card style={{ marginTop: 12 }} title="业务信息" descList={[]}>
-        <Form form={EditForm} className={styles[status === 'detail' ? 'plus-detail-formContent' : 'plus-formContent']}>
-          {(getFormList(formListParams) || []).map((item: any) => (
-            <Col span={item['col'] || 24} key={item.name || getUUID()}>
-              <Form.Item
-                labelAlign="left"
-                label={item.label}
-                name={item.name}
-                rules={item?.rules || []}
-                initialValue={item?.initialValue || undefined}
-                {...item.layout}
-                {...item.itemProps}
+        <Skeleton loading={recordLoading}>
+          <Form form={EditForm} className={styles[status === 'detail' ? 'plus-detail-formContent' : 'plus-formContent']}>
+            {(getFormList(formListParams) || []).map((item: any) => (
+              <Col
+                span={item['col'] || 24}
+                key={item.name || getUUID()}
+                className={`${styles[`formItemContent${item.type == 'update' ? 'update' : ''}`]}`}
               >
-                {renderFormItem(item)}
-              </Form.Item>
-            </Col>
-          ))}
-        </Form>
+                <Form.Item
+                  labelAlign="left"
+                  label={item.label}
+                  name={item.name}
+                  rules={item?.rules || []}
+                  initialValue={item?.initialValue || undefined}
+                  {...item.layout}
+                  {...item.itemProps}
+                >
+                  {renderFormItem(item)}
+                </Form.Item>
+              </Col>
+            ))}
+          </Form>
+        </Skeleton>
       </ProcessPage.Card>
 
       <ProcessPage.Card title="审批日志" visible={status == 'detail'}>

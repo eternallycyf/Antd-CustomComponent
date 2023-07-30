@@ -35,3 +35,18 @@ export const formatNumber = (num: number | string, precision = 2, separator = ',
   }
   return 0;
 };
+
+function addCommasToNumber(number: number) {
+  if (number === null || number === undefined || isNaN(number)) {
+    return '--';
+  }
+
+  const parts = number.toString().split('.');
+  const integerPart = parts[0];
+  const decimalPart = parts[1] ? '.' + parts[1] : '';
+
+  const integerRegex = /(\d)(?=(\d{3})+(?!\d))/g;
+  const numberWithCommas = integerPart.replace(integerRegex, '$1,');
+
+  return numberWithCommas + decimalPart;
+}

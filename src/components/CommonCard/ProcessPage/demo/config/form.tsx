@@ -1,20 +1,12 @@
 import projectConfig from '@/config/projectConfig';
 import { ISearchesType } from '@/typings';
-import { BOOLEAN_DICT, zzsm_tip } from '@/components/CommonCard/ProcessPage/utils';
+import { BOOLEAN_DICT, getRequireRules, zzsm_tip } from '@/components/CommonCard/ProcessPage/utils';
 import { ProcessPage } from '@/components/CommonCard';
+import styles from '../index.less';
 const { apiPrefixMock } = projectConfig;
 
-export const BUSI_TYPE_DICT = [
-  { text: '申请', value: '1' },
-  { text: '退出', value: '2' },
-] as const;
-
-const formItemLayout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 20 },
-};
-
 const ITEM_PROPS = {
+  labelAlign: 'left' as const,
   style: {
     marginBottom: 5,
     width: '100%',
@@ -29,16 +21,9 @@ export const getFormList = (params: any): ISearchesType => {
       label: 'radio',
       type: 'radio',
       col: 24,
-      layout: formItemLayout,
       dict: BOOLEAN_DICT,
       allowClear: true,
-      itemProps: {
-        labelAlign: 'left',
-        style: {
-          marginBottom: 0,
-          marginTop: 2,
-        },
-      },
+      itemProps: ITEM_PROPS,
     },
     {
       type: 'update',
@@ -53,10 +38,14 @@ export const getFormList = (params: any): ISearchesType => {
                 label: '项目编号',
                 type: 'input',
                 allowClear: true,
-                col: 8,
-                rules: [],
-                itemProps: {
-                  labelAlign: 'left',
+                rules: getRequireRules('项目编号'),
+                className: styles.formItemContent,
+                itemProps: ITEM_PROPS,
+                col: 24,
+                controlProps: {
+                  style: {
+                    width: '100%',
+                  },
                 },
               },
             ] as ISearchesType;
@@ -69,15 +58,13 @@ export const getFormList = (params: any): ISearchesType => {
       name: 'layout',
       type: 'custom',
       col: 24,
-      itemProps: {
-        noStyle: true,
-      },
-      Component: () => {
-        return <ProcessPage.Card title="流程附件" descList={zzsm_tip} />;
-      },
+      itemProps: { noStyle: true },
+      Component: () => <ProcessPage.Card title="流程附件" descList={zzsm_tip} />,
     },
     {
       type: 'update',
+      name: 'attachment',
+      col: 24,
       itemProps: {
         noStyle: true,
         shouldUpdate: () => true,
