@@ -58,6 +58,8 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
       const expand = item?.expand ?? false;
       const maxLength = item?.maxLength ?? 40;
       const controlProps = item?.controlProps ?? {};
+      const contentWrapperType = item?.rows || item?.rows == undefined ? 'textarea' : 'text';
+      const contentWrapperTypeProps = contentWrapperType == 'textarea' ? { lines: item?.rows ?? 1 } : { length: maxLength };
 
       if (item.isPhone) value = value ? addSpace(String(value)) : undefined;
       if (item.formatPercent) value = formatPercent(value);
@@ -76,6 +78,7 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
       if (item?.format) return item?.format(value, info);
 
       /** 默认值 */
+
       let defaultColProps = {
         key: (item.key || getUUID()) as string,
         className: item.className ? item.className : `${styles.desc}`,
@@ -95,8 +98,8 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
           <Col {...defaultColProps}>
             <ContentWrapper
               expand={expand}
-              length={maxLength}
               className={`${item.labelClassName} ${item.wrapperClassName} ${defaultColProps?.className}`}
+              {...contentWrapperTypeProps}
               {...(controlProps as EllipsisProps)}
               {...defaultExpandProps}
             >
@@ -140,7 +143,6 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
         }
 
         /** 渲染多行or一行 */
-        const type = item?.rows || item?.rows == undefined ? 'textarea' : 'text';
         let minWidth = 40;
         if (typeof newValue == 'string') minWidth = getValueLen(String(newValue)) * 6.25;
         if (item.tooltip) minWidth += 20;
@@ -150,19 +152,15 @@ export const renderDetail = (list: IDescriptionsColumns<any>[] = [], info: any) 
           ...defaultExpandProps,
           ...controlProps,
         };
-        if (type == 'text') {
-          formItemProps = { ...formItemProps, length: maxLength };
-        } else {
-          formItemProps = { ...formItemProps, lines: item.rows ?? 1 };
-        }
-
         return (
           <Col {...defaultColProps}>
             <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
               <span style={{ minWidth }} className={item.labelClassName}>
                 {newValue}
               </span>
-              <ContentWrapper {...formItemProps}>{value ?? '--'}</ContentWrapper>
+              <ContentWrapper {...contentWrapperTypeProps} {...formItemProps}>
+                {value ?? '--'}
+              </ContentWrapper>
             </div>
           </Col>
         );

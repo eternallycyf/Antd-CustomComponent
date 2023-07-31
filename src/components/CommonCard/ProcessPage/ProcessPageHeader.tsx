@@ -14,6 +14,7 @@ const ProcessPageHeader: React.ForwardRefRenderFunction<IDescriptionsHandle, IPr
       key: 'department',
       type: 'text' as 'text',
       span: 24,
+      rows: 1,
       className: styles.subTitle,
       formatValue: (val, record) =>
         formatSubTitle ? formatSubTitle(val, record) : `关于【${record?.realname ?? '--'}（${record?.deptName ?? '--'}）】的 ${title ?? '--'}`,
