@@ -12,3 +12,10 @@ export type DeepPartial<T> = T extends object
 
 // 重映射
 type CapitalizeStr<Str extends string> = Str extends `${infer Rest}` ? `xxx-${Rest}` : Str;
+
+// 重写
+export type OverrideProps<M, N> = {
+  [P in keyof M]: P extends keyof N ? N[P] : M[P];
+};
+
+export type OverrideAllProps<P extends any, T extends string> = Record<keyof P, T>;
