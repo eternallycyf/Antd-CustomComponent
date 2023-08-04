@@ -34,12 +34,7 @@ const UserTips = ({ text }) => {
    * 获取人员信息的参数
    */
   const getMsg = () => {
-    fetchUserInfo(
-      { username: text },
-      {
-        cancelToken: sourceToken.token,
-      },
-    ).then((res: CommonObjectType) => {
+    fetchUserInfo({ username: text }, sourceToken.token).then((res: CommonObjectType) => {
       setShow(true);
       if (res.code === 200) {
         setData(res.data);
