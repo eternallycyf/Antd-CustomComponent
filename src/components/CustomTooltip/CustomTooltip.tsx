@@ -1,5 +1,5 @@
 import useForceUpdate from '@/hook/useForceUpdate';
-import { DownOutlined, UpOutlined } from '@ant-design/icons';
+import { DownOutlined, UpOutlined, LeftOutlined } from '@ant-design/icons';
 import { Col, Input, Tooltip, Typography } from 'antd';
 import _ from 'lodash';
 import React, { FC, Fragment, useCallback, useRef, useState } from 'react';
@@ -108,8 +108,12 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
         position: 'absolute',
         right: 0,
         top: 0,
+        fontSize: 12,
       } as React.CSSProperties)
-    : ({} as React.CSSProperties);
+    : ({
+        display: 'block',
+        fontSize: 12,
+      } as React.CSSProperties);
   const getToggleButton = (isExpandStatus: boolean) => {
     if (isExpandStatus) {
       return (
@@ -124,7 +128,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
         >
           {row.btnStyle !== 'btn' ? (
             <>
-              展开 <UpOutlined className={cx['apply-shake']} />
+              展开 <LeftOutlined className={cx['apply-shake']} />
             </>
           ) : (
             <span className={cx['expand-btn']}>

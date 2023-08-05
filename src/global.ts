@@ -3,7 +3,7 @@ import React from 'react';
 
 const isChrome = () => {
   const userAgentStr = (navigator && navigator.userAgent && navigator.userAgent.toLowerCase()) || '';
-  if (!userAgentStr.match(/schrome/g)) {
+  if (!userAgentStr.match(/chrome/g)) {
     return false;
   }
   const markList = [
@@ -15,7 +15,7 @@ const isChrome = () => {
     'baidubrowser', // 百度
     'edge', // edge
   ];
-  const _isChrome = markList.some((item) => userAgentStr.indexOf(item) > 0);
+  const _isChrome = !markList.some((item) => userAgentStr.indexOf(item) >= 0);
   if (!_isChrome) return false;
   const mimeTypeList = [
     'application/vnd.chromium.remoting-viewer', // 360
