@@ -63,7 +63,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
     {
       title: '多tabs页签切换',
       description: '增加了缓存功能',
-      target: () => ref1.current,
+      target: () => document.querySelector('#container-TagsNav .ant-tabs-nav')!,
     },
     {
       title: '主题色切换',
@@ -128,42 +128,28 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
           <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
           <meta name="keyword" content="react, umi, antd"></meta>
         </Helmet>
-        <Tour
-          open={Boolean(Number(open))}
-          onClose={() => {
-            setOpen('0');
-            localStore.set('hasTour', '0');
-          }}
-          steps={steps}
-        />
         <StyleProvider hashPriority="high">
           <Layout className={styles.container}>
-            <WaterMark content={userInfo?.username || '未登录'} fillStyle="rgba(123,139,167,0.2)">
-              <GlobalHeader
-                ref1={ref1}
-                ref2={ref2}
-                ref3={ref3}
-                dispatch={dispatch}
-                theme={theme}
-                ColorPicker={<ColorPicker dispatch={dispatch} color={color} />}
-              >
-                <div>
-                  {!_.isEmpty(breadcrumbNameMap) && !_.isEmpty(userInfo) ? (
-                    <TagsNav {...TagsNavProps}>{children}</TagsNav>
-                  ) : (
-                    <Spin spinning={true} size="large" className={styles.spinning} tip="加载中..." />
-                  )}
-                </div>
-              </GlobalHeader>
-              <Layout className={styles.content}>
-                <Sider theme={theme} style={{ background: 'transparent', display: collapsed ? 'none' : '' }}>
-                  <SiderMenu {...siderMenuProps} ref0={ref0} />
-                </Sider>
-                <Content>
-                  <KeepAlive>{location.pathname !== '/' ? <Outlet /> : <IndexPage />}</KeepAlive>
-                </Content>
-              </Layout>
-            </WaterMark>
+            <GlobalHeader ref2={ref2} ref3={ref3} dispatch={dispatch} theme={theme} ColorPicker={<ColorPicker dispatch={dispatch} color={color} />} />
+            <Layout className={styles.content}>
+              <Sider theme={theme} style={{ background: 'transparent', display: collapsed ? 'none' : '' }}>
+                <SiderMenu {...siderMenuProps} ref0={ref0} />
+              </Sider>
+              <div id="container-TagsNav" style={{ width: '100%', background: '#fff' }}>
+                {!_.isEmpty(breadcrumbNameMap) && !_.isEmpty(userInfo) ? (
+                  <TagsNav {...TagsNavProps}>
+                    <WaterMark content={userInfo?.username || '未登录'} fillStyle="rgba(123,139,167,0.2)">
+                      {location.pathname !== '/' ? <Outlet /> : <IndexPage />}
+                    </WaterMark>
+                  </TagsNav>
+                ) : (
+                  <Spin spinning={true} size="large" className={styles.spinning} tip="加载中..." />
+                )}
+              </div>
+              {/* <Content> */}
+              {/* <KeepAlive>{location.pathname !== '/' ? <Outlet /> : <IndexPage />}</KeepAlive> */}
+              {/* </Content> */}
+            </Layout>
           </Layout>
         </StyleProvider>
         <FloatButton
@@ -174,6 +160,14 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
             setOpen('1');
             localStore.set('hasTour', '1');
           }}
+        />
+        <Tour
+          open={Boolean(Number(open))}
+          onClose={() => {
+            setOpen('0');
+            localStore.set('hasTour', '0');
+          }}
+          steps={steps}
         />
       </ConfigProvider>
     </Fragment>

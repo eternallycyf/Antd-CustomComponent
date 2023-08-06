@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 7px 6px;
+    padding: 6px 10px;
     border-right: 1px solid #f0f0fe;
     border-bottom: 1px solid #f0f0fe;
   }
@@ -35,6 +35,7 @@
   }
 
   .virtual-table.show-left-shadow {
+
     .virtual-table-cell-fix-left-last,
     .ant-table-cell-fix-left-last {
       z-index: 9;
@@ -87,7 +88,7 @@
 
   .scroll-container {
     position: relative;
-    overflow: auto;
+    overflow: auto scroll;
     border-right: 1px solid #f0f0f0;
     border-bottom: 1px solid #f0f0f0;
   }
@@ -104,7 +105,7 @@
 
     &.row-active {
       .virtual-table-cell {
-        background-color: #ececec;
+        background-color: #dfe8f8;
       }
     }
 
@@ -120,7 +121,7 @@
 
     &:hover {
       .virtual-table-cell {
-        background-color: #dfe8f8;
+        background-color: #fafafb;
       }
     }
   }
@@ -133,6 +134,7 @@
   }
 
   :global {
+
     // 使用ant-table-cell-fix-left-last-reset类覆盖默认样式
     .ant-table-wrapper .ant-table .ant-table-thead th.ant-table-cell-fix-left-last-reset {
       border-right: 1px solid #f0f0f0 !important;
@@ -142,7 +144,7 @@
       }
     }
 
-    .ant-table-thead > tr > th[colSpan]:not(:last-child)::before {
+    .ant-table-thead>tr>th[colSpan]:not(:last-child)::before {
       position: absolute;
       top: 50%;
       right: 0;

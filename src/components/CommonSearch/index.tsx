@@ -75,9 +75,9 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
   const searchRef: React.RefObject<ISearchRef> = useRef(null!);
   const divRef: React.RefObject<any> = useRef(null);
 
-  useEffect(() => {
-    handleTagList(searchRef.current?.form.getFieldsValue());
-  }, []);
+  // useEffect(() => {
+  //   handleTagList(searchRef.current?.form.getFieldsValue());
+  // }, []);
 
   useImperativeHandle(ref, () => ({
     handleRealParams,

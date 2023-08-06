@@ -115,18 +115,22 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
     }
   };
 
-  componentDidUpdate(nextProps: any) {
-    if (!_.isEqual(nextProps.dataSource, this.props.dataSource)) {
-      this.setState({ dataSource: nextProps.dataSource });
+  componentDidUpdate(preProps: Readonly<P>, prevState: Readonly<S>, snapshot?: any): void {
+    if (!_.isEqual(preProps.dataSource, this.props.dataSource)) {
+      this.setState({ dataSource: preProps.dataSource! });
     }
 
-    if (!_.isEqualWith(nextProps.columns, this.props.columns, isUpdate)) {
+    if (!_.isEqualWith(preProps.columns, this.props.columns, isUpdate)) {
       // @ts-ignore
-      this.handleColumns(nextProps);
+      this.handleColumns(preProps);
     }
 
-    if (nextProps.loading !== this.props.loading) {
-      this.setState({ loading: nextProps.loading });
+    if (preProps.loading !== this.props.loading) {
+      this.setState({ loading: preProps.loading! });
+    }
+
+    if (!_.isEqual(prevState.dataSource, this.state.dataSource)) {
+      this.setTableBody();
     }
   }
 

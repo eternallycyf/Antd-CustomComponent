@@ -24,7 +24,7 @@
   :global {
     .ant-tabs-nav-list {
       .ant-tabs-tab:nth-child(1) {
-        > div {
+        >div {
           width: 10px;
         }
 
@@ -74,7 +74,7 @@
     .ant-tabs-content {
       height: 100%;
 
-      > .ant-tabs-tabpane-inactive {
+      >.ant-tabs-tabpane-inactive {
         display: none;
       }
     }
@@ -144,6 +144,14 @@
 
     img {
       padding-right: 8px;
+    }
+  }
+
+  :global {
+    .ant-tabs-content {
+      overflow: auto;
+      height: calc(100vh - 78px);
+      background: #F5F8FF;
     }
   }
 }

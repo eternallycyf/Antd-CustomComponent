@@ -25,6 +25,8 @@ interface IBaseProps {
   colProps?: ColProps;
   paragraphClassName?: string;
   tooltipClassName?: string;
+  expandIcon?: React.ReactNode;
+  retractIcon?: React.ReactNode;
 }
 interface ISingleRowProps {
   /**

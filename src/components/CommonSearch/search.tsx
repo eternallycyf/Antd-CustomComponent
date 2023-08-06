@@ -254,11 +254,14 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
   };
 
   const { expandForm } = state;
-  const formListLength = formList.length;
-  const showCount = expandForm ? columnNumber : formListLength;
+  const formListLength = formList.length || 0;
+  const showCount = (expandForm ? columnNumber! : formListLength!) * 2;
   const lineLength = columnNumber; // 一行有多少个col 因为相关操作按钮占一个col 所以＋1
   const span = 24 / (lineLength as any);
-  const isOneLine = formListLength <= (columnNumber as any);
+  const isOneLine = formListLength <= columnNumber! * 2;
+  const labelLengthArr = formList.map((item) => (item?.label ? (item?.label as string)?.length + 1 : 0) * 12);
+  let maxLabelLength = Math.max(...labelLengthArr);
+  maxLabelLength = maxLabelLength > 100 ? 100 : maxLabelLength;
 
   return (
     <div
@@ -277,7 +280,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
               >
                 <Form.Item
                   labelAlign="right"
-                  labelCol={{ style: { maxWidth: '250px', minWidth: '80px' } }}
+                  labelCol={{ style: { width: maxLabelLength, padding: 0 } }}
                   label={field.label}
                   {...(field.itemProps as any)}
                 >

@@ -1,5 +1,5 @@
 import { Dispatch } from '@umijs/max';
-import { Col, Input, Layout, Row, Switch } from 'antd';
+import { Col, Input, Layout, Row, Space, Switch } from 'antd';
 import { FC } from 'react';
 import FullScreen from '../FullScreen';
 import styles from './index.less';
@@ -7,43 +7,26 @@ import RightContent from './RightContent';
 const { Header } = Layout;
 interface IProps {
   ColorPicker: React.ReactNode;
-  children: React.ReactNode;
   theme: 'light' | 'dark';
   dispatch: Dispatch;
-  ref1: React.RefObject<HTMLDivElement>;
   ref2: React.RefObject<HTMLDivElement>;
   ref3: React.RefObject<HTMLDivElement>;
 }
 const GlobalHeader: FC<IProps> = (props) => {
-  const { children, ColorPicker, dispatch, theme, ref1, ref2, ref3 } = props;
+  const { ColorPicker, dispatch, theme, ref2, ref3 } = props;
   return (
-    <Header
-      style={{
-        background: 'transparent',
-        paddingInline: 0,
-        position: 'relative',
-        zIndex: 99,
-        backgroundColor: theme == 'dark' ? 'black' : '#fff',
-        marginBottom: 10,
-      }}
-      className="core-base-tags-nav-index-tabs"
-    >
-      <Row style={{ width: '100%', height: '100%' }}>
-        <Col span={24}>
-          <Row justify="center" align="middle">
-            <Col span={2}>
-              <span className={styles['core-base-title']}>后台管理</span>
-            </Col>
-            <Col span={13}>
-              <div ref={ref1}>{children}</div>
-            </Col>
-            <Col span={2}>
-              <Input type="search" placeholder="搜索...." style={{ width: '90%' }} />
-            </Col>
-            <Col ref={ref2} span={1} style={{ display: 'grid', placeContent: 'center' }}>
+    <div className={`${styles.header} core-base-tags-nav-index-tabs`} style={{ backgroundColor: theme == 'dark' ? 'black' : '#fff' }}>
+      <Row gutter={[5, 5]} justify="space-between" align="middle" style={{ padding: '0 16px' }}>
+        <Col>
+          <span className={styles['core-base-title']}>后台管理</span>
+        </Col>
+        <Col>
+          <Space>
+            <Input type="search" placeholder="搜索...." style={{ width: '90%' }} />
+            <div ref={ref2} style={{ display: 'grid', placeContent: 'center' }}>
               {ColorPicker}
-            </Col>
-            <Col ref={ref3}>
+            </div>
+            <div ref={ref3}>
               <Switch
                 unCheckedChildren={
                   <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-ea893728="">
@@ -69,18 +52,13 @@ const GlobalHeader: FC<IProps> = (props) => {
                   });
                 }}
               />
-            </Col>
-            <Col span={1}>
-              <FullScreen />
-            </Col>
-            <Col span={2} style={{ display: 'grid' }}>
-              <RightContent />
-            </Col>
-          </Row>
-          <Row></Row>
+            </div>
+            <FullScreen />
+            <RightContent />
+          </Space>
         </Col>
       </Row>
-    </Header>
+    </div>
   );
 };
 

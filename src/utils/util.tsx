@@ -98,7 +98,7 @@ export function formatColumn(columns: any[]) {
 
   return deepData
     .filter(({ acpCode }) => (acpCode ? accessCollection.includes(acpCode) : true))
-    .map((item, index) => {
+    .map((item, index, arr) => {
       const options = {
         ...defaultOptions,
         ...item,

@@ -67,7 +67,7 @@ const VirtualScrollTable = (props: any) => {
   const {
     columns,
     height = 600,
-    rowHeight = 40,
+    rowHeight = 44,
     dataSource: dataSource1 = [],
     rowEventHandlers,
     fixRowkeys = [],
@@ -135,15 +135,15 @@ const VirtualScrollTable = (props: any) => {
     for (let i = columnIndex; i < thList.length; i++) {
       const th = thList[i] || {};
       if (column.title === th.textContent) {
-        realWidth = th.clientWidth - 0.5;
+        realWidth = th.offsetWidth - 0.5;
         break;
       }
       if (column.tooltip && columnIndex === i) {
-        realWidth = th.clientWidth;
+        realWidth = th.offsetWidth;
         break;
       }
       if (typeof column.title === 'function') {
-        realWidth = th.clientWidth;
+        realWidth = th.offsetWidth;
         break;
       }
     }
@@ -256,12 +256,12 @@ const VirtualScrollTable = (props: any) => {
     const scrollRef = useRef<any>(null);
 
     useEffect(() => {
-      setTotalWidth(Math.max(columnTotalWidth, (tableRef as any)?.current?.clientWidth - 14));
+      setTotalWidth(Math.max(columnTotalWidth, (tableRef as any)?.current?.offsetWidth - 14));
     }, [tableRef.current]);
 
     useEffect(() => {
       const totalResize = (window.onresize = () => {
-        setTotalWidth(Math.max(columnTotalWidth, (tableRef as any)?.current?.clientWidth - 14));
+        setTotalWidth(Math.max(columnTotalWidth, (tableRef as any)?.current?.offsetWidth - 14));
         setTimeout(() => {
           scrollRef.current && scrollRef.current.dispatchEvent(new CustomEvent('scroll'));
         }, 1000);
@@ -291,7 +291,7 @@ const VirtualScrollTable = (props: any) => {
     }, [dataSource]);
 
     const getColumnsInner = (scrollItem: any) => {
-      const { clientWidth, scrollLeft } = scrollItem;
+      const { offsetWidth, scrollLeft } = scrollItem;
       let displayColumns = [];
       let currentTotalColumnWidth = 0;
       let showedColumnWidth = 0;
@@ -299,7 +299,7 @@ const VirtualScrollTable = (props: any) => {
       for (let i = 0; i < notFixColumns.length; i++) {
         const column = { ...notFixColumns[i] };
         const { width } = column;
-        const displayWidth = clientWidth - fixLeftColumnTotalWidth - fixRightColumnTotalWidth;
+        const displayWidth = offsetWidth - fixLeftColumnTotalWidth - fixRightColumnTotalWidth;
         if (showedColumnWidth >= displayWidth) {
           break;
         }
@@ -310,14 +310,14 @@ const VirtualScrollTable = (props: any) => {
             const hiddenWidth = column.width - showedColumnWidth;
             column.style = { ...column.style, marginLeft: -hiddenWidth + 'px' };
             isFirstScrollColumn = false;
-            if (scrollLeft > 0 && scrollLeft + clientWidth >= totalWidth) {
+            if (scrollLeft > 0 && scrollLeft + offsetWidth >= totalWidth) {
               const marginLeft = currentTotalColumnWidth - scrollLeft - width + 12 + 'px';
               column.style = { ...column.style, marginLeft };
             }
           } else {
             showedColumnWidth += width;
           }
-          if (i === notFixColumns.length - 1 && scrollLeft + clientWidth >= totalWidth) {
+          if (i === notFixColumns.length - 1 && scrollLeft + offsetWidth >= totalWidth) {
             if (fixRightColumnList.length === 0) {
               column.style = {
                 ...column.style,
@@ -383,7 +383,7 @@ const VirtualScrollTable = (props: any) => {
     };
 
     const setShadow = (scrollItem: any) => {
-      const { scrollLeft, clientWidth } = scrollItem;
+      const { scrollLeft, offsetWidth } = scrollItem;
       const table: any = tableRef?.current;
       const lastFixLeftColumn = table.querySelector('th.ant-table-cell-fix-left-last');
       if (scrollLeft > 0) {
@@ -396,7 +396,7 @@ const VirtualScrollTable = (props: any) => {
 
       {
         table.classList.add(styles['show-right-shadow']);
-        if (scrollLeft + clientWidth >= totalWidth) {
+        if (scrollLeft + offsetWidth >= totalWidth) {
           table.classList.remove(styles['show-right-shadow']);
         }
       }
@@ -476,14 +476,14 @@ const VirtualScrollTable = (props: any) => {
         display: 'grid',
         justifyContent: column.align === 'right' ? 'flex-end' : column.align === 'center' ? 'center' : 'flex-start',
         opacity: rowSpan == 0 ? 0 : 1,
-        background: showHover || showActive ? '#dfe8f8' : '',
+        background: showHover || showActive ? '#fafaf8' : '',
         align: column.align || 'center',
       };
 
       const isLastColumn =
         columnIndex === columns.length - 1 && (column.fixed === 'right' || (!fixRightColumnList.length && column.fixed !== 'left'));
 
-      if (isLastColumn) style.width = (column.realWidth || column.width) - 13 + 'px';
+      if (isLastColumn) style.width = (column.realWidth || column.width) - 12 + 'px';
       return { ...column.style, ...style };
     };
 
@@ -500,6 +500,7 @@ const VirtualScrollTable = (props: any) => {
         <td
           className={`
           ${styles['virtual-table-cell']}
+          ${column.className || ''}
           ${columnIndex === mergedColumns.length - 1 && styles['virtual-table-cell-last']}
           ${column.fixed === 'left' && styles['virtual-table-cell-fix-left']}
           ${column.isLastFixLeft && left > 0 && styles['virtual-table-cell-fix-left-last']}

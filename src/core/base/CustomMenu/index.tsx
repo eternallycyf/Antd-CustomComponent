@@ -61,7 +61,7 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
   });
 
   return (
-    <div ref={ref0}>
+    <div ref={ref0} style={{ height: '100%' }}>
       <Sider theme={theme} trigger={null} collapsible collapsed={collapsed} collapsedWidth={0} width={180} className={siderClassName}>
         {sliderMenuState === '2' ? (
           <OldBaseMenu

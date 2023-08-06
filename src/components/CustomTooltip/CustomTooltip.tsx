@@ -86,6 +86,8 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
     copyable = false,
     paragraphClassName = '',
     tooltipClassName = '',
+    expandIcon,
+    retractIcon,
   } = props;
 
   if (_.isNil(text) || (typeof text === 'string' && text.length === 0)) return <span style={{ color: '#8E96A4' }}>--</span>;
@@ -119,7 +121,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
       return (
         <a
           style={buttonStyle}
-          className="ant-typography-expand"
+          className={`ant-typography-expand ${cx['btn-link']}`}
           onClick={() => {
             setOverflowStatus('unset');
             setIsExpand(isExpandStatus);
@@ -128,12 +130,13 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
         >
           {row.btnStyle !== 'btn' ? (
             <>
-              展开 <LeftOutlined className={cx['apply-shake']} />
+              展开
+              <span className={cx['apply-shake']}>{expandIcon || <LeftOutlined className={cx['apply-shake']} />}</span>
             </>
           ) : (
             <span className={cx['expand-btn']}>
               {row?.customMoreLength ? `更多 ${row?.customMoreLength} ` : ''}
-              <UpOutlined className={cx['apply-shake']} />
+              <span className={cx['apply-shake']}>{expandIcon || <UpOutlined className={cx['apply-shake']} />}</span>
             </span>
           )}
         </a>
@@ -142,7 +145,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
       return (
         <a
           style={buttonStyle}
-          className="ant-typography-expand"
+          className={`ant-typography-expand ${cx['btn-link']}`}
           onClick={() => {
             setOverflowStatus('hidden');
             setIsExpand(isExpandStatus);
@@ -151,11 +154,13 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
         >
           {row.btnStyle !== 'btn' ? (
             <>
-              收起 <DownOutlined className={cx['apply-shake']} />
+              收起
+              <span className={cx['apply-shake']}>{retractIcon || <DownOutlined className={cx['apply-shake']} />}</span>
             </>
           ) : (
             <span className={cx['expand-btn']}>
-              {row?.customMoreLength && '收起'} <DownOutlined className={cx['apply-shake']} />
+              {row?.customMoreLength && '收起'}
+              <span className={cx['apply-shake']}>{retractIcon || <DownOutlined className={cx['apply-shake']} />}</span>
             </span>
           )}
         </a>
