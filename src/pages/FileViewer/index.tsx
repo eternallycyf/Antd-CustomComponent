@@ -8,4 +8,8 @@ const IndexPage = () => {
   return <FileView />;
 };
 
-export default compose(withRoutePage, withRouter, KeepAliveTransfer)(IndexPage);
+export default compose(
+  withRoutePage,
+  withRouter,
+  // KeepAliveTransfer
+)(IndexPage);
