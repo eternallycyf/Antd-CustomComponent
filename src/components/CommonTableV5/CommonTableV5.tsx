@@ -79,6 +79,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       this.setState({ dev: true }, this.handleColumns);
     });
     this.handleColumns();
+    this.handleInitBaseTable();
   }
 
   getOpenWidth = (itemButton: any) => {

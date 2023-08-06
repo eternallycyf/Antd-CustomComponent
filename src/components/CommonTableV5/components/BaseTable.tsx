@@ -35,6 +35,33 @@ const DEFAULT_OBSERVE_PARAMS = {
   subtree: true, // 是否将观察器应用于该节点的所有后代节点
 };
 
+function getTabPaneActiveChildren(node: HTMLElement): HTMLElement[] {
+  const children: HTMLElement[] = [];
+  const childList = [...node.children];
+  if (childList?.length) {
+    childList.forEach((child) => {
+      children.push(child as HTMLElement);
+      children.push(...getTabPaneActiveChildren(child as HTMLElement));
+    });
+  }
+  return children;
+}
+
+function _setTableBody(isVirtual: boolean, self: InstanceType<typeof BaseTable>) {
+  const children = getTabPaneActiveChildren(document.querySelector('.ant-tabs-tabpane-active')!);
+  const tabpaneActives = children.filter((item) => [...item.classList].includes('ant-tabs-tabpane-active'));
+  const tableClassName = isVirtual ? 'scroll-container' : 'ant-table-body';
+
+  const realTable = (tabpaneActives[tabpaneActives.length - 1]?.querySelector(`.${tableClassName}`) ||
+    children?.find((item) => [...item.classList].includes(tableClassName))) as HTMLDivElement;
+  console.log(realTable, tabpaneActives, children);
+  if (realTable) {
+    const height = window.innerHeight - realTable.getBoundingClientRect().top - (isVirtual ? 40 : 80);
+    self.setState({ height });
+    realTable.style.height = `${height}px`;
+  }
+}
+
 const initHeightParams = (wrapClassStr: string, buttonRow: any, pagination: any) => {
   const container: any = document.querySelector(wrapClassStr);
   const theadHeight = container?.querySelector('.ant-table-thead').clientHeight;
@@ -77,13 +104,16 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
   protected components: any = {};
   protected heightParams!: { container: any; height: number };
 
-  componentDidMount() {
+  setTableBody = () => _setTableBody(this.props.isVirtual!, this);
+
+  handleInitBaseTable = () => {
     const { calcHeight, wrapClassStr, button, pagination }: any = this.props;
     if (calcHeight) {
       this.heightParams = initHeightParams(wrapClassStr, renderBtn(button), pagination);
-      this.handleTableHeight();
+      this.setTableBody();
+      window.addEventListener('resize', this.setTableBody);
     }
-  }
+  };
 
   componentDidUpdate(nextProps: any) {
     if (!_.isEqual(nextProps.dataSource, this.props.dataSource)) {
@@ -101,6 +131,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.setTableBody);
     if (this.observer) {
       this.observer.takeRecords();
       this.observer.disconnect();
@@ -248,41 +279,6 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
 
     return columnList;
   };
-
-  //处理列表高度
-  handleTableHeight = () => {
-    const { otherHeight = 0 } = this.props;
-    const { container, height } = this.heightParams;
-    const searchWrap = container?.querySelector('. searchWrap');
-    if (searchWrap) {
-      this.observer = new MutationObserver((mutations, observer) => {
-        const tableHeight: number = height - searchWrap.clientHeight - otherHeight;
-        if (this.state.height == tableHeight || tableHeight === height) return;
-        if (this.props.isVirtual) {
-          // 虚拟滚动表格的高度，需要通过props动态设置
-          this.setState({
-            height: tableHeight,
-          });
-        }
-        this.setTableBody(tableHeight);
-      });
-      this.observer.observe(searchWrap, DEFAULT_OBSERVE_PARAMS);
-    } else {
-      const tableHeight: number = height - otherHeight;
-      this.setState({ height: tableHeight });
-      this.setTableBody(tableHeight);
-    }
-  };
-
-  setTableBody(height: number) {
-    const tableBodyNodeList = document.querySelectorAll('.tabs-tabpane-active .ant-table-body'); // 多个标签页多个表格有多个dom
-    if (tableBodyNodeList.length) {
-      [...tableBodyNodeList].forEach((tableBodyDOM) => {
-        (tableBodyDOM as any).style.height = height + 'px';
-        //tableBodyDoM.style.overflow ＝ ＇auto＇ 设置该属性会导致页面不断拉长
-      });
-    }
-  }
 
   //刷新列表
   handleFirstPage = () => {
