@@ -113,7 +113,7 @@ const CustomTooltip = <T extends unknown | boolean = unknown>(props: IProps<T>) 
         fontSize: 12,
       } as React.CSSProperties)
     : ({
-        display: 'block',
+        // display: 'block',
         fontSize: 12,
       } as React.CSSProperties);
   const getToggleButton = (isExpandStatus: boolean) => {
