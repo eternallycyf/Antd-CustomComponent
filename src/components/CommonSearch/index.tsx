@@ -45,6 +45,10 @@ export interface IToolTipTagProps {
   isInline?: boolean;
   wrapperClassName?: string;
   preChildren?: React.ReactNode;
+  /**
+   * @name 是否展示分割线
+   */
+  showLine?: boolean;
   [propName: string]: any;
 }
 

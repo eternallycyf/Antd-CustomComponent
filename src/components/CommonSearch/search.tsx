@@ -51,10 +51,11 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
     handleResetCallback,
     rowProps = {},
     isInline = false,
+    showLine = true,
   } = props;
   const [form] = Form.useForm();
   const [state, setState] = useState({
-    expandForm: props.expandForm,
+    expandForm: props?.expandForm || true,
     searchParams: {},
   });
   const formList = formatByAcpCode(defaultFormLIst);
@@ -210,7 +211,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
    */
   const toggleForm = () => {
     const { expandForm } = state;
-    setState((prevState) => ({ ...prevState, expandForm: !expandForm }));
+    setState((prevState: any) => ({ ...prevState, expandForm: !state?.expandForm }));
     document.dispatchEvent(new Event('toggleForm'));
   };
 
@@ -227,7 +228,15 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
     };
 
     if (type && type === 'select') {
+      if (otherProps?.dict?.find?.((item: any) => item.text == '全部')) {
+        myControlProps.allowClear = true;
+      }
       myControlProps.labelInValue = true;
+      otherProps.placeholder = otherProps?.placeholder || `请选择${typeof otherProps?.label == 'string' ? otherProps?.label : ''}`;
+    }
+
+    if (type == 'input') {
+      otherProps.placeholder = otherProps?.placeholder || `请输入${typeof otherProps?.label == 'string' ? otherProps?.label : ''}`;
     }
 
     const fieldProps = {
@@ -255,7 +264,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
 
   const { expandForm } = state;
   const formListLength = formList.length || 0;
-  const showCount = (expandForm ? columnNumber! : formListLength!) * 2;
+  const showCount = expandForm ? columnNumber : formListLength;
   const lineLength = columnNumber; // 一行有多少个col 因为相关操作按钮占一个col 所以＋1
   const span = 24 / (lineLength as any);
   const isOneLine = formListLength <= columnNumber! * 2;
@@ -264,12 +273,9 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
   maxLabelLength = maxLabelLength > 100 ? 100 : maxLabelLength;
 
   return (
-    <div
-      className={`${cx('searchWrap', styles.searchWrap, { [styles.inLineForm]: isInline })} ${props?.wrapperClassName}`}
-      style={{ border: (isOneLine as any) && undefined }}
-    >
+    <div className={`${cx('searchWrap', styles.searchWrap, { [styles.inLineForm]: isInline })} ${props?.wrapperClassName}`}>
       {preChildren}
-      <Form onFieldsChange={onFieldsChange} layout="inline" form={form} onFinish={handleSubmit} className={styles.form}>
+      <Form layout="inline" onFieldsChange={onFieldsChange} form={form} onFinish={handleSubmit} className={styles.form}>
         {!isInline && (
           <Row align="middle" gutter={{ md: 4, lg: 12, xl: 24 }} style={{ flex: 1, width: '100%' }} {...rowProps}>
             {formList.map((field, index) => (
@@ -279,8 +285,12 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
                 style={{ display: index < (showCount as any) ? 'block' : 'none' }}
               >
                 <Form.Item
-                  labelAlign="right"
-                  labelCol={{ style: { width: maxLabelLength, padding: 0 } }}
+                  labelAlign="left"
+                  labelCol={
+                    field?.itemProps?.labelCol ?? {
+                      style: { width: 'auto', minWidth: formListLength > (columnNumber || 0) ? maxLabelLength : 'auto', padding: 0 },
+                    }
+                  }
                   label={field.label}
                   {...(field.itemProps as any)}
                 >
@@ -311,27 +321,43 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
         )}
 
         {showSearchBtn && showResetBtn && (
-          <Row style={{ margin: '8px 0 5px 10px' }}>
-            {showSearchBtn && (
-              <Button type="primary" htmlType="submit" size="small" icon={<SearchOutlined />} style={{ marginRight: 10 }}>
-                查询
-              </Button>
-            )}
-            {showResetBtn ? (
-              <Button size="small" htmlType="button" icon={<ReloadOutlined />} onClick={handleReset}>
-                重置
-              </Button>
+          <div style={{ marginLeft: 10 }}>
+            <Row style={{ marginBottom: 10 }}>
+              {showResetBtn ? (
+                <Button
+                  style={{ marginRight: 10 }}
+                  size="small"
+                  htmlType="button"
+                  className="btn-default"
+                  icon={<ReloadOutlined />}
+                  onClick={handleReset}
+                >
+                  重置
+                </Button>
+              ) : null}
+              {showSearchBtn && (
+                <Button type="primary" htmlType="submit" size="small" icon={<SearchOutlined />}>
+                  查询
+                </Button>
+              )}
+            </Row>
+            {!isOneLine ? (
+              <a className={styles.expandForm} onClick={toggleForm}>
+                {expandForm ? '展开' : '收起'}
+                {expandForm ? <DownOutlined style={{ marginLeft: 6 }} /> : <UpOutlined style={{ marginLeft: 6 }} />}
+              </a>
             ) : null}
-          </Row>
+          </div>
         )}
       </Form>
       {children}
-      {!isOneLine ? (
-        <a onClick={toggleForm} className={cx(styles.toggleForm, !expandForm && styles.expand)}>
-          {expandForm ? '展开' : '收起'}
-          {expandForm ? <DownOutlined /> : <UpOutlined />}
-        </a>
-      ) : null}
+      {showLine && showSearchBtn && (
+        <>
+          <div style={{ height: 8 }} />
+          <div className={styles.line} />
+          <div style={{ height: 16 }} />
+        </>
+      )}
     </div>
   );
 });
@@ -340,6 +366,8 @@ CommonSearch.defaultProps = {
   columnNumber: 4,
   expandForm: true,
   showResetBtn: true,
+  showSearchBtn: true,
+  showLine: true,
 };
 
 export default React.memo(CommonSearch);

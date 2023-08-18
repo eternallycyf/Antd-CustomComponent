@@ -1,3 +1,5 @@
+@import './variable.less';
+
 .ant-btn-link {
   min-width: 40px;
 }
@@ -55,10 +57,14 @@
       padding: 0;
       border: none;
 
+      &:hover {
+        input.ant-iput {
+          border-color: @primary-color;
+        }
+      }
+
       input.ant-input {
-        padding: 1px 7px;
-        height: 24px;
-        border: 1px solid #e5e5e5;
+        height: 26px !important;
 
         &:not(:last-child) {
           padding-right: 30px;

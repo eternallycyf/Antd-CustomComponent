@@ -12,6 +12,10 @@
     border-color: @plus-primary;
     color: @plus-primary;
   }
+
+  &:active {
+    color: @plus-primary-active;
+  }
 }
 
 .btn-primary {
@@ -27,11 +31,19 @@
     background-color: @plus-primary-hover;
     color: #fff;
   }
+
+  &:active {
+    background: @plus-primary-active;
+  }
 }
 
 .btn-link {
   background: transparent !important;
   color: @plus-primary !important;
+
+  &:active {
+    color: @plus-primary-active;
+  }
 }
 
 .btn-danger {
@@ -39,12 +51,20 @@
   background: @plus-red;
   color: @plus-red;
   font-size: 14px;
+
+  &:active {
+    color: @plus-primary-active;
+  }
 }
 
 .btn-danger-link {
   background: transparent !important;
   color: @plus-red !important;
   font-size: 14px;
+
+  &:active {
+    color: @plus-primary-active;
+  }
 }
 
 .success-tip {}

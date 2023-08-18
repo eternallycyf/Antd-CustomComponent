@@ -297,6 +297,8 @@ export interface FormControl {
   name?: string;
   /**@name 控件名称 */
   label?: React.ReactNode | (() => React.ReactNode);
+  /**@name 筛选组件自定义宽度||自动计算宽度 */
+  labelWidth?: number;
   /**@name 控件类型 */
   type?: IBaseFormControlType;
   width?: number;

@@ -85,7 +85,6 @@ export default function RenderTag(props: IRenderTag) {
         </div>
       )}
     </div>
-  ) : (
-    info
-  );
+  ) : null;
+  // (info);
 }

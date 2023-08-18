@@ -54,7 +54,6 @@ function _setTableBody(isVirtual: boolean, self: InstanceType<typeof BaseTable>)
 
   const realTable = (tabpaneActives[tabpaneActives.length - 1]?.querySelector(`.${tableClassName}`) ||
     children?.find((item) => [...item.classList].includes(tableClassName))) as HTMLDivElement;
-  console.log(realTable, tabpaneActives, children);
   if (realTable) {
     const height = window.innerHeight - realTable.getBoundingClientRect().top - (isVirtual ? 40 : 80);
     self.setState({ height });
