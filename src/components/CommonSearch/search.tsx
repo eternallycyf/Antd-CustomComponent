@@ -349,7 +349,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
             {!isOneLine ? (
               <a className={styles.expandForm} onClick={toggleForm}>
                 {expandForm ? '展开' : '收起'}
-                {expandForm ? <DownOutlined style={{ marginLeft: 6 }} /> : <UpOutlined style={{ marginLeft: 6 }} />}
+                <DownOutlined className={styles[expandForm ? 'expand' : 'close']} style={{ marginLeft: 6 }} />
               </a>
             ) : null}
           </div>

@@ -3,7 +3,7 @@ import { IRgba } from '@/core/layouts/BasicLayout';
 import { MenuItem } from '@/typings';
 import { getFlatMenuKeys, getSubMenus } from '@/utils/menu';
 import { SwapOutlined } from '@ant-design/icons';
-import { Layout } from 'antd';
+import { Layout, Popover } from 'antd';
 import classNames from 'classnames';
 import { Dispatch } from 'dva';
 import { History } from 'history';
@@ -85,21 +85,23 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
           />
         )}
 
-        <div
-          className={styles.swap}
-          style={{
-            background: `rgba(${color.r},${color.g},${color.b},${color.a})`,
-            '--swap-bg': `rgba(${color.r},${color.g},${color.b},0.8)`,
-          }}
-          onClick={() => {
-            dispatch({
-              type: 'global/changeSliderMenuState',
-              sliderMenuState: sliderMenuState === '1' ? '2' : '1',
-            });
-          }}
-        >
-          <SwapOutlined style={{ color: '#fff' }} />
-        </div>
+        <Popover placement="top" content={`切换到${sliderMenuState == '2' ? '悬浮菜单' : '传统菜单'}`}>
+          <div
+            className={styles.swap}
+            style={{
+              background: `rgba(${color.r},${color.g},${color.b},${color.a})`,
+              '--swap-bg': `rgba(${color.r},${color.g},${color.b},0.8)`,
+            }}
+            onClick={() => {
+              dispatch({
+                type: 'global/changeSliderMenuState',
+                sliderMenuState: sliderMenuState === '1' ? '2' : '1',
+              });
+            }}
+          >
+            <SwapOutlined style={{ color: '#fff' }} />
+          </div>
+        </Popover>
       </Sider>
     </div>
   );
