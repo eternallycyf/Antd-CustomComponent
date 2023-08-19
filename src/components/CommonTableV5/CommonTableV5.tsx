@@ -4,7 +4,7 @@ import { ErrorBoundary } from '@/core/base/ErrorBoundary';
 import { IButtonProps, IColumnsType, ICommonTable, ICommonTableContext } from '@/typings';
 import { formatColumn, formatColumn as formatColumnUtil } from '@/utils/util';
 import { DownOutlined, SettingOutlined } from '@ant-design/icons';
-import { getDvaApp } from '@umijs/max';
+import { connect, getDvaApp } from '@umijs/max';
 import { Button, Checkbox, Col, Dropdown, Empty, Popconfirm, Popover, Row, Spin, Table as AntdTable } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
@@ -16,6 +16,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import BaseTable, { IBaseTableState } from './components/BaseTable';
 import Table from './components/EnhancedTable';
 import styles from './index.less';
+import { compose } from 'redux';
+import { ConnectState } from '@/typings/connect';
+
 const { theme } = getDvaApp()._store.getState().global;
 
 const CommonTableContext = React.createContext<ICommonTableContext>({ loading: false });
@@ -65,6 +68,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       checkAll: true,
       checkedOptions: [],
       checkedList: [],
+      hasBtn: false,
     };
 
     this.cls = cx('common-table', props.className, {
@@ -445,7 +449,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       ...extraProps
     } = this.props;
     let restProps: any = { ...extraProps };
-    const { loading, height, total, current, pageSize, columns, dataSource, summaryDataSource = [] } = this.state;
+    const { loading, height, total, current, pageSize, columns, dataSource, summaryDataSource = [], hasBtn } = this.state;
 
     const paging =
       typeof pagination !== 'boolean'
@@ -487,7 +491,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
       <Table
         {...restProps}
         components={this.components}
-        rowHeight={40}
+        rowHeight={44}
         footer={footer}
         className={this.cls}
         height={height}
@@ -532,14 +536,26 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     const table = (
       <Fragment>
         <Spin spinning={loading}>
-          <Row justify="space-between" align="middle">
-            <Col>
-              <TableBtn button={buttonLeft as IButtonProps[]} />
-            </Col>
-            <Col>
-              <TableBtn button={button as IButtonProps[]} />
-            </Col>
-          </Row>
+          {hasBtn ? (
+            <Row justify="space-between" align="middle">
+              <Col>
+                <TableBtn button={buttonLeft as IButtonProps[]} />
+              </Col>
+              <Col>
+                <TableBtn
+                  button={
+                    button?.map((item) => ({
+                      type: 'default',
+                      className: (item?.type || 'default') == 'default' ? 'btn-default' : item?.className,
+                      ...item,
+                    })) as IButtonProps[]
+                  }
+                />
+              </Col>
+            </Row>
+          ) : buttonLeft?.length || button?.length ? (
+            <div style={{ height: 8 }} />
+          ) : null}
           <div className={styles.tableWrap}>
             {this.props.children}
             {BaseTable}

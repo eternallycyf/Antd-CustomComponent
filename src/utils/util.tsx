@@ -189,7 +189,16 @@ export function formatColumn(columns: any[]) {
           item.title = () => renderTooltip(title, text, extraText);
         }
       }
-      item.children = formatColumn(item.children || []);
+      item.className = `
+      ${item.className ?? ''}
+      ${(item.children && index !== arr?.length - 1) || arr[index + 1]?.children ? 'tableLine' : ''}
+      ${item.align || 'left'}
+      `;
+      item.width += 20;
+
+      if (item.children) {
+        item.children = formatColumn(item.children || []);
+      }
       return item;
     });
 }

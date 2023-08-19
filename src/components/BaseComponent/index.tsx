@@ -14,6 +14,7 @@ export interface IBaseState {
   expandedRowKeys?: any[];
   expandedKey?: string;
   exportLoading?: boolean;
+  hasBtn?: boolean;
   onSelect?: (selectedRowKeys: React.Key[], selectedRows: any[]) => void;
 }
 
@@ -27,6 +28,8 @@ export interface IBaseTableRefFun {
   renderOperateTitle: any;
   getOnRow: (restProps: any[]) => any;
   handleScroll: () => void;
+  handleTopButton: Function;
+  componentDidMount: Function;
 }
 
 type IBaseTableInstance = InstanceType<typeof BaseTable> & IBaseTableRefFun;

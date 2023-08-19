@@ -36,9 +36,9 @@ export const getMenuItemPath = (item: MenuItem, pathname: string) => {
     );
   }
   return (
-    <Link to={itemPath} target={target} replace={itemPath === pathname}>
+    <Link to={itemPath} target={target} replace={itemPath === pathname} title={name}>
       {getImage(code as any)}
-      <span>{name}</span>
+      <span className="nameClass">{name}</span>
     </Link>
   );
 };

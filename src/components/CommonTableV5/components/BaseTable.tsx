@@ -26,6 +26,7 @@ export interface IBaseTableState {
   checkedList: any[] | [];
   checkedOptions: any[];
   summaryDataSource?: any[];
+  hasBtn?: boolean;
 }
 
 const DEFAULT_OBSERVE_PARAMS = {
@@ -139,7 +140,18 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
       this.observer.takeRecords();
       this.observer.disconnect();
     }
+    this.handleTopButton();
   }
+
+  handleTopButton = () => {
+    const { buttonLeft = [], button = [] } = this.props;
+    const accessCollection = JSON.parse(sessionStorage.getItem('accessCollection') || '[]');
+    const left = buttonLeft.filter((item) => (item.code ? accessCollection.includes(item.code) : true));
+    const right = button.filter((item) => (item.code ? accessCollection.includes(item.code) : true));
+    this.setState({
+      hasBtn: [...left, ...right].length > 0,
+    });
+  };
 
   // 返回dataSource for outer
   getTableData = () => {
@@ -243,6 +255,7 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
           title: '序号',
           width: 44,
           align: 'center',
+          className: 'ant-table-cell-index',
           editable: false,
         },
         columnList,

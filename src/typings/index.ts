@@ -12,6 +12,7 @@ import { TablePaginationConfig } from 'antd/lib/table';
 import { TableRowSelection } from 'antd/lib/table/interface';
 import React, { ReactNode } from 'react';
 import { IBaseCol, IBaseFormat, IBaseFormControlType, IBaseInitialValue, IBaseLayout, IFetchConfig } from './base';
+import { ConnectState } from './connect';
 import type { IBaseColumnsType } from './core/column';
 import { IBaseControlProps } from './core/control';
 import { IBaseSearchesType } from './core/form';
@@ -297,7 +298,10 @@ export interface FormControl {
   name?: string;
   /**@name 控件名称 */
   label?: React.ReactNode | (() => React.ReactNode);
-  /**@name 筛选组件自定义宽度||自动计算宽度 */
+  /**
+   * @description label如果使用字符串类型 自动计算label宽度
+   * labelWidth || label.length
+   */
   labelWidth?: number;
   /**@name 控件类型 */
   type?: IBaseFormControlType;
