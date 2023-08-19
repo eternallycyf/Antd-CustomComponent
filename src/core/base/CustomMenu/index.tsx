@@ -37,21 +37,10 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
   } = props;
 
   const [openKeys, setOpenKeys] = useState<string[]>(getSubMenus(pathname, menuList));
-  const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>(getSubMenus(pathname, menuList));
-  const [openLeft, setOpenLeft] = useState<boolean>(false);
 
   useEffect(() => {
     setOpenKeys(getSubMenus(pathname, menuList));
   }, [menuList, pathname]);
-
-  useEffect(() => {
-    setOpenLeft(false);
-    setDefaultSelectedKeys(getSubMenus(pathname, menuList));
-  }, [menuList, pathname]);
-
-  useEffect(() => {
-    setOpenLeft(true);
-  }, [defaultSelectedKeys]);
 
   const isMainMenu = (key: string): boolean => {
     return !!menuList?.some((item) => item.code === key);
@@ -84,8 +73,6 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
             flatMenuKeys={flatMenuKeys}
             openKeys={openKeys}
             onOpenChange={handleOpenChange}
-            defaultSelectedKeys={defaultSelectedKeys}
-            openLeft={openLeft}
           />
         ) : (
           <NewBaseMenu

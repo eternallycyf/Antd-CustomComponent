@@ -10,12 +10,10 @@ export interface IBaseMenuProps {
   mode?: 'inline' | 'vertical';
   flatMenuKeys?: any;
   openKeys?: string[];
-  defaultSelectedKeys?: string[];
   collapsed?: boolean;
   location: History['location'];
   menuList?: MenuItem[];
   onOpenChange?: (openKeys: string[]) => void;
-  openLeft?: boolean;
 }
 
 const BaseMenu: React.FC<IBaseMenuProps> = (props) => {
@@ -26,8 +24,6 @@ const BaseMenu: React.FC<IBaseMenuProps> = (props) => {
     location: { pathname },
     openKeys,
     onOpenChange,
-    defaultSelectedKeys = [],
-    openLeft = true,
     ...restProps
   } = props;
 
@@ -44,14 +40,11 @@ const BaseMenu: React.FC<IBaseMenuProps> = (props) => {
     [getSubMenuOrItem],
   );
 
-  if (!openLeft) return null;
-
   return (
     <Menu
       key="Menu"
       inlineIndent={16}
       className={styles.leftMenu}
-      defaultSelectedKeys={defaultSelectedKeys}
       selectedKeys={openKeys}
       onOpenChange={onOpenChange}
       {...restProps}
