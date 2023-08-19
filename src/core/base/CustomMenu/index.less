@@ -1,10 +1,12 @@
 @import '~@/assets/styles/mixin.less';
 
 @focus-bg-color: #1348a2;
+@munu-hover-bg: linear-gradient(270deg, rgba(234, 239, 250, 0) 0%, #E6ECF9 100%);
 
 .link {
   display: flex;
   align-items: center;
+  flex: 1;
   width: 100%;
   height: 100%;
   color: '#000';
@@ -16,21 +18,28 @@
     align-items: center;
     justify-content: flex-start;
     margin-bottom: 8px;
-    padding-left: 25px !important;
-    height: 40px;
-    background: rgba(255, 255, 255, 0);
-    color: #fff;
-    font-weight: 500;
-    font-size: 16px;
+    padding-left: 14px !important;
+    height: 46px;
+    // background: rgba(255, 255, 255, 0);
+    color: #2A303b;
+    font-weight: 400;
+    font-size: 14px;
 
     user-select: none;
 
-    // &:hover {
-    //   background: #f1f5fb;
-    // }
+    &.ant-popover-open {
+      background-image: @munu-hover-bg;
+      color: @plus-primary;
+    }
 
-    &.selected {
-      background: #f1f5fb;
+    &:hover {
+      background-image: @munu-hover-bg;
+      color: @plus-primary;
+
+      >a {
+        color: @plus-primary !important;
+        text-decoration: underline;
+      }
     }
 
     .link {
@@ -39,8 +48,8 @@
   }
 
   .ant-list-item:hover {
-    color: @primary-color;
-    font-weight: 500;
+    // color: @primary-color;
+    // font-weight: 500;
   }
 
   .ant-popover-arrow {
@@ -66,16 +75,16 @@
 
   .core-base-tags-nav-index-tabs {
     .ant-popover {
-      background: rgba(245, 246, 249, 0.8);
-
-      backdrop-filter: blur(2px);
+      // background: rgba(245, 246, 249, 0.8);
+      // backdrop-filter: blur(2px);
+      background-color: #f5f6f8;
 
       .ant-popover-inner {
         background: transparent;
       }
 
       .ant-popover-inner-content {
-        padding: 24px 32px;
+        padding: 0 !important;
       }
     }
   }
@@ -86,9 +95,10 @@
   overflow-y: auto;
   padding-top: 0;
   height: 100%;
-  background-size: 100% 100%;
+  // background-size: 100% 100%;
   // background-image: url('@/assets/images/CustomMenu/slider_bg.png');
-  background-repeat: no-repeat;
+  // background-repeat: no-repeat;
+  background: #f5f8ff;
 
   user-select: none;
 
@@ -103,30 +113,51 @@
       overflow-y: auto;
       flex: 1;
       // background-color: transparent;
-      // color: #fff;
+      color: #2a303b;
+
+      .ant-menu-submenu {
+        border-radius: 0;
+      }
 
       .ant-menu-submenu-arrow {
         // color: #fff;
-      }
+        right: 14px !important;
+        color: #8E96A4;
 
-      .ant-menu-submenu-title {
-        margin: 0 0 8px;
-        font-size: 16px;
-      }
-
-      >.ant-menu-item {
-        margin: 0 0 8px;
-        font-size: 16px;
-
-        a {
-          // color: #fff;
+        &::after {
+          height: 1px;
+          border-radius: unset;
         }
 
-        &.ant-menu-item-selected {
-          a {
+        &::after {
+          height: 1px;
+          border-radius: unset;
+        }
+      }
+
+      &.ant-menu-submenu-selected {
+
+        >.ant-menu-submenu-title {
+          margin: 0;
+          color: @primary-color;
+          font-weight: 600;
+
+          .ant-menu-submenu-arrow {
             color: @primary-color;
           }
         }
+      }
+
+      .ant-menu-submenu-title {
+        font-size: 14px;
+      }
+
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.1);
       }
     }
 
@@ -144,6 +175,47 @@
       }
     }
   }
+
+  :global {
+
+    .ant-menu .ant-menu-item-selected,
+    .ant-menu>.ant-menu .ant-menu-item-selected {
+      border-left: 2px solid @plus-green;
+      background: @munu-hover-bg;
+
+    }
+
+    .ant-menu .ant-menu-submenu-selected>.ant-menu-submenu-title,
+    .ant-menu>.ant-menu .ant-menu-submenu-selected>.ant-menu-submenu-title {
+      border-left: 3px solid @plus-primary;
+      background-image: @munu-hover-bg;
+    }
+
+    .ant-menu .ant-menu-item:not(.ant-menu-item-selected):not(.ant-menu-submenu-selected):hover,
+    .ant-menu>.ant-menu .ant-menu-item:not(.ant-menu-item-selected):not(.ant-menu-submenu-selected):hover,
+    .ant-menu .ant-menu-item:not(.ant-menu-item-selected):not(.ant-menu-submenu-selected)>.ant-menu-submenu-title:hover,
+    .ant-menu>.ant-menu .ant-menu-item:not(.ant-menu-item-selected):not(.ant-menu-submenu-selected)>.ant-menu-submenu-title:hover {
+      background-image: @munu-hover-bg;
+    }
+
+    .ant-menu:not(.ant-menu-horizontal) .ant-menu-submenu-title:hover,
+    .ant-menu>.ant-menu:not(.ant-menu-horizontal) .ant-menu-submenu-title:hover {
+      background-image: @munu-hover-bg;
+    }
+
+    .ant-menu {
+      a {
+        &:hover {
+          color: @plus-primary !important;
+          text-decoration: underline;
+        }
+
+        &:active {
+          color: @plus-primary-active !important;
+        }
+      }
+    }
+  }
 }
 
 .swap {
@@ -151,7 +223,13 @@
   align-items: center;
   justify-content: center;
   height: 32px;
+  border-top: 1px solid rgba(43, 95, 220, 0.08);
   cursor: pointer;
+
+  &:hover {
+    background: var(--swap-bg) !important;
+  }
+
 }
 
 .toggle {
@@ -170,21 +248,32 @@
 
 .overview {
   display: flex;
+  overflow-y: auto;
   flex-wrap: wrap;
-  min-width: 122px;
-  max-width: 540px;
+  padding: 24px 32px;
+  min-width: 200px;
   height: 100vh;
 
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
   .subMenu {
-    width: 180px;
+    margin-right: 20px;
+    width: 200px;
 
     .title {
       display: flex;
       align-items: center;
-      width: 150px;
-      height: 30px;
-      color: @focus-bg-color;
-      font-weight: 900;
+      margin: 8px 0;
+      padding-left: 8px;
+      border-left: 5px solid @plus-primary;
+      color: #000;
+      font-weight: 700;
       font-size: 14px;
       line-height: 1px;
     }
@@ -199,9 +288,9 @@
       display: flex;
       align-items: center;
       margin-bottom: 8px;
-      width: 180px;
+      width: 200px;
       height: 30px;
-      color: #000;
+      color: #2A303b;
       font-weight: 400;
       font-size: 14px;
       line-height: 1px;
@@ -210,7 +299,7 @@
         margin-bottom: 0;
 
         a {
-          color: #000 !important;
+          color: #2A303b;
 
           &:hover {
             color: @primary-color !important;
@@ -219,24 +308,55 @@
       }
 
       .menuItem:hover {
-        background-color: #f1f6fb;
+        width: 197px;
+        background-color: #f5f6f8;
       }
     }
   }
 }
 
+.subTitle {
+  .title {
+    color: @primary-color !important;
+  }
+}
+
+.subMenu-link {
+  .title {
+    color: @primary-color;
+
+    &:hover {
+      color: @plus-primary ;
+      text-decoration: underline;
+    }
+
+    &:active {
+      color: @plus-primary-active ;
+    }
+  }
+}
+
 .selected {
-  // background-color: #f1f5fb;
-  // color: @primary-color ;
+  background-image: @munu-hover-bg;
+  color: @primary-color !important;
+
+  &:hover {
+    &:thridMenu {
+      a {
+        margin: 0 -8px;
+        padding: 0 8px;
+        color: @primary-color !important;
+        text-decoration: underline;
+      }
+    }
+  }
 
   &.thirdMenu {
     background-color: transparent;
+    background-image: none;
 
     a {
-      padding: 0 8px;
-      width: auto;
-      background-color: @focus-bg-color;
-      color: #fff !important;
+      color: @primary-color !important;
     }
   }
 
@@ -247,43 +367,34 @@
 }
 
 .selected:not(.menuItem) {
-  >a {
-    color: rgba(0, 0, 0, 0.88) !important;
-    font-weight: 400;
-  }
-
-  &:hover {
-    >a {
-      color: @primary-color !important;
-    }
-  }
-
-  // border-right: 3px solid @primary-color;
+  padding-left: 12px;
+  border-left: 4px solid @plus-primary;
+  font-weight: 500;
 }
 
 .unselected {
-  border-right: 3px solid @primary-color;
-  background-color: #e7f4ff;
+  background-color: unset;
 
   .link {
-    color: #fff;
+    color: #2a303b;
   }
 }
 
 .unselected:hover {
-  color: @primary-color;
+  // color: @primary-color;
 
   a {
     width: auto;
-    color: @primary-color;
+    // color: @primary-color;
     font-weight: 500;
   }
 
   &.thirdMenu {
     a {
+      margin: 0 -8px;
       padding: 0 8px;
-      background-color: @focus-bg-color;
-      color: #fff;
+      background-color: #f5f6f8;
+      color: #2a303b;
     }
   }
 }

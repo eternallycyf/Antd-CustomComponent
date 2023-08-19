@@ -53,7 +53,8 @@ const getSelectedClass = (curPath: any = '', selectedPaths: string[] = []): stri
   const unselectedStyles = theme === 'light' ? styles.unselected : '';
   const selectedStyles = theme === 'light' ? styles.selected : '';
   const [firstPath] = selectedPaths;
-  if (!curPath === !firstPath) {
+
+  if (curPath === firstPath) {
     return selectedStyles;
   }
 
@@ -61,7 +62,9 @@ const getSelectedClass = (curPath: any = '', selectedPaths: string[] = []): stri
     const flag = selectedPaths.some((path) => curPath.some((otherPath) => path === otherPath.path));
     return flag ? selectedStyles : unselectedStyles;
   }
-  return '';
+
+  const flag = selectedPaths.some((path) => path === curPath);
+  return flag ? selectedStyles : unselectedStyles;
 };
 
 const BaseMenu: FC<IBaseMenuProps> = (props) => {
@@ -97,23 +100,24 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
   // 获取 subMenu || menuItem
   const getSubMenu = (infos: MenuItemProps) => {
     const { theme } = getDvaApp()._store.getState().global;
-    const unselectedStyles = theme === 'light' ? styles.unselected : '';
-    const selectedStyles = theme === 'light' ? styles.selected : '';
+    const itemStyles = getSelectedClass(infos?.path, selectedKeys);
     const { children } = infos;
-    let flMenuClass = ''; // 一级菜单样式
 
     const content = children?.map((item) => {
       if (item.children && children.some((child) => child?.name)) {
+        const isChildSelect = selectedKeys.includes(item.path);
         return (
-          <SubMenu className={styles.subMenu} path={item.path} key={item.path || item.name} title={item.name}>
+          <SubMenu
+            className={`${styles.subMenu} ${isChildSelect && styles['subTitle']}`}
+            path={item.path}
+            key={item.path || item.name}
+            title={item.name}
+          >
             {/* 三级菜单 */}
             {item?.children?.map((itemChild) => {
               const subMenuClass = getSelectedClass(itemChild?.path, selectedKeys);
-              if (!subMenuClass.includes(selectedStyles)) {
-                flMenuClass = unselectedStyles;
-              }
               return (
-                <MenuItem className={`${styles.menuItem} ${styles.subMenuClass} ${styles.thirdMenu}`} key={itemChild.path || itemChild.name}>
+                <MenuItem className={`${styles.menuItem} ${subMenuClass} ${styles.thirdMenu}`} key={itemChild.path || itemChild.name}>
                   {getMenuItemPath(itemChild, pathname)}
                 </MenuItem>
               );
@@ -121,8 +125,16 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
           </SubMenu>
         );
       }
+      const isSelect = selectedKeys.includes(item.path);
       //  二级菜单
-      return <SubMenu className={styles.subMenu} path={item.path} key={item.path || item.name} title={item.name}></SubMenu>;
+      return (
+        <SubMenu
+          className={`${styles.subMenu} ${styles['subMenu-link']} ${isSelect && styles['subTitle']}`}
+          path={item.path}
+          key={item.path || item.name}
+          title={item.name}
+        ></SubMenu>
+      );
     }) as JSX.Element[];
 
     const arr = new Array(3).fill(1);
@@ -149,7 +161,7 @@ const BaseMenu: FC<IBaseMenuProps> = (props) => {
         getPopupContainer={() => document.getElementsByClassName('core-base-tags-nav-index-tabs')[0] as HTMLElement}
         content={contentWrapper}
       >
-        {getListItem(infos, unselectedStyles)}
+        {getListItem(infos, itemStyles)}
       </Popover>
     );
     return subMenu;

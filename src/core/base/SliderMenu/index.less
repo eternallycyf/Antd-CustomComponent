@@ -2,6 +2,7 @@
 
 @nav-header-height: @layout-header-height;
 
+
 .sider {
   overflow-x: hidden;
   overflow-y: auto;
@@ -55,8 +56,7 @@
 
       .ant-menu-item,
       .ant-menu-submenu-title {
-        margin-top: 0;
-        margin-bottom: 0;
+        margin: 0 !important;
         height: 46px !important;
         font-size: 14px !important;
         line-height: 46px !important;
@@ -67,6 +67,7 @@
       }
 
       .ant-menu-item-selected {
+
         &::after {
           border-right-width: 4px;
         }
@@ -82,6 +83,53 @@
       .ant-drawer-body {
         padding: 0;
       }
+    }
+
+  }
+}
+
+.leftMenu {
+  :global {
+    .ant-menu-item {
+      margin: 0 !important;
+      border-radius: 0 !important;
+
+      &.ant-menu-item-only-child {
+        margin-bottom: 2px !important;
+        padding-left: 25px !important;
+      }
+    }
+
+    .ant-menu-item:first-child {
+      height: 46px !important;
+      line-height: 46px !important;
+    }
+
+    .ant-menu-item:first-child {
+      height: 46px !important;
+      line-height: 46px !important;
+    }
+
+    .ant-menu-submenu {
+      margin-bottom: 2px !important;
+    }
+
+
+    .ant-menu-submenu .ant-menu-submenu-title {
+      margin: 0 !important;
+      padding-bottom: 0px !important;
+      padding-left: 16px !important;
+      height: 46px !important;
+      border-radius: 0;
+      line-height: 46px !important;
+    }
+
+    .ant-menu-submenu .ant-menu-submenu-title .ant-menu-title-content span {
+      color: #2A303b !important;
+    }
+
+    .ant-menu-submenu .ant-menu-submenu {
+      padding-left: 32px !important;
     }
   }
 }

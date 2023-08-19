@@ -37,10 +37,21 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
   } = props;
 
   const [openKeys, setOpenKeys] = useState<string[]>(getSubMenus(pathname, menuList));
+  const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>(getSubMenus(pathname, menuList));
+  const [openLeft, setOpenLeft] = useState<boolean>(false);
 
   useEffect(() => {
     setOpenKeys(getSubMenus(pathname, menuList));
   }, [menuList, pathname]);
+
+  useEffect(() => {
+    setOpenLeft(false);
+    setDefaultSelectedKeys(getSubMenus(pathname, menuList));
+  }, [menuList, pathname]);
+
+  useEffect(() => {
+    setOpenLeft(true);
+  }, [defaultSelectedKeys]);
 
   const isMainMenu = (key: string): boolean => {
     return !!menuList?.some((item) => item.code === key);
@@ -62,7 +73,7 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
 
   return (
     <div ref={ref0} style={{ height: '100%' }}>
-      <Sider theme={theme} trigger={null} collapsible collapsed={collapsed} collapsedWidth={0} width={180} className={siderClassName}>
+      <Sider theme={theme} trigger={null} collapsible collapsed={collapsed} collapsedWidth={0} width={188} className={siderClassName}>
         {sliderMenuState === '2' ? (
           <OldBaseMenu
             {...defaultProps}
@@ -73,6 +84,8 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
             flatMenuKeys={flatMenuKeys}
             openKeys={openKeys}
             onOpenChange={handleOpenChange}
+            defaultSelectedKeys={defaultSelectedKeys}
+            openLeft={openLeft}
           />
         ) : (
           <NewBaseMenu
@@ -87,7 +100,10 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
 
         <div
           className={styles.swap}
-          style={{ background: `rgba(${color.r},${color.g},${color.b},${color.a})` }}
+          style={{
+            background: `rgba(${color.r},${color.g},${color.b},${color.a})`,
+            '--swap-bg': `rgba(${color.r},${color.g},${color.b},0.8)`,
+          }}
           onClick={() => {
             dispatch({
               type: 'global/changeSliderMenuState',
@@ -95,7 +111,7 @@ const SiderMenuWrapper: FC<IBaseMenuProps> = (props) => {
             });
           }}
         >
-          <SwapOutlined />
+          <SwapOutlined style={{ color: '#fff' }} />
         </div>
       </Sider>
     </div>
