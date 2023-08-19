@@ -154,6 +154,10 @@ export function formatColumn(columns: any[]) {
         }
 
         if (item.ellipsis) {
+          item.ellipsis = {
+            ellipsis: options?.ellipsis,
+            isShowTitle: false,
+          };
           item.render = (text: any) => {
             if (_.isNil(text)) return '--';
             let newText = text;
@@ -170,9 +174,6 @@ export function formatColumn(columns: any[]) {
             ) : (
               <Ellipsis length={options.maxLength}>{newText}</Ellipsis>
             );
-          };
-          item.ellipsis = {
-            showTitle: false,
           };
         }
       }

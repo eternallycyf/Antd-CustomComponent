@@ -129,7 +129,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
           <meta name="keyword" content="react, umi, antd"></meta>
         </Helmet>
         <StyleProvider hashPriority="high">
-          <Layout className={styles.container}>
+          <Layout className={styles.container} style={{ '--primary-color': `rgba(${color?.r}, ${color?.g}, ${color?.b}, ${color?.a})` }}>
             <GlobalHeader ref2={ref2} ref3={ref3} dispatch={dispatch} theme={theme} ColorPicker={<ColorPicker dispatch={dispatch} color={color} />} />
             <Layout className={styles.content}>
               <Sider theme={theme} style={{ background: 'transparent', display: collapsed ? 'none' : '' }}>

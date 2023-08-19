@@ -30,6 +30,7 @@ export interface IBaseTableRefFun {
   handleScroll: () => void;
   handleTopButton: Function;
   componentDidMount: Function;
+  setTableBody: Function;
 }
 
 type IBaseTableInstance = InstanceType<typeof BaseTable> & IBaseTableRefFun;
@@ -39,6 +40,11 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
   public searchRef = React.createRef<React.ElementRef<typeof CommonSearch>>();
   public formRef = React.createRef<React.ElementRef<typeof CustomForm>>();
   public scrollRef = React.createRef<HTMLDivElement>();
+
+  setTableBody = () => {
+    const { setTableBody } = this.tableRef.current || {};
+    return setTableBody?.();
+  };
 
   // 获取列表dataSource
   protected getDataSource = () => {

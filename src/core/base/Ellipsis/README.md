@@ -24,6 +24,14 @@ return (
     <Ellipsis lines={3}>{article}</Ellipsis>
   </div>
 );
+
+// 一行还有其他元素
+<span style={{ display: flex }}>
+  <Tag />
+  <Ellipsis lines={1} style={{flex:1}}>
+     {xxx??'--}
+  </Ellipsis>
+</span>
 ```
 
 ## API

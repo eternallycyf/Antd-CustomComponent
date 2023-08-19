@@ -38,7 +38,7 @@ const DEFAULT_OBSERVE_PARAMS = {
 
 function getTabPaneActiveChildren(node: HTMLElement): HTMLElement[] {
   const children: HTMLElement[] = [];
-  const childList = [...node.children];
+  const childList = [...(node?.children || [])];
   if (childList?.length) {
     childList.forEach((child) => {
       children.push(child as HTMLElement);
@@ -56,9 +56,10 @@ function _setTableBody(isVirtual: boolean, self: InstanceType<typeof BaseTable>)
   const realTable = (tabpaneActives[tabpaneActives.length - 1]?.querySelector(`.${tableClassName}`) ||
     children?.find((item) => [...item.classList].includes(tableClassName))) as HTMLDivElement;
   if (realTable) {
+    const minHeight = 200;
     const height = window.innerHeight - realTable.getBoundingClientRect().top - (isVirtual ? 40 : 80);
     self.setState({ height });
-    realTable.style.height = `${height}px`;
+    realTable.style.height = `${height < minHeight ? minHeight : height}px`;
   }
 }
 
@@ -146,8 +147,8 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
   handleTopButton = () => {
     const { buttonLeft = [], button = [] } = this.props;
     const accessCollection = JSON.parse(sessionStorage.getItem('accessCollection') || '[]');
-    const left = buttonLeft.filter((item) => (item.code ? accessCollection.includes(item.code) : true));
-    const right = button.filter((item) => (item.code ? accessCollection.includes(item.code) : true));
+    const left = (Array.isArray(buttonLeft) ? buttonLeft : []).filter((item) => (item.code ? accessCollection.includes(item.code) : true));
+    const right = (Array?.isArray(button) ? button : []).filter((item) => (item.code ? accessCollection.includes(item.code) : true));
     this.setState({
       hasBtn: [...left, ...right].length > 0,
     });
