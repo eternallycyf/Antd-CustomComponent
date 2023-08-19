@@ -198,13 +198,13 @@ class Activity extends BaseComponent<IProps, IState> {
       itemButton: [
         {
           text: '编辑',
-          icon: <EditOutlined />,
+          // icon: <EditOutlined />,
           onClick: this.handleEdit,
           code: 'class-editButton',
         },
         {
           text: '删除',
-          icon: <DeleteOutlined />,
+          // icon: <DeleteOutlined />,
           buttonType: 'delete',
           // code 权限校验如果后端接口没有返回 则不显示
           code: 'class-deleteButton',
@@ -214,10 +214,10 @@ class Activity extends BaseComponent<IProps, IState> {
           },
         },
       ],
-      footer: (a) => {
-        // console.log(a)
-        return <div>3</div>;
-      },
+      // footer: (a) => {
+      //   // console.log(a)
+      //   return <div>3</div>;
+      // },
       itemButtonWidth: 200,
       urls: {
         listUrl: `/getActivityList`,

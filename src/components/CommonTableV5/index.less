@@ -1,4 +1,5 @@
 @import '~@/assets/styles/mixin.less';
+@import '~@/assets/styles/compatible.less';
 
 .loading {
   display: flex;
@@ -6,6 +7,10 @@
   justify-content: center;
   width: 100%;
   height: 100%;
+}
+
+.tableRow {
+  background: #ececec !important;
 }
 
 .buttonRow {
@@ -35,19 +40,15 @@
 }
 
 .itemButtonRow {
-  display: grid;
-
   &:extend(.row);
-  place-items: center;
-  grid-auto-flow: column;
 
   .itemButton {
     margin-right: 5px;
 
     &:hover {
-      outline: 1px solid @color-white;
-      // background-color: @primary-color;
-      // color: @color-white;
+      outline: 1px solid #fff;
+      background-color: @primary-color;
+      color: #fff;
     }
   }
 
@@ -68,7 +69,17 @@
   }
 
   .more {
-    // background-color: #dce1f3;
+    background-color: #dce1f3;
+  }
+}
+
+.dropdown {
+  :global {
+
+    .ant-dropdown-menu-item,
+    .ant-dropdown-menu-sumenu-title {
+      line-height: 14px !important;
+    }
   }
 }
 
