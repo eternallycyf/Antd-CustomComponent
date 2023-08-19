@@ -57,7 +57,7 @@ function _setTableBody(isVirtual: boolean, self: InstanceType<typeof BaseTable>)
     children?.find((item) => [...item.classList].includes(tableClassName))) as HTMLDivElement;
   if (realTable) {
     const minHeight = 200;
-    const height = window.innerHeight - realTable.getBoundingClientRect().top - (isVirtual ? 40 : 80);
+    const height = window.innerHeight - realTable.getBoundingClientRect().top - (isVirtual ? 40 : 105);
     self.setState({ height });
     realTable.style.height = `${height < minHeight ? minHeight : height}px`;
   }

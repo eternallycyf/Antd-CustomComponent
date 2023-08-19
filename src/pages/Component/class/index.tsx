@@ -269,6 +269,7 @@ class Activity extends BaseComponent<IProps, IState> {
                 columnNumber={4}
                 expandForm={false}
                 handleResetPreCallback={this.handleOnReset}
+                handleToggleFormCallBack={this.setTableBody}
               />
             </Spin>
           )}

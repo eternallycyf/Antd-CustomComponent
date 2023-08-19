@@ -43,7 +43,7 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
 
   setTableBody = () => {
     const { setTableBody } = this.tableRef.current || {};
-    return setTableBody?.();
+    if (setTableBody) setTableBody();
   };
 
   // 获取列表dataSource

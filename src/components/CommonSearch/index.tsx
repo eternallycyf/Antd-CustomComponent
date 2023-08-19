@@ -22,6 +22,7 @@ import RenderTag from './renderTag';
  * @property {(fn: () => void) => void} handleResetPreCallback - 重置前的回调
  * @property {() => void} handleResetCallback - 重置回调
  * @property {(name: string, itemValue: any) => void} handleDeleteTagCallback - 删除tag的回调函数
+ * @property {() => void} handleToggleFormCallBack - 切换展开收起
  * @property {RowProps} rowProps
  * @property {boolean} isInline - 是否是行内表单
  * @property {string} wrapperClassName
@@ -41,6 +42,7 @@ export interface IToolTipTagProps {
   handleResetPreCallback?: (fn: () => void) => void;
   handleResetCallback?: () => void;
   handleDeleteTagCallback?: (name: string, itemValue: any) => void;
+  handleToggleFormCallBack?: () => void;
   rowProps?: RowProps;
   isInline?: boolean;
   wrapperClassName?: string;
@@ -73,6 +75,7 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
     handleDeleteTagCallback,
     rowProps = {},
     isInline = false,
+    handleToggleFormCallBack,
     ...restProps
   } = props;
   const [tagList, setTagList] = useSyncState<any[]>([]);
@@ -224,6 +227,7 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
           setTagList([]);
           if (handleResetCallback) handleResetCallback();
         }}
+        handleToggleFormCallBack={handleToggleFormCallBack}
       >
         {showToolTipTag && tagList ? (
           <div ref={divRef} className={styles.tagRow}>

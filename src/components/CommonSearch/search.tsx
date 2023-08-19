@@ -16,6 +16,7 @@ export interface ISearchProps extends IToolTipTagProps {
   children?: any;
   handleTagList?: any;
   handleResetCallback?: () => void;
+  handleToggleFormCallBack?: () => void;
   rowProps?: RowProps;
   isInline?: boolean;
   wrapperClassName?: string;
@@ -52,6 +53,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
     rowProps = {},
     isInline = false,
     showLine = true,
+    handleToggleFormCallBack,
   } = props;
   const [form] = Form.useForm();
   const [state, setState] = useState({
@@ -213,6 +215,9 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
     const { expandForm } = state;
     setState((prevState: any) => ({ ...prevState, expandForm: !state?.expandForm }));
     document.dispatchEvent(new Event('toggleForm'));
+    setTimeout(() => {
+      handleToggleFormCallBack && handleToggleFormCallBack();
+    }, 0);
   };
 
   /**
