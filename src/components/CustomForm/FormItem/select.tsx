@@ -117,7 +117,7 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef((defaultProps, r
   }
 
   return (
-    <Select style={{ width: '100%' }} {...props} onChange={handleChange} onClick={handleClick}>
+    <Select style={{ width: '100%' }} {...props} showArrow={props?.showArrow ?? true} onChange={handleChange} onClick={handleClick}>
       {group
         ? dataAddAllItem(dataSource).map((dic: any) => (
             <OptGroup label={dic[textKey]} key={dic[valueKey]}>
