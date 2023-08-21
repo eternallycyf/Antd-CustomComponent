@@ -65,6 +65,7 @@ const FullScreen: React.FC<any> = () => {
     fontSize: 16,
     margin: '0 12px',
     cursor: 'pointer',
+    color: '#fff',
   };
 
   if (!showFullScreenBtn) return null;
