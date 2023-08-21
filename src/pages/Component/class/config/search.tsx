@@ -147,6 +147,7 @@ export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType 
     },
     {
       name: 'endTime',
+      labelWidth: 100,
       label: (
         <div>
           <span style={{ marginRight: 4 }}>month</span>
@@ -168,6 +169,7 @@ export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType 
       name: 'month',
       label: '起止月份',
       type: 'input',
+      labelWidth: 200,
       // itemProps: {
       //   labelCol: { span: 4 },
       //   wrapperCol: { span: 20 },
