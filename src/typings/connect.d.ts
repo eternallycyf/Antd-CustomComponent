@@ -1,5 +1,6 @@
 import { History } from '@umijs/max';
 import { EffectsCommandMap } from 'dva';
+import React from 'react';
 import { AnyAction } from 'redux';
 import { IGlobalModelState } from '../models/global';
 import { ILoginModelState } from '../models/login';
@@ -45,6 +46,6 @@ declare global {
   interface Window {
     closeTab: (pathname: string, event?: any) => void;
     refreshTab: (pathname: any) => void;
-    tabChildren: any;
+    tabChildren: undefined | Record<string, React.ReactNode>;
   }
 }
