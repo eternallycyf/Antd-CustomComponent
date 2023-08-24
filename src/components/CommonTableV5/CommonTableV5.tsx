@@ -524,12 +524,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
             <Empty
               description={!initRequest && !requestCount ? '请选择筛选条件进行查询' : '暂无数据'}
               style={{ color: '#b3b8c2', fontSize: 12, height: 500, display: 'grid', placeContent: 'center' }}
-              image={
-                <img
-                  style={{ width: 88, height: 88 }}
-                  src={require(`@/assets/empty/${!initRequest && !requestCount ? 'search-empty' : 'card-empty'}}.png`)}
-                />
-              }
+              image={<img style={{ width: 88, height: 88 }} src={require(`@/assets/empty/search-empty.png`)} />}
             />
           ),
         }}
