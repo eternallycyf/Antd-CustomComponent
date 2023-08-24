@@ -38,6 +38,7 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<IR
       align: 'center' as 'center',
       fixed: 'left' as 'left',
       initChecked: false,
+      // sorter:(a,b)=> (moment(a.activityStartTime,'YYYY-MM-DD HH:mm:ss').unix() - moment(b.activityStartTime,'YYYY-MM-DD HH:mm:ss').unix())
       // ellipsis: true,
     },
     {
@@ -104,3 +105,6 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<IR
     },
   ];
 };
+function dayjs(activityStartTime: string, arg1: string) {
+  throw new Error('Function not implemented.');
+}

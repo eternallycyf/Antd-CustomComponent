@@ -100,7 +100,7 @@ const CustomTooltipFileName: FC<IFileName> = (props) => {
   };
 
   const FileNameContent = (
-    <a style={fileNameStyle}>
+    <span style={fileNameStyle}>
       <FileImage fileName={fileName ?? '--'} style={{ marginRight: 8, marginTop: -3 }} />
       {fileName.length > prefixLength + suffixLength ? (
         <>
@@ -111,7 +111,7 @@ const CustomTooltipFileName: FC<IFileName> = (props) => {
         fileName
       )}
       {fileType ? `.${fileType}` : ''}
-    </a>
+    </span>
   );
 
   const DownLoadIcon = isIcon ? (
