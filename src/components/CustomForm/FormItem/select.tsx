@@ -1,5 +1,5 @@
 import React, { useEffect, useImperativeHandle, useState } from 'react';
-import { Select, Spin } from 'antd';
+import { Select, Spin, Empty } from 'antd';
 import _ from 'lodash';
 import request from '@/utils/request';
 import { IControlProps } from '@/typings';
@@ -117,7 +117,21 @@ const SelectControl: React.FC<IControlProps> = React.forwardRef((defaultProps, r
   }
 
   return (
-    <Select style={{ width: '100%' }} {...props} showArrow={props?.showArrow ?? true} onChange={handleChange} onClick={handleClick}>
+    <Select
+      style={{ width: '100%' }}
+      {...props}
+      showArrow={props?.showArrow ?? true}
+      onChange={handleChange}
+      onClick={handleClick}
+      notFoundContent={
+        props.notFoundContent || (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <img src={require('@/assets/empty/card-empty.png')} />
+            <span style={{ color: '#b3B8c2', fontSize: 12 }}>暂无数据</span>
+          </div>
+        )
+      }
+    >
       {group
         ? dataAddAllItem(dataSource).map((dic: any) => (
             <OptGroup label={dic[textKey]} key={dic[valueKey]}>

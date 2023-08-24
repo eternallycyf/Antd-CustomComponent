@@ -493,7 +493,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
         components={this.components}
         rowHeight={44}
         footer={footer}
-        className={this.cls}
+        className={`${this.cls} ${(data?.length > 0 ? data : dataSource)?.length ? '' : styles.noDataTable}`}
         height={height}
         rowKey={rowKey}
         scroll={scroll}
@@ -524,7 +524,12 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
             <Empty
               description={!initRequest && !requestCount ? '请选择筛选条件进行查询' : '暂无数据'}
               style={{ color: '#b3b8c2', fontSize: 12, height: 500, display: 'grid', placeContent: 'center' }}
-              image={!initRequest && !requestCount ? require('@/assets/empty/search-empty.png') : Empty.PRESENTED_IMAGE_SIMPLE}
+              image={
+                <img
+                  style={{ width: 88, height: 88 }}
+                  src={require(`@/assets/empty/${!initRequest && !requestCount ? 'search-empty' : 'card-empty'}}.png`)}
+                />
+              }
             />
           ),
         }}

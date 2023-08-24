@@ -332,3 +332,26 @@
     }
   }
 }
+
+.noDataTable {
+  :global {
+
+    table,
+    .ant-table-tbody,
+    tr.ant-table-placeholder,
+    td .ant-empty {
+      height: 100%;
+    }
+
+    td .ant-empty {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+
+      .ant-empty-image {
+        height: 88px;
+      }
+    }
+  }
+}
