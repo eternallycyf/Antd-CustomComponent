@@ -135,7 +135,8 @@ const Demo = () => {
             {
               buttonType: 'link',
               text: '保存',
-              onClick: (values, operation) => {
+              onClick: async (values, operation) => {
+                await form.validateFields();
                 setCurrentEditValue(currentEditValue.filter((item) => item.key !== values.record.key));
                 setEditableKeys(editableKeys.filter((item) => item !== values.record.key));
               },
@@ -216,7 +217,46 @@ export default Demo;
 }
 ```
 
-## 2.type == 'view';
+## 2. !isMultiple && type == 'update'
+
+```tsx
+{
+  dataIndex: 'isEffect',
+  title: '失效时间',
+  hasRequiredMark: true,
+  type: 'update',
+  align: 'left',
+  width: 240,
+  transform: (val, currentValues, index, allValues) => {
+    return currentValues?.isEffect
+  },
+  formItemProps:{
+    itemProps:{
+      shouldUpdate: ()=> true,
+      noStyle: true,
+      style: { display: 'flex'},
+      next: (values, form, index) => {
+        return [
+          {
+            name: [index, 'detail'],
+            width: 140,
+            col: 12,
+            type: 'input',
+          },
+          {
+            name: [index, 'isEffect'],
+            type: 'checkbox',
+            col: 12,
+            dict: [{text:'永久生效',value:'1'}]
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+## 3.type == 'view';
 
 ```tsx
 {

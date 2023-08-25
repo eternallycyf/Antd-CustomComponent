@@ -255,36 +255,44 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
             return formatEditTableColumns(item, val);
           }
 
-          const Content = ({ form, formProps, index }: { form: any; formProps: any; index: number }) => (
-            <Form.Item
-              labelAlign="right"
-              label={label as string}
-              name={name}
-              key={key}
-              rules={rules || itemProps?.rules || []}
-              initialValue={initialValue}
-              {...layout}
-              {...itemProps}
-            >
-              {renderFormItem(formProps, index)}
-            </Form.Item>
-          );
+          const Content = ({ form, formProps, index, type }: { form: any; formProps: any; index: number; type: any }) => {
+            if (type == 'update') {
+              // FAQ: 可编辑表格使用 type == 'update'
+              // 为Form.Item.type == 'update' 注入 index
+              return <Row {...itemProps}>{(renderFormItem({ ...formProps, itemProps: addExtraIndexParams(itemProps, index) }), index)}</Row>;
+            }
+            return (
+              <Form.Item
+                labelAlign="right"
+                label={label as string}
+                name={name}
+                key={key}
+                rules={rules || itemProps?.rules || []}
+                initialValue={initialValue}
+                {...layout}
+                {...itemProps}
+              >
+                {renderFormItem(formProps, index)}
+              </Form.Item>
+            );
+          };
 
-          if (isMultiple && formProps?.type == 'update') {
-            // FAQ: 可编辑表格使用 type == 'update'
-            // 为Form.Item.type == 'update' 注入 index
-            return <Row {...itemProps}>{(renderFormItem({ ...formProps, itemProps: addExtraIndexParams(itemProps, index) }), index)}</Row>;
-          }
-          if (isMultiple) return <Content form={form} formProps={formProps as any} index={index} />;
+          if (isMultiple) return <Content type={type} form={form} formProps={formProps as any} index={index} />;
 
           return (
             <Form.Item noStyle shouldUpdate={true}>
               {(inLineForm) => {
                 const currentValue = inLineForm?.getFieldValue(tableFormName) || []?.[name as any];
                 if (!isMultiple && !editableKeys.includes(String(currentValue?.[index]?.key))) {
+                  if (item.transform) {
+                    return item.transform?.(val, currentValues, index, allValues);
+                  }
+                  if (item.render) {
+                    return item.render?.(val, currentValues, index, allValues);
+                  }
                   return formatEditTableColumns(item, val);
                 }
-                return <Content form={inLineForm} formProps={formProps as any} index={index} />;
+                return <Content type={type} form={inLineForm} formProps={formProps as any} index={index} />;
               }}
             </Form.Item>
           );
