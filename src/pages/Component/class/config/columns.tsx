@@ -2,6 +2,7 @@ import { CustomTooltip } from '@/components';
 import { IColumnsType } from '@/typings';
 import Activity from '../index';
 import { ACTIVE_TYPE } from './constant';
+import dayjs from 'dayjs';
 
 export interface IRecord {
   name: string;
@@ -105,6 +106,3 @@ export const getColumns = (self: InstanceType<typeof Activity>): IColumnsType<IR
     },
   ];
 };
-function dayjs(activityStartTime: string, arg1: string) {
-  throw new Error('Function not implemented.');
-}
