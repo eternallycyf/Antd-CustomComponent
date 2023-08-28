@@ -255,7 +255,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
             return formatEditTableColumns(item, val);
           }
 
-          const Content = ({ form, formProps, index, type }: { form: any; formProps: any; index: number; type: any }) => {
+          const getContent = ({ form, formProps, index, type }: { form: any; formProps: any; index: number; type: any }) => {
             if (type == 'update') {
               // FAQ: 可编辑表格使用 type == 'update'
               // 为Form.Item.type == 'update' 注入 index
@@ -277,7 +277,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
             );
           };
 
-          if (isMultiple) return <Content type={type} form={form} formProps={formProps as any} index={index} />;
+          if (isMultiple) return getContent({ type, formProps, index, form } as any);
 
           return (
             <Form.Item noStyle shouldUpdate={true}>
@@ -292,7 +292,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
                   }
                   return formatEditTableColumns(item, val);
                 }
-                return <Content type={type} form={inLineForm} formProps={formProps as any} index={index} />;
+                return getContent({ type, formProps, index, form } as any);
               }}
             </Form.Item>
           );
