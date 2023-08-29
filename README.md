@@ -241,7 +241,7 @@ componentDidMount(){
     if(targetPath && targetPath === '/当前页面路由' && pathname == '/跳转地址路由'){
       const form = this.searchRef.current.searchFormRef.current;
       if(form){
-        const [value, values] = this.searchRef.current?.handleRealParams();
+        const [value, values] = this.searchRef.current?.handleRealParams()!;
         const params = {...values, ..._.omit(query,['targetPath'])},
         form.setFieldsValue(_.omit(query,['targetPath']);
         // 如果是 select => xxx: { key: 'xxx'}
@@ -256,7 +256,7 @@ componentDidMount(){
       }
     }
   }
-  const [value, values] = this.searchRef.current?.handleRealParams();
+  const [value, values] = this.searchRef.current?.handleRealParams()!;
   !hasListen && this.handleSearch(values)
 }
 

@@ -25,7 +25,7 @@ export const getSearches = (self: InstanceType<typeof Activity>): ISearchesType 
       controlProps: {
         buttonStyle: 'solid',
         onChange: (value: any) => {
-          const [_, values] = self.searchRef.current?.handleRealParams();
+          const [_, values] = self.searchRef.current?.handleRealParams()!;
           self.setState({ radioValue: value.target.value });
           self.handleSearch({ ...values, xxxxxStatus: value.target.value });
         },
