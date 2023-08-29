@@ -293,7 +293,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
                   labelAlign="left"
                   labelCol={
                     field?.itemProps?.labelCol ?? {
-                      style: { width: 'auto', minWidth: formListLength > (columnNumber || 0) ? maxLabelLength : 'auto', padding: 0 },
+                      style: { width: 'auto', minWidth: formListLength > (columnNumber || 0) ? 'fit-content' : 'fit-content', padding: 0 },
                     }
                   }
                   label={field.label}
