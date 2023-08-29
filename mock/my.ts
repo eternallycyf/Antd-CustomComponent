@@ -60,6 +60,7 @@ export default {
           }),
           page: req.query.page,
           pageSize: 30,
+          totalPage: 1,
           total: 30,
         },
         message: 'string',

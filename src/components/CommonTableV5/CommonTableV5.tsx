@@ -458,6 +458,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
             current,
             pageSize,
             defaultPageSize,
+            hideOnSinglePage: true,
             showQuickJumper: true,
             showSizeChanger: true,
             pageSizeOptions: ['10', '30', '50'],

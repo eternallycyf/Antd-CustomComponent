@@ -56,8 +56,9 @@ function _setTableBody(isVirtual: boolean, self: InstanceType<typeof BaseTable>)
   const realTable = (tabpaneActives[tabpaneActives.length - 1]?.querySelector(`.${tableClassName}`) ||
     children?.find((item) => [...item.classList].includes(tableClassName))) as HTMLDivElement;
   if (realTable) {
-    const minHeight = 200;
-    const height = window.innerHeight - realTable.getBoundingClientRect().top - (isVirtual ? 40 : 105);
+    const minHeight = 100;
+    const defaultPageHeight = self?.state?.pageSize <= self?.state?.total ? 40 : 105;
+    const height = window.innerHeight - realTable.getBoundingClientRect().top - (isVirtual ? 40 : defaultPageHeight);
     self.setState({ height });
     realTable.style.height = `${height < minHeight ? minHeight : height}px`;
   }
