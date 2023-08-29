@@ -1,5 +1,5 @@
 import React, { useImperativeHandle, useState } from 'react';
-import { Form, FormItemProps, ModalProps, FormInstance } from 'antd';
+import { Form, FormItemProps, ModalProps, FormInstance, DrawerProps } from 'antd';
 import { Drawer, message, Modal } from 'antd';
 import { postAction } from '@/services/global';
 import FormBuilder from '@/components/CustomForm/FormBuilder';
@@ -24,7 +24,7 @@ interface IProps {
   title?: string; // 弹窗标题
   isShowTitlePrefix?: boolean;
   className?: string;
-  modalConf?: ModalProps;
+  modalConf?: ModalProps | DrawerProps;
   modalType?: ModalType; // modal类型
   defaultLayout?: {
     labelCol: FormItemProps['labelCol'];
@@ -165,7 +165,7 @@ const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref)
       Component = Drawer;
       modalConf = {
         width: 600,
-        onCancel: handleCancel,
+        onClose: handleCancel,
         ...modalConf,
       };
       break;
@@ -184,7 +184,7 @@ const CustomForm: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref)
   const modalTitle: string | undefined = isShowTitlePrefix ? `${isEdit ? '编辑' : '新增'} ${title}` : title;
 
   return modalType && modalType !== ModalType.normal ? (
-    <Component title={modalTitle} open={visible} destroyOnClose={true} {...modalConf}>
+    <Component title={modalTitle} open={visible} destroyOnClose={true} {...(modalConf as any)}>
       {formBuilder}
       {otherRender && otherRender()}
     </Component>

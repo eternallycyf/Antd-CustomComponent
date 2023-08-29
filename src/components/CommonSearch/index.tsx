@@ -55,13 +55,13 @@ export interface IToolTipTagProps {
 }
 
 export interface IHandle {
-  handleRealParams: () => any;
+  handleRealParams: () => readonly [any, any];
   searchFormRef: React.RefObject<ISearchRef>;
 }
 
 interface ISearchRef {
   form: FormInstance;
-  formatSubmitValues: (values: any) => void;
+  formatSubmitValues: (values: any) => any;
 }
 
 const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (props, ref) => {
@@ -95,7 +95,7 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
   const handleRealParams = () => {
     const { form, formatSubmitValues } = searchRef.current!;
     const values = form.getFieldsValue();
-    return [values, formatSubmitValues(values)];
+    return [values, formatSubmitValues(values)] as const;
   };
 
   // 处理tagList

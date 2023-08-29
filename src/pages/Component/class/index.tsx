@@ -67,17 +67,17 @@ class Activity extends BaseComponent<IProps, IState> {
   }
 
   componentDidMount() {
-    const [value, values] = this.searchRef.current?.handleRealParams();
+    const [value, values] = this.searchRef.current?.handleRealParams()!;
     history.listen(({ location }) => {
       console.log(location);
     });
   }
 
   // 打开活动报名列表页面
-  handleOpenRegList = (record: any) => {};
+  handleOpenRegList = () => {};
 
   getDisabledDate = (disabledKey: 'startDate' | 'endDate', current: dayjs.Dayjs) => {
-    const [, values] = this.searchRef.current?.handleRealParams();
+    const [, values] = this.searchRef.current?.handleRealParams()!;
     if (!values) return false;
     if (current && current > dayjs()) return true;
 
@@ -121,7 +121,7 @@ class Activity extends BaseComponent<IProps, IState> {
       pagination: {
         pageSizeOptions: ['10', '20', '30', '40', '50'],
       },
-      dataHandler: (dataSource, data) => {
+      dataHandler: (dataSource) => {
         return dataSource;
       },
       buttonLeft: [
@@ -248,7 +248,7 @@ class Activity extends BaseComponent<IProps, IState> {
       scroll: { y: 800 },
       // fixRowKeys: [1],
       rowEventHandlers: {
-        onClick: (record, index, event) => {},
+        onClick: () => {},
       },
       calcHeight: true,
       showIndex: true,
@@ -303,7 +303,7 @@ class Activity extends BaseComponent<IProps, IState> {
             await this.OtherFormRef.current?.validateFields();
             return Promise.resolve({});
           }}
-          handleFieldsChange={(changedFields, allFields, form) => {
+          handleFieldsChange={() => {
             // console.log(changedFields, allFields, form);
           }}
           otherRender={() => (
@@ -340,5 +340,5 @@ class Activity extends BaseComponent<IProps, IState> {
 export default compose<typeof Activity>(
   withRoutePage,
   withRouter,
-  connect(({ global, login }: ConnectState) => login),
+  connect(({ login }: ConnectState) => login),
 )(Activity);
