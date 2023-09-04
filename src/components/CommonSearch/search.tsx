@@ -280,7 +280,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
   return (
     <div className={`${cx('searchWrap', styles.searchWrap, { [styles.inLineForm]: isInline })} ${props?.wrapperClassName}`}>
       {preChildren}
-      <Form layout="inline" onFieldsChange={onFieldsChange} form={form} onFinish={handleSubmit} className={styles.form}>
+      <Form layout="inline" colon={props.colon} onFieldsChange={onFieldsChange} form={form} onFinish={handleSubmit} className={styles.form}>
         {!isInline && (
           <Row align="middle" gutter={{ md: 4, lg: 12, xl: 24 }} style={{ flex: 1, width: '100%' }} {...rowProps}>
             {formList.map((field, index) => (

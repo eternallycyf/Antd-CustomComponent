@@ -51,6 +51,7 @@ export interface IToolTipTagProps {
    * @name 是否展示分割线
    */
   showLine?: boolean;
+  colon?: boolean;
   [propName: string]: any;
 }
 
@@ -76,6 +77,7 @@ const TooltipTag: React.ForwardRefRenderFunction<IHandle, IToolTipTagProps> = (p
     rowProps = {},
     isInline = false,
     handleToggleFormCallBack,
+    colon = true,
     ...restProps
   } = props;
   const [tagList, setTagList] = useSyncState<any[]>([]);
