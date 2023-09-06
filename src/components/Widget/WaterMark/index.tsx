@@ -19,7 +19,7 @@ const WaterMark: FC<IWaterMarkProps> = (props) => {
     height = 200,
     textAlign = 'center',
     textBaseline = 'middle',
-    font = '20px Microsoft Yahei',
+    font = '18px Microsoft Yahei',
     fillStyle = 'rgba(184, 184, 184, 0.6)',
     content = 'WaterMark',
     rotate = -20,

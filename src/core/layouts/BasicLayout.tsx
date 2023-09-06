@@ -138,7 +138,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
               <div id="container-TagsNav" style={{ width: 'calc( 100vw - 200px)', background: '#fff' }}>
                 {!_.isEmpty(breadcrumbNameMap) && !_.isEmpty(userInfo) ? (
                   <TagsNav {...TagsNavProps}>
-                    <WaterMark content={userInfo?.username || '未登录'} fillStyle="rgba(123,139,167,0.2)">
+                    <WaterMark content={userInfo?.username || '未登录'} fillStyle="rgba(0,0,0,.1)">
                       {location.pathname !== '/' ? <Outlet /> : <IndexPage />}
                     </WaterMark>
                   </TagsNav>
