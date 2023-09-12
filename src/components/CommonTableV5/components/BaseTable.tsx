@@ -142,7 +142,6 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
       this.observer.takeRecords();
       this.observer.disconnect();
     }
-    this.handleTopButton();
   }
 
   handleTopButton = () => {

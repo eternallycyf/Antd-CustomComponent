@@ -82,6 +82,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     window.addEventListener('dev', () => {
       this.setState({ dev: true }, this.handleColumns);
     });
+    this.handleTopButton();
     this.handleColumns();
     this.handleInitBaseTable();
   }
@@ -399,7 +400,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
         const content = item.useSummary ? item.useSummary('合计', currentItemData) : '合计';
         return _renderSummaryCell(defaultIndex, content, 'center');
       }
-      if (removeSummary && removeSummary?.length != 0 && removeSummary?.includes(item?.dataIndex as string)) {
+      if (removeSummary && removeSummary?.length != 0 && removeSummary?.includes(item?.dataIndex as any)) {
         return _renderSummaryCell(index, '--', textAlign);
       }
       const text = currentItemData?.[item?.dataIndex!];
