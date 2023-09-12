@@ -10,12 +10,14 @@ type RenderReturn<TRecord = AnyData> = ReturnType<NonNullable<ColumnType<TRecord
  * @typedef {object} tableColumn
  * @template {TRecord = AnyData} - TRecord
  */
+
 export type Column<TRecord = AnyData> =
   | ColumnType<TRecord> & {
       title: ReactNode | (() => ReactNode);
       /**
        * @name 仅针对title的tooltip
        * */
+      render?: (value: any, record: TRecord, index: number) => RenderReturn<TRecord>;
       tooltip?:
         | string
         | (() => ReactNode)
