@@ -111,6 +111,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
   };
 
   const algorithmObj = theme == 'dark' ? { algorithm: antdTheme.darkAlgorithm } : { algorithm: antdTheme.defaultAlgorithm };
+  const isCollapsed = props.collapsed;
 
   return (
     <Fragment>
@@ -135,7 +136,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
               <Sider theme={theme} style={{ background: 'transparent', display: collapsed ? 'none' : '' }}>
                 <SiderMenu {...siderMenuProps} ref0={ref0} />
               </Sider>
-              <div id="container-TagsNav" style={{ width: 'calc( 100vw - 200px)', background: '#fff' }}>
+              <div id="container-TagsNav" style={{ width: `calc( 100vw - ${isCollapsed ? 0 : 200}px)`, background: '#fff' }}>
                 {!_.isEmpty(breadcrumbNameMap) && !_.isEmpty(userInfo) ? (
                   <TagsNav {...TagsNavProps}>
                     <WaterMark content={userInfo?.username || '未登录'} fillStyle="rgba(0,0,0,.1)">
