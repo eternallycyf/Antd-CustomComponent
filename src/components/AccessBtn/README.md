@@ -50,7 +50,7 @@ const tableParams: ICommonTable<any> = {
         onChange: (groupValue) => {
           const extraParams = this.tableRef.current?.state.extraParams;
           this.setState({ groupValue },() => {
-            this.handleDynamicParams({ ...extraParams, groupValue });
+            this.handleDynamicParam({ ...extraParams, groupValue });
           });
         },
         groupDict: [
