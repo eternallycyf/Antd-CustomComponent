@@ -16,6 +16,7 @@ import { ConnectState } from './connect';
 import type { IBaseColumnsType } from './core/column';
 import { IBaseControlProps } from './core/control';
 import { IBaseSearchesType } from './core/form';
+import { Merge } from './utils';
 
 type boolFunc = (config: { form: FormInstance; formData: any; record: any }) => boolean;
 
@@ -120,7 +121,7 @@ export interface ICommonTableContext {
  * @typedef ICommonTable
  * @template T - dataIndex[]
  */
-export interface ICommonTable<T = any> extends TableProps<T> {
+export interface ICommonTable<T = Record<string, unknown>, R = Record<string, unknown>> extends Omit<TableProps<T>, 'columns'> {
   /**@name 最外层容器 className */
   wrapClassStr?: string;
   /**@name table查询的请求地址 */
@@ -150,7 +151,7 @@ export interface ICommonTable<T = any> extends TableProps<T> {
   /**@name 默认一页多少个*/
   defaultPageSize?: number;
   /**@name 处理data 第一个参数多了index和rowKey */
-  dataHandler?: (data: { index: number; rowKey: string; [props: string]: any }[], dataSource: any[]) => any;
+  dataHandler?: (data: Merge<{ index: number; rowKey: string }, T>[], dataSource: (T & string)[]) => any;
 
   /**@name 是否使用虚拟列表*/
   isVirtual?: boolean;
@@ -159,7 +160,7 @@ export interface ICommonTable<T = any> extends TableProps<T> {
 
   /**@name 虚拟列表-点击事件 */
   rowEventHandlers?: {
-    onClick: (rowKey: string | number, rowData: any, rowIndex: number) => void;
+    onClick: (rowKey: string | number, rowData: T, rowIndex: number) => void;
   };
   /**@name 是否可拖动 */
   draggable?: boolean;
@@ -178,7 +179,7 @@ export interface ICommonTable<T = any> extends TableProps<T> {
   /**@name 手动指定操作栏宽度 */
   itemButtonWidth?: number;
   /**@name 页脚 */
-  footer?: (currentPageData: any) => React.ReactNode;
+  footer?: () => React.ReactNode;
   /**@name 是否显示序号 */
   showIndex?: boolean;
   /**@name 是否显示排序的tooltip */
@@ -199,7 +200,7 @@ export interface ICommonTable<T = any> extends TableProps<T> {
   /**@name 多选／单选 */
   selectType?: 'checkbox' | 'radio' | boolean;
   /**@name 选择时候触发 */
-  onSelect?: (selectRowKeys: React.Key[], selectedRows: any[]) => void;
+  onSelect?: (selectRowKeys: React.Key[], selectedRows: T[]) => void;
   expandable?: TableProps<T>['expandable'];
 
   /**
@@ -221,22 +222,22 @@ export interface ICommonTable<T = any> extends TableProps<T> {
    * 3. removeSummary 需要排除的合计项 (直接显示'--'了)
    */
   isSummary?: boolean;
-  summaryDataSource?: any[];
+  summaryDataSource?: T[];
   /**
    * @default [summaryPosition='top']
    */
   summaryPosition?: 'top' | 'bottom';
   /**@name 需要排除的合计项  */
-  removeSummary?: string[];
+  removeSummary?: (keyof T & string)[];
   /**@name 操作栏是否固定 */
 
   operFixed?: 'right' | 'center' | 'left';
   /**@name 网络请求后data的路径 */
   dataPath?: string;
   /**@name 渲染前最后处理一次column */
-  formatColumn?: (column: any[]) => any[];
+  formatColumn?: (column: T[]) => T[];
   children?: React.ReactNode;
-  columns: IColumnsType<T>;
+  columns: IColumnsType<T, R>;
 
   preChildren?: (value: ICommonTableContext) => React.ReactNode | null;
 

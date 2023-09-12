@@ -17,7 +17,7 @@ export type Column<TRecord = AnyData> =
       /**
        * @name 仅针对title的tooltip
        * */
-      render?: (value: any, record: TRecord, index: number) => RenderReturn<TRecord>;
+      render?: (value: any, record: TRecord & string, index: number) => RenderReturn<TRecord>;
       tooltip?:
         | string
         | (() => ReactNode)
@@ -76,7 +76,7 @@ export type Column<TRecord = AnyData> =
        * @example <caption>返回空时显示--</caption>
        * renderExpandMore: () => false
        */
-      renderExpandMore?: (text: any, record: keyof TRecord, index: number) => [React.ReactNode, number] | [React.ReactNode] | false;
+      renderExpandMore?: (text: any, record: keyof TRecord & string, index: number) => [React.ReactNode, number] | [React.ReactNode] | false;
       /**
        * @property {keyof TRecord | string} [dataIndex = '']
        */
