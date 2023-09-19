@@ -306,3 +306,14 @@ export default compose<typeof Activity>(
   KeepAliveTransfer,
 )(Activity);
 ```
+
+## 页签携带参数
+
+```tsx | pure
+history.push({
+  pathName: '/xxx',
+  state: {
+    title: 'xxx',
+  },
+});
+```
