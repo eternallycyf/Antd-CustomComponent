@@ -353,7 +353,7 @@ export const getOptions = (config: IGetOptions) => {
         cloneDeep(data)
           .reverse()
           .some((item) => {
-            if (!item.value) {
+            if (item.value == undefined) {
               data.pop();
             }
             return item.value;

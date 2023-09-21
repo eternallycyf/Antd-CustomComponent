@@ -462,7 +462,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
             hideOnSinglePage: true,
             showQuickJumper: true,
             showSizeChanger: true,
-            pageSizeOptions: ['10', '30', '50'],
+            pageSizeOptions: ['10', '20', '30', '50'],
             showTotal: (total: number, range: any[]) => {
               return `一共${total}条记录， 当前第${range[0]}条到${range[1]}条`;
             },
