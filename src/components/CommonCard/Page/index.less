@@ -1,3 +1,5 @@
+@plus-bg-space-color: #f5f8ff;
+
 .container {
   display: flex;
   overflow: auto;
@@ -19,5 +21,130 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+  }
+}
+
+.IndexPage {
+  height: 100%;
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    padding-right: 8px;
+    height: 100%;
+    background: #f5f8ff;
+
+    .header {
+      position: relative;
+      flex: none;
+      padding-bottom: 24px;
+      background-color: #fff;
+
+      .headerCard {
+        padding-top: 16px;
+        padding-right: 16px;
+        padding-left: 16px;
+      }
+    }
+
+    .content {
+      overflow-y: auto;
+      flex: 1;
+      height: 100%;
+      background-color: #fff;
+    }
+
+    .tabContentCard {
+      padding-top: 16px;
+      background-color: #fff;
+    }
+
+    .spaceLine {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 8px;
+      background-color: @plus-bg-space-color;
+    }
+  }
+
+}
+
+.line {
+  width: 100%;
+  height: 8px;
+  background: #f5f8ff;
+}
+
+.newTabs {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+
+  :global {
+    .ant-tabs-nav {
+      padding: 0 !important;
+      height: 46px;
+
+      &::before {
+        left: 0 !important;
+      }
+    }
+
+    .ant-tabs-tab {
+      display: flex !important;
+      align-items: center;
+      margin-right: 48px !important;
+      padding-right: 0 !important;
+      padding-left: 0 !important;
+      font-size: 14px !important;
+    }
+
+    .ant-tabs-ink-bar {
+      height: 3px !important;
+      background-color: @plus-primary;
+    }
+
+    .ant-tabs-content-holder {
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .antd-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-tbn {
+      color: @plus-primary;
+
+      &:hover {
+        color: @plus-primary-hover;
+      }
+
+      &:active {
+        color: @plus-primary-active;
+      }
+    }
+
+    .ant-tabs-ink-bar {
+      &.ant-tabs-ink-bar-animated {
+        background-color: @plus-primary;
+      }
+    }
+
+    .ant-tabs-nav {
+      margin: 0;
+      padding: 0 24px;
+
+      &::before {
+        left: 24px;
+        border-color: #eff1f4;
+      }
+    }
+
+    .tabTitle {
+      display: flex;
+      align-items: center;
+      margin-right: 64px;
+      font-weight: bold;
+      font-size: 16px;
+    }
   }
 }

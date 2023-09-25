@@ -1,9 +1,9 @@
-import { ErrorBoundary } from '@/core/base/ErrorBoundary';
-import { CardProps, Spin, SpinProps } from 'antd';
-import React from 'react';
-import styles from './index.less';
+import { CardProps, SpinProps, TabsProps } from 'antd';
+import Page from './Page';
+import IndexPage from './IndexPage';
+import Line from './Line';
 
-interface IPage {
+export interface IPage {
   loading?: boolean;
   style?: React.CSSProperties;
   className?: string;
@@ -13,26 +13,32 @@ interface IPage {
   title?: React.ReactNode;
 }
 
-const Page: React.FC<IPage> = (props) => {
-  const { loading, className, children, title, ...restProps } = props;
+export interface IIndexPageProps<T = any> {
+  loading?: boolean;
+  header?: React.ReactNode;
+  tabProps?: TabsProps;
+  componentProps?: T;
+  tabList?: {
+    tab: string;
+    key: string | number;
+    Component: any;
+    visible: boolean;
+    cardStyles?: React.CSSProperties;
+    [props: string]: any;
+  }[];
+  children?: React.ReactNode;
+}
 
-  return (
-    <ErrorBoundary>
-      <div id="container" className={`${styles.container} ${className}`} {...restProps}>
-        {loading ? (
-          <div className={styles.loading}>
-            <Spin tip="加载中..." />
-          </div>
-        ) : (
-          <div className={styles.content}>{children}</div>
-        )}
-      </div>
-    </ErrorBoundary>
-  );
+const CompoundedCommonPage = Page;
+
+type CompoundedComponent = typeof CompoundedCommonPage & {
+  IndexPage: typeof IndexPage;
+  Line: typeof Line;
 };
 
-Page.defaultProps = {
-  loading: false,
-};
+const CommonPage = CompoundedCommonPage as CompoundedComponent;
 
-export default React.memo(Page);
+CommonPage.IndexPage = IndexPage;
+CommonPage.Line = Line;
+
+export default CommonPage;
