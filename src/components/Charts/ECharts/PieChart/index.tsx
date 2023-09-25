@@ -6,7 +6,7 @@ import { IGetOptions } from './interface';
 import { BASE_CONFIG } from './utils';
 
 const PieChart = (props: IGetOptions) => {
-  const { data, baseConfig = BASE_CONFIG, chartConfig = {}, style } = props;
+  const { data, baseConfig = BASE_CONFIG, chartConfig = {}, style, emptyStyle } = props;
   const isEmpty = !data || data.length === 0;
   return (
     <Fragment>
@@ -18,6 +18,7 @@ const PieChart = (props: IGetOptions) => {
             justifyContent: 'center',
             alignContent: 'center',
             flexDirection: 'column',
+            ...emptyStyle,
           }}
         />
       ) : (

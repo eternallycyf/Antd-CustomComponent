@@ -6,6 +6,13 @@ export const getOptions = (config: IGetOptions) => {
   const BASE_CONFIG = { ...BASECONFIG, ...baseConfig };
   const CHART_CONFIG: IChartConfig[] = [...chartConfig];
 
+  const solidConfig = BASE_CONFIG.IS_SOLID
+    ? {}
+    : {
+        radius: ['40%', '70%'],
+        center: ['50%', '50%'],
+      };
+
   return {
     color: CHART_CONFIG.map((item) => item.shapeColor),
     legend: {
@@ -54,6 +61,7 @@ export const getOptions = (config: IGetOptions) => {
             return ~~config?.data?.value + (config?.data?.unitSymbol ?? '');
           },
         },
+        ...solidConfig,
         data: CHART_CONFIG.filter((item) => Boolean(item.isLegend)).map((ele: any) => ({
           ...ele,
           name: ele.name,

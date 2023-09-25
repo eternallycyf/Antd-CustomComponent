@@ -46,6 +46,8 @@ export const BASE_CONFIG = {
       icon: 'circle',
     };
   },
+  // 是否是实心圆
+  IS_SOLID: true,
 } as const;
 
 export const renderTooltip = (

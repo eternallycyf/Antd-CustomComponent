@@ -12,6 +12,7 @@ export type IGetOptions = {
    */
   chartConfig?: any;
   style?: CSSProperties;
+  emptyStyle?: CSSProperties;
 };
 
 export interface IChartConfig {
