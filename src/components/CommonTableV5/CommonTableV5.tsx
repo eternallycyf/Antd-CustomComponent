@@ -23,7 +23,7 @@ const { theme } = getDvaApp()._store.getState().global;
 
 const CommonTableContext = React.createContext<ICommonTableContext>({ loading: false });
 
-class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
+class CommonTable<T = Record<string, unknown>, R = Record<string, unknown>> extends BaseTable<ICommonTable<T, R>, IBaseTableState> {
   static defaultProps = {
     wrapClassStr: '.tabs-tabPane-active',
     size: 'small',
@@ -49,7 +49,7 @@ class CommonTable<T> extends BaseTable<ICommonTable<T>, IBaseTableState> {
     showSorterTooltip: false,
   };
   cls: string = '';
-  constructor(props: ICommonTable<T>) {
+  constructor(props: ICommonTable<T, R>) {
     super(props);
     this.state = {
       loading: props.loading || false,

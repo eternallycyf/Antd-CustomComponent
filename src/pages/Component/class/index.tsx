@@ -257,7 +257,7 @@ class Activity extends BaseComponent<IProps, IState> {
 
     return (
       <Page className={styles.page}>
-        <CommonTable
+        <CommonTable<IRecord>
           {...tableParams}
           ref={this.tableRef}
           preChildren={({ loading }) => (

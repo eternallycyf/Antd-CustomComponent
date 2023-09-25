@@ -11,7 +11,7 @@ type RenderReturn<TRecord = AnyData> = ReturnType<NonNullable<ColumnType<TRecord
  * @template {TRecord = AnyData} - TRecord
  */
 
-export type Column<TRecord = AnyData> =
+export type Column<TRecord = AnyData, Rest = AnyData> =
   | ColumnType<TRecord> & {
       title: ReactNode | (() => ReactNode);
       /**
@@ -81,7 +81,7 @@ export type Column<TRecord = AnyData> =
        * @property {keyof TRecord | string} [dataIndex = '']
        */
       dataIndex?: keyof TRecord & string;
-      children?: Column<TRecord>[];
+      children?: (Column<TRecord, Rest> & Rest)[];
       /**
        * @name 是否可编辑 仅在editable为true时生效
        */
@@ -109,8 +109,8 @@ export type Column<TRecord = AnyData> =
        * @name 初始化checkbox是否禁用
        */
       initCheckedDisabled?: boolean;
-      useSummary?: (content: React.ReactNode, record: keyof TRecord) => React.ReactNode;
+      useSummary?: (content: React.ReactNode, record: keyof TRecord & string) => React.ReactNode;
     };
-type Columns<TRecord = AnyData, Rest = AnyData> = (Column<TRecord> & Rest)[];
+type Columns<TRecord = AnyData, Rest = AnyData> = (Column<TRecord, Rest> & Rest)[];
 export type IBaseColumnsType<T = AnyData, R = AnyData> = Columns<T, R>;
 //#endregion

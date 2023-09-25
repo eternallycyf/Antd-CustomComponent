@@ -73,7 +73,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) 
     return { values };
   };
 
-  const tableParams: ICommonTable<any> = {
+  const tableParams: ICommonTable = {
     columns: getColumns(self),
     searchParams: formatParams(self.searchParams),
     rowKey: 'index',
@@ -125,7 +125,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) 
         },
       },
     ],
-    footer: (a) => {
+    footer: () => {
       // console.log(a)
       return <div>3</div>;
     },

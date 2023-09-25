@@ -101,7 +101,7 @@ const handleColumns = (columns: any[]) => {
   });
 };
 
-class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends React.PureComponent<P, S> {
+class BaseTable<P extends ICommonTable<any, any>, S extends IBaseTableState> extends React.PureComponent<P, S> {
   protected observer: any;
   protected components: any = {};
   protected heightParams!: { container: any; height: number };
@@ -199,13 +199,13 @@ class BaseTable<P extends ICommonTable<any>, S extends IBaseTableState> extends 
       Promise.all([resultAction, resultAllAction])
         .then(([result, resultAll]) => {
           const data = dataPath ? _.get(result, dataPath) : result.data;
-          const rows = Array.isArray(data) ? data : data[recordKey];
+          const rows = Array.isArray(data) ? data : data?.[recordKey] || [];
           const total = totalPath ? _.get(result, totalPath) : data.totalCount || data.total || rows.length;
           // dataSource 数据处理
           let dataSource = (rows || []).map((item: any, index: number) => ({
             ...item,
             index: (currentPage - 1) * pageSize + (index + 1) || index + 1,
-            rowKey: (typeof rowKey === 'function' ? rowKey(item, index) : item[rowKey]) || (currentPage - 1) * pageSize + (index + 1),
+            rowKey: (typeof rowKey === 'function' ? rowKey(item, index) : item?.[rowKey]) || (currentPage - 1) * pageSize + (index + 1),
           }));
           dataSource = dataHandler ? dataHandler(dataSource, data) : dataSource;
 

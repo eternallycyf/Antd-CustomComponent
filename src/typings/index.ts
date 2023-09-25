@@ -150,6 +150,7 @@ export interface ICommonTable<T = Record<string, unknown>, R = Record<string, un
   alternateColor?: boolean;
   /**@name 默认一页多少个*/
   defaultPageSize?: number;
+  rowKey?: keyof T & string;
   /**@name 处理data 第一个参数多了index和rowKey */
   dataHandler?: (data: Merge<{ index: number; rowKey: string }, T>[], dataSource: (T & string)[]) => any;
 
@@ -160,7 +161,7 @@ export interface ICommonTable<T = Record<string, unknown>, R = Record<string, un
 
   /**@name 虚拟列表-点击事件 */
   rowEventHandlers?: {
-    onClick: (rowKey: string | number, rowData: T, rowIndex: number) => void;
+    onClick: (rowKey: keyof T & string, rowData: T, rowIndex: number) => void;
   };
   /**@name 是否可拖动 */
   draggable?: boolean;

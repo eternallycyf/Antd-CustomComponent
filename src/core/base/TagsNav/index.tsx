@@ -102,6 +102,16 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
         const addedTabs = addTab(newTag, tabs);
         setTabs(addedTabs);
         localStore.set('tabs', addedTabs);
+      } else {
+        let newTabs = _.cloneDeep(tabs);
+        const newTab = {
+          tab: activeTitle,
+          key: _activeKey,
+          location,
+        };
+        newTabs.splice(activeTabIndex, 1, newTab);
+        localStore.set('tabs', newTabs);
+        setTabs(newTabs);
       }
     } else {
       const activeTab = tabs.find((tab) => pathToRegexp(tab.key).test(_activeKey));
