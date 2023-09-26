@@ -12,8 +12,8 @@ export type EllipsisExpandProps = {
   content: string;
   direction?: 'start' | 'end' | 'middle';
   rows?: number;
-  expandText?: React.ReactNode;
-  collapseText?: React.ReactNode;
+  expandText?: string;
+  collapseText?: string;
   stopPropagationForActionButtons?: PropagationEvent[];
   onContentClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   defaultExpanded?: boolean;
@@ -40,9 +40,6 @@ type EllipsisedValue = {
 const EllipsisExpand = (p: EllipsisExpandProps): React.ReactElement => {
   const props = mergeProps(defaultProps, p);
   const rootRef = useRef<HTMLDivElement>(null);
-  const expandElRef = useRef<HTMLAnchorElement>(null);
-  const collapseElRef = useRef<HTMLAnchorElement>(null);
-
   const [ellipsised, setEllipsised] = useState<EllipsisedValue>({});
   const [expanded, setExpanded] = useState(props.defaultExpanded);
   const [exceeded, setExceeded] = useState(false);
@@ -55,9 +52,7 @@ const EllipsisExpand = (p: EllipsisExpandProps): React.ReactElement => {
   function calcEllipsised() {
     const root = rootRef.current;
     if (!root) return;
-
-    const originDisplay = root.style.display;
-    root.style.display = 'block';
+    if (!root.offsetParent) return;
 
     const originStyle = window.getComputedStyle(root);
     const container = document.createElement('div');
@@ -67,8 +62,10 @@ const EllipsisExpand = (p: EllipsisExpandProps): React.ReactElement => {
       container.style.setProperty(name, originStyle.getPropertyValue(name));
     });
 
-    root.style.display = originDisplay;
-
+    container.style.position = 'fixed';
+    container.style.left = '999999px';
+    container.style.top = '999999px';
+    container.style.zIndex = '-1000';
     container.style.height = 'auto';
     container.style.minHeight = 'auto';
     container.style.maxHeight = 'auto';
@@ -88,10 +85,7 @@ const EllipsisExpand = (p: EllipsisExpandProps): React.ReactElement => {
     } else {
       setExceeded(true);
       const end = props.content.length;
-
-      const collapseEl = typeof props.collapseText === 'string' ? props.collapseText : collapseElRef.current?.innerHTML;
-      const expandEl = typeof props.expandText === 'string' ? props.expandText : expandElRef.current?.innerHTML;
-      const actionText = expanded ? collapseEl : expandEl;
+      const actionText = expanded ? props.collapseText : props.expandText;
 
       function check(left: number, right: number): EllipsisedValue {
         if (right - left <= 1) {
@@ -107,11 +101,10 @@ const EllipsisExpand = (p: EllipsisExpandProps): React.ReactElement => {
         }
         const middle = Math.round((left + right) / 2);
         if (props.direction === 'end') {
-          container.innerHTML = getSubString(0, middle) + '...' + actionText;
+          container.innerText = getSubString(0, middle) + '...' + actionText;
         } else {
-          container.innerHTML = actionText + '...' + getSubString(middle, end);
+          container.innerText = actionText + '...' + getSubString(middle, end);
         }
-
         if (container.offsetHeight <= maxHeight) {
           if (props.direction === 'end') {
             return check(middle, right);
@@ -136,7 +129,7 @@ const EllipsisExpand = (p: EllipsisExpandProps): React.ReactElement => {
         }
         const leftPartMiddle = Math.floor((leftPart[0] + leftPart[1]) / 2);
         const rightPartMiddle = Math.ceil((rightPart[0] + rightPart[1]) / 2);
-        container.innerHTML = getSubString(0, leftPartMiddle) + '...' + actionText + '...' + getSubString(rightPartMiddle, end);
+        container.innerText = getSubString(0, leftPartMiddle) + '...' + actionText + '...' + getSubString(rightPartMiddle, end);
         if (container.offsetHeight <= maxHeight) {
           return checkMiddle([leftPartMiddle, leftPart[1]], [rightPart[0], rightPartMiddle]);
         } else {
@@ -161,7 +154,6 @@ const EllipsisExpand = (p: EllipsisExpandProps): React.ReactElement => {
       ? withStopPropagation(
           props.stopPropagationForActionButtons,
           <a
-            ref={expandElRef}
             onClick={() => {
               setExpanded(true);
             }}
@@ -176,7 +168,6 @@ const EllipsisExpand = (p: EllipsisExpandProps): React.ReactElement => {
       ? withStopPropagation(
           props.stopPropagationForActionButtons,
           <a
-            ref={collapseElRef}
             onClick={() => {
               setExpanded(false);
             }}
@@ -187,28 +178,25 @@ const EllipsisExpand = (p: EllipsisExpandProps): React.ReactElement => {
       : null;
 
   const renderContent = () => {
-    const tooltipProps =
-      typeof props.tooltip === 'boolean'
-        ? {
-            title: props.tooltip ? props.content : undefined,
-          }
-        : props.tooltip;
-    if (!exceeded) return props.content;
-
-    if (expanded)
+    if (!exceeded) {
+      return props.content;
+    }
+    if (expanded) {
       return (
         <>
           {props.content}
           {collapseActionElement}
         </>
       );
-    return (
-      <Tooltip overlayStyle={{ maxWidth: 400 }} {...tooltipProps}>
-        {ellipsised.leading}
-        {expandActionElement}
-        {ellipsised.tailing}
-      </Tooltip>
-    );
+    } else {
+      return (
+        <>
+          {ellipsised.leading}
+          {expandActionElement}
+          {ellipsised.tailing}
+        </>
+      );
+    }
   };
 
   return withNativeProps(
