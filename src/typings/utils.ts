@@ -19,3 +19,5 @@ export type OverrideProps<M, N> = {
 };
 
 export type OverrideAllProps<P extends any, T extends string> = Record<keyof P, T>;
+
+type IsUnion<A, B = A> = A extends A ? ([B] extends [A] ? false : true) : never;
