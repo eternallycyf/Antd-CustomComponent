@@ -6,6 +6,7 @@ import { Column } from '@/typings/core/column';
 import { Search } from '@/typings/core/form';
 import { formatColumn, renderFormItem } from '@/utils/util';
 import { Col, Form, FormInstance, FormItemProps, FormListFieldData, Row, TableProps } from 'antd';
+import { FormListProps } from 'antd/es/form';
 import React, { Key, useImperativeHandle } from 'react';
 import TableBtn from '../CommonTableV5/components/widgets/TableBtn';
 import { Table } from './';
@@ -79,7 +80,7 @@ export interface ICommonEditTableProps<Values = any, Rest = Record<string, unkno
   buttonBottomRight?: IEditTableNotItemButtonProps<Values>;
 
   /**@name formList 配置 */
-  name?: string;
+  name?: FormListProps['name'];
   formListProps?: React.ComponentProps<typeof Form.List>;
   initialValues?: Values[];
   rules?: React.ComponentProps<typeof Form.List>['rules'];

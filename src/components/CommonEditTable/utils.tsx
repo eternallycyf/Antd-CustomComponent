@@ -3,6 +3,7 @@ import { getFieldComp } from '@/core/helpers';
 import { FormControl } from '@/typings';
 import { formatNumber, formatPercent, formatTime, getDictMap } from '@/utils/util';
 import { FormInstance } from 'antd';
+import { FormListProps } from 'antd/es/form';
 import _ from 'lodash';
 import { downloadExcel } from '../File/FileExportExcel';
 import { ICommonEditTableColumnsType } from './EditTable';
@@ -29,7 +30,7 @@ export const handleExport: IHandleExport = (title, columns = [], dataSource = []
   });
 };
 
-export const getCurrentFieldValue = (form: FormInstance, name: string, index: number) => {
+export const getCurrentFieldValue = (form: FormInstance, name: FormListProps['name'], index: number) => {
   if (!form) return [undefined, undefined];
   const record = (form.getFieldValue(name) || [])?.[index] || {};
   const arr = form.getFieldValue(name) || [];
