@@ -43,7 +43,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
   const ref2 = useRef<HTMLDivElement>(null!);
   const ref3 = useRef<HTMLDivElement>(null!);
   const { menuList, color, breadcrumbNameMap, children, collapsed, location, sliderMenuState, dispatch, userInfo, theme } = props;
-  const currentRoutesObj = Object.values(routes).filter((item) => item?.path == location.pathname)?.[0];
+  // const currentRoutesObj = Object.values(routes).filter((item) => item?.path == location.pathname)?.[0];
   // TODO: routes 添加keepAlive配置
   // const hasKeepAlive = currentRoutesObj?.keepAlive;
 
