@@ -260,7 +260,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
             if (type == 'update') {
               // FAQ: 可编辑表格使用 type == 'update'
               // 为Form.Item.type == 'update' 注入 index
-              return <Row {...itemProps}>{(renderFormItem({ ...formProps, itemProps: addExtraIndexParams(itemProps, index) }), index)}</Row>;
+              return <Row {...itemProps}>{renderFormItem({ ...formProps, itemProps: addExtraIndexParams(itemProps, index) })}</Row>;
             }
             return (
               <Form.Item
