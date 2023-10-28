@@ -72,3 +72,42 @@ export const getNavMenuItems = (list: MenuItem[], pathname: string) => {
     .filter((item) => item);
   return menu;
 };
+
+/**
+ * 合并路由配置
+ * @param menuList
+ * @param routes
+ * @deprecated
+ */
+export const mergeMenuList = (menuList: MenuItem[], routes: any[]) => {
+  const merge = (data, config) => {
+    try {
+      data.map((item) => {
+        // 匹配的菜单
+        const menu = config.find((i) => i.name === item.name);
+        if (menu) {
+          item.path = item.path || menu.path;
+          item.multiple = menu.multiple;
+          item.keepAlive = menu.keepAlive;
+          item.icon = item.icon || menu.icon;
+        }
+
+        if (item.children && item.children.length && !_.isEmpty(menu) && menu.routes && menu.routes.length) {
+          // 合并隐藏菜单
+          const hideMenu = menu.routes.filter((item) => item.hideInMenu).filter((i) => i);
+          if (item.children) {
+            item.children = [...item.children, ...hideMenu];
+            merge(item.children, menu.routes);
+          } else {
+            menuList = menuList.concat(hideMenu);
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  merge(menuList, routes);
+  return menuList;
+};
