@@ -33,9 +33,9 @@
 - ~~ts 加强~~
 - rxjs
 
-![ims-view-pc](https://github.com/eternallycyf/Antd-CustomComponent/blob/master/public/ims-view-pc.png)
+![ims-view-pc](https://raw.githubusercontent.com/eternallycyf/Antd-CustomComponent/main/public/ims-view-pc.png)
 
-![code](https://github.com/eternallycyf/Antd-CustomComponent/blob/master/public/code.png)
+![code](https://raw.githubusercontent.com/eternallycyf/Antd-CustomComponent/main/public/code.png)
 
 ## 1.安装依赖
 
