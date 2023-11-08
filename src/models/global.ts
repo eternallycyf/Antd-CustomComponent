@@ -4,6 +4,8 @@ import { MenuItem, UserInfo } from '@/typings';
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
 import { breadcrumbNameMap as BREAD_CRUMB_NAEMMAP, menuList as MENU_LIST } from './constant';
+import { getBreadcrmbRouter } from '@/core/helpers/utils';
+import { getBreadcrumbNameMap } from '@/utils/menu';
 
 export interface IGlobalModelState {
   theme: 'dark' | 'light';
@@ -21,6 +23,7 @@ export interface IGlobalModelState {
     userId: string;
     realname: string;
   };
+  routerList: any[];
 }
 
 export interface IGlobalModel {
@@ -62,6 +65,7 @@ const GlobalModel: IGlobalModel = {
       userId: '',
       realname: '',
     },
+    routerList: [],
   },
   reducers: {
     changeCollapsed(state, { collapsed }) {
@@ -109,14 +113,17 @@ const GlobalModel: IGlobalModel = {
       }
     },
     *fetchMenu({ payload }, { call, put }) {
+      const { routes = [] } = payload;
       try {
         const { data } = yield call(service.fetchMenu);
         const { breadcrumbNameMap = {}, menuList = [] } = data;
+        const routerList = getBreadcrmbRouter(routes);
         yield put({
           type: 'updateState',
           payload: {
             breadcrumbNameMap,
             menuList,
+            routerList,
           },
         });
       } catch (error) {

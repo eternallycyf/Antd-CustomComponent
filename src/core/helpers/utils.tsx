@@ -111,3 +111,19 @@ export const mergeMenuList = (menuList: MenuItem[], routes: any[]) => {
   merge(menuList, routes);
   return menuList;
 };
+
+export const getBreadcrmbRouter = (routes: any[]) => {
+  const routerMap = {};
+
+  const flattenMenuData = (data: any[]) => {
+    data.forEach((menuItem) => {
+      if (menuItem.children || menuItem.routes) {
+        flattenMenuData(menuItem.children || menuItem.routes);
+      }
+      routerMap[menuItem.path] = menuItem;
+    });
+  };
+
+  flattenMenuData(routes);
+  return routerMap;
+};

@@ -42,7 +42,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
   const ref1 = useRef<HTMLDivElement>(null!);
   const ref2 = useRef<HTMLDivElement>(null!);
   const ref3 = useRef<HTMLDivElement>(null!);
-  const { menuList, color, breadcrumbNameMap, children, collapsed, location, sliderMenuState, dispatch, userInfo, theme } = props;
+  const { menuList, color, breadcrumbNameMap, children, collapsed, location, sliderMenuState, dispatch, userInfo, theme, routerList = [] } = props;
   // const currentRoutesObj = Object.values(routes).filter((item) => item?.path == location.pathname)?.[0];
   // TODO: routes 添加keepAlive配置
   // const hasKeepAlive = currentRoutesObj?.keepAlive;
@@ -80,7 +80,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
   const handleRouterChange = async () => {
     await dispatch({ type: 'global/fetch', payload: {} });
     await dispatch({ type: 'global/fetchUserInfo' });
-    await dispatch({ type: 'global/fetchMenu' });
+    await dispatch({ type: 'global/fetchMenu', payload: { routes: Object.values(routes) } });
     await dispatch({ type: 'global/fetchAccessCollection' });
   };
 
@@ -108,6 +108,7 @@ const BasicLayout: FC<IBasicLayout> = (props) => {
     breadcrumbNameMap: breadcrumbNameMap || localBreadcrumbNameMap,
     menuList: menuList || localMenuList,
     location,
+    routerList,
   };
 
   const algorithmObj = theme == 'dark' ? { algorithm: antdTheme.darkAlgorithm } : { algorithm: antdTheme.defaultAlgorithm };

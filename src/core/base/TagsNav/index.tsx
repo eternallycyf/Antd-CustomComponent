@@ -6,6 +6,7 @@ import _ from 'lodash';
 import pathToRegexp from 'path-to-regexp';
 import React, { useEffect, useState } from 'react';
 import MenuTabs, { MenuTab } from './MenuTabs';
+import { getFlatMenuKeys } from '@/utils/menu';
 
 function getMetaDataOfTab(pathname: string, breadcrumbNameMap: MenuItem): MenuItem {
   return Object.values(breadcrumbNameMap).find((item: MenuItem) => {
@@ -46,6 +47,7 @@ export interface PageTabsProps {
   menuList: MenuItem[];
   location: History['location'];
   breadcrumbNameMap: MenuItem;
+  routerList: any;
 }
 
 const PageTabs: React.FC<PageTabsProps> = (props) => {
@@ -55,7 +57,7 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
   const _activeKey = location.pathname;
   const [activeKey, setActiveKey] = useState<string>(location.pathname);
 
-  const { children, breadcrumbNameMap } = props;
+  const { children, breadcrumbNameMap, routerList = [] } = props;
 
   useEffect(() => {
     window.closeTab = handleRemove;
@@ -66,6 +68,16 @@ const PageTabs: React.FC<PageTabsProps> = (props) => {
   useEffect(() => {
     const metaData = getMetaDataOfTab(location.pathname, breadcrumbNameMap);
     const activeTitle = setPathName(metaData, location);
+    // 获取路由list 返回的data 拿到acpCode
+    const routerData = getMetaDataOfTab(_activeKey, routerList);
+    const { code = '' } = metaData || {};
+    //@ts-ignore
+    const { acpCode = '' } = routerData || {};
+    if (acpCode && code != acpCode) {
+      window.closeTab(_activeKey);
+      history.push({ pathname: '/403' });
+      return;
+    }
 
     if (!metaData) {
       const activeTab = tabs.find((tab) => pathToRegexp(tab.key).test(_activeKey));

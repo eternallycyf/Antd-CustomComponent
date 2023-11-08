@@ -17,7 +17,7 @@ export default {
     },
     {
       name: 'echarts',
-      path: '/charts/echarts',
+      path: '/charts/ECharts',
       component: '@/pages/Charts/ECharts',
       icon: 'smile',
     },

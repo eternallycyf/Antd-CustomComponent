@@ -14,7 +14,7 @@ const Router = [
     component: '../core/base/Login',
   },
   {
-    path: '*',
+    path: '/*',
     component: '../core/base/404',
   },
 ];
