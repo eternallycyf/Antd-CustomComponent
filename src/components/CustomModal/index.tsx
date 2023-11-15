@@ -13,7 +13,9 @@ export const asyncConfirm = (props: IAsyncConfirm): Promise<{ destory: Function;
 
   return new Promise((resolve) => {
     const { content } = modalProps;
-    const originContent = (
+    const originContent = modalProps?.footer ? (
+      modalProps?.footer
+    ) : (
       <div className={styles.confirm_btns}>
         {footerBtns.map((b) => (
           <Button
@@ -33,19 +35,20 @@ export const asyncConfirm = (props: IAsyncConfirm): Promise<{ destory: Function;
       </div>
     );
 
-    const modalContent = !content ? (
-      originContent
-    ) : (
-      <>
-        {content}
-        {originContent}
-      </>
-    );
+    const modalContent = <>{content}</>;
+
+    const footer =
+      modalProps?.footer == undefined && footerBtns?.length == 0
+        ? {}
+        : {
+            footer: originContent,
+          };
 
     const modalRef = Modal[type]({
       ...modalProps,
+      ...footer,
       className: styles.async_confirm,
-      content: modalContent,
+      content: modalContent as any,
     });
     resolve(modalRef as any as Promise<{ destory: Function; update: Function }>);
   });
