@@ -13,4 +13,8 @@ declare module 'braft-extensions/dist/max-length';
 declare module 'braft-extensions/dist/color-picker';
 declare module 'mockjs';
 
-interface Window {}
+interface Window {
+  webkitIndexedDB: IDBFactory | null;
+  mozIndexedDB: IDBFactory | null;
+  msIndexedDB: IDBFactory | null;
+}
