@@ -286,7 +286,7 @@ const CommonSearch: React.FC<ISearchProps> = React.forwardRef((props, ref) => {
             {formList.map((field, index) => (
               <Col
                 key={field.name as string}
-                span={isOneLine ? field.col || span : span}
+                span={isOneLine ? field.col ?? span : span}
                 style={{ display: index < (showCount as any) ? 'block' : 'none' }}
               >
                 <Form.Item

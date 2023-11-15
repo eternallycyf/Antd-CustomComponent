@@ -314,7 +314,7 @@ class Activity extends BaseComponent<IProps, IState> {
               </Form.Item>
               <Row>
                 {(getOtherFormList(this) || []).map((item: any, index) => (
-                  <Col span={item['col'] || 24} key={index}>
+                  <Col span={item?.['col'] ?? 24} key={index}>
                     <Form.Item
                       labelAlign="right"
                       label={item.label}

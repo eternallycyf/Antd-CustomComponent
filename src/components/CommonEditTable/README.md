@@ -530,7 +530,7 @@ const App: React.FC = () => {
                         );
                         if (item.type == 'update') return Content;
                         return (
-                          <Col className={`${styles[`formItemContent${item.type}`]}`} span={item['col'] || 12} key={item?.name || getUUID()}>
+                          <Col className={`${styles[`formItemContent${item.type}`]}`} span={item?.['col'] ?? 12} key={item?.name || getUUID()}>
                             {Content}
                           </Col>
                         );

@@ -82,7 +82,7 @@ const Update: React.FC<IUpdateProps> = React.forwardRef((props, ref) => {
         return (
           <Fragment key={getUUID()}>
             {((nextValues as any[]) || []).map((item: any, index: number) => (
-              <Col span={item['col'] || 24} key={index}>
+              <Col span={item?.['col'] ?? 24} key={index}>
                 <Form.Item
                   labelAlign="right"
                   label={item?.label}

@@ -211,7 +211,7 @@ const ProcessPageDemo: FC<IProcessProps> = (props) => {
           <Form form={EditForm} className={styles[status === 'detail' ? 'plus-detail-formContent' : 'plus-formContent']}>
             {(getFormList(formListParams) || []).map((item: any) => (
               <Col
-                span={item['col'] || 24}
+                span={item?.['col'] ?? 24}
                 key={item.name || getUUID()}
                 className={`${styles[`formItemContent${item.type == 'update' ? 'update' : ''}`]}`}
               >

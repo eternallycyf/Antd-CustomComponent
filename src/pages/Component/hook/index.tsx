@@ -201,7 +201,7 @@ const IndexPage: React.ForwardRefRenderFunction<IHandle, IProps> = (props, ref) 
             </Form.Item>
             <Row>
               {(getOtherFormList(self) || []).map((item: any, index) => (
-                <Col span={item['span'] || 24} key={item.name}>
+                <Col span={item?.['span'] ?? 24} key={item.name}>
                   <Form.Item
                     labelAlign="right"
                     label={item.label}
