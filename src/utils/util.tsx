@@ -26,10 +26,10 @@ export const objectToQueryStr = (obj: any) => {
   return str.join('&');
 };
 
-export const renderTooltip = (title: string = '', tooltip: React.ReactNode = '', extraText: React.ReactNode = '') => {
+export const renderTooltip = (title: string | Function = '', tooltip: React.ReactNode = '', extraText: React.ReactNode = '') => {
   return (
     <div>
-      <span style={{ marginRight: 4 }}>{title}</span>
+      <span style={{ marginRight: 4 }}>{typeof title === 'function' ? title() : title}</span>
       <Tooltip title={tooltip}>
         <QuestionCircleOutlined
           style={{
