@@ -1,7 +1,7 @@
 import { SearchOutlined } from '@ant-design/icons';
 import { Collapse, Divider, Empty, Input, Tree } from 'antd';
 import _ from 'lodash';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ITreeModalItemProps } from '.';
 import styles from './index.less';
 import { getSearchData } from './utils';
@@ -11,6 +11,10 @@ const TransformItem = (props: ITreeModalItemProps) => {
   const { title = '', options, placeholder = '请输入', isView = false, setExpandedKeys, onExpand, expandedKeys, onCheck, checkedKeys, style } = props;
 
   const [searchValue, setSearchValue] = useState<string>('');
+
+  useEffect(() => {
+    setSearchValue('');
+  }, [options]);
 
   const treeData = useMemo(() => {
     if (!options || options?.length == 0) return [];
@@ -37,7 +41,14 @@ const TransformItem = (props: ITreeModalItemProps) => {
         <div className={styles.content}>
           <div className={styles.searchBox}>
             <div className={styles.search}>
-              <Input style={{ height: 26 }} placeholder={placeholder} onChange={handleSearch} suffix={<SearchOutlined />} allowClear />
+              <Input
+                key={JSON.stringify(options)}
+                style={{ height: 26 }}
+                placeholder={placeholder}
+                onChange={handleSearch}
+                suffix={<SearchOutlined />}
+                allowClear
+              />
             </div>
           </div>
           <div>
