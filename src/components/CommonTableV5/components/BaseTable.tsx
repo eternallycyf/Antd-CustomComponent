@@ -198,7 +198,7 @@ class BaseTable<P extends ICommonTable<any, any>, S extends IBaseTableState> ext
 
       Promise.all([resultAction, resultAllAction])
         .then(([result, resultAll]) => {
-          const data = dataPath ? _.get(result, dataPath) : result.data;
+          const data = dataPath ? _.get(result, dataPath) : result?.data;
           const rows = Array.isArray(data) ? data : data?.[recordKey] || [];
           const total = totalPath ? _.get(result, totalPath) : data.totalCount || data.total || rows.length;
           // dataSource 数据处理
