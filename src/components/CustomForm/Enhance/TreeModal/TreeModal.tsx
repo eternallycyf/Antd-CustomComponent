@@ -11,7 +11,7 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
   const {
     placeholder,
     options,
-    defaultCheckKeys = [],
+    defaultCheckKeys,
     value = [],
     children,
     preChildren,
@@ -38,7 +38,7 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
   }, [value]);
 
   useEffect(() => {
-    if (defaultCheckKeys) setCheckedKeys(defaultCheckKeys);
+    if (Array.isArray(defaultCheckKeys)) setCheckedKeys(defaultCheckKeys);
   }, [defaultCheckKeys]);
 
   useEffect(() => {

@@ -25,7 +25,7 @@ export interface ITreeModalProps {
   children?: React.ReactNode | ((value: ITreeModalContext) => React.ReactNode);
   value?: string[];
   options: TreeData[];
-  defaultCheckKeys?: string[];
+  defaultCheckKeys?: string[] | undefined;
   disabledKeys?: string[];
   onChange?: IModalOnConfirm;
   modalProps?: ModalProps;
