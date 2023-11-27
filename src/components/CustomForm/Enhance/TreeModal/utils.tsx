@@ -59,10 +59,6 @@ export function cancelDisabledProperty(data: TreeData[]) {
 
 export function filterTree(data: TreeData[] = [], selectedKeys: string[] = []): TreeData[] {
   function recursiveFilter(node: TreeData): TreeData | null {
-    if (selectedKeys.includes(node.id) && !node.disable) {
-      return node;
-    }
-
     if (node.children) {
       const filteredChildren = (node.children || []).map((child) => recursiveFilter(child)).filter(Boolean);
 
@@ -72,6 +68,10 @@ export function filterTree(data: TreeData[] = [], selectedKeys: string[] = []): 
         }
         return node;
       }
+    }
+
+    if (selectedKeys.includes(node.id) && !node.disable) {
+      return node;
     }
 
     return null;
