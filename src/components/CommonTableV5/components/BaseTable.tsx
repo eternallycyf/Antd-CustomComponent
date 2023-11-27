@@ -232,7 +232,14 @@ class BaseTable<P extends ICommonTable<any, any>, S extends IBaseTableState> ext
           });
         })
         .catch((e) => {
-          this.setState({ loading: false });
+          this.setState({
+            loading: false,
+            dataSource: [],
+            summaryDataSource: [],
+            current: currentPage,
+            total: 0,
+            requestCount: requestCount + 1,
+          });
           console.error(e);
         });
     } catch (e) {
