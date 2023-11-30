@@ -8,7 +8,19 @@ import { getSearchData } from './utils';
 const { Panel } = Collapse;
 
 const TransformItem = (props: ITreeModalItemProps) => {
-  const { title = '', options, placeholder = '请输入', isView = false, setExpandedKeys, onExpand, expandedKeys, onCheck, checkedKeys, style } = props;
+  const {
+    title = '',
+    options,
+    placeholder = '请输入',
+    isView = false,
+    setExpandedKeys,
+    onExpand,
+    expandedKeys,
+    onCheck,
+    checkedKeys,
+    style,
+    onClear,
+  } = props;
 
   const [searchValue, setSearchValue] = useState<string>('');
 
@@ -27,7 +39,10 @@ const TransformItem = (props: ITreeModalItemProps) => {
     return newData;
   }, [options, searchValue]);
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value);
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+    if (!e.target.value && onClear) onClear();
+  };
 
   return (
     <>

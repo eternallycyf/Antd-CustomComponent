@@ -54,6 +54,7 @@ export interface ITreeModalItemProps extends Omit<TreeProps, 'onExpand'> {
   options?: ITreeModalProps['options'];
   onExpand?: (type: IModalTreeType, expandedKeys: React.Key[]) => void;
   setExpandedKeys: React.Dispatch<React.SetStateAction<string[]>>;
+  onClear?: Function;
 }
 
 type CompoundedComponent = typeof TreeModal & {

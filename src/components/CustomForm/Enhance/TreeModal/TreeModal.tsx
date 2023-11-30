@@ -4,7 +4,7 @@ import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { IModalTreeType, ITreeModalHandle, ITreeModalProps } from '.';
 import styles from './index.less';
 import Item from './Item';
-import { filterTree, findCheckList } from './utils';
+import { filterTree, findCheckList, findChildrenIds } from './utils';
 
 const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, ref) => {
   //#region
@@ -45,7 +45,7 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
     handleSetDefaultParams();
   }, [options]);
 
-  const handleSetDefaultParams = async () => {
+  const handleSetDefaultParams = async (type?: 'left' | 'right') => {
     let defaultExpandKeys: string[] = [];
     (options || []).forEach((item) => {
       if (item.id) defaultExpandKeys.push(item.id);
@@ -55,8 +55,15 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
         });
       }
     });
-    setLeftExpandedKeys(defaultExpandKeys);
-    setRightExpandedKeys(defaultExpandKeys);
+    if (!type) {
+      setLeftExpandedKeys(defaultExpandKeys);
+      setRightExpandedKeys(defaultExpandKeys);
+    }
+    if (type == 'left') {
+      setLeftExpandedKeys(defaultExpandKeys);
+    } else {
+      setRightExpandedKeys(defaultExpandKeys);
+    }
   };
 
   const handleOpenModal = () => {
@@ -136,7 +143,8 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
                   expandedKeys={leftExpandedKeys}
                   checkedKeys={checkedKeys}
                   onExpand={(e) => handleOnExpand('left', e as any as string[])}
-                  onCheck={(key) => setCheckedKeys(key as string[])}
+                  onCheck={(key) => setCheckedKeys(findChildrenIds(options, key as string[]) as string[])}
+                  onClear={() => handleSetDefaultParams('left')}
                   setExpandedKeys={setLeftExpandedKeys}
                 />
               </Col>
@@ -153,6 +161,7 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
                   onExpand={(e) => handleOnExpand('right', e as any as string[])}
                   onCheck={handleCheckWithCurrent as any}
                   setExpandedKeys={setRightExpandedKeys}
+                  onClear={() => handleSetDefaultParams('right')}
                 />
               </Col>
             </Row>

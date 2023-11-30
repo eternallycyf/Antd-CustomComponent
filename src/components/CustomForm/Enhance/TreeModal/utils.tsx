@@ -1,5 +1,6 @@
 import { TreeData } from './index';
 import styles from './index.less';
+import _ from 'lodash';
 
 /**
  * 数组转树型结构
@@ -113,7 +114,35 @@ export function findCheckList(keys: string[], OriginTreeData: TreeData[]): TreeD
   return checkList;
 }
 
+export const treeToArray = (tree: TreeData[]): TreeData[] => {
+  let stack = tree,
+    result = [];
+  while (stack.length !== 0) {
+    let pop = stack.pop();
+    result.push(
+      _.omit(
+        {
+          id: pop!.id,
+          name: pop!.name,
+          pid: pop!.pid,
+          ...pop,
+        },
+        'children',
+      ),
+    );
+    let children = pop!.children;
+    if (children) {
+      for (let i = children.length - 1; i >= 0; i--) {
+        stack.push(children[i]);
+      }
+    }
+  }
+  return (result as TreeData[]) || [];
+};
+
 export const getSearchData = (expandList: string[], searchValue: string, searchData: TreeData[]): any[] => {
+  const arrayData: TreeData[] = treeToArray(_.cloneDeep(searchData));
+
   const newData = searchData
     .map((item) => {
       const index = item.name.indexOf(searchValue);
@@ -127,7 +156,7 @@ export const getSearchData = (expandList: string[], searchValue: string, searchD
             {afterStr}
           </span>
         ) : (
-          <span>{item.name}</span>
+          item.name
         );
 
       if (item.children) {
@@ -136,11 +165,23 @@ export const getSearchData = (expandList: string[], searchValue: string, searchD
         if (matchingChildren.length > 0 || item.name.includes(searchValue)) {
           expandList.push(item.id);
 
-          const newChildren =
-            item.name.includes(searchValue) && matchingChildren.length == 0
-              ? (item.children || []).map((ele) => matchingChildren?.find((e) => e.id == ele.id) || ele)
-              : matchingChildren;
-          return { ...item, name: title, children: newChildren };
+          let otherList: TreeData[] = [];
+          const isOther = item.name.includes(searchValue) && matchingChildren.length == 0;
+          if (isOther) {
+            otherList = (item.children || []).map((ele) => matchingChildren?.find((e) => e.id == ele.id) || ele);
+          } else {
+            let cacheList: TreeData[] = [];
+            item.children.forEach((ele) => {
+              const isLast = !arrayData.some((e) => e.pid == ele.id);
+              const isHigh = matchingChildren.some((e) => e.id == ele.id);
+              if (isLast && !isHigh) {
+                cacheList.push(ele);
+              }
+            });
+            otherList = [...cacheList, ...matchingChildren];
+          }
+
+          return { ...item, name: title, children: otherList };
         }
       }
       return item.name.includes(searchValue) ? { ...item, name: title } : null;
@@ -149,3 +190,29 @@ export const getSearchData = (expandList: string[], searchValue: string, searchD
 
   return newData;
 };
+
+export function findChildrenIds(data: TreeData[], targetIds: string[]): string[] {
+  const resultIds: string[] = [];
+
+  function traverse(items: TreeData[], id: string, isCheckAll = false) {
+    items.forEach((item) => {
+      if (item.id === id) {
+        resultIds.push(item.id);
+        if (item.children && item.children.length > 0) {
+          item.children.forEach((child) => {
+            if (isCheckAll) {
+              resultIds.push(child.id);
+            }
+            traverse(item.children!, child.id, true);
+          });
+        }
+      } else if (item.children) {
+        traverse(item.children, id);
+      }
+    });
+  }
+
+  targetIds.forEach((id) => traverse(data, id));
+
+  return [...new Set(resultIds.concat(targetIds))];
+}
