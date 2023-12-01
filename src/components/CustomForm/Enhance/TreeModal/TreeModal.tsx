@@ -4,7 +4,7 @@ import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { IModalTreeType, ITreeModalHandle, ITreeModalProps } from '.';
 import styles from './index.less';
 import Item from './Item';
-import { filterTree, findCheckList, findChildrenIds } from './utils';
+import { filterTree, findCheckList, findChildrenId, findChildrenIds, getCurrentNodePath, treeToArray } from './utils';
 
 const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, ref) => {
   //#region
@@ -35,6 +35,7 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
     if (!options?.[0]?.children || options?.[0]?.children?.length == 0) return [];
     return [options?.[0]?.id].filter(Boolean);
   }, [options]);
+  const originData = React.useMemo(() => treeToArray(_.cloneDeep(options)) || [], [options]);
 
   useEffect(() => {
     if (value && value?.length > 0) {
@@ -95,19 +96,6 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
     }
   };
 
-  /**
-   * 为了解决 "当选中了两个一级下的数据时 右侧点击一级1下面的checkbox 会将其他一级下的所有checkbox选中" 的问题
-   * @param currentCheckKeys
-   * @param option
-   */
-  const handleCheckWithCurrent = (currentCheckKeys: string[], option: any) => {
-    const lastCheckList = findCheckList(checkedKeys as string[], options || []).filter((ele) => ele.priceType != option.node?.priceType);
-    const checkList = findCheckList(currentCheckKeys as string[], options || []) || [];
-    let currentCheckList = checkList.filter((item) => item.priceType == option.node?.priceType);
-    currentCheckList = [...currentCheckList, ...lastCheckList];
-    setCheckedKeys(currentCheckList.map((item) => item.id));
-  };
-
   useImperativeHandle(ref, () => ({
     handleOpenModal,
     setCheckedKeys,
@@ -165,7 +153,20 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
                   expandedKeys={rightExpandedKeys}
                   checkedKeys={checkedKeys}
                   onExpand={(e) => handleOnExpand('right', e as any as string[])}
-                  onCheck={handleCheckWithCurrent as any}
+                  onCheck={(checked, node: any) => {
+                    const currentNodePath = getCurrentNodePath(_.cloneDeep(options), node.node.id);
+                    const childrenList = originData
+                      .filter((ele) => ele.pid == node.node.id)
+                      .map((item) => item.id)
+                      .filter(Boolean);
+
+                    if (childrenList?.length === 0) {
+                      setCheckedKeys(checkedKeys.filter((item) => !currentNodePath.includes(item)));
+                    } else {
+                      const childrenALlIds = findChildrenId(options, node.node.id);
+                      setCheckedKeys(checkedKeys.filter((item) => !childrenALlIds.includes(item)));
+                    }
+                  }}
                   setExpandedKeys={setRightExpandedKeys}
                   onClear={() => handleSetDefaultParams('right')}
                   filterIds={secondLevelIds}

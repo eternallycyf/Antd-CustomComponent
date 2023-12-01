@@ -217,3 +217,128 @@ export function findChildrenIds(data: TreeData[], targetIds: string[]): string[]
 
   return [...new Set(resultIds.concat(targetIds))];
 }
+
+export function findChildrenId(data: TreeData[], targetId: string): string[] {
+  const resultIds: string[] = [];
+
+  function traverse(items: TreeData[], id: string) {
+    items.forEach((item) => {
+      if (item.id === id) {
+        resultIds.push(item.id);
+        if (item.children && item.children.length > 0) {
+          item.children.forEach((child) => {
+            traverse(item.children!, child.id);
+          });
+        }
+      } else if (item.children) {
+        traverse(item.children, id);
+      }
+    });
+  }
+
+  traverse(data, targetId);
+
+  return [...new Set(resultIds)];
+}
+
+export function findNodeAndDescendants(tree: TreeData[], targetId: any) {
+  const result: any[] = [];
+
+  function find(node: TreeData, isMatch = false) {
+    if (node.id == targetId || isMatch) {
+      result.push(node.id);
+
+      for (const child of node.children || []) {
+        find(child, true);
+      }
+
+      return;
+    }
+
+    for (const child of node.children || []) {
+      find(child);
+    }
+  }
+
+  for (const node of tree) {
+    find(node);
+  }
+
+  return result;
+}
+
+export const getAllNodePath = (tree: TreeData[], id: any): any[] => {
+  if (!Array.isArray(tree) || tree.length === 0) {
+    return [];
+  }
+
+  const findPathRecursive = (node: TreeData, targetId: any, currentPath: any[], isMatch = false): any[] => {
+    currentPath.push(node.id);
+
+    if (node.id === targetId || isMatch) {
+      if (node.children) {
+        for (const child of node.children) {
+          const childPath = findPathRecursive(child, targetId, currentPath.slice(), true);
+          if (childPath.length > 0) {
+            return childPath;
+          }
+        }
+      }
+      return currentPath;
+    }
+
+    if (node.children) {
+      for (const child of node.children) {
+        const childPath = findPathRecursive(child, targetId, currentPath.slice());
+        if (childPath.length > 0) {
+          return childPath;
+        }
+      }
+    }
+
+    return [];
+  };
+
+  for (const topLevelNode of tree) {
+    const path = findPathRecursive(topLevelNode, id, []);
+    if (path.length > 0) {
+      return path;
+    }
+  }
+
+  return [];
+};
+
+export const getCurrentNodePath = (tree: TreeData[], id: any): any[] => {
+  if (!Array.isArray(tree) || tree.length === 0) {
+    return [];
+  }
+
+  const findPathRecursive = (node: TreeData, targetId: any, currentPath: any[]): any[] => {
+    currentPath.push(node.id);
+
+    if (node.id === targetId) {
+      return currentPath;
+    }
+
+    if (node.children) {
+      for (const child of node.children) {
+        const childPath = findPathRecursive(child, targetId, currentPath.slice());
+        if (childPath.length > 0) {
+          return childPath;
+        }
+      }
+    }
+
+    return [];
+  };
+
+  for (const topLevelNode of tree) {
+    const path = findPathRecursive(topLevelNode, id, []);
+    if (path.length > 0) {
+      return path;
+    }
+  }
+
+  return [];
+};
