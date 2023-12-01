@@ -1,6 +1,6 @@
 import { ModalProps, TreeProps } from 'antd';
-import Item from '../TreeModal/Item';
-import TreeModal from '../TreeModal/TreeModal';
+import Item from './Item';
+import TreeModal from './TreeModal';
 
 export interface TreeData {
   id: string;

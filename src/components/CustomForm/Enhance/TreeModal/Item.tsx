@@ -1,5 +1,5 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { Collapse, Divider, Empty, Input, Tree } from 'antd';
+import { Divider, Empty, Input, Tree } from 'antd';
 import _ from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ITreeModalItemProps } from '.';
