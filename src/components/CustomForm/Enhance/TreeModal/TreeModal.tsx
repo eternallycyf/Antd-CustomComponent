@@ -30,6 +30,11 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
   const [rightExpandedKeys, setRightExpandedKeys] = useState<string[]>([]);
 
   const rightOptions = React.useMemo(() => filterTree(_.cloneDeep(options), checkedKeys), [options, checkedKeys]);
+  const secondLevelIds = React.useMemo(() => {
+    if (!options || options?.length == 0) return [];
+    if (!options?.[0]?.children || options?.[0]?.children?.length == 0) return [];
+    return [options?.[0]?.id].filter(Boolean);
+  }, [options]);
 
   useEffect(() => {
     if (value && value?.length > 0) {
@@ -146,6 +151,7 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
                   onCheck={(key) => setCheckedKeys(findChildrenIds(options, key as string[]) as string[])}
                   onClear={() => handleSetDefaultParams('left')}
                   setExpandedKeys={setLeftExpandedKeys}
+                  filterIds={secondLevelIds}
                 />
               </Col>
               <Col>
@@ -162,6 +168,7 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
                   onCheck={handleCheckWithCurrent as any}
                   setExpandedKeys={setRightExpandedKeys}
                   onClear={() => handleSetDefaultParams('right')}
+                  filterIds={secondLevelIds}
                 />
               </Col>
             </Row>

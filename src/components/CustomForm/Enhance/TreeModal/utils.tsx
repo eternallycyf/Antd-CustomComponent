@@ -140,7 +140,7 @@ export const treeToArray = (tree: TreeData[]): TreeData[] => {
   return (result as TreeData[]) || [];
 };
 
-export const getSearchData = (expandList: string[], searchValue: string, searchData: TreeData[]): any[] => {
+export const getSearchData = (filterIds: any[], expandList: string[], searchValue: string, searchData: TreeData[]): any[] => {
   const arrayData: TreeData[] = treeToArray(_.cloneDeep(searchData));
 
   const newData = searchData
@@ -160,7 +160,7 @@ export const getSearchData = (expandList: string[], searchValue: string, searchD
         );
 
       if (item.children) {
-        const matchingChildren = getSearchData(expandList, searchValue, item.children);
+        const matchingChildren = getSearchData(filterIds, expandList, searchValue, item.children);
 
         if (matchingChildren.length > 0 || item.name.includes(searchValue)) {
           expandList.push(item.id);
@@ -174,7 +174,8 @@ export const getSearchData = (expandList: string[], searchValue: string, searchD
             item.children.forEach((ele) => {
               const isLast = !arrayData.some((e) => e.pid == ele.id);
               const isHigh = matchingChildren.some((e) => e.id == ele.id);
-              if (isLast && !isHigh) {
+              //@ts-ignore
+              if (isLast && !isHigh && !filterIds.includes(ele?.pid)) {
                 cacheList.push(ele);
               }
             });
