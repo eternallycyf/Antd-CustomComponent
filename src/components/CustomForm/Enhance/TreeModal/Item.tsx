@@ -5,7 +5,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { ITreeModalItemProps } from '.';
 import styles from './index.less';
 import { getSearchData } from './utils';
-const { Panel } = Collapse;
 
 const TransformItem = (props: ITreeModalItemProps) => {
   const {
@@ -20,7 +19,6 @@ const TransformItem = (props: ITreeModalItemProps) => {
     checkedKeys,
     style,
     onClear,
-    filterIds = [],
   } = props;
 
   const [searchValue, setSearchValue] = useState<string>('');
@@ -34,7 +32,7 @@ const TransformItem = (props: ITreeModalItemProps) => {
     let expandList: string[] = [];
 
     if (!searchValue) return options;
-    const newData = getSearchData(filterIds, expandList, searchValue, _.cloneDeep(options));
+    const newData = getSearchData(expandList, searchValue, _.cloneDeep(options));
     setExpandedKeys(expandList);
     expandList = [];
     return newData;

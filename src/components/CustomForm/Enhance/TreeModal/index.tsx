@@ -16,7 +16,25 @@ export interface TreeData {
   children?: TreeData[];
 }
 
+export interface FieldNames {
+  value?: string;
+  label?: string;
+  children?: string;
+}
+
+export type RawValueType = string | number;
+
 type IModalOnConfirm = (value: string[]) => void;
+
+export interface LabeledValueType {
+  key?: React.Key;
+  value?: RawValueType;
+  label?: React.ReactNode;
+  /** Only works on `treeCheckStrictly` */
+  halfChecked?: boolean;
+}
+
+export type DraftValueType = RawValueType | LabeledValueType | (RawValueType | LabeledValueType)[];
 
 export interface ITreeModalProps {
   title?: [React.ReactNode | ((checkList: string[]) => React.ReactNode), React.ReactNode | ((checkList: string[]) => React.ReactNode)];
@@ -55,7 +73,6 @@ export interface ITreeModalItemProps extends Omit<TreeProps, 'onExpand'> {
   onExpand?: (type: IModalTreeType, expandedKeys: React.Key[]) => void;
   setExpandedKeys: React.Dispatch<React.SetStateAction<string[]>>;
   onClear?: Function;
-  filterIds?: any[];
 }
 
 type CompoundedComponent = typeof TreeModal & {

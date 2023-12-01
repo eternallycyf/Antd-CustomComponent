@@ -1,10 +1,12 @@
 import { Col, Form, Modal, Row } from 'antd';
 import _ from 'lodash';
+import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { IModalTreeType, ITreeModalHandle, ITreeModalProps } from '.';
 import styles from './index.less';
 import Item from './Item';
-import { filterTree, findCheckList, findChildrenId, findChildrenIds, getCurrentNodePath, treeToArray } from './utils';
+import useDataEntities from './useDataEntities';
+import { filterTree, treeToArray } from './utils';
 
 const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, ref) => {
   //#region
@@ -28,20 +30,35 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
   const [checkedKeys, setCheckedKeys] = useState<string[]>(value);
   const [leftExpandedKeys, setLeftExpandedKeys] = useState<string[]>([]);
   const [rightExpandedKeys, setRightExpandedKeys] = useState<string[]>([]);
-
-  const rightOptions = React.useMemo(() => filterTree(_.cloneDeep(options), checkedKeys), [options, checkedKeys]);
-  const secondLevelIds = React.useMemo(() => {
-    if (!options || options?.length == 0) return [];
-    if (!options?.[0]?.children || options?.[0]?.children?.length == 0) return [];
-    return [options?.[0]?.id].filter(Boolean);
-  }, [options]);
+  const [cacheHalfCheckedKeys, setCacheHalfCheckedKeys] = useState<any[]>([]);
+  const rightOptions = React.useMemo(
+    () =>
+      filterTree(
+        _.cloneDeep(options),
+        checkedKeys.filter((ele) => !disabledKeys.includes(ele)),
+        cacheHalfCheckedKeys,
+      ),
+    [options, checkedKeys, cacheHalfCheckedKeys, disabledKeys],
+  );
   const originData = React.useMemo(() => treeToArray(_.cloneDeep(options)) || [], [options]);
+  const fieldNames = {
+    value: 'id',
+    label: 'name',
+    children: 'children',
+    _title: ['name', 'title', 'label'],
+  };
+  const { keyEntities, valueEntities } = useDataEntities(options, fieldNames);
 
   useEffect(() => {
     if (value && value?.length > 0) {
       setCheckedKeys(value);
     }
   }, [value]);
+
+  useEffect(() => {
+    const result = conductCheck(checkedKeys, true, keyEntities);
+    setCacheHalfCheckedKeys(result.halfCheckedKeys);
+  }, [checkedKeys]);
 
   useEffect(() => {
     if (Array.isArray(defaultCheckKeys)) setCheckedKeys(defaultCheckKeys);
@@ -102,6 +119,24 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
   }));
   const contextProvider = { handleOpenModal, checkedKeys, rightOptions, setCheckedKeys };
 
+  const onSelect = (selectedKey: any, { selected, halfCheckedKeys }: { selected: boolean; halfCheckedKeys: any[] }) => {
+    const entity = keyEntities[selectedKey];
+    const node = entity?.node;
+    const selectedValue = node?.[fieldNames.value] ?? selectedKey;
+
+    let result;
+    if (selected) {
+      result = conductCheck([...checkedKeys, selectedValue], true, keyEntities);
+    } else {
+      result = conductCheck(
+        checkedKeys.filter((ele) => ele != selectedValue),
+        { checked: false, halfCheckedKeys },
+        keyEntities,
+      );
+    }
+    setCheckedKeys(result?.checkedKeys as string[]);
+  };
+
   return (
     <>
       <Form.Item className={styles['TreeModal']} style={{ marginBottom: 0 }}>
@@ -136,10 +171,14 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
                   expandedKeys={leftExpandedKeys}
                   checkedKeys={checkedKeys}
                   onExpand={(e) => handleOnExpand('left', e as any as string[])}
-                  onCheck={(key) => setCheckedKeys(findChildrenIds(options, key as string[]) as string[])}
+                  onCheck={(key, node) => {
+                    onSelect(node.node.key, {
+                      halfCheckedKeys: node.checked ? (node.halfCheckedKeys as any[]) : (cacheHalfCheckedKeys as any[]),
+                      selected: !checkedKeys.includes(node.node.key as any),
+                    });
+                  }}
                   onClear={() => handleSetDefaultParams('left')}
                   setExpandedKeys={setLeftExpandedKeys}
-                  filterIds={secondLevelIds}
                 />
               </Col>
               <Col>
@@ -153,23 +192,14 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
                   expandedKeys={rightExpandedKeys}
                   checkedKeys={checkedKeys}
                   onExpand={(e) => handleOnExpand('right', e as any as string[])}
-                  onCheck={(checked, node: any) => {
-                    const currentNodePath = getCurrentNodePath(_.cloneDeep(options), node.node.id);
-                    const childrenList = originData
-                      .filter((ele) => ele.pid == node.node.id)
-                      .map((item) => item.id)
-                      .filter(Boolean);
-
-                    if (childrenList?.length === 0) {
-                      setCheckedKeys(checkedKeys.filter((item) => !currentNodePath.includes(item)));
-                    } else {
-                      const childrenALlIds = findChildrenId(options, node.node.id);
-                      setCheckedKeys(checkedKeys.filter((item) => !childrenALlIds.includes(item)));
-                    }
+                  onCheck={(key, node: any) => {
+                    onSelect(node.node.key, {
+                      halfCheckedKeys: node.checked ? node.halfCheckedKeys : cacheHalfCheckedKeys,
+                      selected: !checkedKeys.includes(node.node.key),
+                    });
                   }}
                   setExpandedKeys={setRightExpandedKeys}
                   onClear={() => handleSetDefaultParams('right')}
-                  filterIds={secondLevelIds}
                 />
               </Col>
             </Row>
