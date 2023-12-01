@@ -48,6 +48,9 @@ import { renderFormItem } from '@/utils/util';
 //   },
 // ];
 
+// 如果组件无限刷新
+// type='update' 直接返回组件
+
 type DeepPartial<T> = T extends object
   ? {
       [P in keyof T]?: DeepPartial<T[P]>;
