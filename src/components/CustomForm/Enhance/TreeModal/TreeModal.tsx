@@ -58,7 +58,7 @@ const TreeModal = React.forwardRef<ITreeModalHandle, ITreeModalProps>((props, re
   useEffect(() => {
     const result = conductCheck(checkedKeys, true, keyEntities);
     setCacheHalfCheckedKeys(result.halfCheckedKeys);
-  }, [checkedKeys]);
+  }, [checkedKeys, options]);
 
   useEffect(() => {
     if (Array.isArray(defaultCheckKeys)) setCheckedKeys(defaultCheckKeys);
