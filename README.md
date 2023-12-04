@@ -336,6 +336,7 @@ history.push({
     title: 'xxx',
   },
 });
+// history.go()
 ```
 
 ## 跳转带参
