@@ -337,3 +337,52 @@ history.push({
   },
 });
 ```
+
+## 跳转带参
+
+```ts
+const { query } = props.location;
+
+if (status === 'add') {
+  if (!query) {
+    handleInit();
+  }
+
+  if (query?.isRefresh) {
+    // 执行带参数的初始化
+    handleInit({ ...query });
+
+    router.replace({
+      pathname: '/process/ResearchReportSubscription/add',
+      query: { ...query, isRefresh: true },
+    });
+  }
+}
+
+useEffect(() => {
+  Publish.on('handleRefreshPage', handleInit);
+  return () => {
+    Publish.off('handleRefreshPage', handleInit);
+  };
+}, []);
+
+const handleInit = async (query) => {
+  setDetailLoading(true);
+  await fetchRequest();
+
+  if (query) {
+    const {} = query;
+
+    router.replace({
+      pathname: '/process/ResearchReportSubscription/add',
+      query: { ...query, isRefresh: true },
+    });
+
+    await fetchRequest2();
+
+    setFormValue(/* 表单值 */);
+  }
+
+  setDetailLoading(false);
+};
+```
