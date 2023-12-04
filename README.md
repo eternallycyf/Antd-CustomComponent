@@ -350,12 +350,7 @@ if (status === 'add') {
 
   if (query?.isRefresh) {
     // 执行带参数的初始化
-    handleInit({ ...query });
-
-    router.replace({
-      pathname: '/process/ResearchReportSubscription/add',
-      query: { ...query, isRefresh: true },
-    });
+    handleInit(query);
   }
 }
 
