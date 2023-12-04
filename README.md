@@ -344,14 +344,9 @@ history.push({
 const { query } = props.location;
 
 if (status === 'add') {
-  if (!query) {
-    handleInit();
-  }
+  if (!query) handleInit();
 
-  if (query?.isRefresh) {
-    // 执行带参数的初始化
-    handleInit(query);
-  }
+  if (query?.isRefresh) handleInit(query);
 }
 
 useEffect(() => {
