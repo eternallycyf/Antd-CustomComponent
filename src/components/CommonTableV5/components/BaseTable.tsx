@@ -333,6 +333,10 @@ class BaseTable<P extends ICommonTable<any, any>, S extends IBaseTableState> ext
             .toLowerCase()
         : null;
 
+    // function camelToSnake(camelCaseString) {
+    // return camelCaseString.replace(/[A-Z]+/g, (match) => `_${match.toLowerCase()}`);
+    // }
+
     // 如果排序索引和显示字段不一致，采用排序索引
     if (sorter.column && sorter.column.sorter === true && sorter.column.sorterIndex) {
       sort = sorter.column.sorterIndex;
