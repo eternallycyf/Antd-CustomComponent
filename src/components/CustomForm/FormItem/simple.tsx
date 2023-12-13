@@ -114,13 +114,24 @@ const SimpleControl: React.FC<ISimpleControlProps> = React.forwardRef((props, re
     const restSwitchProps = type === 'switch' ? { transform: transform + '' } : {};
     const inputnumberProps = { inputnumber: inputNumber };
 
-    return Component({
-      prefix: type === 'search' ? <SearchOutlined /> : '',
-      ...restSwitchProps,
-      ...inputnumberProps,
-      ...restControlProps,
-      ...formProps,
-    });
+    if (type == 'custom') {
+      return Component({
+        prefix: type === 'search' ? <SearchOutlined /> : '',
+        ...restSwitchProps,
+        ...inputnumberProps,
+        ...restControlProps,
+        ...formProps,
+      });
+    }
+    return (
+      <Component
+        prefix={type === 'search' ? <SearchOutlined /> : ''}
+        {...restSwitchProps}
+        {...inputnumberProps}
+        {...restControlProps}
+        {...formProps}
+      />
+    );
   }
 });
 

@@ -36,6 +36,7 @@
     "braft-extensions": "^0.1.1",
     "braft-utils": "^3.0.12",
     "classnames": "^2.2.6",
+    "d3": "^7.8.5",
     "docx-preview": "^0.1.11",
     "docxtemplater": "3.5",
     "draft-js-prism": "^1.0.6",
@@ -72,7 +73,8 @@
     "runes2": "^1.1.2",
     "rxjs": "^7.8.1",
     "rxjs-hooks": "^0.8.0-alpha.0",
-    "video.js": "^8.3.0"
+    "video.js": "^8.3.0",
+    "world_countries_lists": "^2.8.2"
   },
   "devDependencies": {
     "@types/echarts": "^4.9.16",
