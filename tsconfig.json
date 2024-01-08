@@ -19,7 +19,6 @@
       "@/pages/*": ["src/pages/*"]
     },
     "allowSyntheticDefaultImports": true,
-    "suppressImplicitAnyIndexErrors": true,
     "experimentalDecorators": true
   },
   "include": ["./typings/*.ts", "mock/**/*", "src/**/*", "config/**/*", ".umirc.ts", "typings.d.ts"],
