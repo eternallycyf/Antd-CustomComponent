@@ -72,13 +72,7 @@ class BaseComponent<P, S extends IBaseState> extends React.PureComponent<P, S> {
 
   handleSearch = (values: any) => {
     const { handleFirstPage } = this.tableRef.current || {};
-    this.setState({ searchParams: values }, async () => {
-      await handleFirstPage!();
-      this.setState({
-        expandedRowKeys: [],
-      });
-      this.handleSelect([], []);
-    });
+    this.setState({ searchParams: values, expandedRowKeys: [], selectedRowKeys: [], selectedRows: [] }, handleFirstPage);
     if (this.scrollRef.current) {
       this.scrollRef.current.scrollLeft = 0;
       this.scrollRef.current.scrollTop = 0;
