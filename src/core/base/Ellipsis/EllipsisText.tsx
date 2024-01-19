@@ -43,7 +43,11 @@ const EllipsisText: React.FC<EllipsisTextProps> = (props) => {
   }
   const textLength = fullWidthRecognition ? getStrFullLength(text) : text.length;
   if (textLength <= length || length < 0) {
-    return <span {...other}>{text}</span>;
+    return (
+      <span className={className} {...other}>
+        {text}
+      </span>
+    );
   }
   const tail = '...';
   let displayText;
@@ -56,7 +60,7 @@ const EllipsisText: React.FC<EllipsisTextProps> = (props) => {
   if (tooltip) {
     return (
       <Tooltip {...tooltipProps} overlayClassName={`${prefix}-tooltip`} overlayStyle={{ maxWidth: 700, ...tooltipProps?.overlayStyle }} title={text}>
-        <span>
+        <span className={className}>
           {displayText}
           {tail}
         </span>
