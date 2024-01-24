@@ -5,7 +5,7 @@ import { IBaseFormControlType } from '@/typings/base';
 import { Column } from '@/typings/core/column';
 import { Search } from '@/typings/core/form';
 import { formatColumn, renderFormItem } from '@/utils/util';
-import { Col, Form, FormInstance, FormItemProps, FormListFieldData, Row, TableProps } from 'antd';
+import { Col, Empty, Form, FormInstance, FormItemProps, FormListFieldData, Row, TableProps } from 'antd';
 import { FormListProps } from 'antd/es/form';
 import React, { Key, useImperativeHandle } from 'react';
 import TableBtn from '../CommonTableV5/components/widgets/TableBtn';
@@ -229,6 +229,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
         },
         render: (text: number, field: FormListFieldData, index: number) => {
           const renderProps = getCurrentFieldValue(form, tableFormName, index);
+          //eslint-disable-next-line
           const val = renderProps?.[0]?.[item?.dataIndex!];
           const currentValues = renderProps?.[0];
           const allValues = renderProps?.[1];
@@ -389,6 +390,7 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
               {renderButtonRow(buttonLeft, buttonRight, operation)}
               <Form.Item className={`${styles.EditTableContent}`}>
                 <Table
+                  className={`${fields?.length > 0 ? '' : styles.noDataTable} ${tableProps?.className}`}
                   isVirtual={fields?.length >= 100 ? isVirtual : false}
                   status={status}
                   scroll={isVirtual ? { y: 800 } : false}
@@ -397,6 +399,22 @@ const CommonEditTable: React.ForwardRefRenderFunction<ICommonEditTableHandle, IC
                   columns={getDefaultColumns(operation, status)}
                   rowKey={'key'}
                   pagination={false}
+                  bordered
+                  size="small"
+                  locale={{
+                    emptyText: (
+                      <Empty
+                        description={<span style={{ color: '#B3B8C2' }}>暂无数据</span>}
+                        style={{
+                          color: '#B3B8C2',
+                          fontSize: 12,
+                          marginTop: 8,
+                          marginBottom: 10,
+                        }}
+                        image={<img style={{ width: 88, height: 88 }} src={require('@/assets/empty/card-empty.png')} />}
+                      />
+                    ),
+                  }}
                   {...tableProps}
                 />
               </Form.Item>
