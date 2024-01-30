@@ -13,7 +13,43 @@ import CustomControls from './components/controls';
 import { FormInstance } from 'rc-field-form';
 import { MAX_LENGTH, CONTROLS_ALL, CONTROLS_LESS } from './components/constant';
 import { message } from 'antd';
+import HeaderId from 'braft-extensions/dist/header-id';
 const { ContentUtils, ContenntUtils } = braftUtils;
+
+// const treeifyHeaders = (dom) => {
+//   const stack = [{ tag: 'H0', children: [] }];
+//   const headers = 'h1, h2, h3, h4, h5, h6';
+
+//   let content = document.createElement('div');
+//   content.innerHTML = dom;
+
+//   for (const header of content.querySelectorAll(headers)) {
+//     const { tagName: tag, textContent: text, id = '' } = header;
+//     const node = { tag, text, id };
+//     let last = stack.at(-1);
+
+//     while (last.tag >= node.tag) {
+//       stack.pop();
+//       last = stack.at(-1);
+//     }
+
+//     last.children = last.children || [];
+//     last.children.push(node);
+//     stack.push(node);
+//   }
+
+//   return stack[0].children;
+// };
+
+// const dom = `<h1 id="w-e-element-0">1232</h1><p>123</p><h2 id="a8qob">123123</h2><h3 id="e3t9l">123123</h3><p></p><h1 id="8sbb1">123123</h1><h4 id="1he7e">123123</h4><p>123</p>`;
+
+// treeifyHeaders(dom);
+
+const options = {
+  excludeEditors: [],
+};
+
+BraftEditor.use(HeaderId(options));
 
 BraftEditor.use(Table());
 BraftEditor.use(
@@ -112,7 +148,7 @@ export default class UploadDemo extends React.Component<EditorProps> {
   };
 
   render() {
-    const { form, valueType, extendControlKey, value, onChange, getImageURL, showWordLimitPrompt = true, ...restProps } = this.props;
+    const { form, valueType, extendControlKey = [], value, onChange, getImageURL, showWordLimitPrompt = true, ...restProps } = this.props;
     const { editorRef, handlePastedText } = this;
     // 自定义控件
     const customControlsKeys = Object.keys(CustomControls);
