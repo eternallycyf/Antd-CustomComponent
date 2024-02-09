@@ -35,8 +35,6 @@
 
 ![ims-view-pc](https://raw.githubusercontent.com/eternallycyf/Antd-CustomComponent/main/public/ims-view-pc.png)
 
-![code](https://raw.githubusercontent.com/eternallycyf/Antd-CustomComponent/main/public/code.png)
-
 ## 1.安装依赖
 
 ## 2.Dockerfile
