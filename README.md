@@ -1,5 +1,9 @@
 ## 该仓库已废弃 转向 `monorepo` 的 `npm` 的包管理方式维护该仓库的一些组件(还在开发中...)
 
+## 启动
+
+- yarn
+
 | 组件 | 下载量 | 版本 |
 | --- | --- | --- |
 | [ims-view-pc](https://www.npmjs.com/package/ims-view-pc) | ![npm-image](http://img.shields.io/npm/v/ims-view-pc.svg?style=flat-square&color=deepgreen&label=latest) | [![NPM downloads][ims-view-pc-download-image]][ims-view-pc-download-url] |
