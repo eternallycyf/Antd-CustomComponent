@@ -8,11 +8,11 @@ export interface WithRouterProps {
 }
 
 export const withRouter = <Props extends WithRouterProps>(Component: React.ComponentType<Props>) => {
-  return (props: Omit<Props, keyof WithRouterProps>) => {
+  return React.forwardRef((props: Omit<Props, keyof WithRouterProps>, ref) => {
     const location = useLocation();
     const params = useParams();
     const navigate = useNavigate();
 
-    return <Component {...(props as Props)} location={location} params={params} navigate={navigate} />;
-  };
+    return <Component ref={ref} {...(props as Props)} location={location} params={params} navigate={navigate} />;
+  });
 };
