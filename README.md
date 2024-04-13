@@ -2,6 +2,8 @@
 
 后台已经切换到 `vite5 + unocss + zustand` , 组件切换至 `monorepo` 方式维护
 
+![ims-admin](https://cdn.nlark.com/yuque/0/2024/png/22063862/1713025216564-efd7726e-0fd9-4ebe-b707-c3b850e72d3e.png?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1500%2Climit_0)
+
 ### 高级组件(类似一套完整的`pro-components`)
 
 - 转向 `monorepo` 的 `npm` 的包管理方式维护该仓库的一些组件(还在开发中...)
