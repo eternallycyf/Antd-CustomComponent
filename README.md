@@ -61,7 +61,7 @@
 ```shell
 # pnpm 8.15.4
 # node v20.11.1
-pnpm i && pnpm start
+yarn && yarn start
 ```
 
 ## FAQ
