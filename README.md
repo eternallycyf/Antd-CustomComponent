@@ -59,7 +59,7 @@
 ## 安装依赖与启动
 
 ```shell
-# pnpm 8.15.4
+# yarn 1.22.22
 # node v20.11.1
 yarn && yarn start
 ```
