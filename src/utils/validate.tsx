@@ -1,4 +1,5 @@
-import { RuleObject as ValidationRule } from 'rc-field-form/lib/interface';
+import type { RuleObject } from 'antd/es/form';
+
 export enum FormRuleType {
   string = 'string',
   number = 'number',
@@ -32,14 +33,15 @@ export default class FormRules {
     const existMin = typeof min === 'number';
     const existMax = typeof max === 'number';
     let message: string;
+    let prefix = type ? `:name必须是${type}` : '';
     if (existMax && existMin) {
-      message = `:name必须是${type}且${unit} 在:min到:max之间`;
+      message = `${prefix} ${unit} 在:min到:max之间`;
     } else if (existMax) {
-      message = `:name必须是${type},且${unit} 小于等于:max`;
+      message = `${prefix} ${unit} 小于等于:max`;
     } else if (existMin) {
-      message = `:name是必须是${type}，且${unit} 大于等于:min`;
+      message = `${prefix} ${unit} 大于等于:min`;
     } else {
-      message = `:name必须是${type}`;
+      message = `${prefix}`;
     }
     if (existMin) {
       message = message.replace(':min', String(min));
@@ -51,24 +53,21 @@ export default class FormRules {
   }
 
   private readonly name: string;
-  private rules: ValidationRule[] = [];
+  private rules: RuleObject[] = [];
   constructor(name: string) {
     this.name = name;
   }
 
-  public isRequired(onlyWhiteSpaceIsError = true): FormRules {
-    let lastRule = this.rules[this.rules.length - 1];
-    if (!lastRule) {
-      this.string();
-      lastRule = this.rules[this.rules.length - 1];
-    }
-    lastRule.required = true;
-    lastRule.whitespace = onlyWhiteSpaceIsError;
+  public isRequired(message = ':name是必填项'): FormRules {
+    this.rules.push({
+      required: true,
+      message: message.replace(':name', this.name),
+    });
     return this;
   }
 
-  public append(obj: ValidationRule): FormRules {
-    const cloneObj: any = { ...obj };
+  public append(obj: RuleObject): FormRules {
+    const cloneObj = { ...obj };
     if (typeof cloneObj.message === 'string') {
       cloneObj.message = cloneObj.message.replace(':name', this.name);
     }
@@ -78,7 +77,7 @@ export default class FormRules {
 
   public string(min?: number, max?: number, newMessage: string = ''): FormRules {
     let message = newMessage;
-    message = message || FormRules.formatMessageByLimit(min, max, '字符串', '长度');
+    message = message || FormRules.formatMessageByLimit(min, max, '', '长度');
     this.rules.push({
       type: FormRuleType.string,
       min,
@@ -88,6 +87,7 @@ export default class FormRules {
     return this;
   }
 
+  // switch回显严格校验
   public bool(message: string = ':name必须是布尔值'): FormRules {
     this.rules.push({
       type: FormRuleType.boolean,
@@ -141,14 +141,13 @@ export default class FormRules {
 
   public match(pattern: RegExp, message = ':name不符合规范'): FormRules {
     this.rules.push({
-      type: FormRuleType.string,
       pattern,
       message: message.replace(':name', this.name),
     });
     return this;
   }
 
-  public url(message = '正输入正确的: name'): FormRules {
+  public url(message = '请正输入正确的:name'): FormRules {
     this.rules.push({
       type: FormRuleType.url,
       message: message.replace(':name', this.name),
@@ -173,8 +172,9 @@ export default class FormRules {
     return this;
   }
 
-  public identityCard(message = '请输入E确的: name'): FormRules {
-    return this.match(/^(Id[18]|d[17][xx])$/, message);
+  public validate<T extends Promise<any>>(func: (rule: RuleObject, value: any) => T): FormRules {
+    this.rules.push({ validator: func });
+    return this;
   }
 
   public withoutWhiteSpace(message = ':name禁止包含空格'): FormRules {
@@ -184,7 +184,7 @@ export default class FormRules {
   public object(message: string = ':name必须是对象类型'): FormRules {
     this.rules.push({
       type: FormRuleType.object,
-      message: message.replace(': name', this.name),
+      message: message.replace(':name', this.name),
     });
     return this;
   }
@@ -194,7 +194,7 @@ export default class FormRules {
     return this;
   }
 
-  public create(): ValidationRule[] {
+  public create(): RuleObject[] {
     return this.rules;
   }
 }
