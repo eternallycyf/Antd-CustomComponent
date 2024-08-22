@@ -1,5 +1,6 @@
 import type { RuleObject } from 'antd/es/form';
 
+type Validator = (rule: RuleObject, value: any, callback: (error?: string) => void) => Promise<void | any> | void;
 export enum FormRuleType {
   string = 'string',
   number = 'number',
@@ -172,8 +173,19 @@ export default class FormRules {
     return this;
   }
 
-  public validate<T extends Promise<any>>(func: (rule: RuleObject, value: any) => T): FormRules {
-    this.rules.push({ validator: func });
+  public validate(func: Validator): FormRules {
+    this.rules.push({
+      validator: (rule, value, callback) => {
+        const errors = func(rule, value, callback);
+        return errors || Promise.resolve();
+      },
+    });
+    return this;
+  }
+
+  public dynamic(rule: RuleObject & { visible?: boolean }): FormRules {
+    if (!rule || !(rule?.visible ?? true)) return this;
+    this.rules.push(rule);
     return this;
   }
 
